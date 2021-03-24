@@ -19,15 +19,21 @@ service ReportContract {
   
     rpc CancelQueryOracle (aelf.Hash) returns (google.protobuf.Empty) {}
   
-    rpc CommitSignature (CommitSignatureInput) returns (google.protobuf.Empty) {}
+    rpc ConfirmReport (ConfirmReportInput) returns (google.protobuf.Empty) {}
   
     rpc AppendQueryToReport (CallbackInput) returns (google.protobuf.Empty) {}
+
+    rpc ProposeReport (CallbackInput) returns (Report) {}
+    
+    rpc RemoveQueries (HashList) returns (google.protobuf.Empty) {}
 
     // Notary management.
 
     rpc ApplyObserver (ApplyObserverInput) returns (google.protobuf.Empty) {}
 
     rpc QuitObserver (QuitObserverInput) returns (google.protobuf.Empty) {}
+    
+    // View methods.
     
     rpc GetReport (aelf.Hash) returns (Report) {
         option (aelf.is_view) = true;
@@ -40,6 +46,8 @@ service ReportContract {
 message InitializeInput {
     aelf.Address token_contract_address = 1;
     int64 report_fee = 2;
+    int64 apply_observer_fee = 3;
+    ObserverList initial_observer_list = 4;
 }
 
 message QueryOracleInput {
@@ -52,7 +60,7 @@ message QueryOracleInput {
     aelf.Address query_manager = 7;
 }
 
-message CommitSignatureInput {
+message ConfirmReportInput {
     aelf.Hash report_id = 1;
     string signature = 2;
 }
@@ -67,13 +75,53 @@ message VoteObserverInput {
 }
 
 message Report {
+    int64 epoch_number = 1;
+    int64 round_number = 2;
     
 }
 
+message ReportQueryRecord {
+    aelf.Address origin_query_manager = 1;
+    int64 paid_report_fee = 2;
+    aelf.Hash report_id = 3;
+}
+
+message ObserverList {
+    repeated aelf.Address value = 1;
+}
+
+message Epoch {
+    int64 epoch_number = 1;
+    repeated ObserverInfo observers = 2;
+    
+}
+
+message ObserverInfo {
+    aelf.Address address = 1;
+    bool is_leader = 2;
+}
+
+message ProposeReportInput {
+    repeated aelf.Hash query_id_list = 1;
+}
+
+message HashList {
+    repeated aelf.Hash value = 1;
+}
+
+message 
+
 // Events
 
-message ReportCreated {
+message ReportGenerated {
     option (aelf.is_event) = true;
     aelf.Hash report_id = 1;
     Report report = 2;
+}
+
+message QueryRemoved {
+    option (aelf.is_event) = true;
+    int64 epoch_number = 1;
+    int64 round_number = 2;
+    aelf.Hash query_id = 3;
 }

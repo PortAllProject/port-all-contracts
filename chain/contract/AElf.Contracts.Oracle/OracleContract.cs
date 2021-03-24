@@ -194,33 +194,42 @@ namespace AElf.Contracts.Oracle
             var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
             Assert(HashHelper.ConcatAndCompute(dataHash, input.Salt) == commitment, "Incorrect commitment.");
 
-            // Record data to result list.
-            var resultList = State.ResultListMap[input.QueryId] ?? new ResultList();
-            if (resultList.Results.Contains(input.Data))
+            if (queryRecord.AggregatorContractAddress != null)
             {
-                var index = resultList.Results.IndexOf(input.Data);
-                resultList.Frequencies[index] = resultList.Frequencies[index].Add(1);
+                // Record data to result list.
+                var resultList = State.ResultListMap[input.QueryId] ?? new ResultList();
+                if (resultList.Results.Contains(input.Data))
+                {
+                    var index = resultList.Results.IndexOf(input.Data);
+                    resultList.Frequencies[index] = resultList.Frequencies[index].Add(1);
+                }
+                else
+                {
+                    resultList.Results.Add(input.Data);
+                    resultList.Frequencies.Add(1);
+                }
+
+                State.ResultListMap[input.QueryId] = resultList;
             }
             else
             {
-                resultList.Results.Add(input.Data);
-                resultList.Frequencies.Add(1);
+                // Record data to node data list.
+                var nodeDataList = State.NodeDataListMap[input.QueryId] ?? new NodeDataList();
+                nodeDataList.Value.Add(new NodeData {Address = Context.Sender, Data = input.Data});
+                State.NodeDataListMap[input.QueryId] = nodeDataList;
             }
-
-            State.ResultListMap[input.QueryId] = resultList;
 
             if (helpfulNodeList.Value.Count >= queryRecord.AggregateThreshold)
             {
                 // Move to next stage: Aggregator.
                 queryRecord.IsSufficientDataCollected = true;
-                PayToNodesAndAggregateResults(queryRecord, helpfulNodeList, resultList);
+                PayToNodesAndAggregateResults(queryRecord, helpfulNodeList);
             }
 
             return new Empty();
         }
 
-        private void PayToNodesAndAggregateResults(QueryRecord queryRecord, AddressList helpfulNodeList,
-            ResultList resultList)
+        private void PayToNodesAndAggregateResults(QueryRecord queryRecord, AddressList helpfulNodeList)
         {
             State.ResponseCount.Remove(queryRecord.QueryId);
 
@@ -240,14 +249,25 @@ namespace AElf.Contracts.Oracle
                 }
             }
 
-            // Call Aggregator plugin contract.
-            State.OracleAggregatorContract.Value = queryRecord.AggregatorContractAddress;
-            var finalResult = State.OracleAggregatorContract.Aggregate.Call(new AggregateInput
+            var aggregatorContractAddress = queryRecord.AggregatorContractAddress;
+            BytesValue finalResult;
+            if (aggregatorContractAddress != null)
             {
-                Results = {resultList.Results},
-                Frequencies = {resultList.Frequencies}
-            });
-            queryRecord.FinalResult = finalResult.Value;
+                // Call Aggregator plugin contract.
+                State.OracleAggregatorContract.Value = queryRecord.AggregatorContractAddress;
+                var resultList = State.ResultListMap[queryRecord.QueryId];
+                finalResult = State.OracleAggregatorContract.Aggregate.Call(new AggregateInput
+                {
+                    Results = {resultList.Results},
+                    Frequencies = {resultList.Frequencies}
+                });
+                queryRecord.FinalResult = finalResult.Value;
+            }
+            else
+            {
+                // Give all the origin data provided by oracle nodes.
+                finalResult = State.NodeDataListMap[queryRecord.QueryId].ToBytesValue();
+            }
 
             // Update FinalResult field.
             State.QueryRecords[queryRecord.QueryId] = queryRecord;

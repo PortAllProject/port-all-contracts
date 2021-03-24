@@ -119,6 +119,15 @@ message ResultList {
   repeated int32 frequencies = 2;
 }
 
+message NodeData {
+    aelf.Address address = 1;
+    bytes data = 2;
+}
+
+message NodeDataList {
+    repeated NodeData value = 1;
+}
+
 // Events
 message QueryCreated {
   option (aelf.is_event) = true;

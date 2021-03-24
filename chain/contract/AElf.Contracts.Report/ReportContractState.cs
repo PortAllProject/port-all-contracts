@@ -16,8 +16,13 @@ namespace AElf.Contracts.Report
         public SingletonState<string> OracleTokenSymbol { get; set; }
         public SingletonState<long> ReportFee { get; set; }
         public SingletonState<long> ApplyObserverFee { get; set; }
-        public MappedState<Hash, Address> OriginQueryManagerMap { get; set; }
-        public MappedState<Hash, Report> ReportMap { get; set; }
-
+        public MappedState<Hash, ReportQueryRecord> ReportQueryRecordMap { get; set; }
+        public MappedState<Hash, Address, string> ObserverSignatureMap { get; set; }
+        public SingletonState<ObserverList> ObserverList { get; set; }
+        public SingletonState<long> CurrentReportNumber { get; set; }
+        public SingletonState<long> CurrentEpochNumber { get; set; }
+        public SingletonState<long> CurrentRoundNumber { get; set; }
+        public MappedState<long, Report> ReportMap { get; set; }
+        public MappedState<long, Epoch> EpochMap { get; set; }
     }
 }

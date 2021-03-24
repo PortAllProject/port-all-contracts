@@ -31,5 +31,10 @@ namespace AElf.Contracts.Oracle
         public MappedState<Hash, ResultList> ResultListMap { get; set; }
 
         public MappedState<Hash, AddressList> HelpfulNodeListMap { get; set; }
+
+        /// <summary>
+        /// For queries no need to aggregate.
+        /// </summary>
+        public MappedState<Hash, NodeDataList> NodeDataListMap { get; set; }
     }
 }
