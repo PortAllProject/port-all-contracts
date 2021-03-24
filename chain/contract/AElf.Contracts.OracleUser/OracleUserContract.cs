@@ -38,7 +38,8 @@ namespace AElf.Contracts.OracleUser
                     MethodName = nameof(RecordTemperature)
                 },
                 DesignatedNodeList = new AddressList {Value = {input.DesignatedNodes}},
-                Payment = payment
+                Payment = payment,
+                AggregateThreshold = input.AggregateThreshold
             };
             State.OracleContract.Query.Send(queryInput);
 

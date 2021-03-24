@@ -33,5 +33,10 @@ namespace AElf.Contracts.Oracle
 
             return new CommitmentMap {Value = {dict}};
         }
+
+        public override StringValue GetOracleTokenSymbol(Empty input)
+        {
+            return new StringValue {Value = TokenSymbol};
+        }
     }
 }

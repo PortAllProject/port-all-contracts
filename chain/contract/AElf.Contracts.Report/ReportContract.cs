@@ -1,5 +1,6 @@
 ﻿using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
+using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -20,15 +21,15 @@ namespace AElf.Contracts.Report
             return new Empty();
         }
 
-        public override Empty QueryOracle(QueryOracleInput input)
+        public override Hash QueryOracle(QueryOracleInput input)
         {
-            // Pay oracle tokens to this contract.
+            // Pay oracle tokens to this contract, amount: report fee + oracle nodes payment.
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
                 From = Context.Sender,
                 To = Context.Self,
                 Symbol = State.OracleTokenSymbol.Value,
-                Amount = State.ReportFee.Value
+                Amount = State.ReportFee.Value.Add(input.Payment)
             });
 
             var queryInput = new QueryInput
@@ -50,7 +51,7 @@ namespace AElf.Contracts.Report
 
             var queryId = Context.GenerateId(State.OracleContract.Value, HashHelper.ComputeFrom(queryInput));
             State.OriginQueryManagerMap[queryId] = Context.Sender;
-            return new Empty();
+            return queryId;
         }
 
         public override Empty CancelQueryOracle(Hash input)
@@ -61,6 +62,11 @@ namespace AElf.Contracts.Report
         }
 
         public override Empty AppendQueryToReport(CallbackInput input)
+        {
+            return new Empty();
+        }
+
+        public override Empty CommitSignature(CommitSignatureInput input)
         {
             return new Empty();
         }

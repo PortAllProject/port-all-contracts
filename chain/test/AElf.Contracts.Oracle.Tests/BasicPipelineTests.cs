@@ -24,7 +24,7 @@ namespace AElf.Contracts.Oracle
 
         private List<Address> OracleNodeAddresses => _oracleNodeAccounts.Select(a => a.Address).ToList();
 
-        internal async Task<QueryRecord> QueryTest()
+        private async Task<QueryRecord> QueryTest()
         {
             await InitializeOracleContractAsync();
             await DefaultParliamentProposeAndRelease(new CreateProposalInput
@@ -50,12 +50,11 @@ namespace AElf.Contracts.Oracle
             {
                 OracleContractAddress = DAppContractAddress,
                 AggregatorContractAddress = IntegerAggregatorContractAddress,
-                DesignatedNodes = {OracleNodeAddresses}
+                DesignatedNodes = {OracleNodeAddresses},
+                AggregateThreshold = 3
             };
             var executionResult = await OracleUserContractStub.QueryTemperature.SendAsync(queryTemperatureInput);
-            var txId = executionResult.Transaction.GetHash();
-            var queryInputHash = executionResult.Output;
-            var queryId = ComputeQueryId(txId, queryInputHash);
+            var queryId = executionResult.Output;
 
             var queryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryId);
             queryRecord.DesignatedNodeList.Value.Count.ShouldBe(5);
@@ -63,8 +62,7 @@ namespace AElf.Contracts.Oracle
             return queryRecord;
         }
 
-        [Fact]
-        internal async Task<QueryRecord> CommitTest()
+        private async Task<QueryRecord> CommitTest()
         {
             var queryRecord = await QueryTest();
 
@@ -94,27 +92,30 @@ namespace AElf.Contracts.Oracle
             });
  
             var newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
-            newQueryRecord.IsSufficientDataCollected.ShouldBeTrue();
-            var result = new StringValue();
-            result.MergeFrom(newQueryRecord.FinalResult);
-            result.Value.ShouldBe("10.15");
+            newQueryRecord.IsSufficientDataCollected.ShouldBeFalse();
 
             await RevealTemperatures(queryRecord.QueryId, new List<string>
             {
                 "10.1",
                 "10.2",
-                "10.3",
-                "10.4"
+                "10.3"
             }, 2);
             
             newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             newQueryRecord.IsSufficientDataCollected.ShouldBeTrue();
-            result = new StringValue();
+            var result = new StringValue();
             result.MergeFrom(newQueryRecord.FinalResult);
-            result.Value.ShouldBe("10.25");
+            result.Value.ShouldBe("10.2");
+
+            await OracleNodeList[3].Reveal.SendWithExceptionAsync(new RevealInput
+            {
+                QueryId = queryRecord.QueryId,
+                Data = new StringValue {Value = "10.4"}.ToByteString(),
+                Salt = HashHelper.ComputeFrom("Salt3")
+            });
         }
 
-        private async Task CommitTemperatures(Hash queryId, List<string> temperatures)
+        private async Task CommitTemperatures(Hash queryId, IReadOnlyList<string> temperatures)
         {
             for (var i = 0; i < temperatures.Count; i++)
             {
@@ -144,15 +145,6 @@ namespace AElf.Contracts.Oracle
                     Salt = HashHelper.ComputeFrom($"Salt{i}")
                 });
             }
-        }
-
-        private Hash ComputeQueryId(Hash txId, Hash queryInputHash)
-        {
-            var contactedBytes = txId.Value.Concat(DAppContractAddress.Value);
-            var enumerable = (IEnumerable<byte>) queryInputHash.Value as byte[] ?? queryInputHash.Value?.ToArray();
-            if (enumerable != null)
-                contactedBytes = contactedBytes.Concat(enumerable);
-            return HashHelper.ComputeFrom(contactedBytes.ToArray());
         }
     }
 }

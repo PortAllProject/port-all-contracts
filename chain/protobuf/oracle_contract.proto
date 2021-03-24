@@ -77,7 +77,6 @@ message AddressList {
 }
 
 message QueryRecord {
-  aelf.Hash query_hash = 1;
   AddressList designated_node_list = 2;
   aelf.Address aggregator_contract_address = 3;
   google.protobuf.Timestamp expiration_timestamp = 4;

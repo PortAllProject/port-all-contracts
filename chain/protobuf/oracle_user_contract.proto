@@ -24,6 +24,7 @@ message QueryTemperatureInput {
   aelf.Address oracle_contract_address = 1;
   aelf.Address aggregator_contract_address = 2;
   repeated aelf.Address designated_nodes = 3;
+  int32 aggregate_threshold = 4;
 }
 
 message TemperatureRecord {

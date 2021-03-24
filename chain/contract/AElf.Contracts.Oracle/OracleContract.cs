@@ -52,10 +52,11 @@ namespace AElf.Contracts.Oracle
             var queryId = Context.GenerateId(HashHelper.ComputeFrom(input));
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
+            var queryManager = input.QueryManager ?? Context.Sender;
             // Transfer tokens to Oracle Contract.
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
-                From = input.QueryManager,
+                From = queryManager,
                 To = Context.ConvertVirtualAddressToContractAddress(queryId),
                 Amount = input.Payment,
                 Symbol = TokenSymbol
@@ -64,12 +65,13 @@ namespace AElf.Contracts.Oracle
             Assert(State.QueryRecords[queryId] == null, "Query already exists.");
 
             var designatedNodeListCount = GetDesignatedNodeListCount(input.DesignatedNodeList);
-            Assert(designatedNodeListCount > State.MinimumOracleNodesCount.Value, "Invalid designated nodes count.");
+            Assert(designatedNodeListCount >= State.MinimumOracleNodesCount.Value,
+                $"Invalid designated nodes count, should at least be {State.MinimumOracleNodesCount.Value}.");
 
             State.QueryRecords[queryId] = new QueryRecord
             {
                 QueryId = queryId,
-                QueryManager = input.QueryManager ?? Context.Sender,
+                QueryManager = queryManager,
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
