@@ -11,17 +11,23 @@ namespace AElf.Contracts.Report
         internal OracleContractContainer.OracleContractReferenceState OracleContract { get; set; }
 
         internal TokenContractContainer.TokenContractReferenceState TokenContract { get; set; }
-        internal AssociationContractContainer.AssociationContractReferenceState AssociationContract { get; set; }
+        internal AssociationContractImplContainer.AssociationContractImplReferenceState AssociationContract { get; set; }
 
+        public SingletonState<Address> ObserverAssociationAddress { get; set; }
         public SingletonState<string> OracleTokenSymbol { get; set; }
+        public SingletonState<string> ObserverMortgageTokenSymbol { get; set; }
         public SingletonState<long> ReportFee { get; set; }
         public SingletonState<long> ApplyObserverFee { get; set; }
         public MappedState<Hash, ReportQueryRecord> ReportQueryRecordMap { get; set; }
-        public MappedState<Hash, Address, string> ObserverSignatureMap { get; set; }
+        public MappedState<long, Address, string> ObserverSignatureMap { get; set; }
         public SingletonState<ObserverList> ObserverList { get; set; }
         public SingletonState<long> CurrentReportNumber { get; set; }
         public SingletonState<long> CurrentEpochNumber { get; set; }
         public SingletonState<long> CurrentRoundNumber { get; set; }
+        
+        /// <summary>
+        /// Round Number (Round Id) -> Report.
+        /// </summary>
         public MappedState<long, Report> ReportMap { get; set; }
         public MappedState<long, Epoch> EpochMap { get; set; }
     }
