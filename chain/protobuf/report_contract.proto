@@ -21,24 +21,32 @@ service ReportContract {
   
     rpc ConfirmReport (ConfirmReportInput) returns (google.protobuf.Empty) {}
   
-    rpc AppendQueryToReport (CallbackInput) returns (google.protobuf.Empty) {}
-
     rpc ProposeReport (CallbackInput) returns (Report) {}
     
     rpc RemoveQueries (HashList) returns (google.protobuf.Empty) {}
+
+    rpc MortgageTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+
+    rpc WithdrawMortgagedTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
     // Notary management.
 
     rpc ApplyObserver (ApplyObserverInput) returns (google.protobuf.Empty) {}
 
     rpc QuitObserver (QuitObserverInput) returns (google.protobuf.Empty) {}
+
+    rpc ProposeAdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+
+    rpc AdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
     
+    rpc ProposeNextEpoch (CallbackInput) returns (Report) {}
+
     // View methods.
     
-    rpc GetReport (aelf.Hash) returns (Report) {
+    rpc GetReport (google.protobuf.Int64Value) returns (Report) {
         option (aelf.is_view) = true;
     }
-    rpc GetRawReport (aelf.Hash) returns (google.protobuf.BytesValue) {
+    rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
 }
@@ -61,7 +69,7 @@ message QueryOracleInput {
 }
 
 message ConfirmReportInput {
-    aelf.Hash report_id = 1;
+    int64 round_number = 1;
     string signature = 2;
 }
 
@@ -75,9 +83,10 @@ message VoteObserverInput {
 }
 
 message Report {
-    int64 epoch_number = 1;
-    int64 round_number = 2;
-    
+    aelf.Hash query_id = 1;
+    int64 epoch_number = 2;
+    int64 round_number = 3;
+    Observations observations  = 4;
 }
 
 message ReportQueryRecord {
@@ -92,13 +101,9 @@ message ObserverList {
 
 message Epoch {
     int64 epoch_number = 1;
-    repeated ObserverInfo observers = 2;
-    
-}
-
-message ObserverInfo {
-    aelf.Address address = 1;
-    bool is_leader = 2;
+    ObserverList observer_list = 2;
+    aelf.Address leader = 3;
+    int64 start_round_number = 4;
 }
 
 message ProposeReportInput {
@@ -109,19 +114,34 @@ message HashList {
     repeated aelf.Hash value = 1;
 }
 
-message 
+message Observations {
+    repeated Observation value = 1;
+}
+
+message Observation {
+    aelf.Address address = 1;
+    bytes data = 2;
+}
+
+message GetSignatureInput {
+    int64 round_number = 1;
+    aelf.Address address = 2;
+}
+
+message ObserverMortgageMap {
+    string address = 1;
+    int64 amount = 2;
+}
 
 // Events
 
-message ReportGenerated {
+message ReportProposed {
     option (aelf.is_event) = true;
-    aelf.Hash report_id = 1;
-    Report report = 2;
+    Report report = 1;
 }
 
-message QueryRemoved {
+message ReportConfirmed {
     option (aelf.is_event) = true;
-    int64 epoch_number = 1;
-    int64 round_number = 2;
-    aelf.Hash query_id = 3;
+    int64 round_number = 1;
+    string signature = 2;
 }

@@ -6,6 +6,7 @@ using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Standards.ACS3;
 using AElf.Types;
+using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Report
@@ -16,6 +17,7 @@ namespace AElf.Contracts.Report
         {
             State.OracleContract.Value = input.TokenContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
+            State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
             State.AssociationContract.Value =
@@ -32,7 +34,7 @@ namespace AElf.Contracts.Report
 
         private void CreateObserverAssociation(ObserverList initialObserverList)
         {
-            State.AssociationContract.CreateOrganization.Send(new CreateOrganizationInput
+            var createOrganizationInput = new CreateOrganizationInput
             {
                 CreationToken = HashHelper.ComputeFrom(Context.Self),
                 OrganizationMemberList = new OrganizationMemberList {OrganizationMembers = {initialObserverList.Value}},
@@ -42,7 +44,10 @@ namespace AElf.Contracts.Report
                     MinimalVoteThreshold = 5
                 },
                 ProposerWhiteList = new ProposerWhiteList {Proposers = {Context.Self}}
-            });
+            };
+            State.AssociationContract.CreateOrganization.Send(createOrganizationInput);
+            State.ObserverAssociationAddress.Value =
+                State.AssociationContract.CalculateOrganizationAddress.Call(createOrganizationInput);
         }
 
         public override Hash QueryOracle(QueryOracleInput input)
@@ -68,7 +73,7 @@ namespace AElf.Contracts.Report
                 CallbackInfo = new CallbackInfo
                 {
                     ContractAddress = Context.Self,
-                    MethodName = nameof(AppendQueryToReport)
+                    MethodName = nameof(ProposeReport)
                 }
             };
             State.OracleContract.Query.Send(queryInput);
@@ -103,52 +108,43 @@ namespace AElf.Contracts.Report
             return new Empty();
         }
 
-        // TODO: Remove
-        public override Empty AppendQueryToReport(CallbackInput input)
-        {
-            // Only Oracle Contract can append query to report.
-            Assert(Context.Sender == State.OracleContract.Value, "No permission.");
-            // Check whether this Query is delegated by Report Contract (which means this Query already paid report fee).
-            var isDelegated = State.ReportQueryRecordMap[input.QueryId] != null;
-            if (!isDelegated)
-            {
-                var queryRecord = State.OracleContract.GetQueryRecord.Call(input.QueryId);
-                var queryManager = queryRecord.QueryManager;
-                State.TokenContract.TransferFrom.Send(new TransferFromInput
-                {
-                    From = queryManager,
-                    To = Context.Self,
-                    Amount = State.ReportFee.Value,
-                    Symbol = State.OracleTokenSymbol.Value
-                });
-            }
-
-            return new Empty();
-        }
-
         public override Report ProposeReport(CallbackInput input)
         {
-            Assert(Context.Sender == State.OracleContract.Value, "Only Oracle Contract can propose report after aggregation.");
-
-            return new Report
+            Assert(Context.Sender == State.OracleContract.Value,
+                "Only Oracle Contract can propose report after aggregation.");
+            var nodeDataList = new NodeDataList();
+            nodeDataList.MergeFrom(input.Result);
+            var observations = new Observations
             {
-                EpochNumber = State.CurrentEpochNumber.Value,
-                RoundNumber = State.CurrentRoundNumber.Value,
-                
+                Value =
+                {
+                    nodeDataList.Value.Select(d => new Observation
+                    {
+                        Address = d.Address,
+                        Data = d.Data
+                    })
+                }
             };
+            var roundNumber = State.CurrentRoundNumber.Value.Add(1);
+            State.CurrentRoundNumber.Value = roundNumber;
+            var report = new Report
+            {
+                QueryId = input.QueryId,
+                EpochNumber = State.CurrentEpochNumber.Value,
+                RoundNumber = roundNumber,
+                Observations = observations
+            };
+            State.ReportMap[roundNumber] = report;
+
+            Context.Fire(new ReportProposed {Report = report});
+            return report;
         }
 
-        private void AssertSenderIsEpochLeader()
-        {
-            var currentEpoch = State.EpochMap[State.CurrentEpochNumber.Value];
-            var leader = currentEpoch.Observers.FirstOrDefault(o => o.IsLeader);
-            Assert(leader != null && leader.Address == Context.Sender, "Sender isn't epoch leader.");
-        }
-        
         public override Empty ConfirmReport(ConfirmReportInput input)
         {
             Assert(State.ObserverList.Value.Value.Contains(Context.Sender), "No permission.");
-            State.ObserverSignatureMap[input.ReportId][Context.Sender] = input.Signature;
+            State.ObserverSignatureMap[input.RoundNumber][Context.Sender] = input.Signature;
+            Context.Fire((new ReportConfirmed {RoundNumber = input.RoundNumber, Signature = input.Signature}));
             return new Empty();
         }
     }
