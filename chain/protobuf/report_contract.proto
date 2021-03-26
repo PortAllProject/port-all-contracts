@@ -23,8 +23,6 @@ service ReportContract {
   
     rpc ProposeReport (CallbackInput) returns (Report) {}
     
-    rpc RemoveQueries (HashList) returns (google.protobuf.Empty) {}
-
     rpc MortgageTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
     rpc WithdrawTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
@@ -103,10 +101,6 @@ message ObserverList {
 
 message ProposeReportInput {
     repeated aelf.Hash query_id_list = 1;
-}
-
-message HashList {
-    repeated aelf.Hash value = 1;
 }
 
 message Observations {
