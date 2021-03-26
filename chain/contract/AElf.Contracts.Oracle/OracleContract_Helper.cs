@@ -5,9 +5,10 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContract
     {
-        private int GetRevealThreshold(int nodeCount)
+        private int GetRevealThreshold(int nodeCount, int inputAggregateThreshold = 0)
         {
-            return Math.Max(nodeCount.Mul(2).Div(3).Add(1), State.RevealThreshold.Value);
+            return Math.Max(Math.Max(nodeCount.Mul(2).Div(3).Add(1), State.RevealThreshold.Value),
+                inputAggregateThreshold);
         }
 
         private int GetAggregateThreshold(int nodeCount)

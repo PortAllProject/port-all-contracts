@@ -139,7 +139,7 @@ namespace AElf.Contracts.Oracle
             var updatedResponseCount = State.ResponseCount[input.QueryId].Add(1);
             State.CommitmentMap[input.QueryId][Context.Sender] = input.Commitment;
 
-            if (updatedResponseCount >= GetRevealThreshold(actualNodeListCount))
+            if (updatedResponseCount >= GetRevealThreshold(actualNodeListCount, queryRecord.AggregateThreshold))
             {
                 // Move to next stage: Reveal
                 queryRecord.IsSufficientCommitmentsCollected = true;
