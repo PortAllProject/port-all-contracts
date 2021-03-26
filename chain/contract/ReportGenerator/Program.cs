@@ -14,18 +14,64 @@ namespace ReportGenerator
     {
         static void Main(string[] args)
         {
-            var dataList = new List<long> {1, 2, 3, 4, 5, 6};
-            var rs = new ReportService();
-            var a = rs.ConvertArray(ReportService.Int192, dataList);
+
+            long longValue = 25;
+            var valueArray = longValue.ToBytes().ToHex();
+            Console.WriteLine(valueArray);
             
-            Console.WriteLine(a);
-            Console.WriteLine(a.Length);
+            // var dataList = new List<long> {1, 2, 3, 4, 5, 6};
+            var rs = new ReportService();
+
+            Console.WriteLine(rs.ConvertLong(longValue));
+            // var a = rs.ConvertArray(ReportService.Int192, dataList);
+            // var a = rs.ConvertLong(2l);
+            var digestBytes = new byte[16];
+            for (var i = 0; i < digestBytes.Length; i++)
+            {
+                digestBytes[i] = 7;
+            }
+            var digest = ByteString.CopyFrom(digestBytes);
+            // var context = rs.GenerateConfigText(digest, 0x12, 0xf).ToHex();
+            // Console.WriteLine(context);
+            // Console.WriteLine(context.Length);
+
+            // var observerIndex = rs.GenerateObserver(digestBytes);
+            // Console.WriteLine(observerIndex.ToHex());
+            
+            
+            var observers = new byte[] {0, 1, 2, 3, 4};
+            var observations = new [] { -123, 245, -13213123, 123214214124421, 1};
+            var report = rs.GenerateEthereumReport(digest, 16, 16, observers, observations);
+            Console.WriteLine(report);
+            Console.WriteLine("=========");
+            report = report.Substring(2, report.Length - 2);
+            Console.WriteLine(report.Length);
+            var loopCount = report.Length / 64;
+            var total = loopCount;
+            while (loopCount > 0)
+            {
+                var sub = report.Substring((total - loopCount) * 64, 64);
+                Console.WriteLine(sub);
+                loopCount--;
+            }
+
+            report =
+                "0000000000000000000000070707070707070707070707070707070000001010000102030400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000000007b00000000000000000000000000000000000000000000000000000000000000f50000000000000000000000000000000000000000000000000000000000c99dc3000000000000000000000000000000000000000000000000000070100b76d3850000000000000000000000000000000000000000000000000000000000000001";
+            loopCount = report.Length / 64;
+            total = loopCount;
+            Console.WriteLine("========= real");
+            while (loopCount > 0)
+            {
+                var sub = report.Substring((total - loopCount) * 64, 64);
+                Console.WriteLine(sub);
+                loopCount--;
+            }
         }
     }
 
     public interface IReportService
     {
-        string GenerateEthereumReport();
+        string GenerateEthereumReport(ByteString configDigest, uint epoch, byte round, byte[] observer, long[] observation);
         string SerializeReport(string dataTypeStr, object[] data);
     }
     
@@ -46,6 +92,41 @@ namespace ReportGenerator
                 [Bytes32] = ConvertBytes32, [Int192] = ConvertLong
             };
         }
+
+        public string GenerateEthereumReport(ByteString configDigest, uint epoch, byte round, byte[] observer,
+            long[] observation)
+        {
+            var configText = GenerateConfigText(configDigest, epoch, round);
+            var observerIndex = GenerateObserver(observer);
+            var data = new object[3];
+            data[0] = configText;
+            data[1] = observerIndex;
+            data[2] = observation;
+            return SerializeReport("bytes32,bytes32,int192[]", data);
+        }
+
+        public const long MaxEpoch = 4294967296;
+        public byte[] GenerateConfigText(ByteString configDigest, uint epoch, byte round)
+        {
+            if (epoch > MaxEpoch)
+            {
+                throw new AssertionException("invalid epoch");
+            }
+            var configText = new byte[SlotByteSize];
+            var digestBytes = configDigest.ToByteArray();
+            Buffer.BlockCopy(digestBytes, 0, configText, 11, 16);
+            var epochBytes = epoch.ToBytes();
+            Buffer.BlockCopy(epochBytes, 0, configText, 27, 4);
+            configText[SlotByteSize.Sub(1)] = round;
+            return configText;
+        }
+
+        public byte[] GenerateObserver(byte[] observer)
+        {
+            var observerIndex = new byte[SlotByteSize];
+            Buffer.BlockCopy(observer, 0, observerIndex, 0, observer.Length);
+            return observerIndex;
+        }
         
         public string SerializeReport(string dataTypeStr, object[] data)
         {
@@ -64,9 +145,10 @@ namespace ReportGenerator
                     var typePrefix = dataType[i].Substring(0, typeStrLen.Sub(2));
                     var dataList = data[i] as IEnumerable<long>;
                     long arrayLength = dataList.Count();
-                    long dataPosition = currentIndex.Mul(SlotBitSize);
+                    long dataPosition = currentIndex.Mul(SlotByteSize);
                     result.Append(ConvertLong(dataPosition));
-                    currentIndex = currentIndex.Add(arrayLength);
+                    currentIndex = currentIndex.Add(arrayLength).Add(1);
+                    lazyData.Append(ConvertLong(arrayLength));
                     lazyData.Append(ConvertArray(typePrefix, dataList));
                     continue;
                 }
@@ -76,11 +158,27 @@ namespace ReportGenerator
             result.Append(lazyData);
             return result.ToString();
         }
-
         public string ConvertLong(object i)
         {
-            byte[] b = ((long)i).ToBytes(false).LeftPad(SlotByteSize);
-            return b.ToHex();
+            var data = (long) i;
+            var b = data.ToBytes();
+            if (b.Length == SlotByteSize)
+                return b.ToHex();
+            var diffCount = SlotByteSize.Sub(b.Length);
+            var longDataBytes = new byte[SlotByteSize];
+            byte c = 0;
+            if (data < 0)
+            {
+                c = 0xff;
+            }
+
+            for (var j = 0; j < diffCount; j++)
+            {
+                longDataBytes[j] = c;
+            }
+           
+            Buffer.BlockCopy(b, 0, longDataBytes, diffCount, b.Length);
+            return longDataBytes.ToHex();
         }
 
         public string ConvertArray(string dataType, IEnumerable<long> dataList)
@@ -96,10 +194,15 @@ namespace ReportGenerator
             return dataBytes.ToString();
         }
 
-        public string ConvertBytes32(object i)
+        public string ConvertBytes32(object data)
         {
-            var data = i as ByteString;
-            return data.ToHex();
+            var dataBytes = data as byte[];
+            if (dataBytes.Length != SlotByteSize)
+            {
+                throw new AssertionException("invalid bytes32 data");
+            }
+
+            return dataBytes.ToHex();
         }
     }
 }
