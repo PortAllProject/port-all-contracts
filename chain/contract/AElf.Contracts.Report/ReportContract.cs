@@ -23,8 +23,6 @@ namespace AElf.Contracts.Report
             State.ReportFee.Value = input.ReportFee == 0 ? DefaultReportFee : input.ReportFee;
             State.ApplyObserverFee.Value =
                 input.ApplyObserverFee == 0 ? DefaultApplyObserverFee : input.ApplyObserverFee;
-            State.CurrentReportNumber.Value = 1;
-            State.CurrentEpochNumber.Value = 1;
             State.TokenContract.Approve.Send(new ApproveInput
             {
                 Spender = State.OracleContract.Value,
@@ -39,7 +37,7 @@ namespace AElf.Contracts.Report
             Assert(input.DesignatedNodes.Count == 1, "Invalid designated nodes.");
             var observerAssociationAddress = input.DesignatedNodes.First();
             // Assert Observer Association is already registered.
-            var offChainAggregatorContract = State.OffChainAggregatorContractMap[observerAssociationAddress];
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[observerAssociationAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -118,25 +116,28 @@ namespace AElf.Contracts.Report
                     })
                 }
             };
-            var roundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress].Add(1);
-            State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = roundId;
+            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress];
             var report = new Report
             {
                 QueryId = input.QueryId,
-                EpochNumber = State.CurrentEpochNumber.Value,
-                RoundId = roundId,
+                EpochNumber = State.CurrentEpochMap[nodeDataList.ObserverAssociationAddress],
+                RoundId = currentRoundId,
                 Observations = observations
             };
-            State.ReportMap[nodeDataList.ObserverAssociationAddress][roundId] = report;
-
-            Context.Fire(new ReportProposed {Report = report});
+            State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
+            State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
+            Context.Fire(new ReportProposed
+            {
+                ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
+                Report = report
+            });
             return report;
         }
 
         public override Empty ConfirmReport(ConfirmReportInput input)
         {
             // Assert Sender is from certain Observer Association.
-            var offChainAggregatorContract = State.OffChainAggregatorContractMap[input.ObserverAssociationAddress];
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.ObserverAssociationAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");

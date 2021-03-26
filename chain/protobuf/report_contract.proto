@@ -39,8 +39,6 @@ service ReportContract {
 
     rpc AdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
     
-    rpc ProposeNextEpoch (CallbackInput) returns (Report) {}
-    
     // Offchain Aggregator Contract management.
     
     rpc AddOffChainAggregator (AddOffChainAggregatorInput) returns (google.protobuf.Empty) {}
@@ -51,6 +49,9 @@ service ReportContract {
         option (aelf.is_view) = true;
     }
     rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetOffChainAggregatorContractInfo (aelf.Address) returns (OffChainAggregatorContractInfo) {
         option (aelf.is_view) = true;
     }
 }
@@ -124,7 +125,7 @@ message GetSignatureInput {
     aelf.Address address = 3;
 }
 
-message OffChainAggregatorContract {
+message OffChainAggregatorContractInfo {
     ObserverList observer_list = 1;
     string url_to_query = 2;
     string attribute_to_fetch = 3;
@@ -159,4 +160,5 @@ message ReportConfirmed {
     option (aelf.is_event) = true;
     int64 round_id = 1;
     string signature = 2;
+    aelf.Address observer_association_address = 3;
 }

@@ -11,7 +11,7 @@ namespace AElf.Contracts.Report
         {
             AssertObserversRegistered(input.ObserverList);
             var organizationAddress = CreateObserverAssociation(input.ObserverList);
-            State.OffChainAggregatorContractMap[organizationAddress] = new OffChainAggregatorContract
+            State.OffChainAggregatorContractInfoMap[organizationAddress] = new OffChainAggregatorContractInfo
             {
                 EthereumContractAddress = input.EthereumContractAddress,
                 UrlToQuery = input.UrlToQuery,
@@ -21,6 +21,7 @@ namespace AElf.Contracts.Report
                 Threshold = input.Threshold
             };
             State.CurrentRoundIdMap[organizationAddress] = 1;
+            State.CurrentEpochMap[organizationAddress] = 1;
             return new Empty();
         }
 

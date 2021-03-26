@@ -35,6 +35,12 @@
         <ContractReference Include="..\..\protobuf\association_contract_impl.proto">
             <Link>Protobuf\Proto\association_contract_impl.proto</Link>
         </ContractReference>
+        <ContractReference Include="..\..\protobuf\parliament_contract.proto">
+            <Link>Protobuf\Proto\parliament_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\parliament_contract_impl.proto">
+            <Link>Protobuf\Proto\parliament_contract_impl.proto</Link>
+        </ContractReference>
         <CommonMessage Include="..\..\protobuf\callback_input.proto">
             <Link>Protobuf\Proto\callback_input.proto</Link>
         </CommonMessage>
