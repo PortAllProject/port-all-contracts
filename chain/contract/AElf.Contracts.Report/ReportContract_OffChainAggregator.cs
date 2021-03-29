@@ -8,21 +8,31 @@ namespace AElf.Contracts.Report
     {
         public override OffChainAggregatorContractInfo AddOffChainAggregator(AddOffChainAggregatorInput input)
         {
+            Assert(input.OffChainInfo.Count >= 1, "At least 1 off-chain info.");
+            if (input.OffChainInfo.Count > 1)
+            {
+                Assert(input.AggregatorContractAddress != null,
+                    "Merkle tree style aggregator must set aggregator contract address.");
+            }
+
             AssertObserversRegistered(input.ObserverList);
             var organizationAddress = CreateObserverAssociation(input.ObserverList);
             var offChainAggregatorContractInfo = new OffChainAggregatorContractInfo
             {
                 EthereumContractAddress = input.EthereumContractAddress,
-                UrlToQuery = input.UrlToQuery,
-                AttributeToFetch = input.AttributeToFetch,
+                OffChainInfo = {input.OffChainInfo},
                 ConfigDigest = input.ConfigDigest,
                 ObserverAssociationAddress = organizationAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress
             };
+            for (var i = 0; i < input.OffChainInfo.Count; i++)
+            {
+                offChainAggregatorContractInfo.RoundIds.Add(1);
+            }
+
             State.OffChainAggregatorContractInfoMap[organizationAddress] = offChainAggregatorContractInfo;
             State.CurrentRoundIdMap[organizationAddress] = 1;
-            State.CurrentEpochMap[organizationAddress] = 1;
             return offChainAggregatorContractInfo;
         }
 

@@ -42,8 +42,14 @@ namespace AElf.Contracts.Oracle
                 {
                     Value = {ObserverAddresses}
                 },
-                UrlToQuery = "www.whatever.com",
-                AttributeToFetch = "foo",
+                OffChainInfo =
+                {
+                    new OffChainInfo
+                    {
+                        UrlToQuery = "www.whatever.com",
+                        AttributeToFetch = "foo"
+                    }
+                },
                 EthereumContractAddress = "1234567890123",
                 ConfigDigest = ByteString.CopyFromUtf8("bar"),
                 AggregateThreshold = 5,
@@ -52,8 +58,11 @@ namespace AElf.Contracts.Oracle
             var executionResult = await ReportContractStub.AddOffChainAggregator.SendAsync(addOffChainAggregatorInput);
 
             var offChainAggregatorContractInfo = executionResult.Output;
-            offChainAggregatorContractInfo.UrlToQuery.ShouldBe(addOffChainAggregatorInput.UrlToQuery);
-            offChainAggregatorContractInfo.AttributeToFetch.ShouldBe(addOffChainAggregatorInput.AttributeToFetch);
+            offChainAggregatorContractInfo.OffChainInfo[0].UrlToQuery.ShouldBe(addOffChainAggregatorInput
+                .OffChainInfo[0]
+                .UrlToQuery);
+            offChainAggregatorContractInfo.OffChainInfo[0].AttributeToFetch.ShouldBe(addOffChainAggregatorInput
+                .OffChainInfo[0].AttributeToFetch);
             offChainAggregatorContractInfo.EthereumContractAddress.ShouldBe(addOffChainAggregatorInput
                 .EthereumContractAddress);
             offChainAggregatorContractInfo.ConfigDigest.ToHex()
