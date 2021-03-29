@@ -27,5 +27,11 @@ namespace AElf.Contracts.Report
         {
             return State.ReportQueryRecordMap[input];
         }
+
+        public override MerklePath GetMerklePath(GetMerklePathInput input)
+        {
+            return State.BinaryMerkleTreeMap[input.ObserverAssociationAddress][input.RoundId]
+                .GenerateMerklePath(input.NodeIndex);
+        }
     }
 }

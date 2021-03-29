@@ -82,7 +82,9 @@ namespace AElf.Contracts.Oracle
                 Payment = input.Payment,
                 AggregateThreshold = input.AggregateThreshold == 0
                     ? GetAggregateThreshold(designatedNodeListCount)
-                    : input.AggregateThreshold
+                    : input.AggregateThreshold,
+                UrlToQuery = input.UrlToQuery,
+                AttributeToFetch = input.AttributeToFetch
             };
 
             State.UserAddresses[queryId] = Context.Sender;
@@ -223,7 +225,9 @@ namespace AElf.Contracts.Oracle
                 // Record data to node data list.
                 var nodeDataList = State.NodeDataListMap[input.QueryId] ?? new NodeDataList
                 {
-                    ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First()
+                    ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First(),
+                    UrlToQuery = queryRecord.UrlToQuery,
+                    AttributeToFetch = queryRecord.AttributeToFetch
                 };
                 nodeDataList.Value.Add(new NodeData {Address = Context.Sender, Data = input.Data});
                 State.NodeDataListMap[input.QueryId] = nodeDataList;

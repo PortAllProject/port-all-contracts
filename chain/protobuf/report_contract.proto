@@ -40,6 +40,12 @@ service ReportContract {
     // Offchain Aggregator Contract management.
     
     rpc AddOffChainAggregator (AddOffChainAggregatorInput) returns (OffChainAggregatorContractInfo) {}
+    
+    // Merkle tree style aggregator.
+    
+    rpc GetMerklePath (GetMerklePathInput) returns (aelf.MerklePath) {
+        option (aelf.is_view) = true;
+    }
 
     // View methods.
     
@@ -68,6 +74,7 @@ message QueryOracleInput {
     aelf.Address observer_association_address = 2;
     int32 aggregate_threshold = 3;
     aelf.Address query_manager = 4;
+    int32 node_index = 5;
 }
 
 message ConfirmReportInput {
@@ -108,9 +115,8 @@ message Observations {
 }
 
 message Observation {
-    aelf.Address address = 1;
-    string ethereum_address = 2;
-    bytes data = 3;
+    string key = 1;
+    bytes data = 2;
 }
 
 message GetSignatureInput {
@@ -121,27 +127,37 @@ message GetSignatureInput {
 
 message OffChainAggregatorContractInfo {
     aelf.Address observer_association_address = 1;
-    string url_to_query = 2;
-    string attribute_to_fetch = 3;
-    string ethereum_contract_address = 4;
-    bytes config_digest = 5;
-    int32 aggregate_threshold = 6;
-    aelf.Address aggregator_contract_address = 7;
+    repeated OffChainInfo off_chain_info = 2;
+    string ethereum_contract_address = 3;
+    bytes config_digest = 4;
+    int32 aggregate_threshold = 5;
+    aelf.Address aggregator_contract_address = 6;
+    repeated int32 round_ids = 7;
 }
 
 message AddOffChainAggregatorInput {
     ObserverList observer_list = 1;
-    string url_to_query = 2;
-    string attribute_to_fetch = 3;
-    string ethereum_contract_address = 4;
-    bytes config_digest = 5;
-    int32 aggregate_threshold = 6;
-    aelf.Address aggregator_contract_address = 7;
+    repeated OffChainInfo off_chain_info = 2;
+    string ethereum_contract_address = 3;
+    bytes config_digest = 4;
+    int32 aggregate_threshold = 5;
+    aelf.Address aggregator_contract_address = 6;
+}
+
+message OffChainInfo {
+    string url_to_query = 1;
+    string attribute_to_fetch = 2;
 }
 
 message GetReportInput {
     aelf.Address observer_association_address = 1;
     int64 round_id = 2;
+}
+
+message GetMerklePathInput {
+    aelf.Address observer_association_address = 1;
+    int64 round_id = 2;
+    int32 node_index = 3;
 }
 
 // Events
