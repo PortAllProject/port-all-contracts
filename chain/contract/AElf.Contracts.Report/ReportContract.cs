@@ -56,7 +56,7 @@ namespace AElf.Contracts.Report
             {
                 Payment = input.Payment,
                 AggregateThreshold = offChainAggregatorContract.Threshold,
-                AggregatorContractAddress = input.AggregatorContractAddress,
+                AggregatorContractAddress = offChainAggregatorContract.AggregatorContractAddress,
                 UrlToQuery = offChainAggregatorContract.UrlToQuery,
                 AttributeToFetch = offChainAggregatorContract.AttributeToFetch,
                 DesignatedNodeList = new AddressList {Value = {observerAssociationAddress}},

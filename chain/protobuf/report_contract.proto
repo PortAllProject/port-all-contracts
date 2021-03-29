@@ -62,12 +62,9 @@ message InitializeInput {
 
 message QueryOracleInput {
     int64 payment = 1;// Maximum for this query option.
-    aelf.Address aggregator_contract_address = 2;
-    repeated aelf.Address designated_nodes = 3;
-    string url_to_query = 4;
-    string attribute_to_fetch = 5;
-    int32 aggregate_threshold = 6;
-    aelf.Address query_manager = 7;
+    repeated aelf.Address designated_nodes = 2;
+    int32 aggregate_threshold = 3;
+    aelf.Address query_manager = 4;
 }
 
 message ConfirmReportInput {
@@ -126,6 +123,7 @@ message OffChainAggregatorContractInfo {
     string ethereum_contract_address = 4;
     bytes config_digest = 5;
     int32 threshold = 6;
+    aelf.Address aggregator_contract_address = 7;
 }
 
 message AddOffChainAggregatorInput {
@@ -135,6 +133,7 @@ message AddOffChainAggregatorInput {
     string ethereum_contract_address = 4;
     bytes config_digest = 5;
     int32 threshold = 6;
+    aelf.Address aggregator_contract_address = 7;
 }
 
 message GetReportInput {

@@ -27,18 +27,8 @@ namespace AElf.Contracts.Oracle
         private async Task<QueryRecord> QueryTest()
         {
             await InitializeOracleContractAsync();
-            await DefaultParliamentProposeAndRelease(new CreateProposalInput
-            {
-                ToAddress = TokenContractAddress,
-                ContractMethodName = nameof(TokenContractContainer.TokenContractStub.ChangeTokenIssuer),
-                OrganizationAddress = await GetDefaultParliament(),
-                Params = new ChangeTokenIssuerInput
-                {
-                    NewTokenIssuer = DefaultSender,
-                    Symbol = TokenSymbol
-                }.ToByteString(),
-                ExpiredTime = TimestampHelper.GetUtcNow().AddHours(1)
-            });
+            await ChangeTokenIssuerToDefaultSender();
+
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
                 To = OracleUserContractAddress,
@@ -73,7 +63,7 @@ namespace AElf.Contracts.Oracle
                 "10.3",
                 "10.4"
             });
-            
+
             var newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             newQueryRecord.IsSufficientCommitmentsCollected.ShouldBeTrue();
 
@@ -90,7 +80,7 @@ namespace AElf.Contracts.Oracle
                 "10.1",
                 "10.2"
             });
- 
+
             var newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             newQueryRecord.IsSufficientDataCollected.ShouldBeFalse();
 
@@ -100,7 +90,7 @@ namespace AElf.Contracts.Oracle
                 "10.2",
                 "10.3"
             }, 2);
-            
+
             newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             newQueryRecord.IsSufficientDataCollected.ShouldBeTrue();
             var result = new StringValue();
@@ -132,7 +122,7 @@ namespace AElf.Contracts.Oracle
                 commitmentMap.Value.Count.ShouldBe(i + 1);
             }
         }
-        
+
         private async Task RevealTemperatures(Hash queryId, List<string> temperatures, int startIndex = 0)
         {
             for (var i = startIndex; i < temperatures.Count; i++)

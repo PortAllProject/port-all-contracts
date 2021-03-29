@@ -18,7 +18,8 @@ namespace AElf.Contracts.Report
                 AttributeToFetch = input.AttributeToFetch,
                 ConfigDigest = input.ConfigDigest,
                 ObserverList = input.ObserverList,
-                Threshold = input.Threshold
+                Threshold = input.Threshold,
+                AggregatorContractAddress = input.AggregatorContractAddress
             };
             State.CurrentRoundIdMap[organizationAddress] = 1;
             State.CurrentEpochMap[organizationAddress] = 1;
