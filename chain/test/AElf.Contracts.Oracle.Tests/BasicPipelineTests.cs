@@ -27,7 +27,7 @@ namespace AElf.Contracts.Oracle
         private async Task<QueryRecord> QueryTest()
         {
             await InitializeOracleContractAsync();
-            await ChangeTokenIssuerToDefaultSender();
+            await ChangeTokenIssuerToDefaultSenderAsync();
 
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
@@ -56,7 +56,7 @@ namespace AElf.Contracts.Oracle
         {
             var queryRecord = await QueryTest();
 
-            await CommitTemperatures(queryRecord.QueryId, new List<string>
+            await CommitTemperaturesAsync(queryRecord.QueryId, new List<string>
             {
                 "10.1",
                 "10.2",
@@ -75,7 +75,7 @@ namespace AElf.Contracts.Oracle
         {
             var queryRecord = await CommitTest();
 
-            await RevealTemperatures(queryRecord.QueryId, new List<string>
+            await RevealTemperaturesAsync(queryRecord.QueryId, new List<string>
             {
                 "10.1",
                 "10.2"
@@ -84,7 +84,7 @@ namespace AElf.Contracts.Oracle
             var newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             newQueryRecord.IsSufficientDataCollected.ShouldBeFalse();
 
-            await RevealTemperatures(queryRecord.QueryId, new List<string>
+            await RevealTemperaturesAsync(queryRecord.QueryId, new List<string>
             {
                 "10.1",
                 "10.2",
@@ -105,7 +105,7 @@ namespace AElf.Contracts.Oracle
             });
         }
 
-        private async Task CommitTemperatures(Hash queryId, IReadOnlyList<string> temperatures)
+        private async Task CommitTemperaturesAsync(Hash queryId, IReadOnlyList<string> temperatures)
         {
             for (var i = 0; i < temperatures.Count; i++)
             {
@@ -123,7 +123,7 @@ namespace AElf.Contracts.Oracle
             }
         }
 
-        private async Task RevealTemperatures(Hash queryId, List<string> temperatures, int startIndex = 0)
+        private async Task RevealTemperaturesAsync(Hash queryId, List<string> temperatures, int startIndex = 0)
         {
             for (var i = startIndex; i < temperatures.Count; i++)
             {

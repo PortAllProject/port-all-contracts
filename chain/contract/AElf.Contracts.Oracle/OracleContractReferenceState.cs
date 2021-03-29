@@ -7,6 +7,8 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContractState
     {
+        internal AssociationContractContainer.AssociationContractReferenceState AssociationContract { get; set; }
+
         internal TokenContractContainer.TokenContractReferenceState TokenContract { get; set; }
 
         internal ParliamentContractContainer.ParliamentContractReferenceState ParliamentContract { get; set; }
@@ -16,7 +18,5 @@ namespace AElf.Contracts.Oracle
             get;
             set;
         }
-
-        internal AssociationContractContainer.AssociationContractReferenceState AssociationContract { get; set; }
     }
 }

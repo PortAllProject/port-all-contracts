@@ -1,29 +1,29 @@
 using AElf.Contracts.Association;
 using AElf.Standards.ACS3;
 using AElf.Types;
-using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Report
 {
     public partial class ReportContract
     {
-        public override Empty AddOffChainAggregator(AddOffChainAggregatorInput input)
+        public override OffChainAggregatorContractInfo AddOffChainAggregator(AddOffChainAggregatorInput input)
         {
             AssertObserversRegistered(input.ObserverList);
             var organizationAddress = CreateObserverAssociation(input.ObserverList);
-            State.OffChainAggregatorContractInfoMap[organizationAddress] = new OffChainAggregatorContractInfo
+            var offChainAggregatorContractInfo = new OffChainAggregatorContractInfo
             {
                 EthereumContractAddress = input.EthereumContractAddress,
                 UrlToQuery = input.UrlToQuery,
                 AttributeToFetch = input.AttributeToFetch,
                 ConfigDigest = input.ConfigDigest,
-                ObserverList = input.ObserverList,
-                Threshold = input.Threshold,
+                ObserverAssociationAddress = organizationAddress,
+                AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress
             };
+            State.OffChainAggregatorContractInfoMap[organizationAddress] = offChainAggregatorContractInfo;
             State.CurrentRoundIdMap[organizationAddress] = 1;
             State.CurrentEpochMap[organizationAddress] = 1;
-            return new Empty();
+            return offChainAggregatorContractInfo;
         }
 
         private void AssertObserversRegistered(ObserverList observerList)

@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
+using AElf.Standards.ACS13;
 using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
@@ -13,7 +15,7 @@ namespace AElf.Contracts.Report
     {
         public override Empty Initialize(InitializeInput input)
         {
-            State.OracleContract.Value = input.TokenContractAddress;
+            State.OracleContract.Value = input.OracleContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.TokenContract.Value =
@@ -34,10 +36,8 @@ namespace AElf.Contracts.Report
 
         public override Hash QueryOracle(QueryOracleInput input)
         {
-            Assert(input.DesignatedNodes.Count == 1, "Invalid designated nodes.");
-            var observerAssociationAddress = input.DesignatedNodes.First();
             // Assert Observer Association is already registered.
-            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[observerAssociationAddress];
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.ObserverAssociationAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -55,11 +55,19 @@ namespace AElf.Contracts.Report
             var queryInput = new QueryInput
             {
                 Payment = input.Payment,
-                AggregateThreshold = offChainAggregatorContract.Threshold,
-                AggregatorContractAddress = offChainAggregatorContract.AggregatorContractAddress,
+                AggregateThreshold = Math.Max(offChainAggregatorContract.AggregateThreshold, input.AggregateThreshold),
+                // DO NOT FILL THIS FILED.
+                // AggregatorContractAddress = null,
                 UrlToQuery = offChainAggregatorContract.UrlToQuery,
                 AttributeToFetch = offChainAggregatorContract.AttributeToFetch,
-                DesignatedNodeList = new AddressList {Value = {observerAssociationAddress}},
+                DesignatedNodeList = new AddressList
+                {
+                    Value =
+                    {
+                        // Same to offChainAggregatorContract.ObserverList.Value.First()
+                        input.ObserverAssociationAddress
+                    }
+                },
                 QueryManager = Context.Self,
                 CallbackInfo = new CallbackInfo
                 {
@@ -72,7 +80,7 @@ namespace AElf.Contracts.Report
             var queryId = Context.GenerateId(State.OracleContract.Value, HashHelper.ComputeFrom(queryInput));
             State.ReportQueryRecordMap[queryId] = new ReportQueryRecord
             {
-                OriginQueryManager = Context.Sender,
+                OriginQueryManager = input.QueryManager == null ? Context.Sender : input.QueryManager,
                 // Record current report fee in case it changes before cancelling this query.
                 PaidReportFee = State.ReportFee.Value
             };
@@ -117,12 +125,28 @@ namespace AElf.Contracts.Report
                 }
             };
             var currentRoundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress];
+
+            var aggregatorContractAddress =
+                State.OffChainAggregatorContractInfoMap[nodeDataList.ObserverAssociationAddress]
+                    .AggregatorContractAddress;
+            State.AggregatorContract.Value = aggregatorContractAddress;
+            var aggregateInput = new AggregateInput();
+            foreach (var nodeData in nodeDataList.Value)
+            {
+                aggregateInput.Results.Add(nodeData.Data);
+                aggregateInput.Frequencies.Add(1);
+            }
+
+            // Use an ACS13 Contract to aggregate a data.
+            var aggregatedData = State.AggregatorContract.Aggregate.Call(aggregateInput);
+
             var report = new Report
             {
                 QueryId = input.QueryId,
                 EpochNumber = State.CurrentEpochMap[nodeDataList.ObserverAssociationAddress],
                 RoundId = currentRoundId,
-                Observations = observations
+                Observations = observations,
+                AggregatedData = aggregatedData.Value
             };
             State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
             State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
@@ -143,7 +167,9 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Observer Association not exists.");
             }
 
-            Assert(offChainAggregatorContract.ObserverList.Value.Contains(Context.Sender),
+            var organization =
+                State.AssociationContract.GetOrganization.Call(offChainAggregatorContract.ObserverAssociationAddress);
+            Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
                 "Sender isn't a member of certain Observer Association.");
             State.ObserverSignatureMap[input.ObserverAssociationAddress][input.RoundId][Context.Sender] =
                 input.Signature;

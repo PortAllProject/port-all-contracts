@@ -53,14 +53,17 @@ namespace AElf.Contracts.Oracle
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
             var queryManager = input.QueryManager ?? Context.Sender;
-            // Transfer tokens to Oracle Contract.
+            // Transfer tokens to Oracle Contract virtual address.
+            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
                 From = queryManager,
-                To = Context.ConvertVirtualAddressToContractAddress(queryId),
+                To = virtualAddress,
                 Amount = input.Payment,
                 Symbol = TokenSymbol
             });
+
+            //Assert(false, $"Address: {virtualAddress.Value.ToHex()}\tAmount: {input.Payment} {TokenSymbol}s");
 
             Assert(State.QueryRecords[queryId] == null, "Query already exists.");
 
@@ -167,6 +170,7 @@ namespace AElf.Contracts.Oracle
 
             // Confirm this query is in stage Commit.
             Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
+            Assert(!queryRecord.IsSufficientDataCollected, "Query already finished.");
 
             // Permission check.
             var commitment = State.CommitmentMap[input.QueryId][Context.Sender];
@@ -184,6 +188,9 @@ namespace AElf.Contracts.Oracle
                 queryRecord.AggregateThreshold = Math.Min(queryRecord.AggregateThreshold, queryRecord.CommitmentsCount);
                 State.QueryRecords[input.QueryId] = queryRecord;
             }
+
+            // No need to count responses.
+            State.ResponseCount.Remove(queryRecord.QueryId);
 
             var helpfulNodeList = State.HelpfulNodeListMap[input.QueryId] ?? new AddressList();
             Assert(!helpfulNodeList.Value.Contains(Context.Sender), "Sender already revealed commitment.");
@@ -214,7 +221,10 @@ namespace AElf.Contracts.Oracle
             else
             {
                 // Record data to node data list.
-                var nodeDataList = State.NodeDataListMap[input.QueryId] ?? new NodeDataList();
+                var nodeDataList = State.NodeDataListMap[input.QueryId] ?? new NodeDataList
+                {
+                    ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First()
+                };
                 nodeDataList.Value.Add(new NodeData {Address = Context.Sender, Data = input.Data});
                 State.NodeDataListMap[input.QueryId] = nodeDataList;
             }
@@ -222,7 +232,6 @@ namespace AElf.Contracts.Oracle
             if (helpfulNodeList.Value.Count >= queryRecord.AggregateThreshold)
             {
                 // Move to next stage: Aggregator.
-                queryRecord.IsSufficientDataCollected = true;
                 PayToNodesAndAggregateResults(queryRecord, helpfulNodeList);
             }
 
@@ -231,8 +240,15 @@ namespace AElf.Contracts.Oracle
 
         private void PayToNodesAndAggregateResults(QueryRecord queryRecord, AddressList helpfulNodeList)
         {
-            State.ResponseCount.Remove(queryRecord.QueryId);
+            queryRecord.IsSufficientDataCollected = true;
 
+            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryRecord.QueryId);
+            var balance = State.TokenContract.GetBalance.Call(new GetBalanceInput
+            {
+                Owner = virtualAddress,
+                Symbol = TokenSymbol
+            }).Balance;
+            Assert(balance > 0, $"{helpfulNodeList}");
             // Distributed rewards to oracle nodes.
             foreach (var helpfulNode in helpfulNodeList.Value)
             {

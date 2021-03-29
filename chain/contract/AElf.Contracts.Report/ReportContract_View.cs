@@ -22,5 +22,10 @@ namespace AElf.Contracts.Report
         {
             return State.OffChainAggregatorContractInfoMap[input];
         }
+
+        public override ReportQueryRecord GetReportQueryRecord(Hash input)
+        {
+            return State.ReportQueryRecordMap[input];
+        }
     }
 }

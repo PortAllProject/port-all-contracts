@@ -27,7 +27,7 @@ namespace AElf.Contracts.Oracle
             });
         }
 
-        private async Task ChangeTokenIssuerToDefaultSender()
+        private async Task ChangeTokenIssuerToDefaultSenderAsync()
         {
             await DefaultParliamentProposeAndRelease(new CreateProposalInput
             {

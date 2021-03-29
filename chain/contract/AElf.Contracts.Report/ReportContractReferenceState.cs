@@ -2,11 +2,14 @@ using AElf.Contracts.Association;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.Contracts.Parliament;
+using AElf.Standards.ACS13;
 
 namespace AElf.Contracts.Report
 {
     public partial class ReportContractState
     {
+        internal ParliamentContractImplContainer.ParliamentContractImplReferenceState ParliamentContract { get; set; }
+
         internal OracleContractContainer.OracleContractReferenceState OracleContract { get; set; }
 
         internal TokenContractContainer.TokenContractReferenceState TokenContract { get; set; }
@@ -17,6 +20,10 @@ namespace AElf.Contracts.Report
             set;
         }
 
-        internal ParliamentContractImplContainer.ParliamentContractImplReferenceState ParliamentContract { get; set; }
+        internal OracleAggregatorContractContainer.OracleAggregatorContractReferenceState AggregatorContract
+        {
+            get;
+            set;
+        }
     }
 }

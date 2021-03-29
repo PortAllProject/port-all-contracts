@@ -39,7 +39,7 @@ service ReportContract {
     
     // Offchain Aggregator Contract management.
     
-    rpc AddOffChainAggregator (AddOffChainAggregatorInput) returns (google.protobuf.Empty) {}
+    rpc AddOffChainAggregator (AddOffChainAggregatorInput) returns (OffChainAggregatorContractInfo) {}
 
     // View methods.
     
@@ -52,17 +52,20 @@ service ReportContract {
     rpc GetOffChainAggregatorContractInfo (aelf.Address) returns (OffChainAggregatorContractInfo) {
         option (aelf.is_view) = true;
     }
+    rpc GetReportQueryRecord (aelf.Hash) returns (ReportQueryRecord) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput {
-    aelf.Address token_contract_address = 1;
+    aelf.Address oracle_contract_address = 1;
     int64 report_fee = 2;
     int64 apply_observer_fee = 3;
 }
 
 message QueryOracleInput {
     int64 payment = 1;// Maximum for this query option.
-    repeated aelf.Address designated_nodes = 2;
+    aelf.Address observer_association_address = 2;
     int32 aggregate_threshold = 3;
     aelf.Address query_manager = 4;
 }
@@ -84,12 +87,12 @@ message Report {
     int64 epoch_number = 2;
     int64 round_id = 3;
     Observations observations  = 4;
+    bytes aggregated_data = 5;
 }
 
 message ReportQueryRecord {
     aelf.Address origin_query_manager = 1;
     int64 paid_report_fee = 2;
-    aelf.Hash report_id = 3;
 }
 
 message ObserverList {
@@ -117,12 +120,12 @@ message GetSignatureInput {
 }
 
 message OffChainAggregatorContractInfo {
-    ObserverList observer_list = 1;
+    aelf.Address observer_association_address = 1;
     string url_to_query = 2;
     string attribute_to_fetch = 3;
     string ethereum_contract_address = 4;
     bytes config_digest = 5;
-    int32 threshold = 6;
+    int32 aggregate_threshold = 6;
     aelf.Address aggregator_contract_address = 7;
 }
 
@@ -132,7 +135,7 @@ message AddOffChainAggregatorInput {
     string attribute_to_fetch = 3;
     string ethereum_contract_address = 4;
     bytes config_digest = 5;
-    int32 threshold = 6;
+    int32 aggregate_threshold = 6;
     aelf.Address aggregator_contract_address = 7;
 }
 
