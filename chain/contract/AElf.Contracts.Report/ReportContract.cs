@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using AElf.Contracts.Association;
+﻿using System;
+using System.Linq;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
-using AElf.Standards.ACS3;
+using AElf.Standards.ACS13;
 using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
@@ -15,7 +15,7 @@ namespace AElf.Contracts.Report
     {
         public override Empty Initialize(InitializeInput input)
         {
-            State.OracleContract.Value = input.TokenContractAddress;
+            State.OracleContract.Value = input.OracleContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.TokenContract.Value =
@@ -25,33 +25,24 @@ namespace AElf.Contracts.Report
             State.ReportFee.Value = input.ReportFee == 0 ? DefaultReportFee : input.ReportFee;
             State.ApplyObserverFee.Value =
                 input.ApplyObserverFee == 0 ? DefaultApplyObserverFee : input.ApplyObserverFee;
-            State.CurrentReportNumber.Value = 1;
-            State.CurrentEpochNumber.Value = 1;
-            State.CurrentRoundNumber.Value = 1;
-            CreateObserverAssociation(input.InitialObserverList);
-            return new Empty();
-        }
-
-        private void CreateObserverAssociation(ObserverList initialObserverList)
-        {
-            var createOrganizationInput = new CreateOrganizationInput
+            State.TokenContract.Approve.Send(new ApproveInput
             {
-                CreationToken = HashHelper.ComputeFrom(Context.Self),
-                OrganizationMemberList = new OrganizationMemberList {OrganizationMembers = {initialObserverList.Value}},
-                ProposalReleaseThreshold = new ProposalReleaseThreshold
-                {
-                    MinimalApprovalThreshold = 5,
-                    MinimalVoteThreshold = 5
-                },
-                ProposerWhiteList = new ProposerWhiteList {Proposers = {Context.Self}}
-            };
-            State.AssociationContract.CreateOrganization.Send(createOrganizationInput);
-            State.ObserverAssociationAddress.Value =
-                State.AssociationContract.CalculateOrganizationAddress.Call(createOrganizationInput);
+                Spender = State.OracleContract.Value,
+                Symbol = State.OracleTokenSymbol.Value,
+                Amount = long.MaxValue
+            });
+            return new Empty();
         }
 
         public override Hash QueryOracle(QueryOracleInput input)
         {
+            // Assert Observer Association is already registered.
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.ObserverAssociationAddress];
+            if (offChainAggregatorContract == null)
+            {
+                throw new AssertionException("Observer Association not exists.");
+            }
+
             // Pay oracle tokens to this contract, amount: report fee + oracle nodes payment.
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
@@ -64,11 +55,19 @@ namespace AElf.Contracts.Report
             var queryInput = new QueryInput
             {
                 Payment = input.Payment,
-                AggregateThreshold = input.AggregateThreshold,
-                AggregatorContractAddress = input.AggregatorContractAddress,
-                UrlToQuery = input.UrlToQuery,
-                AttributeToFetch = input.AttributeToFetch,
-                DesignatedNodeList = new AddressList {Value = {input.DesignatedNodes}},
+                AggregateThreshold = Math.Max(offChainAggregatorContract.AggregateThreshold, input.AggregateThreshold),
+                // DO NOT FILL THIS FILED.
+                // AggregatorContractAddress = null,
+                UrlToQuery = offChainAggregatorContract.UrlToQuery,
+                AttributeToFetch = offChainAggregatorContract.AttributeToFetch,
+                DesignatedNodeList = new AddressList
+                {
+                    Value =
+                    {
+                        // Same to offChainAggregatorContract.ObserverList.Value.First()
+                        input.ObserverAssociationAddress
+                    }
+                },
                 QueryManager = Context.Self,
                 CallbackInfo = new CallbackInfo
                 {
@@ -81,7 +80,7 @@ namespace AElf.Contracts.Report
             var queryId = Context.GenerateId(State.OracleContract.Value, HashHelper.ComputeFrom(queryInput));
             State.ReportQueryRecordMap[queryId] = new ReportQueryRecord
             {
-                OriginQueryManager = Context.Sender,
+                OriginQueryManager = input.QueryManager == null ? Context.Sender : input.QueryManager,
                 // Record current report fee in case it changes before cancelling this query.
                 PaidReportFee = State.ReportFee.Value
             };
@@ -111,7 +110,7 @@ namespace AElf.Contracts.Report
         public override Report ProposeReport(CallbackInput input)
         {
             Assert(Context.Sender == State.OracleContract.Value,
-                "Only Oracle Contract can propose report after aggregation.");
+                "Only Oracle Contract can propose report.");
             var nodeDataList = new NodeDataList();
             nodeDataList.MergeFrom(input.Result);
             var observations = new Observations
@@ -125,26 +124,56 @@ namespace AElf.Contracts.Report
                     })
                 }
             };
-            var roundNumber = State.CurrentRoundNumber.Value.Add(1);
-            State.CurrentRoundNumber.Value = roundNumber;
+            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress];
+
+            var aggregatorContractAddress =
+                State.OffChainAggregatorContractInfoMap[nodeDataList.ObserverAssociationAddress]
+                    .AggregatorContractAddress;
+            State.AggregatorContract.Value = aggregatorContractAddress;
+            var aggregateInput = new AggregateInput();
+            foreach (var nodeData in nodeDataList.Value)
+            {
+                aggregateInput.Results.Add(nodeData.Data);
+                aggregateInput.Frequencies.Add(1);
+            }
+
+            // Use an ACS13 Contract to aggregate a data.
+            var aggregatedData = State.AggregatorContract.Aggregate.Call(aggregateInput);
+
             var report = new Report
             {
                 QueryId = input.QueryId,
-                EpochNumber = State.CurrentEpochNumber.Value,
-                RoundNumber = roundNumber,
-                Observations = observations
+                EpochNumber = State.CurrentEpochMap[nodeDataList.ObserverAssociationAddress],
+                RoundId = currentRoundId,
+                Observations = observations,
+                AggregatedData = aggregatedData.Value
             };
-            State.ReportMap[roundNumber] = report;
-
-            Context.Fire(new ReportProposed {Report = report});
+            State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
+            State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
+            Context.Fire(new ReportProposed
+            {
+                ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
+                Report = report
+            });
             return report;
         }
 
         public override Empty ConfirmReport(ConfirmReportInput input)
         {
-            Assert(State.ObserverList.Value.Value.Contains(Context.Sender), "No permission.");
-            State.ObserverSignatureMap[input.RoundNumber][Context.Sender] = input.Signature;
-            Context.Fire((new ReportConfirmed {RoundNumber = input.RoundNumber, Signature = input.Signature}));
+            // Assert Sender is from certain Observer Association.
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.ObserverAssociationAddress];
+            if (offChainAggregatorContract == null)
+            {
+                throw new AssertionException("Observer Association not exists.");
+            }
+
+            var organization =
+                State.AssociationContract.GetOrganization.Call(offChainAggregatorContract.ObserverAssociationAddress);
+            Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
+                "Sender isn't a member of certain Observer Association.");
+            State.ObserverSignatureMap[input.ObserverAssociationAddress][input.RoundId][Context.Sender] =
+                input.Signature;
+            Context.Fire((new ReportConfirmed {RoundId = input.RoundId, Signature = input.Signature}));
             return new Empty();
         }
     }

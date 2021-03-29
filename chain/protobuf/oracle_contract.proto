@@ -126,6 +126,7 @@ message NodeData {
 
 message NodeDataList {
     repeated NodeData value = 1;
+    aelf.Address observer_association_address = 2;
 }
 
 // Events

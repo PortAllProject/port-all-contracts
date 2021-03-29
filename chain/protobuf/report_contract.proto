@@ -23,11 +23,9 @@ service ReportContract {
   
     rpc ProposeReport (CallbackInput) returns (Report) {}
     
-    rpc RemoveQueries (HashList) returns (google.protobuf.Empty) {}
-
     rpc MortgageTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
-    rpc WithdrawMortgagedTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+    rpc WithdrawTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
     // Notary management.
 
@@ -39,38 +37,43 @@ service ReportContract {
 
     rpc AdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
     
-    rpc ProposeNextEpoch (CallbackInput) returns (Report) {}
+    // Offchain Aggregator Contract management.
+    
+    rpc AddOffChainAggregator (AddOffChainAggregatorInput) returns (OffChainAggregatorContractInfo) {}
 
     // View methods.
     
-    rpc GetReport (google.protobuf.Int64Value) returns (Report) {
+    rpc GetReport (GetReportInput) returns (Report) {
         option (aelf.is_view) = true;
     }
     rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
+    rpc GetOffChainAggregatorContractInfo (aelf.Address) returns (OffChainAggregatorContractInfo) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetReportQueryRecord (aelf.Hash) returns (ReportQueryRecord) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput {
-    aelf.Address token_contract_address = 1;
+    aelf.Address oracle_contract_address = 1;
     int64 report_fee = 2;
     int64 apply_observer_fee = 3;
-    ObserverList initial_observer_list = 4;
 }
 
 message QueryOracleInput {
     int64 payment = 1;// Maximum for this query option.
-    aelf.Address aggregator_contract_address = 2;
-    repeated aelf.Address designated_nodes = 3;
-    string url_to_query = 4;
-    string attribute_to_fetch = 5;
-    int32 aggregate_threshold = 6;
-    aelf.Address query_manager = 7;
+    aelf.Address observer_association_address = 2;
+    int32 aggregate_threshold = 3;
+    aelf.Address query_manager = 4;
 }
 
 message ConfirmReportInput {
-    int64 round_number = 1;
-    string signature = 2;
+    aelf.Address observer_association_address = 1;
+    int64 round_id = 2;
+    string signature = 3;
 }
 
 message ApplyObserverInput {
@@ -79,39 +82,25 @@ message ApplyObserverInput {
 message QuitObserverInput {
 }
 
-message VoteObserverInput {
-}
-
 message Report {
     aelf.Hash query_id = 1;
     int64 epoch_number = 2;
-    int64 round_number = 3;
+    int64 round_id = 3;
     Observations observations  = 4;
+    bytes aggregated_data = 5;
 }
 
 message ReportQueryRecord {
     aelf.Address origin_query_manager = 1;
     int64 paid_report_fee = 2;
-    aelf.Hash report_id = 3;
 }
 
 message ObserverList {
     repeated aelf.Address value = 1;
 }
 
-message Epoch {
-    int64 epoch_number = 1;
-    ObserverList observer_list = 2;
-    aelf.Address leader = 3;
-    int64 start_round_number = 4;
-}
-
 message ProposeReportInput {
     repeated aelf.Hash query_id_list = 1;
-}
-
-message HashList {
-    repeated aelf.Hash value = 1;
 }
 
 message Observations {
@@ -120,17 +109,39 @@ message Observations {
 
 message Observation {
     aelf.Address address = 1;
-    bytes data = 2;
+    string ethereum_address = 2;
+    bytes data = 3;
 }
 
 message GetSignatureInput {
-    int64 round_number = 1;
-    aelf.Address address = 2;
+    aelf.Address observer_association_address = 1;
+    int64 round_id = 2;
+    aelf.Address address = 3;
 }
 
-message ObserverMortgageMap {
-    string address = 1;
-    int64 amount = 2;
+message OffChainAggregatorContractInfo {
+    aelf.Address observer_association_address = 1;
+    string url_to_query = 2;
+    string attribute_to_fetch = 3;
+    string ethereum_contract_address = 4;
+    bytes config_digest = 5;
+    int32 aggregate_threshold = 6;
+    aelf.Address aggregator_contract_address = 7;
+}
+
+message AddOffChainAggregatorInput {
+    ObserverList observer_list = 1;
+    string url_to_query = 2;
+    string attribute_to_fetch = 3;
+    string ethereum_contract_address = 4;
+    bytes config_digest = 5;
+    int32 aggregate_threshold = 6;
+    aelf.Address aggregator_contract_address = 7;
+}
+
+message GetReportInput {
+    aelf.Address observer_association_address = 1;
+    int64 round_id = 2;
 }
 
 // Events
@@ -138,10 +149,12 @@ message ObserverMortgageMap {
 message ReportProposed {
     option (aelf.is_event) = true;
     Report report = 1;
+    aelf.Address observer_association_address = 2;
 }
 
 message ReportConfirmed {
     option (aelf.is_event) = true;
-    int64 round_number = 1;
+    int64 round_id = 1;
     string signature = 2;
+    aelf.Address observer_association_address = 3;
 }

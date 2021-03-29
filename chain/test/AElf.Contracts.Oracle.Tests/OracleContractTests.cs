@@ -26,5 +26,21 @@ namespace AElf.Contracts.Oracle
                 DefaultExpirationSeconds = DefaultExpirationSeconds
             });
         }
+
+        private async Task ChangeTokenIssuerToDefaultSenderAsync()
+        {
+            await DefaultParliamentProposeAndRelease(new CreateProposalInput
+            {
+                ToAddress = TokenContractAddress,
+                ContractMethodName = nameof(TokenContractContainer.TokenContractStub.ChangeTokenIssuer),
+                OrganizationAddress = await GetDefaultParliament(),
+                Params = new ChangeTokenIssuerInput
+                {
+                    NewTokenIssuer = DefaultSender,
+                    Symbol = TokenSymbol
+                }.ToByteString(),
+                ExpiredTime = TimestampHelper.GetUtcNow().AddHours(1)
+            });
+        }
     }
 }
