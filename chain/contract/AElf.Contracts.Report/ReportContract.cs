@@ -172,19 +172,19 @@ namespace AElf.Contracts.Report
                     Key = nodeIndex.ToString(),
                     Data = aggregatedData.Value
                 });
-                if (offChainAggregatorContractInfo.RoundIds.All(i => i == currentRoundId))
+                if (offChainAggregatorContractInfo.RoundIds.All(i => i >= currentRoundId))
                 {
                     // Time to generate merkle tree.
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(report.Observations.Value
                         .OrderBy(o => int.Parse(o.Key))
                         .Select(o => HashHelper.ComputeFrom(o.Data.ToByteArray())));
                     State.BinaryMerkleTreeMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = merkleTree;
+                    report.AggregatedData = merkleTree.Root.Value;
                     Context.Fire(new ReportProposed
                     {
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         Report = report
                     });
-                    report.AggregatedData = merkleTree.Root.Value;
                 }
                 State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
                 State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
