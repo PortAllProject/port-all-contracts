@@ -172,8 +172,6 @@ namespace AElf.Contracts.Report
                     Key = nodeIndex.ToString(),
                     Data = aggregatedData.Value
                 });
-                State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
-                State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
                 if (offChainAggregatorContractInfo.RoundIds.All(i => i == currentRoundId))
                 {
                     // Time to generate merkle tree.
@@ -186,7 +184,10 @@ namespace AElf.Contracts.Report
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         Report = report
                     });
+                    report.AggregatedData = merkleTree.Root.Value;
                 }
+                State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
+                State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
             }
             
             return report;
