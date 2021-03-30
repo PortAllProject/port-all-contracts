@@ -69,7 +69,6 @@ namespace AElf.Contracts.Report
                         input.ObserverAssociationAddress
                     }
                 },
-                QueryManager = Context.Self,
                 CallbackInfo = new CallbackInfo
                 {
                     ContractAddress = Context.Self,

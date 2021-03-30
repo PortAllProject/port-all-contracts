@@ -52,12 +52,11 @@ namespace AElf.Contracts.Oracle
             var queryId = Context.GenerateId(HashHelper.ComputeFrom(input));
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
-            var queryManager = input.QueryManager ?? Context.Sender;
             // Transfer tokens to Oracle Contract virtual address.
             var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
-                From = queryManager,
+                From = Context.Sender,
                 To = virtualAddress,
                 Amount = input.Payment,
                 Symbol = TokenSymbol
@@ -74,7 +73,7 @@ namespace AElf.Contracts.Oracle
             State.QueryRecords[queryId] = new QueryRecord
             {
                 QueryId = queryId,
-                QueryManager = queryManager,
+                QuerySender = Context.Sender,
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
@@ -315,7 +314,7 @@ namespace AElf.Contracts.Oracle
                 throw new AssertionException("Query not exists.");
             }
 
-            Assert(queryRecord.QueryManager == Context.Sender, "No permission to cancel this query.");
+            Assert(queryRecord.QuerySender == Context.Sender, "No permission to cancel this query.");
             Assert(queryRecord.ExpirationTimestamp <= Context.CurrentBlockTime, "Query not expired.");
             Assert(!queryRecord.IsSufficientDataCollected && queryRecord.FinalResult.IsNullOrEmpty(),
                 "Query already finished.");
@@ -329,7 +328,7 @@ namespace AElf.Contracts.Oracle
             Context.SendVirtualInline(queryRecord.QueryId, State.TokenContract.Value,
                 nameof(State.TokenContract.Transfer), new TransferInput
                 {
-                    To = queryRecord.QueryManager,
+                    To = queryRecord.QuerySender,
                     Symbol = TokenSymbol,
                     Amount = queryRecord.Payment
                 });

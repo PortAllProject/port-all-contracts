@@ -176,11 +176,6 @@ namespace AElf.Contracts.Oracle
             };
             var offChainAggregatorContractInfo =
                 (await ReportContractStub.AddOffChainAggregator.SendAsync(addOffChainAggregatorInput)).Output;
-            offChainAggregatorContractInfo.OffChainInfo[0].UrlToQuery.ShouldBe(addOffChainAggregatorInput
-                .OffChainInfo[0]
-                .UrlToQuery);
-            offChainAggregatorContractInfo.OffChainInfo[0].AttributeToFetch.ShouldBe(addOffChainAggregatorInput
-                .OffChainInfo[0].AttributeToFetch);
             offChainAggregatorContractInfo.OffChainInfo[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
                 .OffChainInfo[2]
                 .UrlToQuery);

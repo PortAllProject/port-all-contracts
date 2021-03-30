@@ -64,7 +64,6 @@ message QueryInput {
   string url_to_query = 5;
   string attribute_to_fetch = 6;
   int32 aggregate_threshold = 7;
-  aelf.Address query_manager = 8;
 }
 
 message CallbackInfo {
@@ -87,7 +86,7 @@ message QueryRecord {
   CallbackInfo callback_info = 9;
   aelf.Hash query_id = 10;
   int32 aggregate_threshold = 11;
-  aelf.Address query_manager = 12;
+  aelf.Address query_sender = 12;
   bool is_commit_stage_finished = 13;
   int32 commitments_count = 14;
   bool is_cancelled = 15;
