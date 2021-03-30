@@ -81,12 +81,6 @@ namespace AElf.Contracts.Oracle
         [Fact]
         internal async Task<QueryRecord> QueryOracleTest()
         {
-            var offChainAggregatorContractInfo = await AddOffChainAggregatorTest();
-            var queryOracleInput = new QueryOracleInput
-            {
-                Payment = 10_00000000,
-                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress
-            };
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
                 Symbol = TokenSymbol,
@@ -99,6 +93,13 @@ namespace AElf.Contracts.Oracle
                 Symbol = TokenSymbol,
                 Amount = long.MaxValue
             });
+
+            var offChainAggregatorContractInfo = await AddOffChainAggregatorTest();
+            var queryOracleInput = new QueryOracleInput
+            {
+                Payment = 10_00000000,
+                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress
+            };
             var executionResult = await ReportContractStub.QueryOracle.SendAsync(queryOracleInput);
             var queryId = executionResult.Output;
 
@@ -135,6 +136,110 @@ namespace AElf.Contracts.Oracle
             var aggregatedValue = new StringValue();
             aggregatedValue.MergeFrom(report.AggregatedData);
             aggregatedValue.Value.ShouldBe("2");
+        }
+
+        [Fact]
+        internal async Task MerkleAggregationTest()
+        {
+            await InitializeOracleContractAsync();
+            await ChangeTokenIssuerToDefaultSenderAsync();
+            await InitializeReportContractAsync();
+            await ApplyObserversAsync();
+            var addOffChainAggregatorInput = new AddOffChainAggregatorInput
+            {
+                ObserverList = new ObserverList
+                {
+                    Value = {ObserverAddresses}
+                },
+                OffChainInfo =
+                {
+                    new OffChainInfo
+                    {
+                        UrlToQuery = "www.whatever.com",
+                        AttributeToFetch = "foo"
+                    },
+                    new OffChainInfo
+                    {
+                        UrlToQuery = "www.youbiteme.com",
+                        AttributeToFetch = "bar"
+                    },
+                    new OffChainInfo
+                    {
+                        UrlToQuery = "www.helloworld.com",
+                        AttributeToFetch = "yes"
+                    },
+                },
+                EthereumContractAddress = "1234567890123",
+                ConfigDigest = ByteString.CopyFromUtf8("123"),
+                AggregateThreshold = 5,
+                AggregatorContractAddress = IntegerAggregatorContractAddress
+            };
+            var offChainAggregatorContractInfo =
+                (await ReportContractStub.AddOffChainAggregator.SendAsync(addOffChainAggregatorInput)).Output;
+            offChainAggregatorContractInfo.OffChainInfo[0].UrlToQuery.ShouldBe(addOffChainAggregatorInput
+                .OffChainInfo[0]
+                .UrlToQuery);
+            offChainAggregatorContractInfo.OffChainInfo[0].AttributeToFetch.ShouldBe(addOffChainAggregatorInput
+                .OffChainInfo[0].AttributeToFetch);
+            offChainAggregatorContractInfo.OffChainInfo[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
+                .OffChainInfo[2]
+                .UrlToQuery);
+            offChainAggregatorContractInfo.OffChainInfo[2].AttributeToFetch.ShouldBe(addOffChainAggregatorInput
+                .OffChainInfo[2].AttributeToFetch);
+
+            await TokenContractStub.Issue.SendAsync(new IssueInput
+            {
+                Symbol = TokenSymbol,
+                Amount = 1000_00000000,
+                To = DefaultSender
+            });
+            await TokenContractStub.Approve.SendAsync(new ApproveInput
+            {
+                Spender = ReportContractAddress,
+                Symbol = TokenSymbol,
+                Amount = long.MaxValue
+            });
+
+            var queryId1 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
+            {
+                Payment = 10_00000000,
+                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress
+            })).Output;
+            await CommitAsync(queryId1);
+            await RevealAsync(queryId1);
+
+            var queryId2 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
+            {
+                Payment = 10_00000000,
+                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress,
+                NodeIndex = 1
+            })).Output;
+            await CommitAsync(queryId2);
+            await RevealAsync(queryId2);
+
+            var queryId3 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
+            {
+                Payment = 10_00000000,
+                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress,
+                NodeIndex = 2
+            })).Output;
+            await CommitAsync(queryId3);
+            await RevealAsync(queryId3);
+
+            var report = await ReportContractStub.GetReport.CallAsync(new GetReportInput
+            {
+                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress,
+                RoundId = 1
+            });
+            var string2 = new StringValue {Value = "2"};
+            foreach (var observation in report.Observations.Value)
+            {
+                observation.Data.ShouldBe(string2.ToByteString());
+            }
+
+            var string2Hash = HashHelper.ComputeFrom(string2.ToByteArray());
+            var supposedMerkleTree = BinaryMerkleTree.FromLeafNodes(new[] {string2Hash, string2Hash, string2Hash});
+            report.AggregatedData.ShouldBe(supposedMerkleTree.Root.Value);
         }
 
         private async Task CommitAsync(Hash queryId)

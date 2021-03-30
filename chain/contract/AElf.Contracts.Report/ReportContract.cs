@@ -158,7 +158,8 @@ namespace AElf.Contracts.Report
                 };
                 var nodeIndex = offChainAggregatorContractInfo.OffChainInfo.IndexOf(offChainInfo);
                 var nodeRoundId = offChainAggregatorContractInfo.RoundIds[nodeIndex];
-                Assert(nodeRoundId.Add(1) == currentRoundId, $"Data of {offChainInfo} already revealed.");
+                Assert(nodeRoundId.Add(1) == currentRoundId,
+                    $"Data of {offChainInfo} already revealed.{nodeIndex}\n{offChainAggregatorContractInfo}");
                 offChainAggregatorContractInfo.RoundIds[nodeIndex] = nodeRoundId.Add(1);
                 var aggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList);
                 report = State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] ?? new Report
@@ -185,11 +186,12 @@ namespace AElf.Contracts.Report
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         Report = report
                     });
+                    State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
                 }
+
                 State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
-                State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
             }
-            
+
             return report;
         }
 

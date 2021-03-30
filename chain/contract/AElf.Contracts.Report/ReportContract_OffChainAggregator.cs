@@ -28,7 +28,7 @@ namespace AElf.Contracts.Report
             };
             for (var i = 0; i < input.OffChainInfo.Count; i++)
             {
-                offChainAggregatorContractInfo.RoundIds.Add(1);
+                offChainAggregatorContractInfo.RoundIds.Add(0);
             }
 
             State.OffChainAggregatorContractInfoMap[organizationAddress] = offChainAggregatorContractInfo;
