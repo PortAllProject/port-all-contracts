@@ -5,6 +5,7 @@ using System.Text;
 using AElf;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
+using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
@@ -14,44 +15,29 @@ namespace ReportGenerator
     {
         static void Main(string[] args)
         {
+            Test1();
+        }
 
-            long longValue = 25;
-            var valueArray = longValue.ToBytes().ToHex();
-            Console.WriteLine(valueArray);
-            
-            // var dataList = new List<long> {1, 2, 3, 4, 5, 6};
+        static void Test1()
+        {
             var rs = new ReportService();
-
-            Console.WriteLine(rs.ConvertLong(longValue));
-            // var a = rs.ConvertArray(ReportService.Int192, dataList);
-            // var a = rs.ConvertLong(2l);
             var digestBytes = new byte[16];
             for (var i = 0; i < digestBytes.Length; i++)
             {
                 digestBytes[i] = 7;
             }
             var digest = ByteString.CopyFrom(digestBytes);
-            // var context = rs.GenerateConfigText(digest, 0x12, 0xf).ToHex();
-            // Console.WriteLine(context);
-            // Console.WriteLine(context.Length);
-
-            // var observerIndex = rs.GenerateObserver(digestBytes);
-            // Console.WriteLine(observerIndex.ToHex());
-            
-            
             var observers = new byte[] {0, 1, 2, 3, 4};
             var observations = new [] { -123, 245, -13213123, 123214214124421, 1};
             var report = rs.GenerateEthereumReport(digest, 16, 16, observers, observations);
-            Console.WriteLine(report);
-            Console.WriteLine("=========");
             report = report.Substring(2, report.Length - 2);
-            Console.WriteLine(report.Length);
+            //Console.WriteLine(report.Length);
             var loopCount = report.Length / 64;
             var total = loopCount;
             while (loopCount > 0)
             {
                 var sub = report.Substring((total - loopCount) * 64, 64);
-                Console.WriteLine(sub);
+                //Console.WriteLine(sub);
                 loopCount--;
             }
 
@@ -59,13 +45,16 @@ namespace ReportGenerator
                 "0000000000000000000000070707070707070707070707070707070000001010000102030400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000005000000000000000000000000000000000000000000000000000000000000007b00000000000000000000000000000000000000000000000000000000000000f50000000000000000000000000000000000000000000000000000000000c99dc3000000000000000000000000000000000000000000000000000070100b76d3850000000000000000000000000000000000000000000000000000000000000001";
             loopCount = report.Length / 64;
             total = loopCount;
-            Console.WriteLine("========= real");
+            //Console.WriteLine("========= real");
             while (loopCount > 0)
             {
                 var sub = report.Substring((total - loopCount) * 64, 64);
-                Console.WriteLine(sub);
+                //Console.WriteLine(sub);
                 loopCount--;
             }
+            var hashBytes = ByteStringHelper.FromHexString(report);
+            var shaHash = HashHelper.ComputeFrom(hashBytes.ToByteArray());
+            Console.WriteLine(shaHash);
         }
     }
 
@@ -81,7 +70,6 @@ namespace ReportGenerator
         public const string Bytes32 = "bytes32";
         public const string Int192 = "int192";
         public const int SlotByteSize = 32;
-        public const int SlotBitSize = 256;
 
         private readonly Dictionary<string, Func<object, string>> serizalization;
 
