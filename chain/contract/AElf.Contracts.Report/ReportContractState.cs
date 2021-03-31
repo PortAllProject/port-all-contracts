@@ -11,7 +11,7 @@ namespace AElf.Contracts.Report
         public SingletonState<long> ReportFee { get; set; }
         public SingletonState<long> ApplyObserverFee { get; set; }
         public MappedState<Hash, ReportQueryRecord> ReportQueryRecordMap { get; set; }
-        public MappedState<Address, long, Address, string> ObserverSignatureMap { get; set; }
+        public MappedState<string, long, Address, string> ObserverSignatureMap { get; set; }
         public MappedState<Address, long> CurrentRoundIdMap { get; set; }
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace AElf.Contracts.Report
         /// </summary>
         public MappedState<Address, long, Report> ReportMap { get; set; }
 
-        public MappedState<Address, OffChainAggregatorContractInfo> OffChainAggregatorContractInfoMap { get; set; }
+        public MappedState<string, OffChainAggregatorContractInfo> OffChainAggregatorContractInfoMap { get; set; }
 
         public MappedState<Address, long> ObserverMortgagedTokensMap { get; set; }
 

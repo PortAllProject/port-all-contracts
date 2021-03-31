@@ -64,6 +64,7 @@ message QueryInput {
   string url_to_query = 5;
   string attribute_to_fetch = 6;
   int32 aggregate_threshold = 7;
+  string token = 8;
 }
 
 message CallbackInfo {
@@ -92,6 +93,7 @@ message QueryRecord {
   bool is_cancelled = 15;
   string url_to_query = 16;
   string attribute_to_fetch = 17;
+  string token = 18;
 }
 
 message CommitInput {
@@ -130,6 +132,7 @@ message NodeDataList {
     aelf.Address observer_association_address = 2;
     string url_to_query = 3;
     string attribute_to_fetch = 4;
+    string token = 5;
 }
 
 // Events

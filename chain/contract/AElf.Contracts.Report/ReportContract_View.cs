@@ -14,13 +14,13 @@ namespace AElf.Contracts.Report
         {
             return new StringValue
             {
-                Value = State.ObserverSignatureMap[input.ObserverAssociationAddress][input.RoundId][input.Address]
+                Value = State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][input.Address]
             };
         }
 
-        public override OffChainAggregatorContractInfo GetOffChainAggregatorContractInfo(Address input)
+        public override OffChainAggregatorContractInfo GetOffChainAggregatorContractInfo(StringValue input)
         {
-            return State.OffChainAggregatorContractInfoMap[input];
+            return State.OffChainAggregatorContractInfoMap[input.Value];
         }
 
         public override ReportQueryRecord GetReportQueryRecord(Hash input)

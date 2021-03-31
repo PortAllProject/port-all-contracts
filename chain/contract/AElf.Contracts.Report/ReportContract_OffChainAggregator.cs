@@ -31,7 +31,7 @@ namespace AElf.Contracts.Report
                 offChainAggregatorContractInfo.RoundIds.Add(0);
             }
 
-            State.OffChainAggregatorContractInfoMap[organizationAddress] = offChainAggregatorContractInfo;
+            State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress] = offChainAggregatorContractInfo;
             State.CurrentRoundIdMap[organizationAddress] = 1;
             return offChainAggregatorContractInfo;
         }

@@ -62,12 +62,10 @@ namespace AElf.Contracts.Oracle
                 Symbol = TokenSymbol
             });
 
-            //Assert(false, $"Address: {virtualAddress.Value.ToHex()}\tAmount: {input.Payment} {TokenSymbol}s");
-
             Assert(State.QueryRecords[queryId] == null, "Query already exists.");
 
-            var designatedNodeListCount = GetDesignatedNodeListCount(input.DesignatedNodeList);
-            Assert(designatedNodeListCount >= State.MinimumOracleNodesCount.Value,
+            var designatedNodeList = GetActualDesignatedNodeList(input.DesignatedNodeList);
+            Assert(designatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value,
                 $"Invalid designated nodes count, should at least be {State.MinimumOracleNodesCount.Value}.");
 
             State.QueryRecords[queryId] = new QueryRecord
@@ -80,10 +78,11 @@ namespace AElf.Contracts.Oracle
                 CallbackInfo = input.CallbackInfo,
                 Payment = input.Payment,
                 AggregateThreshold = input.AggregateThreshold == 0
-                    ? GetAggregateThreshold(designatedNodeListCount)
+                    ? GetAggregateThreshold(designatedNodeList.Value.Count)
                     : input.AggregateThreshold,
                 UrlToQuery = input.UrlToQuery,
-                AttributeToFetch = input.AttributeToFetch
+                AttributeToFetch = input.AttributeToFetch,
+                Token = input.Token
             };
 
             State.UserAddresses[queryId] = Context.Sender;
@@ -91,14 +90,22 @@ namespace AElf.Contracts.Oracle
             return queryId;
         }
 
-        private int GetDesignatedNodeListCount(AddressList designatedNodeList)
-        {
-            return GetDesignatedNodeList(designatedNodeList).Value.Count;
-        }
-
-        private AddressList GetDesignatedNodeList(AddressList designatedNodeList)
+        private AddressList GetActualDesignatedNodeList(AddressList designatedNodeList)
         {
             if (designatedNodeList.Value.Count != 1) return designatedNodeList;
+
+            if (designatedNodeList.Value.First() == State.ParliamentContract.Value)
+            {
+                return new AddressList
+                {
+                    Value =
+                    {
+                        State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
+                            .Select(p => Address.FromPublicKey(p.ToByteArray()))
+                    }
+                };
+            }
+
             var organization =
                 State.AssociationContract.GetOrganization.Call(designatedNodeList.Value.First());
             designatedNodeList = new AddressList
@@ -109,7 +116,7 @@ namespace AElf.Contracts.Oracle
         private AddressList GetDesignatedNodeList(Hash queryId)
         {
             var queryRecord = State.QueryRecords[queryId];
-            return queryRecord == null ? new AddressList() : GetDesignatedNodeList(queryRecord.DesignatedNodeList);
+            return queryRecord == null ? new AddressList() : GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
         }
 
         public override Empty Commit(CommitInput input)
@@ -226,7 +233,8 @@ namespace AElf.Contracts.Oracle
                 {
                     ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First(),
                     UrlToQuery = queryRecord.UrlToQuery,
-                    AttributeToFetch = queryRecord.AttributeToFetch
+                    AttributeToFetch = queryRecord.AttributeToFetch,
+                    Token = queryRecord.Token
                 };
                 nodeDataList.Value.Add(new NodeData {Address = Context.Sender, Data = input.Data});
                 State.NodeDataListMap[input.QueryId] = nodeDataList;
@@ -344,6 +352,8 @@ namespace AElf.Contracts.Oracle
                 Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
             State.AssociationContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
+            State.ConsensusContract.Value =
+                Context.GetContractAddressByName(SmartContractConstants.ConsensusContractSystemName);
         }
 
         private void CreateToken()

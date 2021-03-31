@@ -22,6 +22,8 @@ namespace AElf.Contracts.Report
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
             State.AssociationContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
+            State.ParliamentContract.Value =
+                Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
             State.ReportFee.Value = input.ReportFee == 0 ? DefaultReportFee : input.ReportFee;
             State.ApplyObserverFee.Value =
                 input.ApplyObserverFee == 0 ? DefaultApplyObserverFee : input.ApplyObserverFee;
@@ -37,7 +39,7 @@ namespace AElf.Contracts.Report
         public override Hash QueryOracle(QueryOracleInput input)
         {
             // Assert Observer Association is already registered.
-            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.ObserverAssociationAddress];
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -65,8 +67,7 @@ namespace AElf.Contracts.Report
                 {
                     Value =
                     {
-                        // Same to offChainAggregatorContract.ObserverList.Value.First()
-                        input.ObserverAssociationAddress
+                        offChainAggregatorContract.ObserverAssociationAddress
                     }
                 },
                 CallbackInfo = new CallbackInfo
@@ -117,7 +118,7 @@ namespace AElf.Contracts.Report
             var currentRoundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress];
 
             var offChainAggregatorContractInfo =
-                State.OffChainAggregatorContractInfoMap[nodeDataList.ObserverAssociationAddress];
+                State.OffChainAggregatorContractInfoMap[nodeDataList.Token];
 
             Report report;
             if (offChainAggregatorContractInfo.OffChainInfo.Count == 1)
@@ -218,7 +219,7 @@ namespace AElf.Contracts.Report
         public override Empty ConfirmReport(ConfirmReportInput input)
         {
             // Assert Sender is from certain Observer Association.
-            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.ObserverAssociationAddress];
+            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -228,7 +229,7 @@ namespace AElf.Contracts.Report
                 State.AssociationContract.GetOrganization.Call(offChainAggregatorContract.ObserverAssociationAddress);
             Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
                 "Sender isn't a member of certain Observer Association.");
-            State.ObserverSignatureMap[input.ObserverAssociationAddress][input.RoundId][Context.Sender] =
+            State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] =
                 input.Signature;
             Context.Fire((new ReportConfirmed {RoundId = input.RoundId, Signature = input.Signature}));
             return new Empty();

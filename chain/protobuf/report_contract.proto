@@ -55,7 +55,7 @@ service ReportContract {
     rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
-    rpc GetOffChainAggregatorContractInfo (aelf.Address) returns (OffChainAggregatorContractInfo) {
+    rpc GetOffChainAggregatorContractInfo (google.protobuf.StringValue) returns (OffChainAggregatorContractInfo) {
         option (aelf.is_view) = true;
     }
     rpc GetReportQueryRecord (aelf.Hash) returns (ReportQueryRecord) {
@@ -70,14 +70,15 @@ message InitializeInput {
 }
 
 message QueryOracleInput {
-    int64 payment = 1;// Maximum for this query option.
-    aelf.Address observer_association_address = 2;
+    int64 payment = 1;
+    string ethereum_contract_address = 2;
     int32 aggregate_threshold = 3;
-    int32 node_index = 4;
+    aelf.Address aggregator_contract_address = 4;
+    int32 node_index = 5;
 }
 
 message ConfirmReportInput {
-    aelf.Address observer_association_address = 1;
+    string ethereum_contract_address = 1;
     int64 round_id = 2;
     string signature = 3;
 }
@@ -113,7 +114,7 @@ message Observation {
 }
 
 message GetSignatureInput {
-    aelf.Address observer_association_address = 1;
+    string ethereum_contract_address = 1;
     int64 round_id = 2;
     aelf.Address address = 3;
 }
