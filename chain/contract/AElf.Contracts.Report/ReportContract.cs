@@ -80,7 +80,7 @@ namespace AElf.Contracts.Report
             var queryId = Context.GenerateId(State.OracleContract.Value, HashHelper.ComputeFrom(queryInput));
             State.ReportQueryRecordMap[queryId] = new ReportQueryRecord
             {
-                OriginQueryManager = input.QueryManager == null ? Context.Sender : input.QueryManager,
+                OriginQuerySender = Context.Sender,
                 // Record current report fee in case it changes before cancelling this query.
                 PaidReportFee = State.ReportFee.Value
             };
@@ -95,11 +95,11 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Query not exists or not delegated by Report Contract.");
             }
 
-            Assert(reportQueryRecord.OriginQueryManager == Context.Sender, "No permission.");
+            Assert(reportQueryRecord.OriginQuerySender == Context.Sender, "No permission.");
             // Return report fee.
             State.TokenContract.Transfer.Send(new TransferInput
             {
-                To = reportQueryRecord.OriginQueryManager,
+                To = reportQueryRecord.OriginQuerySender,
                 Symbol = State.OracleTokenSymbol.Value,
                 Amount = reportQueryRecord.PaidReportFee
             });

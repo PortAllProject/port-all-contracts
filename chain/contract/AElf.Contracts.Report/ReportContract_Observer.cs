@@ -9,13 +9,13 @@ namespace AElf.Contracts.Report
 {
     public partial class ReportContract
     {
-        public override Empty ApplyObserver(ApplyObserverInput input)
+        public override Empty ApplyObserver(Empty input)
         {
             TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, State.ApplyObserverFee.Value);
             return new Empty();
         }
 
-        public override Empty QuitObserver(QuitObserverInput input)
+        public override Empty QuitObserver(Empty input)
         {
             var currentAmount = GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value);
             State.TokenContract.TransferFrom.Send(new TransferFromInput

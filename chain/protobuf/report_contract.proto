@@ -29,9 +29,9 @@ service ReportContract {
 
     // Notary management.
 
-    rpc ApplyObserver (ApplyObserverInput) returns (google.protobuf.Empty) {}
+    rpc ApplyObserver (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
-    rpc QuitObserver (QuitObserverInput) returns (google.protobuf.Empty) {}
+    rpc QuitObserver (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
     rpc ProposeAdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
@@ -73,20 +73,13 @@ message QueryOracleInput {
     int64 payment = 1;// Maximum for this query option.
     aelf.Address observer_association_address = 2;
     int32 aggregate_threshold = 3;
-    aelf.Address query_manager = 4;
-    int32 node_index = 5;
+    int32 node_index = 4;
 }
 
 message ConfirmReportInput {
     aelf.Address observer_association_address = 1;
     int64 round_id = 2;
     string signature = 3;
-}
-
-message ApplyObserverInput {
-}
-
-message QuitObserverInput {
 }
 
 message Report {
@@ -98,7 +91,7 @@ message Report {
 }
 
 message ReportQueryRecord {
-    aelf.Address origin_query_manager = 1;
+    aelf.Address origin_query_sender = 1;
     int64 paid_report_fee = 2;
 }
 

@@ -110,7 +110,7 @@ namespace AElf.Contracts.Oracle
                 .ShouldBe(offChainAggregatorContractInfo.ObserverAssociationAddress);
 
             var reportQueryRecord = await ReportContractStub.GetReportQueryRecord.CallAsync(queryId);
-            reportQueryRecord.OriginQueryManager.ShouldBe(DefaultSender);
+            reportQueryRecord.OriginQuerySender.ShouldBe(DefaultSender);
             reportQueryRecord.PaidReportFee.ShouldBe(DefaultReportFee);
 
             return queryRecord;
@@ -301,7 +301,7 @@ namespace AElf.Contracts.Oracle
 
             foreach (var observerStub in ObserverStubs)
             {
-                await observerStub.ApplyObserver.SendAsync(new ApplyObserverInput());
+                await observerStub.ApplyObserver.SendAsync(new Empty());
             }
         }
     }
