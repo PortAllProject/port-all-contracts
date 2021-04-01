@@ -16,6 +16,7 @@ namespace ReportGenerator
         static void Main(string[] args)
         {
             //Test1();
+            //TestWithMultipleData();
         }
 
         static void Test1()
@@ -51,7 +52,42 @@ namespace ReportGenerator
                 Data = ByteString.Empty
             });
             var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
-            //Console.WriteLine(bytesInEthereum);
+            Console.WriteLine(bytesInEthereum);
+        }
+        static void TestWithMultipleData()
+        {
+            var rs = new ReportService();
+            var digestBytes = new byte[16];
+            for (var i = 0; i < digestBytes.Length; i++)
+            {
+                digestBytes[i] = 7;
+            }
+            var digest = ByteString.CopyFrom(digestBytes);
+            var data = new StringValue()
+            {
+                Value = "asdasasdasdd萨卡是咖啡吧是咖啡吧康师傅"
+            };
+            var report = new Report
+            {
+                RoundId = 10, AggregatedData = data.ToByteString(), Observations = new Observations()
+            };
+            report.Observations.Value.Add(new Observation
+            {
+                Key = "0",
+                Data = ByteString.Empty
+            });
+            report.Observations.Value.Add(new Observation
+            {
+                Key = "4",
+                Data = ByteString.Empty
+            });
+            report.Observations.Value.Add(new Observation
+            {
+                Key = "10",
+                Data = ByteString.Empty
+            });
+            var bytesInEthereum = rs.GenerateEthereumReportWithMultipleData(digest, report);
+            Console.WriteLine(bytesInEthereum);
         }
     }
 
@@ -64,6 +100,7 @@ namespace ReportGenerator
     {
         public const string ArraySuffix = "[]";
         public const string Bytes32 = "bytes32";
+        public const string Bytes32Array = Bytes32 + ArraySuffix;
         public const string Uint256 = "uint256";
         public const int SlotByteSize = 32;
 
@@ -76,7 +113,14 @@ namespace ReportGenerator
                 [Bytes32] = ConvertBytes32, [Uint256] = ConvertLong
             };
         }
-        
+        public string GenerateEthereumReportWithMultipleData(ByteString configDigest, Report report)
+        {
+            var data = new object[3];
+            data[0] = GenerateConfigText(configDigest, report);
+            data[1] = GenerateObserverIndex(report);
+            data[2] = report.AggregatedData;
+            return SerializeReport(data, Bytes32, Bytes32, Bytes32Array);
+        }
         public string GenerateEthereumReport(ByteString configDigest, Report report)
         {
             var data = new object[3];
@@ -140,13 +184,25 @@ namespace ReportGenerator
                 if (string.CompareOrdinal(dataType[i].Substring(typeStrLen.Sub(2), 2), ArraySuffix) == 0)
                 {
                     var typePrefix = dataType[i].Substring(0, typeStrLen.Sub(2));
-                    var dataList = data[i] as IEnumerable<long>;
-                    long arrayLength = dataList.Count();
-                    long dataPosition = currentIndex.Mul(SlotByteSize);
+                    long dataPosition;
+                    if (data[i] is IEnumerable<long> dataList)
+                    {
+                        long arrayLength = dataList.Count();
+                        dataPosition = currentIndex.Mul(SlotByteSize);
+                        result.Append(ConvertLong(dataPosition));
+                        currentIndex = currentIndex.Add(arrayLength).Add(1);
+                        lazyData.Append(ConvertLong(arrayLength));
+                        lazyData.Append(ConvertLongArray(typePrefix, dataList));
+                        continue;
+                    }
+
+                    var bytesArray = (data[i] as ByteString).ToByteArray();
+                    var bytes32Count = (long)(bytesArray.Length / SlotByteSize + 1);
+                    dataPosition = currentIndex.Mul(SlotByteSize);
                     result.Append(ConvertLong(dataPosition));
-                    currentIndex = currentIndex.Add(arrayLength).Add(1);
-                    lazyData.Append(ConvertLong(arrayLength));
-                    lazyData.Append(ConvertArray(typePrefix, dataList));
+                    currentIndex = currentIndex.Add(bytes32Count).Add(1);
+                    lazyData.Append(ConvertLong(bytes32Count));
+                    lazyData.Append(ConvertBytes32Array(bytesArray, bytes32Count * 32));
                     continue;
                 }
                 result.Append(_serialization[dataType[i]](data[i]));
@@ -178,7 +234,7 @@ namespace ReportGenerator
             return longDataBytes.ToHex();
         }
 
-        public string ConvertArray(string dataType, IEnumerable<long> dataList)
+        public string ConvertLongArray(string dataType, IEnumerable<long> dataList)
         {
             if (dataType != Uint256)
                 return string.Empty;
@@ -189,6 +245,13 @@ namespace ReportGenerator
             }
 
             return dataBytes.ToString();
+        }
+
+        public string ConvertBytes32Array(byte[] data, long dataSize)
+        {
+            var target = new byte[dataSize];
+            Buffer.BlockCopy(data, 0, target, 0, data.Length);
+            return target.ToHex();
         }
 
         public string ConvertBytes32(object data)
