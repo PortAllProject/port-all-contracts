@@ -98,7 +98,7 @@ namespace AElf.Contracts.Oracle
             var queryOracleInput = new QueryOracleInput
             {
                 Payment = 10_00000000,
-                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress
+                EthereumContractAddress = "1234567890123"
             };
             var executionResult = await ReportContractStub.QueryOracle.SendAsync(queryOracleInput);
             var queryId = executionResult.Output;
@@ -198,7 +198,7 @@ namespace AElf.Contracts.Oracle
             var queryId1 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
             {
                 Payment = 10_00000000,
-                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress
+                EthereumContractAddress = "1234567890123"
             })).Output;
             await CommitAsync(queryId1);
             await RevealAsync(queryId1);
@@ -206,7 +206,7 @@ namespace AElf.Contracts.Oracle
             var queryId2 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
             {
                 Payment = 10_00000000,
-                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress,
+                EthereumContractAddress = "1234567890123",
                 NodeIndex = 1
             })).Output;
             await CommitAsync(queryId2);
@@ -215,7 +215,7 @@ namespace AElf.Contracts.Oracle
             var queryId3 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
             {
                 Payment = 10_00000000,
-                ObserverAssociationAddress = offChainAggregatorContractInfo.ObserverAssociationAddress,
+                EthereumContractAddress = "1234567890123",
                 NodeIndex = 2
             })).Output;
             await CommitAsync(queryId3);

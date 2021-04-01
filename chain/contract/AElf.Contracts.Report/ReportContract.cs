@@ -74,7 +74,8 @@ namespace AElf.Contracts.Report
                 {
                     ContractAddress = Context.Self,
                     MethodName = nameof(ProposeReport)
-                }
+                },
+                Token = input.EthereumContractAddress
             };
             State.OracleContract.Query.Send(queryInput);
 
