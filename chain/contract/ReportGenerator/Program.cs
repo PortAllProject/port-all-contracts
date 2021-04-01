@@ -15,18 +15,16 @@ namespace ReportGenerator
     {
         static void Main(string[] args)
         {
-            //Test1();
+            Test1();
             //TestWithMultipleData();
         }
 
         static void Test1()
         {
             var rs = new ReportService();
-            var digestBytes = new byte[16];
-            for (var i = 0; i < digestBytes.Length; i++)
-            {
-                digestBytes[i] = 7;
-            }
+            var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
+            var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
+            Console.WriteLine("digest length :" + digestBytes.Length);
             var digest = ByteString.CopyFrom(digestBytes);
             var data = new StringValue()
             {
@@ -126,7 +124,6 @@ namespace ReportGenerator
             var data = new object[3];
             data[0] = GenerateConfigText(configDigest, report);
             data[1] = GenerateObserverIndex(report);
-            Console.WriteLine(ConvertBytes32(data[1]));
             data[2] = GenerateObservation(report.AggregatedData);
             return SerializeReport(data, Bytes32, Bytes32, Bytes32);
         }
