@@ -33,5 +33,30 @@ namespace AElf.Contracts.Report
             return State.BinaryMerkleTreeMap[input.EthereumContractAddress][input.RoundId]
                 .GenerateMerklePath(input.NodeIndex);
         }
+
+        public override StringValue GenerateEthererumReport(GenerateEthererumReportInput input)
+        {
+            var reportGenerateService = new ReportGenerator();
+            var report = reportGenerateService.GenerateEthereumReport(input.ConfigDigest, input.Report);
+            return new StringValue
+            {
+                Value = report
+            };
+        }
+
+        public override StringValue GetEthererumReport(GetEthererumReportInput input)
+        {
+            var contractInfo = State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress];
+            Assert(contractInfo != null, $"contract: [{input.EthereumContractAddress}] info does not exist");
+            var roundReport = State.ReportMap[input.EthereumContractAddress][input.RoundId];
+            Assert(roundReport != null, $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");
+            var configDigest = contractInfo.ConfigDigest;
+            var reportGenerateService = new ReportGenerator();
+            var report = reportGenerateService.GenerateEthereumReport(configDigest, roundReport);
+            return new StringValue
+            {
+                Value = report
+            };
+        }
     }
 }

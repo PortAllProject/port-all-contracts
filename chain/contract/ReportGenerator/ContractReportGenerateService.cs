@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AElf;
@@ -6,95 +6,10 @@ using AElf.Contracts.Report;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
 
 namespace ReportGenerator
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Test1();
-            //TestWithMultipleData();
-        }
-
-        static void Test1()
-        {
-            //var rs = new ContractReportGenerateService();
-            var rs = new ReportService();
-            var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
-            var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
-            Console.WriteLine("digest length :" + digestBytes.Length);
-            var digest = ByteString.CopyFrom(digestBytes);
-            var data = new StringValue()
-            {
-                Value = "asdas"
-            };
-            var report = new Report
-            {
-                RoundId = 10, AggregatedData = data.ToByteString(), Observations = new Observations()
-            };
-            report.Observations.Value.Add(new Observation
-            {
-                Key = "0",
-                Data = ByteString.Empty
-            });
-            report.Observations.Value.Add(new Observation
-            {
-                Key = "4",
-                Data = ByteString.Empty
-            });
-            report.Observations.Value.Add(new Observation
-            {
-                Key = "10",
-                Data = ByteString.Empty
-            });
-            var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
-            Console.WriteLine("0x" + bytesInEthereum);
-        }
-        static void TestWithMultipleData()
-        {
-            var rs = new ReportService();
-            var digestBytes = new byte[16];
-            for (var i = 0; i < digestBytes.Length; i++)
-            {
-                digestBytes[i] = 7;
-            }
-            var digest = ByteString.CopyFrom(digestBytes);
-            var data = new StringValue()
-            {
-                Value = "asdasasdasdd萨卡是咖啡吧是咖啡吧康师傅"
-            };
-            var report = new Report
-            {
-                RoundId = 10, AggregatedData = data.ToByteString(), Observations = new Observations()
-            };
-            report.Observations.Value.Add(new Observation
-            {
-                Key = "0",
-                Data = ByteString.Empty
-            });
-            report.Observations.Value.Add(new Observation
-            {
-                Key = "4",
-                Data = ByteString.Empty
-            });
-            report.Observations.Value.Add(new Observation
-            {
-                Key = "10",
-                Data = ByteString.Empty
-            });
-            var bytesInEthereum = rs.GenerateEthereumReportWithMultipleData(digest, report);
-            Console.WriteLine(bytesInEthereum);
-        }
-    }
-
-    public interface IReportService
-    {
-        string GenerateEthereumReport(ByteString configDigest, Report report);
-    }
-    
-    public class ReportService: IReportService
+    public class ContractReportGenerateService
     {
         public const string ArraySuffix = "[]";
         public const string Bytes32 = "bytes32";
@@ -104,7 +19,7 @@ namespace ReportGenerator
 
         private readonly Dictionary<string, Func<object, IList<byte>>> _serialization;
 
-        public ReportService()
+        public ContractReportGenerateService()
         {
             _serialization = new Dictionary<string, Func<object, IList<byte>>>
             {
@@ -127,7 +42,7 @@ namespace ReportGenerator
             data[2] = GenerateObservation(report.AggregatedData);
             return SerializeReport(data, Bytes32, Bytes32, Bytes32).ToArray().ToHex();
         }
-        public byte[] GenerateConfigText(ByteString configDigest, Report report)
+        private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
         {
             long round = report.RoundId;
             byte observerCount = (byte)report.Observations.Value.Count;
@@ -136,7 +51,7 @@ namespace ReportGenerator
             {
                 throw new AssertionException("invalid round");
             }
-            var configText = new byte[SlotByteSize];
+            var configText = GetByteListWithCount(SlotByteSize);
             var digestBytes = configDigest.ToByteArray();
             BytesCopy(digestBytes, 0, configText, 6, 16);
             var roundBytes = round.ToBytes();
@@ -146,27 +61,27 @@ namespace ReportGenerator
             return configText;
         }
 
-        public byte[] GenerateObservation(ByteString result)
+        private IList<byte> GenerateObservation(ByteString result)
         {
             var observation = result.ToByteArray();
             if (observation.Length == SlotByteSize)
                 return observation;
-            var ret = new byte[SlotByteSize];
+            var ret = GetByteListWithCount(SlotByteSize);
             BytesCopy(observation, 0, ret, 0, observation.Length);
             return ret;
         }
-
-        public byte[] GenerateObserverIndex(Report report)
+        
+        private IList<byte> GenerateObserverIndex(Report report)
         {
             var observations = report.Observations.Value;
-            var observerIndex = new byte[SlotByteSize];
+            var observerIndex = GetByteListWithCount(SlotByteSize);
             for (var i = 0; i < observations.Count; i++)
             {
                 observerIndex[i] =  (byte)int.Parse(observations[i].Key);
             }
             return observerIndex;
         }
-        public IList<byte> SerializeReport(object[] data, params string[] dataType)
+        private IList<byte> SerializeReport(object[] data, params string[] dataType)
         {
             var dataLength = (long)dataType.Length;
             if(dataLength != data.Length)
@@ -191,9 +106,9 @@ namespace ReportGenerator
                         lazyData.AddRange(ConvertLongArray(typePrefix, dataList));
                         continue;
                     }
-
+        
                     var bytesArray = (data[i] as ByteString).ToByteArray();
-                    var bytes32Count = (long)bytesArray.Length.Div(SlotByteSize).Add(1);
+                    var bytes32Count = bytesArray.Length.Div(SlotByteSize).Add(1);
                     dataPosition = currentIndex.Mul(SlotByteSize);
                     result.AddRange(ConvertLong(dataPosition));
                     currentIndex = currentIndex.Add(bytes32Count).Add(1);
@@ -203,18 +118,18 @@ namespace ReportGenerator
                 }
                 result.AddRange(_serialization[dataType[i]](data[i]));
             }
-
+        
             result.AddRange(lazyData);
             return result;
         }
-        public byte[] ConvertLong(object i)
+        private IList<byte> ConvertLong(object i)
         {
             var data = (long) i;
             var b = data.ToBytes();
             if (b.Length == SlotByteSize)
                 return b;
             var diffCount = SlotByteSize.Sub(b.Length);
-            var longDataBytes = new byte[SlotByteSize];
+            var longDataBytes = GetByteListWithCount(SlotByteSize);
             byte c = 0;
             if (data < 0)
             {
@@ -230,7 +145,7 @@ namespace ReportGenerator
             return longDataBytes;
         }
 
-        public IList<byte> ConvertLongArray(string dataType, IEnumerable<long> dataList)
+        private IList<byte> ConvertLongArray(string dataType, IEnumerable<long> dataList)
         {
             if (dataType != Uint256)
                 return null;
@@ -239,36 +154,42 @@ namespace ReportGenerator
             {
                 dataBytes.AddRange(_serialization[dataType](data));
             }
-
+        
             return dataBytes;
         }
 
-        public IList<byte> ConvertBytes32Array(byte[] data, long dataSize)
+        private IList<byte> ConvertBytes32Array(IList<byte> data, int dataSize)
         {
-            var target = new byte[dataSize];
-            BytesCopy(data, 0, target, 0, data.Length);
+            var target = GetByteListWithCount(dataSize);
+            BytesCopy(data, 0, target, 0, data.Count);
             return target;
         }
 
-        public IList<byte> ConvertBytes32(object data)
+        private IList<byte> ConvertBytes32(object data)
         {
-            var dataBytes = data as byte[];
-            if (dataBytes.Length != SlotByteSize)
+            var dataBytes = data as IList<byte>;
+            if (dataBytes.Count != SlotByteSize)
             {
                 throw new AssertionException("invalid bytes32 data");
             }
 
             return dataBytes;
         }
-        
-        private void BytesCopy(byte[] src, int srcOffset, byte[] dst, int dstOffset, int count)
+
+        private void BytesCopy(IList<byte> src, int srcOffset, IList<byte> dst, int dstOffset, int count)
         {
             for (var i = srcOffset; i < srcOffset + count; i++)
             {
                 dst[dstOffset] = src[i];
                 dstOffset ++;
             }
-            //Buffer.BlockCopy(src, srcOffset, dst, dstOffset, count);
+        }
+
+        private List<byte> GetByteListWithCount(int count)
+        {
+            var list = new List<byte>();
+            list.AddRange(Enumerable.Repeat((byte)0, count));
+            return list;
         }
     }
 }
