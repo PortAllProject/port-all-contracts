@@ -183,6 +183,7 @@ message ReportProposed {
     string raw_report = 1;
     aelf.Address observer_association_address = 2;
     string ethereum_contract_address = 3;
+    int64 round_id = 4;
 }
 
 message ReportConfirmed {

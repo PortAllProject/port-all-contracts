@@ -148,6 +148,7 @@ namespace AElf.Contracts.Report
                 {
                     ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                     EthereumContractAddress = nodeDataList.Token,
+                    RoundId = currentRoundId,
                     // TODO: Generate raw report here.
                     //RawReport = 
                 });
@@ -188,6 +189,7 @@ namespace AElf.Contracts.Report
                     {
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         EthereumContractAddress = nodeDataList.Token,
+                        RoundId = currentRoundId,
                         // TODO: Generate raw report here.
                         //RawReport = 
                     });
