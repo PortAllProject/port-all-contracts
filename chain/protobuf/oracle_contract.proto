@@ -147,6 +147,7 @@ message QueryCreated {
   int32 aggregate_threshold = 7;
   aelf.Address query_manager = 8;
   aelf.Hash query_id = 9;
+  string token = 10;
 }
 
 message QueryCancelled {

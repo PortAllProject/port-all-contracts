@@ -147,7 +147,9 @@ namespace AElf.Contracts.Report
                 Context.Fire(new ReportProposed
                 {
                     ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
-                    Report = report
+                    EthereumContractAddress = nodeDataList.Token,
+                    // TODO: Generate raw report here.
+                    //RawReport = 
                 });
             }
             else
@@ -185,7 +187,9 @@ namespace AElf.Contracts.Report
                     Context.Fire(new ReportProposed
                     {
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
-                        Report = report
+                        EthereumContractAddress = nodeDataList.Token,
+                        // TODO: Generate raw report here.
+                        //RawReport = 
                     });
                     State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
                 }
