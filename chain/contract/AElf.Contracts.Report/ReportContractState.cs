@@ -15,14 +15,14 @@ namespace AElf.Contracts.Report
         public MappedState<Address, long> CurrentRoundIdMap { get; set; }
 
         /// <summary>
-        /// Observer Association Address -> Round Number (Round Id) -> Report.
+        /// Ethereum Contract Address -> Round Number (Round Id) -> Report.
         /// </summary>
-        public MappedState<Address, long, Report> ReportMap { get; set; }
+        public MappedState<string, long, Report> ReportMap { get; set; }
 
         public MappedState<string, OffChainAggregatorContractInfo> OffChainAggregatorContractInfoMap { get; set; }
 
         public MappedState<Address, long> ObserverMortgagedTokensMap { get; set; }
 
-        public MappedState<Address, long, BinaryMerkleTree> BinaryMerkleTreeMap { get; set; }
+        public MappedState<string, long, BinaryMerkleTree> BinaryMerkleTreeMap { get; set; }
     }
 }

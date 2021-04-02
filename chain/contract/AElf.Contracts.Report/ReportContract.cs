@@ -142,7 +142,7 @@ namespace AElf.Contracts.Report
                     Observations = originObservations,
                     AggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList).Value
                 };
-                State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
+                State.ReportMap[nodeDataList.Token][currentRoundId] = report;
                 State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
                 Context.Fire(new ReportProposed
                 {
@@ -163,7 +163,7 @@ namespace AElf.Contracts.Report
                     $"Data of {offChainInfo} already revealed.{nodeIndex}\n{offChainAggregatorContractInfo}");
                 offChainAggregatorContractInfo.RoundIds[nodeIndex] = nodeRoundId.Add(1);
                 var aggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList);
-                report = State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] ?? new Report
+                report = State.ReportMap[nodeDataList.Token][currentRoundId] ?? new Report
                 {
                     QueryId = input.QueryId,
                     RoundId = currentRoundId,
@@ -180,7 +180,7 @@ namespace AElf.Contracts.Report
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(report.Observations.Value
                         .OrderBy(o => int.Parse(o.Key))
                         .Select(o => HashHelper.ComputeFrom(o.Data.ToByteArray())));
-                    State.BinaryMerkleTreeMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = merkleTree;
+                    State.BinaryMerkleTreeMap[nodeDataList.Token][currentRoundId] = merkleTree;
                     report.AggregatedData = merkleTree.Root.Value;
                     Context.Fire(new ReportProposed
                     {
@@ -190,7 +190,7 @@ namespace AElf.Contracts.Report
                     State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
                 }
 
-                State.ReportMap[nodeDataList.ObserverAssociationAddress][currentRoundId] = report;
+                State.ReportMap[nodeDataList.Token][currentRoundId] = report;
             }
 
             return report;

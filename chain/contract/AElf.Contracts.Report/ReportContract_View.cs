@@ -7,7 +7,7 @@ namespace AElf.Contracts.Report
     {
         public override Report GetReport(GetReportInput input)
         {
-            return State.ReportMap[input.ObserverAssociationAddress][input.RoundId];
+            return State.ReportMap[input.EthereumContractAddress][input.RoundId];
         }
 
         public override StringValue GetSignature(GetSignatureInput input)
@@ -30,7 +30,7 @@ namespace AElf.Contracts.Report
 
         public override MerklePath GetMerklePath(GetMerklePathInput input)
         {
-            return State.BinaryMerkleTreeMap[input.ObserverAssociationAddress][input.RoundId]
+            return State.BinaryMerkleTreeMap[input.EthereumContractAddress][input.RoundId]
                 .GenerateMerklePath(input.NodeIndex);
         }
     }
