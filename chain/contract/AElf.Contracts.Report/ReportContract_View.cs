@@ -34,6 +34,15 @@ namespace AElf.Contracts.Report
                 .GenerateMerklePath(input.NodeIndex);
         }
 
+        public override Int64Value GetCurrentRoundIdByContractAddress(GetCurrentRoundIdByContractAddressInput input)
+        {
+            var roundId = State.CurrentRoundIdMap[input.ObserverAssociation];
+            return new Int64Value
+            {
+                Value = roundId
+            };
+        }
+
         public override StringValue GenerateEthererumReport(GenerateEthererumReportInput input)
         {
             var reportGenerateService = new ReportGenerator();

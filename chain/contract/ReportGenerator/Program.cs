@@ -20,8 +20,8 @@ namespace ReportGenerator
 
         static void Test1()
         {
-            //var rs = new ContractReportGenerateService();
-            var rs = new ReportService();
+            var rs = new ContractReportGenerateService();
+            //var rs = new ReportService();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
             Console.WriteLine("digest length :" + digestBytes.Length);
