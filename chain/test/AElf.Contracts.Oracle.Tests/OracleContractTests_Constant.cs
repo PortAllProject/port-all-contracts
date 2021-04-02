@@ -14,5 +14,6 @@ namespace AElf.Contracts.Oracle
 
         private const long DefaultReportFee = 1_00000000;
         private const long DefaultApplyObserverFee = 1000_00000000;
+        private const string EthereumContractAddress = "12345646516556";
     }
 }
