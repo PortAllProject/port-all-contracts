@@ -1,3 +1,4 @@
+using System.Linq;
 using AElf.Contracts.Association;
 using AElf.Standards.ACS3;
 using AElf.Types;
@@ -16,7 +17,17 @@ namespace AElf.Contracts.Report
             }
 
             AssertObserversRegistered(input.ObserverList);
-            var organizationAddress = CreateObserverAssociation(input.ObserverList);
+            Address organizationAddress;
+            if (input.ObserverList.Value.Count == 1 &&
+                input.ObserverList.Value.Single() == State.ParliamentContract.Value)
+            {
+                organizationAddress = State.ParliamentContract.Value;
+            }
+            else
+            {
+                organizationAddress = CreateObserverAssociation(input.ObserverList);
+            }
+
             var offChainAggregatorContractInfo = new OffChainAggregatorContractInfo
             {
                 EthereumContractAddress = input.EthereumContractAddress,
