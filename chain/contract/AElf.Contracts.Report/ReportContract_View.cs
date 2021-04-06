@@ -34,9 +34,9 @@ namespace AElf.Contracts.Report
                 .GenerateMerklePath(input.NodeIndex);
         }
 
-        public override Int64Value GetCurrentRoundIdByContractAddress(GetCurrentRoundIdByContractAddressInput input)
+        public override Int64Value GetCurrentRoundId(StringValue input)
         {
-            var roundId = State.CurrentRoundIdMap[input.ObserverAssociation];
+            var roundId = State.CurrentRoundIdMap[input.Value];
             return new Int64Value
             {
                 Value = roundId

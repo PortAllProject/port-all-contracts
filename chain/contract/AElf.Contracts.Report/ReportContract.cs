@@ -116,7 +116,7 @@ namespace AElf.Contracts.Report
             var nodeDataList = new NodeDataList();
             nodeDataList.MergeFrom(input.Result);
 
-            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress];
+            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.Token];
 
             var offChainAggregatorContractInfo =
                 State.OffChainAggregatorContractInfoMap[nodeDataList.Token];
@@ -144,7 +144,8 @@ namespace AElf.Contracts.Report
                     AggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList).Value
                 };
                 State.ReportMap[nodeDataList.Token][currentRoundId] = report;
-                State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
+                State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
+                report.Observers.Add(new ObserverList {Value = {nodeDataList.Value.Select(d => d.Address)}});
                 Context.Fire(new ReportProposed
                 {
                     ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
@@ -177,6 +178,10 @@ namespace AElf.Contracts.Report
                     Key = nodeIndex.ToString(),
                     Data = aggregatedData.Value
                 });
+                State.NodeObserverListMap[nodeDataList.Token][currentRoundId][nodeIndex] = new ObserverList
+                {
+                    Value = {nodeDataList.Value.Select(d => d.Address)}
+                };
                 if (offChainAggregatorContractInfo.RoundIds.All(i => i >= currentRoundId))
                 {
                     // Time to generate merkle tree.
@@ -185,6 +190,13 @@ namespace AElf.Contracts.Report
                         .Select(o => HashHelper.ComputeFrom(o.Data.ToByteArray())));
                     State.BinaryMerkleTreeMap[nodeDataList.Token][currentRoundId] = merkleTree;
                     report.AggregatedData = merkleTree.Root.Value;
+
+                    for (var i = 0; i < offChainAggregatorContractInfo.OffChainInfo.Count; i++)
+                    {
+                        report.Observers.Add(State.NodeObserverListMap[nodeDataList.Token][currentRoundId][i]);
+                        State.NodeObserverListMap[nodeDataList.Token][currentRoundId].Remove(i);
+                    }
+
                     Context.Fire(new ReportProposed
                     {
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
@@ -192,7 +204,7 @@ namespace AElf.Contracts.Report
                         RoundId = currentRoundId,
                         RawReport = GenerateEthereumReport(configDigest, report)
                     });
-                    State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
+                    State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
                 }
 
                 State.ReportMap[nodeDataList.Token][currentRoundId] = report;

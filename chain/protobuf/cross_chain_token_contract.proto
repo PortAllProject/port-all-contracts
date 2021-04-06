@@ -1,0 +1,193 @@
+syntax = "proto3";
+
+package token;
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "AElf.Contracts.CrossChainToken";
+
+service CrossChainTokenContract {
+
+    option (aelf.csharp_state) = "AElf.Contracts.CrossChainToken.CrossChainTokenState";
+
+    // Actions
+
+    rpc Transfer (TransferInput) returns (google.protobuf.Empty) {
+    }
+    rpc TransferFrom (TransferFromInput) returns (google.protobuf.Empty) {
+    }
+    rpc Approve (ApproveInput) returns (google.protobuf.Empty) {
+    }
+    rpc UnApprove (UnApproveInput) returns (google.protobuf.Empty) {
+    }
+
+    // Views
+    rpc GetTokenInfo (GetTokenInfoInput) returns (TokenInfo) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetBalance (GetBalanceInput) returns (GetBalanceOutput) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAllowance (GetAllowanceInput) returns (GetAllowanceOutput) {
+        option (aelf.is_view) = true;
+    }
+}
+
+message TokenInfo {
+    string symbol = 1;
+    string token_name = 2;
+    int32 decimals = 5;
+    aelf.Address issuer = 6;
+    bool is_burnable = 7;
+    int32 issue_chain_id = 9;
+    int64 issued = 10;
+}
+
+message TransferInput {
+    aelf.Address to = 1;
+    string symbol = 2;
+    int64 amount = 3;
+    string memo = 4;
+}
+
+message LockInput {
+    aelf.Address address = 1; // The one want to lock his token.
+    aelf.Hash lock_id = 2;
+    string symbol = 3;
+    string usage = 4;
+    int64 amount = 5;
+}
+
+message UnlockInput {
+    aelf.Address address = 1; // The one want to lock his token.
+    aelf.Hash lock_id = 2;
+    string symbol = 3;
+    string usage = 4;
+    int64 amount = 5;
+}
+
+message TransferFromInput {
+    aelf.Address from = 1;
+    aelf.Address to = 2;
+    string symbol = 3;
+    int64 amount = 4;
+    string memo = 5;
+}
+
+message ApproveInput {
+    aelf.Address spender = 1;
+    string symbol = 2;
+    int64 amount = 3;
+}
+
+message UnApproveInput {
+    aelf.Address spender = 1;
+    string symbol = 2;
+    int64 amount = 3;
+}
+
+message GetTokenInfoInput {
+    string symbol = 1;
+    string filed = 2;
+}
+
+message GetBalanceInput {
+    string symbol = 1;
+    string field = 2;
+    aelf.Address owner = 3;
+}
+
+message GetBalanceOutput {
+    string symbol = 1;
+    string field = 2;
+    aelf.Address owner = 3;
+    int64 balance = 4;
+}
+
+message GetAllowanceInput {
+    string symbol = 1;
+    string field = 2;
+    aelf.Address owner = 3;
+    aelf.Address spender = 4;
+}
+
+message GetAllowanceOutput {
+    string symbol = 1;
+    string field = 2;
+    aelf.Address owner = 3;
+    aelf.Address spender = 4;
+    int64 allowance = 5;
+}
+
+message CrossChainTransferInput {
+    aelf.Address to = 1;
+    string symbol = 2;
+    int64 amount = 3;
+    string memo = 4;
+    int32 to_chain_id = 5;
+    int32 issue_chain_id = 6;
+}
+
+message CrossChainReceiveTokenInput {
+    int32 from_chain_id = 1;
+    int64 parent_chain_height = 2;
+    bytes transfer_transaction_bytes = 3;
+    aelf.MerklePath merkle_path = 4;
+}
+
+message TokenInfoList {
+    repeated TokenInfo value = 1;
+}
+
+// Events
+
+message Transferred {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1 [(aelf.is_indexed) = true];
+    aelf.Address to = 2 [(aelf.is_indexed) = true];
+    string symbol = 3 [(aelf.is_indexed) = true];
+    int64 amount = 4;
+    string memo = 5;
+}
+
+message Approved {
+    option (aelf.is_event) = true;
+    aelf.Address owner = 1 [(aelf.is_indexed) = true];
+    aelf.Address spender = 2 [(aelf.is_indexed) = true];
+    string symbol = 3 [(aelf.is_indexed) = true];
+    int64 amount = 4;
+}
+
+message UnApproved {
+    option (aelf.is_event) = true;
+    aelf.Address owner = 1 [(aelf.is_indexed) = true];
+    aelf.Address spender = 2 [(aelf.is_indexed) = true];
+    string symbol = 3 [(aelf.is_indexed) = true];
+    int64 amount = 4;
+}
+
+message CrossChainTransferred {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1;
+    aelf.Address to = 2;
+    string symbol = 3;
+    int64 amount = 4;
+    string memo = 5;
+    int32 to_chain_id = 6;
+    int32 issue_chain_id = 7;
+}
+
+message CrossChainReceived {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1;
+    aelf.Address to = 2;
+    string symbol = 3;
+    int64 amount = 4;
+    string memo = 5;
+    int32 from_chain_id = 6;
+    int32 issue_chain_id = 7;
+    int64 parent_chain_height = 8;
+}
