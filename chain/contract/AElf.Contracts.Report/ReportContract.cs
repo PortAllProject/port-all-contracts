@@ -116,7 +116,7 @@ namespace AElf.Contracts.Report
             var nodeDataList = new NodeDataList();
             nodeDataList.MergeFrom(input.Result);
 
-            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress];
+            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.Token];
 
             var offChainAggregatorContractInfo =
                 State.OffChainAggregatorContractInfoMap[nodeDataList.Token];
@@ -145,7 +145,7 @@ namespace AElf.Contracts.Report
                     AggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList).Value
                 };
                 State.ReportMap[nodeDataList.Token][currentRoundId] = report;
-                State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
+                State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
                 Context.Fire(new ReportProposed
                 {
                     ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
@@ -193,7 +193,7 @@ namespace AElf.Contracts.Report
                         RoundId = currentRoundId,
                         RawReport = reportGenerator.GenerateEthereumReport(configDigest, report)
                     });
-                    State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
+                    State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
                 }
 
                 State.ReportMap[nodeDataList.Token][currentRoundId] = report;
