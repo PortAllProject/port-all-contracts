@@ -81,6 +81,8 @@ namespace AElf.Contracts.Oracle
         [Fact]
         internal async Task<QueryRecord> QueryOracleTest()
         {
+            var offChainAggregatorContractInfo = await AddOffChainAggregatorTest();
+            
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
                 Symbol = TokenSymbol,
@@ -93,8 +95,6 @@ namespace AElf.Contracts.Oracle
                 Symbol = TokenSymbol,
                 Amount = long.MaxValue
             });
-
-            var offChainAggregatorContractInfo = await AddOffChainAggregatorTest();
             var queryOracleInput = new QueryOracleInput
             {
                 Payment = 10_00000000,
