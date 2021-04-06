@@ -123,7 +123,6 @@ namespace AElf.Contracts.Report
 
             Report report;
             var configDigest = offChainAggregatorContractInfo.ConfigDigest;
-            var reportGenerator = new ReportGenerator();
             if (offChainAggregatorContractInfo.OffChainInfo.Count == 1)
             {
                 var originObservations = new Observations
@@ -151,7 +150,7 @@ namespace AElf.Contracts.Report
                     ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                     EthereumContractAddress = nodeDataList.Token,
                     RoundId = currentRoundId,
-                    RawReport = reportGenerator.GenerateEthereumReport(configDigest, report)
+                    RawReport = GenerateEthereumReport(configDigest, report)
                 });
             }
             else
@@ -191,7 +190,7 @@ namespace AElf.Contracts.Report
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         EthereumContractAddress = nodeDataList.Token,
                         RoundId = currentRoundId,
-                        RawReport = reportGenerator.GenerateEthereumReport(configDigest, report)
+                        RawReport = GenerateEthereumReport(configDigest, report)
                     });
                     State.CurrentRoundIdMap[nodeDataList.ObserverAssociationAddress] = currentRoundId.Add(1);
                 }

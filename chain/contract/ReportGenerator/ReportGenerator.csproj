@@ -9,6 +9,9 @@
     <CommonMessage Include="..\..\protobuf\report_contract.proto">
         <Link>Protobuf\Proto\report_contract.proto</Link>
     </CommonMessage>
+    <CommonMessage Include="..\..\protobuf\oracle_contract.proto">
+        <Link>Protobuf\Proto\oracle_contract.proto</Link>
+    </CommonMessage>
     <CommonMessage Include="..\..\protobuf\callback_input.proto">
         <Link>Protobuf\Proto\callback_input.proto</Link>
     </CommonMessage>

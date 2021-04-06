@@ -45,8 +45,7 @@ namespace AElf.Contracts.Report
 
         public override StringValue GenerateEthererumReport(GenerateEthererumReportInput input)
         {
-            var reportGenerateService = new ReportGenerator();
-            var report = reportGenerateService.GenerateEthereumReport(input.ConfigDigest, input.Report);
+            var report = GenerateEthereumReport(input.ConfigDigest, input.Report);
             return new StringValue
             {
                 Value = report
@@ -60,8 +59,7 @@ namespace AElf.Contracts.Report
             var roundReport = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             Assert(roundReport != null, $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");
             var configDigest = contractInfo.ConfigDigest;
-            var reportGenerateService = new ReportGenerator();
-            var report = reportGenerateService.GenerateEthereumReport(configDigest, roundReport);
+            var report = GenerateEthereumReport(configDigest, roundReport);
             return new StringValue
             {
                 Value = report

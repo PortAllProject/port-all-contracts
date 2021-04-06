@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using AElf;
+using AElf.Contracts.Oracle;
 using AElf.Contracts.Report;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
+using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
@@ -156,16 +158,38 @@ namespace ReportGenerator
             return ret;
         }
 
-        public byte[] GenerateObserverIndex(Report report)
+        // public byte[] GenerateObserverIndex(Report report)
+        // {
+        //     var observations = report.Observations.Value;
+        //     var observerIndex = new byte[SlotByteSize];
+        //     for (var i = 0; i < observations.Count; i++)
+        //     {
+        //         observerIndex[i] =  (byte)int.Parse(observations[i].Key);
+        //     }
+        //     return observerIndex;
+        // }
+        
+        private bool GenerateObserverIndex(NodeDataList nodeList, out IList<byte> observerIndex, out IList<byte> observationsCount)
         {
-            var observations = report.Observations.Value;
-            var observerIndex = new byte[SlotByteSize];
-            for (var i = 0; i < observations.Count; i++)
+            var groupObservation = nodeList.Value.GroupBy(x => x.Address);
+            observerIndex = new byte[SlotByteSize];
+            observationsCount = new byte[SlotByteSize];
+            var observerCount = 
+            foreach (var observerInfo in groupObservation)
+            {
+                observerIndex = (byte)GetIndex(observerInfo.Key);
+            }
+            for (var i = 0; i < groupObservation; i++)
             {
                 observerIndex[i] =  (byte)int.Parse(observations[i].Key);
             }
-            return observerIndex;
+            
+            
+            
+
+            return true;
         }
+
         public IList<byte> SerializeReport(object[] data, params string[] dataType)
         {
             var dataLength = (long)dataType.Length;
@@ -269,6 +293,11 @@ namespace ReportGenerator
                 dstOffset ++;
             }
             //Buffer.BlockCopy(src, srcOffset, dst, dstOffset, count);
+        }
+
+        private int GetIndex(Address key)
+        {
+            return 1;
         }
     }
 }
