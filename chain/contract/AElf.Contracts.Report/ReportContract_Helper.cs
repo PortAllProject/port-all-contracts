@@ -16,6 +16,7 @@ namespace AElf.Contracts.Report
             public const string Bytes32Array = Bytes32 + ArraySuffix;
             public const string Uint256 = "uint256";
             public const int SlotByteSize = 32;
+            public const int DigestFixedLength = 16;
 
             private readonly Dictionary<string, Func<object, IList<byte>>> _serialization;
 
@@ -30,6 +31,10 @@ namespace AElf.Contracts.Report
             public string GenerateEthereumReportWithMultipleData(ByteString configDigest, Report report)
             {
                 var data = new object[3];
+                if (configDigest.Length != DigestFixedLength)
+                {
+                    throw new AssertionException("invalid config digest");
+                }
                 data[0] = GenerateConfigText(configDigest, report);
                 data[1] = GenerateObserverIndex(report);
                 data[2] = report.AggregatedData;
@@ -39,8 +44,17 @@ namespace AElf.Contracts.Report
             public string GenerateEthereumReport(ByteString configDigest, Report report)
             {
                 var data = new object[3];
+                if (configDigest.Length != DigestFixedLength)
+                {
+                    throw new AssertionException("invalid config digest");
+                }
                 data[0] = GenerateConfigText(configDigest, report);
                 data[1] = GenerateObserverIndex(report);
+                var aggregatedData = report.AggregatedData;
+                if(aggregatedData.Length > SlotByteSize)
+                {
+                    throw new AssertionException("aggregated data is oversize(32 bytes)");
+                }
                 data[2] = GenerateObservation(report.AggregatedData);
                 return SerializeReport(data, Bytes32, Bytes32, Bytes32).ToArray().ToHex();
             }

@@ -36,6 +36,7 @@ namespace AElf.Contracts.Oracle
             await ChangeTokenIssuerToDefaultSenderAsync();
             await InitializeReportContractAsync();
             await ApplyObserversAsync();
+            var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var addOffChainAggregatorInput = new AddOffChainAggregatorInput
             {
                 ObserverList = new ObserverList
@@ -51,7 +52,7 @@ namespace AElf.Contracts.Oracle
                     }
                 },
                 EthereumContractAddress = EthereumContractAddress,
-                ConfigDigest = ByteString.CopyFromUtf8("bar"),
+                ConfigDigest = ByteStringHelper.FromHexString(digestStr),
                 AggregateThreshold = 5,
                 AggregatorContractAddress = IntegerAggregatorContractAddress
             };
@@ -145,6 +146,7 @@ namespace AElf.Contracts.Oracle
             await ChangeTokenIssuerToDefaultSenderAsync();
             await InitializeReportContractAsync();
             await ApplyObserversAsync();
+            var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var addOffChainAggregatorInput = new AddOffChainAggregatorInput
             {
                 ObserverList = new ObserverList
@@ -170,7 +172,7 @@ namespace AElf.Contracts.Oracle
                     },
                 },
                 EthereumContractAddress = EthereumContractAddress,
-                ConfigDigest = ByteString.CopyFromUtf8("123"),
+                ConfigDigest = ByteStringHelper.FromHexString(digestStr),
                 AggregateThreshold = 5,
                 AggregatorContractAddress = IntegerAggregatorContractAddress
             };
