@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.IntegerAggre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReportGenerator", "contract\ReportGenerator\ReportGenerator.csproj", "{53FDEB6A-0E8D-473C-805E-787E5DB8D9C2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Boilerplate.EventHandler", "src\AElf.Boilerplate.EventHandler\AElf.Boilerplate.EventHandler.csproj", "{F220F129-E850-438A-8FE6-D35E77995C37}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{53FDEB6A-0E8D-473C-805E-787E5DB8D9C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53FDEB6A-0E8D-473C-805E-787E5DB8D9C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53FDEB6A-0E8D-473C-805E-787E5DB8D9C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F220F129-E850-438A-8FE6-D35E77995C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F220F129-E850-438A-8FE6-D35E77995C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F220F129-E850-438A-8FE6-D35E77995C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F220F129-E850-438A-8FE6-D35E77995C37}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{1A8F790C-4172-426C-83E3-2B49589782AB} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{E36098E9-74EF-4FC0-B1FA-740FB77D029E} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{53FDEB6A-0E8D-473C-805E-787E5DB8D9C2} = {5C980166-C987-470D-AEE0-3858A170A903}
+		{F220F129-E850-438A-8FE6-D35E77995C37} = {21D85A91-5BB8-4912-8107-49435A461AAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}
