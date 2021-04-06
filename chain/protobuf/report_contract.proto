@@ -97,6 +97,7 @@ message Report {
     int64 round_id = 2;
     Observations observations  = 3;
     bytes aggregated_data = 4;
+    repeated ObserverList observers = 5;
 }
 
 message ReportQueryRecord {

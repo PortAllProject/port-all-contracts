@@ -24,5 +24,7 @@ namespace AElf.Contracts.Report
         public MappedState<Address, long> ObserverMortgagedTokensMap { get; set; }
 
         public MappedState<string, long, BinaryMerkleTree> BinaryMerkleTreeMap { get; set; }
+
+        public MappedState<string, long, int, ObserverList> NodeObserverListMap { get; set; }
     }
 }
