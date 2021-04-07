@@ -304,7 +304,8 @@ namespace AElf.Contracts.Oracle
             Context.SendInline(callbackInfo.ContractAddress, callbackInfo.MethodName, new CallbackInput
             {
                 QueryId = queryRecord.QueryId,
-                Result = finalResult.Value
+                Result = finalResult.Value,
+                OracleNodes = {queryRecord.DesignatedNodeList.Value}
             });
 
             Context.Fire(new QueryCompleted
