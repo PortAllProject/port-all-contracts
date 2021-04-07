@@ -13,16 +13,28 @@ namespace ReportGenerator
 {
     class Program
     {
+        private static string privateKey = "0x7f6965ae260469425ae839f5abc85b504883022140d5f6fc9664a96d480c068d";
         static void Main(string[] args)
         {
-            var merkelTreeRoot = HashHelper.ComputeFrom("test");
-            Console.WriteLine(merkelTreeRoot.ToHex());
+            // var merkelTreeRoot = HashHelper.ComputeFrom("test");
+            // Console.WriteLine(merkelTreeRoot.ToHex());
             //TestWithMultipleObservations();
             //TestWithSingleOneObservation();
             // var hexStr = "0x0a0431203a34";
             // var recoverStrBytes = ByteStringHelper.FromHexString(hexStr);
             // var recoverStr = StringValue.Parser.ParseFrom(recoverStrBytes);
             // Console.WriteLine(recoverStr.Value);
+
+            var signService = new SignService();
+            var privateKeyBytes = ByteStringHelper.FromHexString(privateKey).ToByteArray();
+            var report =
+                "0x000000000000f6f3ed664fd0e7be332f035ec351acf1000000000000000a0007000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0a056173646173000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000";
+            var hashMsg = SignService.GetKeccak256(report);
+            Console.WriteLine(hashMsg);
+            signService.Sign(report, privateKeyBytes, out var r, out var s, out var v);
+            Console.WriteLine("r is : " + r);
+            Console.WriteLine("s is : " + s);
+            Console.WriteLine("v is : " + v);
         }
 
         static void TestWithMultipleObservations()

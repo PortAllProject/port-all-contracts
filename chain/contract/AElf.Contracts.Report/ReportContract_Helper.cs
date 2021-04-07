@@ -42,7 +42,7 @@ namespace AElf.Contracts.Report
             // bytes32: config digest
             // bytes32: observer index in ethereum contract
             // bytes32: the observation count of each observer
-            // bytes32: the aggregated data,
+            // bytes32: the aggregated data or merkel tree root
             // bytes32: the index of chainInfo
             // bytes32: the answer's length of each chainInfo
             // bytes32[]: the concrete answer
