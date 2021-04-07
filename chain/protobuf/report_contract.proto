@@ -171,6 +171,7 @@ message GetEthererumReportInput{
 message GenerateEthererumReportInput{
     Report report = 1;
     bytes config_digest = 2;
+    aelf.Address organization = 3;
 }
 
 // Events

@@ -4,6 +4,7 @@ using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Report
 {
@@ -16,83 +17,128 @@ namespace AElf.Contracts.Report
         public const int SlotByteSize = 32;
         public const int DigestFixedLength = 16;
 
-        private string GenerateEthereumReportWithMultipleData(ByteString configDigest, Report report)
+        private string GenerateEthereumReport(ByteString configDigest, Address organization, Report report)
         {
-            var data = new object[3];
+            var data = new List<object>();
             Assert(configDigest.Length == DigestFixedLength, "invalid config digest");
-            data[0] = GenerateConfigText(configDigest, report);
-            data[1] = GenerateObserverIndex(report);
-            data[2] = report.AggregatedData;
-            return SerializeReport(data, Bytes32, Bytes32, Bytes32Array).ToArray().ToHex();
-        }
-
-        private string GenerateEthereumReport(ByteString configDigest, Report report)
-        {
-            var data = new object[3];
-            Assert(configDigest.Length == DigestFixedLength, "invalid config digest");
-            data[0] = GenerateConfigText(configDigest, report);
-            data[1] = GenerateObserverIndex(report);
+            var config = GenerateConfigText(configDigest, report);
+            var totalObserverCount =
+                GenerateObserverIndex(organization, report, out var observerIndex, out var observationsCount);
+            config[SlotByteSize.Sub(2)] = (byte) totalObserverCount;
+            data.Add(config);
+            data.Add(observerIndex);
+            data.Add(observationsCount);
             var aggregatedData = report.AggregatedData;
             if (aggregatedData.Length > SlotByteSize)
             {
                 throw new AssertionException("aggregated data is oversize(32 bytes)");
             }
-
-            data[2] = GenerateObservation(report.AggregatedData);
-            return SerializeReport(data, Bytes32, Bytes32, Bytes32).ToArray().ToHex();
+            data.Add(FillObservationBytes(report.AggregatedData));
+            GenerateMultipleObservation(report, out var observerOrder, out var observationsLength,
+                out var observations);
+            data.Add(observerOrder);
+            data.Add(observationsLength);
+            data.Add(observations);
+            // bytes32: config digest
+            // bytes32: observer index in ethereum contract
+            // bytes32: the observation count of each observer
+            // bytes32: the aggregated data,
+            // bytes32: the index of chainInfo
+            // bytes32: the answer's length of each chainInfo
+            // bytes32[]: the concrete answer
+            return SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32Array).ToArray().ToHex();
         }
 
         private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
         {
             long round = report.RoundId;
-            byte observerCount = (byte) report.Observations.Value.Count;
             byte validBytesCount = (byte) report.AggregatedData.ToByteArray().Length;
             if (round < 0)
             {
                 throw new AssertionException("invalid round");
             }
-
-            var configText = GetByteListWithCount(SlotByteSize);
+            // configText consists of:
+            // 6-byte zero padding
+            // 16-byte configDigest
+            // 8-byte round id
+            // 1-byte observer count
+            // 1-byte valid byte count (aggregated answer)
+            var configText = GetByteListWithCapacity(SlotByteSize);
             var digestBytes = configDigest.ToByteArray();
             BytesCopy(digestBytes, 0, configText, 6, 16);
             var roundBytes = round.ToBytes();
             BytesCopy(roundBytes, 0, configText, 22, 8);
-            configText[SlotByteSize.Sub(2)] = observerCount;
             configText[SlotByteSize.Sub(1)] = validBytesCount;
             return configText;
         }
 
-        private IList<byte> GenerateObservation(ByteString result)
+        private IList<byte> FillObservationBytes(ByteString result)
         {
             var observation = result.ToByteArray();
             if (observation.Length == SlotByteSize)
                 return observation;
-            var ret = GetByteListWithCount(SlotByteSize);
+            var ret = GetByteListWithCapacity(SlotByteSize);
             BytesCopy(observation, 0, ret, 0, observation.Length);
             return ret;
         }
 
-        private bool GenerateObserverIndex(Report report, out IList<byte> observerIndex, out IList<byte> observationsCount)
+        private int GenerateObserverIndex(Address organization, Report report, out List<byte> observerIndex,
+            out List<byte> observationsCount)
         {
-            var observations = report.Observations.Value.SelectMany(x => x);
-            var enumerable = observations as byte[] ?? observations.ToArray();
-            var groupObservation = enumerable.GroupBy(x => x);
-            observerIndex = GetByteListWithCount(SlotByteSize);
-            observationsCount = GetByteListWithCount(SlotByteSize);
-            
-            
-            for (var i = 0; i < groupObservation.; i++)
+            var observations = report.Observers.Any()
+                ? report.Observers.SelectMany(x => x.Value)
+                : report.Observations.Value.Select(x => Address.FromBytes(ByteArrayHelper.HexStringToByteArray(x.Key)));
+
+            var groupObservation = observations.GroupBy(x => x);
+            observerIndex = GetByteListWithCapacity(SlotByteSize);
+            observationsCount = GetByteListWithCapacity(SlotByteSize);
+            IList<Address> memberList;
+            if (organization == State.ParliamentContract.Value)
             {
-                observerIndex[i] = (byte) int.Parse(enumerable[i].Key);
+                memberList = State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
+                    .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
+            }
+            else
+            {
+                memberList = State.AssociationContract.GetOrganization.Call(organization).OrganizationMemberList
+                    .OrganizationMembers.ToList();
             }
 
-            return true;
+            int i = 0;
+            foreach (var gp in groupObservation)
+            {
+                observerIndex[i] = (byte) memberList.IndexOf(gp.Key);
+                observationsCount[i] = (byte) gp.Count();
+                i++;
+            }
+
+            return groupObservation.Count();
         }
 
-        private IList<byte> SerializeReport(object[] data, params string[] dataType)
+        private void GenerateMultipleObservation(Report report, out List<byte> observerOrder, out List<byte> observationsLength,
+            out List<byte> observations)
+        {
+            observerOrder = GetByteListWithCapacity(SlotByteSize);
+            observationsLength = GetByteListWithCapacity(SlotByteSize);
+            observations = new List<byte>();
+            int i = 0;
+            if (report.Observations.Value.Any() && !int.TryParse(report.Observations.Value[0].Key, out _))
+            {
+                return;
+            }
+            foreach (var observation in report.Observations.Value)
+            {
+                observerOrder[i] = (byte) int.Parse(observation.Key);
+                observationsLength[i] = (byte)observation.Data.Length;
+                observations.AddRange(FillObservationBytes(observation.Data));
+                i++;
+            }
+        }
+
+        private IList<byte> SerializeReport(IList<object> data, params string[] dataType)
         {
             var dataLength = (long) dataType.Length;
-            if (dataLength != data.Length)
+            if (dataLength != data.Count)
                 throw new AssertionException("invalid data length");
             var result = new List<byte>();
             long currentIndex = dataLength;
@@ -114,14 +160,16 @@ namespace AElf.Contracts.Report
                         lazyData.AddRange(ConvertLongArray(typePrefix, dataList));
                         continue;
                     }
-
-                    var bytesArray = (data[i] as ByteString).ToByteArray();
-                    var bytes32Count = bytesArray.Length.Div(SlotByteSize).Add(1);
+                    var bytesList = data[i] as List<byte>;
+                    Assert(bytesList != null, "invalid observations");
+                    var bytes32Count = bytesList.Count % SlotByteSize == 0
+                        ? bytesList.Count.Div(SlotByteSize)
+                        : bytesList.Count.Div(SlotByteSize).Add(1);
                     dataPosition = currentIndex.Mul(SlotByteSize);
                     result.AddRange(ConvertLong(dataPosition));
                     currentIndex = currentIndex.Add(bytes32Count).Add(1);
                     lazyData.AddRange(ConvertLong(bytes32Count));
-                    lazyData.AddRange(ConvertBytes32Array(bytesArray, bytes32Count.Mul(SlotByteSize)));
+                    lazyData.AddRange(ConvertBytes32Array(bytesList, bytes32Count.Mul(SlotByteSize)));
                     continue;
                 }
 
@@ -131,7 +179,7 @@ namespace AElf.Contracts.Report
                 }
                 else if (dataType[i] == Uint256)
                 {
-                    result.AddRange(ConvertLong(data[i]));
+                    result.AddRange(ConvertLong((long)data[i]));
                 }
             }
 
@@ -139,14 +187,13 @@ namespace AElf.Contracts.Report
             return result;
         }
 
-        private IList<byte> ConvertLong(object i)
+        private IList<byte> ConvertLong(long data)
         {
-            var data = (long) i;
             var b = data.ToBytes();
             if (b.Length == SlotByteSize)
                 return b;
             var diffCount = SlotByteSize.Sub(b.Length);
-            var longDataBytes = GetByteListWithCount(SlotByteSize);
+            var longDataBytes = GetByteListWithCapacity(SlotByteSize);
             byte c = 0;
             if (data < 0)
             {
@@ -177,7 +224,12 @@ namespace AElf.Contracts.Report
 
         private IList<byte> ConvertBytes32Array(IList<byte> data, int dataSize)
         {
-            var target = GetByteListWithCount(dataSize);
+            if (dataSize == 0)
+            {
+                return new List<byte>();
+            }
+
+            var target = GetByteListWithCapacity(dataSize);
             BytesCopy(data, 0, target, 0, data.Count);
             return target;
         }
@@ -202,16 +254,11 @@ namespace AElf.Contracts.Report
             }
         }
 
-        private List<byte> GetByteListWithCount(int count)
+        private List<byte> GetByteListWithCapacity(int count)
         {
             var list = new List<byte>();
             list.AddRange(Enumerable.Repeat((byte) 0, count));
             return list;
-        }
-
-        private IList<int> TransferAddressToIndex(IReadOnlyList<Address> addressList)
-        {
-            
         }
     }
 }

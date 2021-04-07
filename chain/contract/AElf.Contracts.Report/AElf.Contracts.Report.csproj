@@ -44,6 +44,9 @@
         <ContractReference Include="..\..\protobuf\acs13.proto">
             <Link>Protobuf\Proto\acs13.proto</Link>
         </ContractReference>
+        <ContractReference Include="..\..\protobuf\aedpos_contract.proto">
+            <Link>Protobuf\Proto\aedpos_contract.proto</Link>
+        </ContractReference>
         <CommonMessage Include="..\..\protobuf\callback_input.proto">
             <Link>Protobuf\Proto\callback_input.proto</Link>
         </CommonMessage>

@@ -24,6 +24,8 @@ namespace AElf.Contracts.Report
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
             State.ParliamentContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
+            State.ConsensusContract.Value =
+                Context.GetContractAddressByName(SmartContractConstants.ConsensusContractSystemName);
             State.ReportFee.Value = input.ReportFee == 0 ? DefaultReportFee : input.ReportFee;
             State.ApplyObserverFee.Value =
                 input.ApplyObserverFee == 0 ? DefaultApplyObserverFee : input.ApplyObserverFee;
@@ -151,7 +153,7 @@ namespace AElf.Contracts.Report
                     ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                     EthereumContractAddress = nodeDataList.Token,
                     RoundId = currentRoundId,
-                    RawReport = GenerateEthereumReport(configDigest, report)
+                    RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress, report)
                 });
             }
             else
@@ -202,7 +204,7 @@ namespace AElf.Contracts.Report
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         EthereumContractAddress = nodeDataList.Token,
                         RoundId = currentRoundId,
-                        RawReport = GenerateEthereumReport(configDigest, report)
+                        RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress, report)
                     });
                     State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
                 }
