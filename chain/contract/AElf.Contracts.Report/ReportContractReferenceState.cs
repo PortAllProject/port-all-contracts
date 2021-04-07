@@ -1,4 +1,5 @@
 using AElf.Contracts.Association;
+using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.Contracts.Parliament;
@@ -25,5 +26,6 @@ namespace AElf.Contracts.Report
             get;
             set;
         }
+        internal AEDPoSContractContainer.AEDPoSContractReferenceState ConsensusContract { get; set; }
     }
 }
