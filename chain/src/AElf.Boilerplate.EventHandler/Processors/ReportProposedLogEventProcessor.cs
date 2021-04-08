@@ -21,15 +21,15 @@ namespace AElf.Boilerplate.EventHandler
         {
             _configOptions = configOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
-            _keyStore = AElfKeyStore.GetKeyStore(CommonHelper.GetSignKeyDir());
+            _keyStore = AElfKeyStore.GetKeyStore();
         }
 
         public void Process(LogEvent logEvent)
         {
             var reportProposed = new ReportProposed();
             reportProposed.MergeFrom(logEvent);
-            var publicKey = GetSignPublicKey();
-            var keyPair = _keyStore.GetAccountKeyPair(publicKey);
+            var address = _configOptions.SignAddress;
+            var keyPair = _keyStore.GetAccountKeyPair(address);
             var signature = SignHelper.Sign(reportProposed.RawReport, keyPair.PrivateKey);
             var node = new NodeManager(_configOptions.BlockChainEndpoint);
             node.SendTransaction(_configOptions.AccountAddress,
@@ -39,10 +39,6 @@ namespace AElf.Boilerplate.EventHandler
                     RoundId = reportProposed.RoundId,
                     Signature = signature.RecoverInfo
                 });
-        }
-        private string GetSignPublicKey()
-        {
-            return AsyncHelper.RunSync(_keyStore.GetAccountsAsync).First();
         }
     }
 }
