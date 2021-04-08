@@ -50,6 +50,21 @@ namespace AElf.Boilerplate.EventHandler
             }
         }
 
+        public static string GetSignKeyDir()
+        {
+            try
+            {
+                var path = Path.Combine(AppRoot, "sign");
+                if (!Directory.Exists(path))
+                    Directory.CreateDirectory(path);
+                return path;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public static void CopyFiles(string originPath, string desPath)
         {
             if (!File.Exists(originPath)) throw new FileNotFoundException();

@@ -17,7 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="aelf\keys" />
+        <Folder Include="aelf\keys" />
+        <Folder Include="sign\keys" />
     </ItemGroup>
 
 </Project>
