@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Linq;
-using System.Text;
 using AElf.Contracts.Oracle;
 using AElf.CSharp.Core;
-using AElf.CSharp.Core.Extension;
 using AElf.Sdk.CSharp;
-using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
@@ -84,8 +81,10 @@ namespace AElf.Contracts.CrossChainToken
             return new Empty();
         }
 
-        public override Empty CrossChainReceiveToken(CrossChainReceiveTokenInput input)
+        public override Empty ClaimCrossChainToken(ClaimCrossChainTokenInput input)
         {
+            Assert(!State.CrossChainTransferFinishedMap[input.EthereumTransactionId],
+                $"{input.EthereumTransactionId} already transferred.");
             State.TokenContract.TransferFrom.Send(new MultiToken.TransferFromInput
             {
                 From = Context.Sender,
@@ -107,8 +106,8 @@ namespace AElf.Contracts.CrossChainToken
                 AggregateThreshold = 17,
                 DesignatedNodeList = new AddressList {Value = {State.ParliamentContract.Value}},
                 AggregatorContractAddress = Context.Self,
+                UrlToQuery = GetQueryUrl(input.EthereumTransactionId, input.FromChainField),
                 // TODO: Fill
-                UrlToQuery = "",
                 AttributeToFetch = "",
                 CallbackInfo = new CallbackInfo
                 {
@@ -116,6 +115,16 @@ namespace AElf.Contracts.CrossChainToken
                     MethodName = nameof(CrossChainConfirmToken)
                 }
             });
+
+            State.CrossChainTransferFinishedMap[input.EthereumTransactionId] = true;
+
+            Context.Fire(new CrossChainTokenClaimed
+            {
+                Sender = Context.Sender,
+                EthereumTransactionId = input.EthereumTransactionId,
+                FromChainField = input.FromChainField
+            });
+
             return new Empty();
         }
 
@@ -131,8 +140,19 @@ namespace AElf.Contracts.CrossChainToken
             {
                 State.Balances[receiveInfo.Address][tokenFullName] =
                     State.Balances[receiveInfo.Address][tokenFullName].Add(receiveInfo.Amount);
+                Context.Fire(new CrossChainTokenConfirmed
+                {
+                    TokenFullName = tokenFullName,
+                    Receiver = receiveInfo.Address,
+                    Amount = receiveInfo.Amount
+                });
             }
 
+            return new Empty();
+        }
+
+        public override Empty RegisterMerkleRoot(RegisterMerkleRootInput input)
+        {
             return new Empty();
         }
     }

@@ -52,5 +52,16 @@ namespace AElf.Contracts.CrossChainToken
         {
             return State.Balances[address][symbol];
         }
+
+        private string GetQueryUrl(string ethereumTxId, string fromChainField)
+        {
+            // TODO: Find a way to query ethereum tx result.
+            if (fromChainField == "ETH")
+            {
+                return ethereumTxId;
+            }
+
+            return string.Empty;
+        }
     }
 }

@@ -17,5 +17,7 @@ namespace AElf.Contracts.CrossChainToken
         public MappedState<Address, Address, string, long> Allowances { get; set; }
 
         public StringState OracleTokenSymbol { get; set; }
+
+        public MappedState<string, bool> CrossChainTransferFinishedMap { get; set; }
     }
 }
