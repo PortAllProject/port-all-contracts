@@ -5,7 +5,6 @@ using AElf;
 using AElf.Contracts.Report;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
-using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
@@ -13,22 +12,28 @@ namespace ReportGenerator
 {
     class Program
     {
-        private static string privateKey = "0x7f6965ae260469425ae839f5abc85b504883022140d5f6fc9664a96d480c068d";
         static void Main(string[] args)
         {
-            // var merkelTreeRoot = HashHelper.ComputeFrom("test");
-            // Console.WriteLine(merkelTreeRoot.ToHex());
             //TestWithMultipleObservations();
             //TestWithSingleOneObservation();
-            // var hexStr = "0x0a0431203a34";
-            // var recoverStrBytes = ByteStringHelper.FromHexString(hexStr);
-            // var recoverStr = StringValue.Parser.ParseFrom(recoverStrBytes);
-            // Console.WriteLine(recoverStr.Value);
+            TestSignWithAelfKey();
+        }
 
+        static void TestSignWithAelfKey()
+        {
+            var signService = new SignService();
+            var publicKey = "0x04436c5ea4d5bd45d5369e80096af55d81e93053233423a71536b360708c880402d935e4d9d888bff43be1b2b1d92e168a59c63e940c86e4d4108e456c7cbc9bf0";
+            var address = signService.GenerateAddressOnEthereum(publicKey);
+            Console.WriteLine(address);
+            Console.WriteLine("0x824b3998700F7dcB7100D484c62a7b472B6894B6");
+        }
+        static void TestSignWithEthereumPrivateKey()
+        {
+            var privateKey = "996e00ecd273f49a96b1af85ee24b6724d8ba3d9957c5bdc5fc16fd1067d542a";
             var signService = new SignService();
             var privateKeyBytes = ByteStringHelper.FromHexString(privateKey).ToByteArray();
             var report =
-                "0x000000000000f6f3ed664fd0e7be332f035ec351acf1000000000000000a0007000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0a056173646173000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000";
+                "0x00000000000022d6f8928689ea183a3eb24df3919a94000000000000000b0320000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a080001020000000000000000000000000000000000000000000000000000000000060606000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000030a0431203a3400000000000000000000000000000000000000000000000000000a0431203a3500000000000000000000000000000000000000000000000000000a0431203a360000000000000000000000000000000000000000000000000000";
             var hashMsg = SignService.GetKeccak256(report);
             Console.WriteLine(hashMsg);
             signService.Sign(report, privateKeyBytes, out var r, out var s, out var v);
@@ -94,6 +99,10 @@ namespace ReportGenerator
             };
             var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
             Console.WriteLine("0x" + bytesInEthereum);
+            // var hexStr = "0x0a0431203a34";
+            // var recoverStrBytes = ByteStringHelper.FromHexString(hexStr);
+            // var recoverStr = StringValue.Parser.ParseFrom(recoverStrBytes);
+            // Console.WriteLine(recoverStr.Value);
         }
     }
 
@@ -119,15 +128,6 @@ namespace ReportGenerator
                 [Bytes32] = ConvertBytes32, [Uint256] = ConvertLong
             };
         }
-
-        // public string GenerateEthereumReportWithMultipleData(ByteString configDigest, Report report)
-        // {
-        //     var data = new object[3];
-        //     data[0] = GenerateConfigText(configDigest, report);
-        //     data[1] = GenerateObserverIndex(report);
-        //     data[2] = report.AggregatedData;
-        //     return SerializeReport(data, Bytes32, Bytes32, Bytes32Array).ToArray().ToHex();
-        // }
         public string GenerateEthereumReport(ByteString configDigest, Report report)
         {
             var data = new List<object>();
@@ -314,11 +314,6 @@ namespace ReportGenerator
             }
 
             //Buffer.BlockCopy(src, srcOffset, dst, dstOffset, count);
-        }
-
-        private int GetIndex(Address key)
-        {
-            return 1;
         }
     }
 }
