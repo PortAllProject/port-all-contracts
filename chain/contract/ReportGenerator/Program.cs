@@ -16,7 +16,8 @@ namespace ReportGenerator
         {
             //TestWithMultipleObservations();
             //TestWithSingleOneObservation();
-            TestSignWithAelfKey();
+            //TestSignWithAelfKey();
+            TestSignWithEthereumPrivateKey();
         }
 
         static void TestSignWithAelfKey()
@@ -36,10 +37,10 @@ namespace ReportGenerator
                 "0x00000000000022d6f8928689ea183a3eb24df3919a94000000000000000b0320000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a080001020000000000000000000000000000000000000000000000000000000000060606000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000030a0431203a3400000000000000000000000000000000000000000000000000000a0431203a3500000000000000000000000000000000000000000000000000000a0431203a360000000000000000000000000000000000000000000000000000";
             var hashMsg = SignService.GetKeccak256(report);
             Console.WriteLine(hashMsg);
-            signService.Sign(report, privateKeyBytes, out var r, out var s, out var v);
-            Console.WriteLine("r is : " + r);
-            Console.WriteLine("s is : " + s);
-            Console.WriteLine("v is : " + v);
+            var signature = signService.Sign(report, privateKeyBytes);
+            Console.WriteLine("r is : " + signature.R);
+            Console.WriteLine("s is : " + signature.S);
+            Console.WriteLine("v is : " + signature.V);
         }
 
         static void TestWithMultipleObservations()

@@ -2,11 +2,18 @@ using System;
 using System.Linq;
 using AElf;
 using AElf.Cryptography;
-using AElf.Cryptography.ECDSA;
 using Org.BouncyCastle.Crypto.Digests;
 
 namespace ReportGenerator
 {
+    public class Signature
+    {
+        public string HashMsg { get; set; }
+        public string RecoverInfo { get; set; }
+        public string R { get; set; }
+        public string S { get; set; }
+        public string V { get; set; }
+    }
     public class SignService
     {
         public string GenerateAddressOnEthereum(byte[] publicKey)
@@ -33,19 +40,23 @@ namespace ReportGenerator
             var address = "0x" + publicKey.Substring(publicKey.Length - 40, 40);
             return address;
         }
-        public void Sign(string hexMsg, byte[] privateKey, out string r, out string s, out string v)
+        public Signature Sign(string hexMsg, byte[] privateKey)
         {
             var msgHashBytes = ByteStringHelper.FromHexString(GetKeccak256(hexMsg));
             var recoverableInfo = CryptoHelper.SignWithPrivateKey(privateKey, msgHashBytes.ToByteArray());
             var rBytes = recoverableInfo.Take(32).ToArray();
             var sBytes = recoverableInfo.Skip(32).Take(32).ToArray();
             var vBytes = recoverableInfo.Skip(64).Take(1).ToArray();
-            
-            r = rBytes.ToHex();
-            s = sBytes.ToHex();
-            v = vBytes.ToHex();
+            return new Signature
+            {
+                HashMsg = msgHashBytes.ToHex(),
+                RecoverInfo = recoverableInfo.ToHex(),
+                R = rBytes.ToHex(),
+                S = sBytes.ToHex(),
+                V = vBytes.ToHex()
+            };
         }
-        
+
         public static string GetKeccak256(string hexMsg)
         {
             var offset = hexMsg.StartsWith("0x") ? 2 : 0;
