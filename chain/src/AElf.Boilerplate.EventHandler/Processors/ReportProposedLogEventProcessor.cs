@@ -11,7 +11,7 @@ namespace AElf.Boilerplate.EventHandler
     {
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
-        private readonly AElfKeyStore _keyStore;
+        private readonly IKeyStore _keyStore;
 
         public string ContractName => "Report";
         public string LogEventName => nameof(ReportProposed);
