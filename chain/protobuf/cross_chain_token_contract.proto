@@ -24,7 +24,7 @@ service CrossChainTokenContract {
     // Cross-chain transfer and receive.
     rpc CrossChainTransfer (CrossChainTransferInput) returns (google.protobuf.Empty) {
     }
-    rpc ClaimCrossChainToken (ClaimCrossChainTokenInput) returns (google.protobuf.Empty) {
+    rpc ClaimCrossChainTokens (ClaimCrossChainTokensInput) returns (google.protobuf.Empty) {
     }
     rpc CrossChainConfirmToken (CallbackInput) returns (google.protobuf.Empty) {
     }
@@ -143,7 +143,7 @@ message CrossChainTokenReceiveInfoList {
     repeated CrossChainTokenReceiveInfo value = 1;
 }
 
-message ClaimCrossChainTokenInput {
+message ClaimCrossChainTokensInput {
     string from_chain_field = 1;
     string ethereum_transaction_id = 2;
 }

@@ -81,7 +81,7 @@ namespace AElf.Contracts.CrossChainToken
             return new Empty();
         }
 
-        public override Empty ClaimCrossChainToken(ClaimCrossChainTokenInput input)
+        public override Empty ClaimCrossChainTokens(ClaimCrossChainTokensInput input)
         {
             Assert(!State.CrossChainTransferFinishedMap[input.EthereumTransactionId],
                 $"{input.EthereumTransactionId} already transferred.");
