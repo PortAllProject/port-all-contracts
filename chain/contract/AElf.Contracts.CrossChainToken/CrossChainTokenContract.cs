@@ -50,7 +50,7 @@ namespace AElf.Contracts.CrossChainToken
             var tokenFullName = GetTokenFullName(input.Symbol, input.Field);
             State.Allowances[Context.Sender][input.Spender][tokenFullName] =
                 State.Allowances[Context.Sender][input.Spender][tokenFullName].Add(input.Amount);
-            Context.Fire(new Approved()
+            Context.Fire(new Approved
             {
                 Owner = Context.Sender,
                 Spender = input.Spender,
@@ -66,7 +66,7 @@ namespace AElf.Contracts.CrossChainToken
             var oldAllowance = State.Allowances[Context.Sender][input.Spender][tokenFullName];
             var amountOrAll = Math.Min(input.Amount, oldAllowance);
             State.Allowances[Context.Sender][input.Spender][tokenFullName] = oldAllowance.Sub(amountOrAll);
-            Context.Fire(new UnApproved()
+            Context.Fire(new UnApproved
             {
                 Owner = Context.Sender,
                 Spender = input.Spender,
