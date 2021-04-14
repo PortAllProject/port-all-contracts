@@ -1,3 +1,4 @@
+using System;
 using AElf.Boilerplate.EventHandler.MockService.Dto;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
         private int FabricScore(string id, string player)
         {
             var hash = HashHelper.ConcatAndCompute(HashHelper.ComputeFrom(id), HashHelper.ComputeFrom(player));
-            return (int) hash.ToInt64();
+            return Math.Abs(1 + (int) hash.ToInt64() % 9);
         }
     }
 }
