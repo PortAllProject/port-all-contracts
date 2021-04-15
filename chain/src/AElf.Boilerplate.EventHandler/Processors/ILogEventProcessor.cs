@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using AElf.Types;
-using AElf.WebApp.MessageQueue;
 
 namespace AElf.Boilerplate.EventHandler
 {
@@ -9,6 +7,6 @@ namespace AElf.Boilerplate.EventHandler
     {
         string ContractName { get; }
         string LogEventName { get; }
-        void Process(LogEvent logEvent);
+        Task ProcessAsync(LogEvent logEvent);
     }
 }

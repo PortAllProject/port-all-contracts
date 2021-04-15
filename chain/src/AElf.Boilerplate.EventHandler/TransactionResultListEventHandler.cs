@@ -33,7 +33,7 @@ namespace AElf.Boilerplate.EventHandler
                         out var contractAddress)) return;
                     if (eventLog.Address != contractAddress) return;
                     if (eventLog.Name != logEventProcessor.LogEventName) return;
-                    logEventProcessor.Process(new LogEvent
+                    logEventProcessor.ProcessAsync(new LogEvent
                     {
                         Indexed = {eventLog.Indexed.Select(ByteString.FromBase64)},
                         NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)

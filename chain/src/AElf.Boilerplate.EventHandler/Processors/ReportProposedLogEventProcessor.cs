@@ -1,9 +1,8 @@
-using System.Linq;
+using System.Threading.Tasks;
 using AElf.Contracts.Report;
 using AElf.Types;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Threading;
 
 namespace AElf.Boilerplate.EventHandler
 {
@@ -24,7 +23,7 @@ namespace AElf.Boilerplate.EventHandler
             _keyStore = AElfKeyStore.GetKeyStore();
         }
 
-        public void Process(LogEvent logEvent)
+        public Task ProcessAsync(LogEvent logEvent)
         {
             var reportProposed = new ReportProposed();
             reportProposed.MergeFrom(logEvent);
@@ -39,6 +38,8 @@ namespace AElf.Boilerplate.EventHandler
                     RoundId = reportProposed.RoundId,
                     Signature = signature.RecoverInfo
                 });
+
+            return Task.CompletedTask;
         }
     }
 }

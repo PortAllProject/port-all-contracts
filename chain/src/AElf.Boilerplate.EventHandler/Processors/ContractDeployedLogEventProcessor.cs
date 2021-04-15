@@ -6,16 +6,18 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ContractDeployedLogEventProcessor: ILogEventProcessor, ITransientDependency
+    public class ContractDeployedLogEventProcessor : ILogEventProcessor, ITransientDependency
     {
         public string ContractName => "BasicZero";
         public string LogEventName => nameof(ContractDeployed);
 
-        public void Process(LogEvent logEvent)
+        public Task ProcessAsync(LogEvent logEvent)
         {
             var contractDeployed = new ContractDeployed();
             contractDeployed.MergeFrom(logEvent);
             Console.WriteLine(contractDeployed);
+
+            return Task.CompletedTask;
         }
     }
 }

@@ -11,11 +11,13 @@ namespace AElf.Boilerplate.EventHandler
         public string ContractName => "Report";
         public string LogEventName => nameof(ReportConfirmed);
 
-        public void Process(LogEvent logEvent)
+        public Task ProcessAsync(LogEvent logEvent)
         {
             var reportConfirmed = new ReportConfirmed();
             reportConfirmed.MergeFrom(logEvent);
             Console.WriteLine(reportConfirmed);
+
+            return Task.CompletedTask;
         }
     }
 }
