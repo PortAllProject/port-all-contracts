@@ -8,7 +8,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
     [Route("score")]
     public class ScoreQueryController : ControllerBase
     {
-        [HttpPost]
+        [HttpPost("query")]
         public ScoreDto QueryScore(QueryScoreInput input)
         {
             return new ScoreDto
@@ -18,6 +18,19 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
                 Player2 = input.Player2,
                 Score1 = FabricScore(input.Id, input.Player1),
                 Score2 = FabricScore(input.Id, input.Player2)
+            };
+        }
+
+        [HttpPost]
+        public ScoreDto QueryScore(string id, string player1, string player2)
+        {
+            return new ScoreDto
+            {
+                Id = id,
+                Player1 = player1,
+                Player2 = player2,
+                Score1 = FabricScore(id, player1),
+                Score2 = FabricScore(id, player2)
             };
         }
 

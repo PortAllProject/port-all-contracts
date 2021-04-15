@@ -47,5 +47,18 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
                 Timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
             };
         }
+
+        [HttpPost]
+        public PriceDto QueryPrice(string symbol)
+        {
+            return new PriceDto
+            {
+                Symbol = symbol,
+                Price = Math.Abs(HashHelper.ComputeFrom(symbol).ToInt64()) % 100 +
+                        decimal.Parse(DateTime.UtcNow.ToString("HH")) +
+                        decimal.Parse(DateTime.UtcNow.ToString("mmss")) * (decimal) 0.1,
+                Timestamp = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")
+            };
+        }
     }
 }
