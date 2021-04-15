@@ -52,7 +52,7 @@ namespace AElf.Contracts.Oracle
             var queryId = Context.GenerateId(HashHelper.ComputeFrom(input));
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
-            // Transfer tokens to Oracle Contract virtual address.
+            // Transfer tokens to virtual address for this query.
             var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {

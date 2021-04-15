@@ -9,117 +9,126 @@ import "google/protobuf/wrappers.proto";
 option csharp_namespace = "AElf.Contracts.Oracle";
 
 service OracleContract {
-  option (aelf.csharp_state) = "AElf.Contracts.Oracle.OracleContractState";
+    option (aelf.csharp_state) = "AElf.Contracts.Oracle.OracleContractState";
+    
+    rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
 
-  rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
+    // base function
 
-  // base function
+    rpc Query (QueryInput) returns (aelf.Hash) {}
+    
+    rpc Commit (CommitInput) returns (google.protobuf.Empty) {}
+    
+    rpc Reveal (RevealInput) returns (google.protobuf.Empty) {}
 
-  rpc Query (QueryInput) returns (aelf.Hash) {}
+    rpc CancelQuery (aelf.Hash) returns (google.protobuf.Empty) {}
+
+    // controller
+
+    rpc ChangeController (aelf.Address) returns (google.protobuf.Empty) {}
   
-  rpc Commit (CommitInput) returns (google.protobuf.Empty) {}
-  
-  rpc Reveal (RevealInput) returns (google.protobuf.Empty) {}
-
-  rpc CancelQuery (aelf.Hash) returns (google.protobuf.Empty) {}
-
-  // controller
-  rpc ChangeController (aelf.Address) returns (google.protobuf.Empty) {}
-
-  // config setting
-
-  rpc SetThreshold (SetThresholdInput) returns (google.protobuf.Empty) {}
-
-  // view methods
-
-  rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
-    option (aelf.is_view) = true;
-  }
-
-  rpc GetQueryRecord (aelf.Hash) returns (QueryRecord) {
-    option (aelf.is_view) = true;
-  }
-  
-  rpc GetCommitmentMap (aelf.Hash) returns (CommitmentMap) {
-    option (aelf.is_view) = true;
-  }
-  
-  rpc GetOracleTokenSymbol (google.protobuf.Empty) returns (google.protobuf.StringValue) {
-    option (aelf.is_view) = true;
-  }
+    // oracle nodes management
+    
+    rpc RegisterOracleNode (RegisterOracleNodeInput) returns (google.protobuf.Empty) {}
+    
+    // config setting
+    
+    rpc SetThreshold (SetThresholdInput) returns (google.protobuf.Empty) {}
+    
+    // view methods
+    
+    rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetQueryRecord (aelf.Hash) returns (QueryRecord) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetCommitmentMap (aelf.Hash) returns (CommitmentMap) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetOracleTokenSymbol (google.protobuf.Empty) returns (google.protobuf.StringValue) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetOracleNodeLockedTokenAmount (aelf.Address) returns (google.protobuf.Int64Value) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput{
-  int32 minimum_oracle_nodes_count = 1;
-  int32 default_reveal_threshold = 2;
-  int32 default_aggregate_threshold = 3;
-  int32 default_expiration_seconds = 4;
+    int32 minimum_oracle_nodes_count = 1;
+    int32 default_reveal_threshold = 2;
+    int32 default_aggregate_threshold = 3;
+    int32 default_expiration_seconds = 4;
 }
 
 message QueryInput {
-  int64 payment = 1;// Maximum for this query option.
-  CallbackInfo callback_info = 2;
-  aelf.Address aggregator_contract_address = 3;
-  AddressList designated_node_list = 4;// Will be association address if count is 1.
-  string url_to_query = 5;
-  string attribute_to_fetch = 6;
-  int32 aggregate_threshold = 7;
-  string token = 8;
+    int64 payment = 1;// Maximum for this query option.
+    CallbackInfo callback_info = 2;
+    aelf.Address aggregator_contract_address = 3;
+    AddressList designated_node_list = 4;// Will be association address if count is 1.
+    string url_to_query = 5;
+    string attribute_to_fetch = 6;
+    int32 aggregate_threshold = 7;
+    string token = 8;
 }
 
 message CallbackInfo {
-  aelf.Address contract_address = 1;
-  string method_name = 2;
+    aelf.Address contract_address = 1;
+    string method_name = 2;
 }
 
 message AddressList {
-  repeated aelf.Address value = 1;
+    repeated aelf.Address value = 1;
 }
 
 message QueryRecord {
-  AddressList designated_node_list = 2;
-  aelf.Address aggregator_contract_address = 3;
-  google.protobuf.Timestamp expiration_timestamp = 4;
-  bool is_sufficient_commitments_collected = 5;
-  bool is_sufficient_data_collected = 6;
-  bytes final_result = 7;
-  int64 payment = 8;
-  CallbackInfo callback_info = 9;
-  aelf.Hash query_id = 10;
-  int32 aggregate_threshold = 11;
-  aelf.Address query_sender = 12;
-  bool is_commit_stage_finished = 13;
-  int32 commitments_count = 14;
-  bool is_cancelled = 15;
-  string url_to_query = 16;
-  string attribute_to_fetch = 17;
-  string token = 18;
+    AddressList designated_node_list = 2;
+    aelf.Address aggregator_contract_address = 3;
+    google.protobuf.Timestamp expiration_timestamp = 4;
+    bool is_sufficient_commitments_collected = 5;
+    bool is_sufficient_data_collected = 6;
+    bytes final_result = 7;
+    int64 payment = 8;
+    CallbackInfo callback_info = 9;
+    aelf.Hash query_id = 10;
+    int32 aggregate_threshold = 11;
+    aelf.Address query_sender = 12;
+    bool is_commit_stage_finished = 13;
+    int32 commitments_count = 14;
+    bool is_cancelled = 15;
+    string url_to_query = 16;
+    string attribute_to_fetch = 17;
+    string token = 18;
 }
 
 message CommitInput {
-  aelf.Hash query_id = 1;
-  aelf.Hash commitment = 2;
+    aelf.Hash query_id = 1;
+    aelf.Hash commitment = 2;
 }
 
 message RevealInput {
-  aelf.Hash query_id = 1;
-  bytes data = 2;
-  aelf.Hash salt = 3;
+    aelf.Hash query_id = 1;
+    bytes data = 2;
+    aelf.Hash salt = 3;
 }
 
 message CommitmentMap {
-  map<string, aelf.Hash> value = 1;
+    map<string, aelf.Hash> value = 1;
 }
 
 message SetThresholdInput {
-  int32 minimum_oracle_nodes_count = 1;
-  int32 default_reveal_threshold = 2;
-  int32 default_aggregate_threshold = 3;
+    int32 minimum_oracle_nodes_count = 1;
+    int32 default_reveal_threshold = 2;
+    int32 default_aggregate_threshold = 3;
 }
 
 message ResultList {
-  repeated bytes results = 1;
-  repeated int32 frequencies = 2;
+    repeated bytes results = 1;
+    repeated int32 frequencies = 2;
 }
 
 message NodeData {
@@ -135,48 +144,59 @@ message NodeDataList {
     string token = 5;
 }
 
+message RegisterOracleNodeInput {
+    aelf.Address address = 1;
+    int64 lock_amount = 2;
+}
+
 // Events
 message QueryCreated {
-  option (aelf.is_event) = true;
-  int64 payment = 1;// Maximum for this query option.
-  CallbackInfo callback_info = 2;
-  aelf.Address aggregator_contract_address = 3;
-  AddressList designated_node_list = 4;// Will be association address if count is 1.
-  string url_to_query = 5;
-  string attribute_to_fetch = 6;
-  int32 aggregate_threshold = 7;
-  aelf.Address query_manager = 8;
-  aelf.Hash query_id = 9;
-  string token = 10;
+    option (aelf.is_event) = true;
+    int64 payment = 1;// Maximum for this query option.
+    CallbackInfo callback_info = 2;
+    aelf.Address aggregator_contract_address = 3;
+    AddressList designated_node_list = 4;// Will be association address if count is 1.
+    string url_to_query = 5;
+    string attribute_to_fetch = 6;
+    int32 aggregate_threshold = 7;
+    aelf.Address query_manager = 8;
+    aelf.Hash query_id = 9;
+    string token = 10;
 }
 
 message QueryCancelled {
-  option (aelf.is_event) = true;
-  bytes query_id = 1;
-  google.protobuf.Timestamp cancel_time = 2;
+    option (aelf.is_event) = true;
+    bytes query_id = 1;
+    google.protobuf.Timestamp cancel_time = 2;
 }
 
 message SufficientDataCollected {
-  option (aelf.is_event) = true;
-  aelf.Hash request_id = 1;
+    option (aelf.is_event) = true;
+    aelf.Hash request_id = 1;
 }
 
 message SufficientCommitmentsCollected {
-  option (aelf.is_event) = true;
-  aelf.Hash query_id = 1;
+    option (aelf.is_event) = true;
+    aelf.Hash query_id = 1;
 }
 
 message CommitmentRevealed {
-  option (aelf.is_event) = true;
-  aelf.Hash query_id = 1;
-  aelf.Address oracle_node_address = 2;
-  aelf.Hash commitment = 3;
-  bytes data = 4;
-  aelf.Hash salt = 5;
+    option (aelf.is_event) = true;
+    aelf.Hash query_id = 1;
+    aelf.Address oracle_node_address = 2;
+    aelf.Hash commitment = 3;
+    bytes data = 4;
+    aelf.Hash salt = 5;
 }
 
 message QueryCompleted {
-  option (aelf.is_event) = true;
-  aelf.Hash query_id = 1;
-  bytes result = 2;
+    option (aelf.is_event) = true;
+    aelf.Hash query_id = 1;
+    bytes result = 2;
+}
+
+message OracleNodeRegistered {
+    option (aelf.is_event) = true;
+    aelf.Address address = 1;
+    int64 locked_amount = 2;
 }

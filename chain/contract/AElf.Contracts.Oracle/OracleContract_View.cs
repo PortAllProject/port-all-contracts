@@ -38,5 +38,13 @@ namespace AElf.Contracts.Oracle
         {
             return new StringValue {Value = TokenSymbol};
         }
+
+        public override Int64Value GetOracleNodeLockedTokenAmount(Address input)
+        {
+            return new Int64Value
+            {
+                Value = State.OracleNodesLockedTokenAmountMap[input]
+            };
+        }
     }
 }
