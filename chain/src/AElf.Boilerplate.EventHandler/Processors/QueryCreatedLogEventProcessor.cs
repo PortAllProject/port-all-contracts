@@ -13,6 +13,7 @@ namespace AElf.Boilerplate.EventHandler
     public class QueryCreatedLogEventProcessor : ILogEventProcessor, ITransientDependency
     {
         private readonly ISaltProvider _saltProvider;
+        private readonly IDataProvider _dataProvider;
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
         public string ContractName => "Oracle";
@@ -20,9 +21,10 @@ namespace AElf.Boilerplate.EventHandler
 
         public QueryCreatedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider)
+            ISaltProvider saltProvider, IDataProvider dataProvider)
         {
             _saltProvider = saltProvider;
+            _dataProvider = dataProvider;
             _contractAddressOptions = contractAddressOptions.Value;
             _configOptions = configOptions.Value;
         }
@@ -36,24 +38,17 @@ namespace AElf.Boilerplate.EventHandler
                 queryCreated.DesignatedNodeList.Value.First().ToBase58() != _configOptions.ObserverAssociationAddress)
                 return;
 
-            var client = new HttpClient();
-            var responseMessage = client.PostAsync(queryCreated.UrlToQuery, null).Result;
-            var response = responseMessage.Content.ReadAsStringAsync().Result;
-
-            var data = string.Empty;
-            var jsonDoc = JsonDocument.Parse(response);
-            if (jsonDoc.RootElement.TryGetProperty(queryCreated.AttributeToFetch, out var targetElement))
-            {
-                data = targetElement.GetRawText();
-            }
-
             var node = new NodeManager(_configOptions.BlockChainEndpoint);
             node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "Commit", new CommitInput
                 {
                     QueryId = queryCreated.QueryId,
                     Commitment = HashHelper.ConcatAndCompute(
-                        HashHelper.ComputeFrom(new StringValue {Value = data}),
+                        HashHelper.ComputeFrom(new StringValue
+                        {
+                            Value = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.UrlToQuery,
+                                queryCreated.AttributeToFetch)
+                        }),
                         _saltProvider.GetSalt(queryCreated.QueryId))
                 });
         }

@@ -11,14 +11,16 @@ namespace AElf.Boilerplate.EventHandler
     public class SufficientCommitmentsCollectedLogEventProcessor : ILogEventProcessor, ITransientDependency
     {
         private readonly ISaltProvider _saltProvider;
+        private readonly IDataProvider _dataProvider;
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
 
         public SufficientCommitmentsCollectedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider)
+            ISaltProvider saltProvider, IDataProvider dataProvider)
         {
             _saltProvider = saltProvider;
+            _dataProvider = dataProvider;
             _configOptions = configOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
         }
@@ -26,7 +28,7 @@ namespace AElf.Boilerplate.EventHandler
         public string ContractName => "Oracle";
         public string LogEventName => nameof(SufficientCommitmentsCollected);
 
-        public Task ProcessAsync(LogEvent logEvent)
+        public async Task ProcessAsync(LogEvent logEvent)
         {
             var collected = new SufficientCommitmentsCollected();
             collected.MergeFrom(logEvent);
@@ -35,11 +37,9 @@ namespace AElf.Boilerplate.EventHandler
                 _contractAddressOptions.ContractAddressMap[ContractName], "Reveal", new RevealInput
                 {
                     QueryId = collected.QueryId,
-                    Data = new StringValue {Value = _configOptions.Data}.ToByteString(),
+                    Data = new StringValue {Value = await _dataProvider.GetDataAsync(collected.QueryId)}.ToByteString(),
                     Salt = _saltProvider.GetSalt(collected.QueryId)
                 });
-
-            return Task.CompletedTask;
         }
     }
 }
