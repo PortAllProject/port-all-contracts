@@ -31,7 +31,7 @@ service OracleContract {
     
     rpc LockTokens (LockTokensInput) returns (google.protobuf.Empty) {}
 
-    rpc WithdrawLockedTokens (WithdrawLockedTokensInput) returns (google.protobuf.Empty) {}
+    rpc UnlockTokens (UnlockTokensInput) returns (google.protobuf.Empty) {}
     
     // config setting
     
@@ -151,7 +151,7 @@ message LockTokensInput {
     int64 lock_amount = 2;
 }
 
-message WithdrawLockedTokensInput {
+message UnlockTokensInput {
     aelf.Address oracle_node_address = 1;
     int64 withdraw_amount = 2;
 }

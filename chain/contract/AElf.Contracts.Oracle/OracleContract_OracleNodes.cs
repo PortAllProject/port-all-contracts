@@ -30,7 +30,7 @@ namespace AElf.Contracts.Oracle
             return new Empty();
         }
 
-        public override Empty WithdrawLockedTokens(WithdrawLockedTokensInput input)
+        public override Empty UnlockTokens(UnlockTokensInput input)
         {
             var actualLockedAmount = State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress];
             Assert(actualLockedAmount >= input.WithdrawAmount, "Invalid withdraw amount.");
