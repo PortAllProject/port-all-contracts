@@ -29,7 +29,9 @@ service OracleContract {
   
     // oracle nodes management
     
-    rpc RegisterOracleNode (RegisterOracleNodeInput) returns (google.protobuf.Empty) {}
+    rpc LockTokens (LockTokensInput) returns (google.protobuf.Empty) {}
+
+    rpc WithdrawLockedTokens (WithdrawLockedTokensInput) returns (google.protobuf.Empty) {}
     
     // config setting
     
@@ -53,7 +55,7 @@ service OracleContract {
         option (aelf.is_view) = true;
     }
     
-    rpc GetOracleNodeLockedTokenAmount (aelf.Address) returns (google.protobuf.Int64Value) {
+    rpc GetLockedTokensAmount (aelf.Address) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
 }
@@ -144,9 +146,14 @@ message NodeDataList {
     string token = 5;
 }
 
-message RegisterOracleNodeInput {
-    aelf.Address address = 1;
+message LockTokensInput {
+    aelf.Address oracle_node_address = 1;
     int64 lock_amount = 2;
+}
+
+message WithdrawLockedTokensInput {
+    aelf.Address oracle_node_address = 1;
+    int64 withdraw_amount = 2;
 }
 
 // Events
@@ -195,8 +202,9 @@ message QueryCompleted {
     bytes result = 2;
 }
 
-message OracleNodeRegistered {
+message TokenLocked {
     option (aelf.is_event) = true;
-    aelf.Address address = 1;
-    int64 locked_amount = 2;
+    aelf.Address oracle_node_address = 1;
+    aelf.Address from_address = 2;
+    int64 locked_amount = 3;
 }

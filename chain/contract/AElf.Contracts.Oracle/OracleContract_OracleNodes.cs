@@ -7,7 +7,7 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContract
     {
-        public override Empty RegisterOracleNode(RegisterOracleNodeInput input)
+        public override Empty LockTokens(LockTokensInput input)
         {
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
@@ -16,14 +16,34 @@ namespace AElf.Contracts.Oracle
                 Amount = input.LockAmount,
                 Symbol = TokenSymbol
             });
-            var currentAmount = State.OracleNodesLockedTokenAmountMap[input.Address];
+            var currentAmount = State.OracleNodesLockedTokenAmountMap[input.OracleNodeAddress];
             var newAmount = currentAmount.Add(input.LockAmount);
-            State.OracleNodesLockedTokenAmountMap[input.Address] = newAmount;
-            Context.Fire(new OracleNodeRegistered
+            State.OracleNodesLockedTokenAmountMap[input.OracleNodeAddress] = newAmount;
+            State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress] =
+                State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress].Add(input.LockAmount);
+            Context.Fire(new TokenLocked
             {
-                Address = input.Address,
+                OracleNodeAddress = input.OracleNodeAddress,
+                FromAddress = Context.Sender,
                 LockedAmount = newAmount
             });
+            return new Empty();
+        }
+
+        public override Empty WithdrawLockedTokens(WithdrawLockedTokensInput input)
+        {
+            var actualLockedAmount = State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress];
+            Assert(actualLockedAmount >= input.WithdrawAmount, "Invalid withdraw amount.");
+            State.TokenContract.Transfer.Send(new TransferInput
+            {
+                To = Context.Sender,
+                Symbol = TokenSymbol,
+                Amount = input.WithdrawAmount
+            });
+            State.OracleNodesLockedTokenAmountMap[input.OracleNodeAddress] = State
+                .OracleNodesLockedTokenAmountMap[input.OracleNodeAddress].Sub(input.WithdrawAmount);
+            State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress] =
+                State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress].Sub(input.WithdrawAmount);
             return new Empty();
         }
     }
