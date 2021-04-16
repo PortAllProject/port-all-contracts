@@ -21,12 +21,6 @@ namespace AElf.Boilerplate.EventHandler
             _accounts = AsyncHelper.RunSync(_keyStore.GetAccountsAsync);
         }
 
-        public AccountManager()
-        {
-            _keyStore = AElfKeyStore.GetKeyStore();
-            _accounts = AsyncHelper.RunSync(_keyStore.GetAccountsAsync);
-        }
-
         public string NewAccount(string password = "")
         {
             if (password == "")
@@ -43,26 +37,6 @@ namespace AElf.Boilerplate.EventHandler
             _accounts.Add(accountInfo);
 
             return accountInfo;
-        }
-
-        public string GetRandomAccount()
-        {
-            var n = 0;
-            var account = string.Empty;
-            while (n < 10)
-            {
-                var number = CommonHelper.GenerateRandomNumber(0, _accounts.Count);
-                account = _accounts[number];
-
-                var result = UnlockAccount(account);
-                if (result)
-                    return account;
-                if (n == 10)
-                    throw new Exception("Cannot got random account with default password.");
-                n++;
-            }
-
-            return account;
         }
 
         public List<string> ListAccount()
@@ -86,7 +60,7 @@ namespace AElf.Boilerplate.EventHandler
                 return false;
             }
 
-            var tryOpen = AsyncHelper.RunSync(() => _keyStore.UnlockAccountAsync(address, password, false));
+            var tryOpen = AsyncHelper.RunSync(() => _keyStore.UnlockAccountAsync(false));
 
             switch (tryOpen)
             {
@@ -113,7 +87,7 @@ namespace AElf.Boilerplate.EventHandler
                 password = DefaultPassword;
 
             UnlockAccount(address, password);
-            var keyPair = GetKeyPair(address);
+            var keyPair = GetKeyPair(address, password);
             return keyPair.PublicKey.ToHex();
         }
 
@@ -125,9 +99,9 @@ namespace AElf.Boilerplate.EventHandler
             return _accounts.Contains(address);
         }
 
-        private ECKeyPair GetKeyPair(string addr)
+        private ECKeyPair GetKeyPair(string addr, string password)
         {
-            var kp = _keyStore.GetAccountKeyPair(addr);
+            var kp = _keyStore.GetAccountKeyPair();
             return kp;
         }
 

@@ -32,7 +32,8 @@ namespace AElf.Boilerplate.EventHandler
         {
             var collected = new SufficientCommitmentsCollected();
             collected.MergeFrom(logEvent);
-            var node = new NodeManager(_configOptions.BlockChainEndpoint);
+            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
+                _configOptions.AccountPassword);
             node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "Reveal", new RevealInput
                 {

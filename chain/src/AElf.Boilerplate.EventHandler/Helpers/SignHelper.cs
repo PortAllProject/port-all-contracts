@@ -16,7 +16,7 @@ namespace AElf.Boilerplate.EventHandler
     
     public class SignHelper
     {
-        public static Signature Sign(string hexMsg, byte[] privateKey)
+        public static Signature GetSignature(string hexMsg, byte[] privateKey)
         {
             var msgHashBytes = ByteStringHelper.FromHexString(GetKeccak256(hexMsg));
             var recoverableInfo = CryptoHelper.SignWithPrivateKey(privateKey, msgHashBytes.ToByteArray());

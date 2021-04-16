@@ -13,13 +13,12 @@ using Volo.Abp.Threading;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class NodeManager : INodeManager
+    public class NodeManager
     {
-        public NodeManager(string baseUrl, string keyPath = "")
+        public NodeManager(string baseUrl, string address, string password, string keyPath = "")
         {
             _baseUrl = baseUrl;
-            _keyStore = AElfKeyStore.GetKeyStore(keyPath);
-
+            _keyStore = AElfKeyStore.GetKeyStore(address, password, keyPath);
             ApiClient = AElfClientExtension.GetClient(baseUrl);
             var check = AsyncHelper.RunSync(() => ApiClient.IsConnectedAsync());
             _chainId = GetChainId();
@@ -181,7 +180,7 @@ namespace AElf.Boilerplate.EventHandler
             return transactions.ToList();
         }
 
-        public string GenerateRawTransaction(string from, string to, string methodName, IMessage inputParameter)
+        private string GenerateRawTransaction(string from, string to, string methodName, IMessage inputParameter)
         {
             var tr = new Transaction
             {

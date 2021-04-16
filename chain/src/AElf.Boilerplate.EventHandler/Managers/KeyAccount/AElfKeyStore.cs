@@ -8,6 +8,7 @@ using AElf.Cryptography;
 using AElf.Cryptography.ECDSA;
 using AElf.Cryptography.Exceptions;
 using AElf.Types;
+using Microsoft.Extensions.Options;
 using Nethereum.KeyStore;
 using Nethereum.KeyStore.Crypto;
 using Volo.Abp.Threading;
@@ -33,29 +34,33 @@ namespace AElf.Boilerplate.EventHandler
 
         private readonly List<Account> _unlockedAccounts;
 
-        public readonly string DataDirectory;
-        public AccountInfoCache CacheAccount;
+        private readonly string _dataDirectory;
+        private readonly string _address;
+        private readonly string _password;
+        public readonly AccountInfoCache CacheAccount;
         public TimeSpan DefaultTimeoutToClose = TimeSpan.FromMinutes(10); //in order to customize time setting.
 
-        private AElfKeyStore(string dataDirectory)
+        private AElfKeyStore(string address, string password, string dataDirectory)
         {
-            DataDirectory = dataDirectory;
+            _dataDirectory = dataDirectory;
+            _address = address;
+            _password = password;
             CacheAccount = new AccountInfoCache();
             _unlockedAccounts = new List<Account>();
             _keyStoreService = new KeyStoreService();
         }
 
-        public async Task<KeyStoreErrors> UnlockAccountAsync(string address, string password, bool withTimeout = true)
+        public async Task<KeyStoreErrors> UnlockAccountAsync(bool withTimeout = true)
         {
             try
             {
-                if (_unlockedAccounts.Any(x => x.AccountName == address))
+                if (_unlockedAccounts.Any(x => x.AccountName == _address))
                     return KeyStoreErrors.AccountAlreadyUnlocked;
 
                 if (withTimeout)
-                    await UnlockAccountAsync(address, password, DefaultTimeoutToClose);
+                    await UnlockAccountAsync(_address, _password, DefaultTimeoutToClose);
                 else
-                    await UnlockAccountAsync(address, password, null);
+                    await UnlockAccountAsync(_address, _password, null);
             }
             catch (InvalidPasswordException)
             {
@@ -69,13 +74,13 @@ namespace AElf.Boilerplate.EventHandler
             return KeyStoreErrors.None;
         }
 
-        public ECKeyPair GetAccountKeyPair(string address)
+        public ECKeyPair GetAccountKeyPair()
         {
-            var kp = _unlockedAccounts.FirstOrDefault(oa => oa.AccountName == address)?.KeyPair;
+            var kp = _unlockedAccounts.FirstOrDefault(oa => oa.AccountName == _address)?.KeyPair;
             if (kp == null)
             {
-                AsyncHelper.RunSync(() => UnlockAccountAsync(address, "123456789"));
-                kp = _unlockedAccounts.FirstOrDefault(oa => oa.AccountName == address)?.KeyPair;
+                AsyncHelper.RunSync(() => UnlockAccountAsync());
+                kp = _unlockedAccounts.FirstOrDefault(oa => oa.AccountName == _address)?.KeyPair;
             }
 
             return kp;
@@ -107,15 +112,15 @@ namespace AElf.Boilerplate.EventHandler
             return await Task.FromResult(accounts);
         }
 
-        public static AElfKeyStore GetKeyStore(string dataDirectory = "")
+        public static AElfKeyStore GetKeyStore(string address, string password, string dataDirectory = "")
         {
             if (dataDirectory == "")
                 dataDirectory = CommonHelper.GetCurrentDataDir();
 
-            if (_keyStore != null && _keyStore.DataDirectory == dataDirectory)
+            if (_keyStore != null && _keyStore._dataDirectory == dataDirectory)
                 return _keyStore;
 
-            _keyStore = new AElfKeyStore(dataDirectory);
+            _keyStore = new AElfKeyStore(address, password, dataDirectory);
 
             return _keyStore;
         }
@@ -235,7 +240,7 @@ namespace AElf.Boilerplate.EventHandler
 
         private string GetKeystoreDirectoryPath()
         {
-            return Path.Combine(DataDirectory, KeyFolderName);
+            return Path.Combine(_dataDirectory, KeyFolderName);
         }
     }
 }

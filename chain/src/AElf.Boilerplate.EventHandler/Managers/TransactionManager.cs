@@ -43,13 +43,13 @@ namespace AElf.Boilerplate.EventHandler
         public Transaction SignTransaction(Transaction tx)
         {
             var txData = tx.GetHash().ToByteArray();
-            tx.Signature = Sign(tx.From.ToBase58(), txData);
+            tx.Signature = Sign(txData);
             return tx;
         }
 
-        public ByteString Sign(string addr, byte[] txData)
+        public ByteString Sign(byte[] txData)
         {
-            var kp = _keyStore.GetAccountKeyPair(addr);
+            var kp = _keyStore.GetAccountKeyPair();
 
             if (kp == null)
             {

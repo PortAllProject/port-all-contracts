@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using AElf.Contracts.Oracle;
 using AElf.Types;
@@ -35,10 +33,12 @@ namespace AElf.Boilerplate.EventHandler
             queryCreated.MergeFrom(logEvent);
             if (queryCreated.Token != _configOptions.EthereumContractAddress &&
                 !queryCreated.DesignatedNodeList.Value.Contains(Address.FromBase58(_configOptions.AccountAddress)) &&
-                queryCreated.DesignatedNodeList.Value.First().ToBase58() != _configOptions.ObserverAssociationAddress)
+                !_configOptions.ObserverAssociationAddressList.Contains(queryCreated.DesignatedNodeList.Value.First()
+                    .ToBase58()))
                 return;
 
-            var node = new NodeManager(_configOptions.BlockChainEndpoint);
+            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
+                _configOptions.AccountPassword);
             node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "Commit", new CommitInput
                 {

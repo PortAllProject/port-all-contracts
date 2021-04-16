@@ -20,23 +20,23 @@ namespace AElf.Boilerplate.EventHandler
         {
             _configOptions = configOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
-            _keyStore = AElfKeyStore.GetKeyStore();
+            _keyStore = AElfKeyStore.GetKeyStore(configOptions.Value.AccountAddress,
+                configOptions.Value.AccountPassword);
         }
 
         public Task ProcessAsync(LogEvent logEvent)
         {
             var reportProposed = new ReportProposed();
             reportProposed.MergeFrom(logEvent);
-            var address = _configOptions.SignAddress;
-            var keyPair = _keyStore.GetAccountKeyPair(address);
-            var signature = SignHelper.Sign(reportProposed.RawReport, keyPair.PrivateKey);
-            var node = new NodeManager(_configOptions.BlockChainEndpoint);
+            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
+                _configOptions.AccountPassword);
             node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "ConfirmReport", new ConfirmReportInput
                 {
                     EthereumContractAddress = _configOptions.EthereumContractAddress,
                     RoundId = reportProposed.RoundId,
-                    Signature = signature.RecoverInfo
+                    Signature = SignHelper
+                        .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
                 });
 
             return Task.CompletedTask;
