@@ -106,9 +106,12 @@ namespace AElf.Contracts.CrossChainToken
                 AggregateThreshold = 17,
                 DesignatedNodeList = new AddressList {Value = {State.ParliamentContract.Value}},
                 AggregatorContractAddress = Context.Self,
-                UrlToQuery = GetQueryUrl(input.EthereumTransactionId, input.FromChainField),
-                // TODO: Fill
-                AttributeToFetch = "",
+                QueryInfo = new QueryInfo
+                {
+                    UrlToQuery = GetQueryUrl(input.EthereumTransactionId, input.FromChainField),
+                    // TODO: Fill
+                    AttributesToFetch = { }
+                },
                 CallbackInfo = new CallbackInfo
                 {
                     ContractAddress = Context.Self,

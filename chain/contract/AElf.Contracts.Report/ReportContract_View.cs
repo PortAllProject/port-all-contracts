@@ -18,9 +18,9 @@ namespace AElf.Contracts.Report
             };
         }
 
-        public override OffChainAggregatorContractInfo GetOffChainAggregatorContractInfo(StringValue input)
+        public override OffChainAggregationInfo GetOffChainAggregationInfo(StringValue input)
         {
-            return State.OffChainAggregatorContractInfoMap[input.Value];
+            return State.OffChainAggregationInfoMap[input.Value];
         }
 
         public override ReportQueryRecord GetReportQueryRecord(Hash input)
@@ -54,7 +54,7 @@ namespace AElf.Contracts.Report
 
         public override StringValue GetEthererumReport(GetEthererumReportInput input)
         {
-            var contractInfo = State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress];
+            var contractInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
             Assert(contractInfo != null, $"contract: [{input.EthereumContractAddress}] info does not exist");
             var roundReport = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             Assert(roundReport != null, $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");

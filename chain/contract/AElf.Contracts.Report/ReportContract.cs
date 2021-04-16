@@ -41,7 +41,7 @@ namespace AElf.Contracts.Report
         public override Hash QueryOracle(QueryOracleInput input)
         {
             // Assert Observer Association is already registered.
-            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress];
+            var offChainAggregatorContract = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -56,15 +56,21 @@ namespace AElf.Contracts.Report
                 Amount = State.ReportFee.Value.Add(input.Payment)
             });
 
-            Assert(offChainAggregatorContract.OffChainInfo.Count > input.NodeIndex, "Invalid node index.");
+            Assert(offChainAggregatorContract.OffChainQueryInfo.Count > input.NodeIndex, "Invalid node index.");
             var queryInput = new QueryInput
             {
                 Payment = input.Payment,
                 AggregateThreshold = Math.Max(offChainAggregatorContract.AggregateThreshold, input.AggregateThreshold),
                 // DO NOT FILL THIS FILED.
                 // AggregatorContractAddress = null,
-                UrlToQuery = offChainAggregatorContract.OffChainInfo[input.NodeIndex].UrlToQuery,
-                AttributeToFetch = offChainAggregatorContract.OffChainInfo[input.NodeIndex].AttributeToFetch,
+                QueryInfo = new QueryInfo
+                {
+                    UrlToQuery = offChainAggregatorContract.OffChainQueryInfo[input.NodeIndex].UrlToQuery,
+                    AttributesToFetch =
+                    {
+                        offChainAggregatorContract.OffChainQueryInfo[input.NodeIndex].AttributesToFetch
+                    }
+                },
                 DesignatedNodeList = new AddressList
                 {
                     Value =
@@ -120,12 +126,12 @@ namespace AElf.Contracts.Report
 
             var currentRoundId = State.CurrentRoundIdMap[nodeDataList.Token];
 
-            var offChainAggregatorContractInfo =
-                State.OffChainAggregatorContractInfoMap[nodeDataList.Token];
+            var offChainAggregationInfo =
+                State.OffChainAggregationInfoMap[nodeDataList.Token];
 
             Report report;
-            var configDigest = offChainAggregatorContractInfo.ConfigDigest;
-            if (offChainAggregatorContractInfo.OffChainInfo.Count == 1)
+            var configDigest = offChainAggregationInfo.ConfigDigest;
+            if (offChainAggregationInfo.OffChainQueryInfo.Count == 1)
             {
                 var originObservations = new Observations
                 {
@@ -143,7 +149,7 @@ namespace AElf.Contracts.Report
                     QueryId = input.QueryId,
                     RoundId = currentRoundId,
                     Observations = originObservations,
-                    AggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList).Value
+                    AggregatedData = GetAggregatedData(offChainAggregationInfo, nodeDataList).Value
                 };
                 State.ReportMap[nodeDataList.Token][currentRoundId] = report;
                 State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
@@ -158,17 +164,17 @@ namespace AElf.Contracts.Report
             }
             else
             {
-                var offChainInfo = new OffChainInfo
+                var offChainQueryInfo = new OffChainQueryInfo
                 {
-                    UrlToQuery = nodeDataList.UrlToQuery,
-                    AttributeToFetch = nodeDataList.AttributeToFetch
+                    UrlToQuery = nodeDataList.QueryInfo.UrlToQuery,
+                    AttributesToFetch = {nodeDataList.QueryInfo.AttributesToFetch}
                 };
-                var nodeIndex = offChainAggregatorContractInfo.OffChainInfo.IndexOf(offChainInfo);
-                var nodeRoundId = offChainAggregatorContractInfo.RoundIds[nodeIndex];
+                var nodeIndex = offChainAggregationInfo.OffChainQueryInfo.IndexOf(offChainQueryInfo);
+                var nodeRoundId = offChainAggregationInfo.RoundIds[nodeIndex];
                 Assert(nodeRoundId.Add(1) == currentRoundId,
-                    $"Data of {offChainInfo} already revealed.{nodeIndex}\n{offChainAggregatorContractInfo}");
-                offChainAggregatorContractInfo.RoundIds[nodeIndex] = nodeRoundId.Add(1);
-                var aggregatedData = GetAggregatedData(offChainAggregatorContractInfo, nodeDataList);
+                    $"Data of {offChainQueryInfo} already revealed.{nodeIndex}\n{offChainAggregationInfo}");
+                offChainAggregationInfo.RoundIds[nodeIndex] = nodeRoundId.Add(1);
+                var aggregatedData = GetAggregatedData(offChainAggregationInfo, nodeDataList);
                 report = State.ReportMap[nodeDataList.Token][currentRoundId] ?? new Report
                 {
                     QueryId = input.QueryId,
@@ -184,7 +190,7 @@ namespace AElf.Contracts.Report
                 {
                     Value = {nodeDataList.Value.Select(d => d.Address)}
                 };
-                if (offChainAggregatorContractInfo.RoundIds.All(i => i >= currentRoundId))
+                if (offChainAggregationInfo.RoundIds.All(i => i >= currentRoundId))
                 {
                     // Time to generate merkle tree.
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(report.Observations.Value
@@ -193,7 +199,7 @@ namespace AElf.Contracts.Report
                     State.BinaryMerkleTreeMap[nodeDataList.Token][currentRoundId] = merkleTree;
                     report.AggregatedData = merkleTree.Root.Value;
 
-                    for (var i = 0; i < offChainAggregatorContractInfo.OffChainInfo.Count; i++)
+                    for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfo.Count; i++)
                     {
                         report.Observers.Add(State.NodeObserverListMap[nodeDataList.Token][currentRoundId][i]);
                         State.NodeObserverListMap[nodeDataList.Token][currentRoundId].Remove(i);
@@ -215,10 +221,10 @@ namespace AElf.Contracts.Report
             return report;
         }
 
-        private BytesValue GetAggregatedData(OffChainAggregatorContractInfo offChainAggregatorContractInfo,
+        private BytesValue GetAggregatedData(OffChainAggregationInfo OffChainAggregationInfo,
             NodeDataList nodeDataList)
         {
-            var aggregatorContractAddress = offChainAggregatorContractInfo.AggregatorContractAddress;
+            var aggregatorContractAddress = OffChainAggregationInfo.AggregatorContractAddress;
             if (aggregatorContractAddress == null)
             {
                 return new BytesValue();
@@ -239,7 +245,7 @@ namespace AElf.Contracts.Report
         public override Empty ConfirmReport(ConfirmReportInput input)
         {
             // Assert Sender is from certain Observer Association.
-            var offChainAggregatorContract = State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress];
+            var offChainAggregatorContract = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");

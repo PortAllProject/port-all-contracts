@@ -125,7 +125,7 @@ namespace AElf.Contracts.Report {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Observations), global::AElf.Contracts.Report.Observations.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Observation), global::AElf.Contracts.Report.Observation.Parser, new[]{ "Key", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetSignatureInput), global::AElf.Contracts.Report.GetSignatureInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "Address" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregatorContractInfo), global::AElf.Contracts.Report.OffChainAggregatorContractInfo.Parser, new[]{ "ObserverAssociationAddress", "OffChainInfo", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "RoundIds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationInfo), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser, new[]{ "ObserverAssociationAddress", "OffChainInfo", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "RoundIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.AddOffChainAggregatorInput), global::AElf.Contracts.Report.AddOffChainAggregatorInput.Parser, new[]{ "ObserverList", "OffChainInfo", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainInfo), global::AElf.Contracts.Report.OffChainInfo.Parser, new[]{ "UrlToQuery", "AttributeToFetch" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetReportInput), global::AElf.Contracts.Report.GetReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId" }, null, null, null, null),
@@ -2422,15 +2422,15 @@ namespace AElf.Contracts.Report {
 
   }
 
-  public sealed partial class OffChainAggregatorContractInfo : pb::IMessage<OffChainAggregatorContractInfo>
+  public sealed partial class OffChainAggregationInfo : pb::IMessage<OffChainAggregationInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<OffChainAggregatorContractInfo> _parser = new pb::MessageParser<OffChainAggregatorContractInfo>(() => new OffChainAggregatorContractInfo());
+    private static readonly pb::MessageParser<OffChainAggregationInfo> _parser = new pb::MessageParser<OffChainAggregationInfo>(() => new OffChainAggregationInfo());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<OffChainAggregatorContractInfo> Parser { get { return _parser; } }
+    public static pb::MessageParser<OffChainAggregationInfo> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -2443,14 +2443,14 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public OffChainAggregatorContractInfo() {
+    public OffChainAggregationInfo() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public OffChainAggregatorContractInfo(OffChainAggregatorContractInfo other) : this() {
+    public OffChainAggregationInfo(OffChainAggregationInfo other) : this() {
       observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
       offChainInfo_ = other.offChainInfo_.Clone();
       ethereumContractAddress_ = other.ethereumContractAddress_;
@@ -2462,8 +2462,8 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public OffChainAggregatorContractInfo Clone() {
-      return new OffChainAggregatorContractInfo(this);
+    public OffChainAggregationInfo Clone() {
+      return new OffChainAggregationInfo(this);
     }
 
     /// <summary>Field number for the "observer_association_address" field.</summary>
@@ -2543,11 +2543,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as OffChainAggregatorContractInfo);
+      return Equals(other as OffChainAggregationInfo);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(OffChainAggregatorContractInfo other) {
+    public bool Equals(OffChainAggregationInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2676,7 +2676,7 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(OffChainAggregatorContractInfo other) {
+    public void MergeFrom(OffChainAggregationInfo other) {
       if (other == null) {
         return;
       }

@@ -80,8 +80,7 @@ namespace AElf.Contracts.Oracle
                 AggregateThreshold = input.AggregateThreshold == 0
                     ? GetAggregateThreshold(designatedNodeList.Value.Count)
                     : input.AggregateThreshold,
-                UrlToQuery = input.UrlToQuery,
-                AttributeToFetch = input.AttributeToFetch,
+                QueryInfo = input.QueryInfo,
                 Token = input.Token
             };
 
@@ -232,8 +231,7 @@ namespace AElf.Contracts.Oracle
                 var nodeDataList = State.NodeDataListMap[input.QueryId] ?? new NodeDataList
                 {
                     ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First(),
-                    UrlToQuery = queryRecord.UrlToQuery,
-                    AttributeToFetch = queryRecord.AttributeToFetch,
+                    QueryInfo = queryRecord.QueryInfo,
                     Token = queryRecord.Token
                 };
                 nodeDataList.Value.Add(new NodeData {Address = Context.Sender, Data = input.Data});

@@ -30,25 +30,25 @@ namespace AElf.Contracts.Oracle
             .ToList();
 
         [Fact]
-        internal async Task<OffChainAggregatorContractInfo> AddOffChainAggregatorTest()
+        internal async Task<OffChainAggregationInfo> AddOffChainAggregationInfoTest()
         {
             await InitializeOracleContractAsync();
             await ChangeTokenIssuerToDefaultSenderAsync();
             await InitializeReportContractAsync();
             await ApplyObserversAsync();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
-            var addOffChainAggregatorInput = new AddOffChainAggregatorInput
+            var registerOffChainAggregationInput = new RegisterOffChainAggregationInput
             {
                 ObserverList = new ObserverList
                 {
                     Value = {ObserverAddresses}
                 },
-                OffChainInfo =
+                OffChainQueryInfo =
                 {
-                    new OffChainInfo
+                    new OffChainQueryInfo
                     {
                         UrlToQuery = "www.whatever.com",
-                        AttributeToFetch = "foo"
+                        AttributesToFetch = {"foo"}
                     }
                 },
                 EthereumContractAddress = EthereumContractAddress,
@@ -56,34 +56,35 @@ namespace AElf.Contracts.Oracle
                 AggregateThreshold = 5,
                 AggregatorContractAddress = IntegerAggregatorContractAddress
             };
-            var executionResult = await ReportContractStub.AddOffChainAggregator.SendAsync(addOffChainAggregatorInput);
+            var executionResult =
+                await ReportContractStub.RegisterOffChainAggregation.SendAsync(registerOffChainAggregationInput);
 
-            var offChainAggregatorContractInfo = executionResult.Output;
-            offChainAggregatorContractInfo.OffChainInfo[0].UrlToQuery.ShouldBe(addOffChainAggregatorInput
-                .OffChainInfo[0]
+            var offChainAggregationInfo = executionResult.Output;
+            offChainAggregationInfo.OffChainQueryInfo[0].UrlToQuery.ShouldBe(registerOffChainAggregationInput
+                .OffChainQueryInfo[0]
                 .UrlToQuery);
-            offChainAggregatorContractInfo.OffChainInfo[0].AttributeToFetch.ShouldBe(addOffChainAggregatorInput
-                .OffChainInfo[0].AttributeToFetch);
-            offChainAggregatorContractInfo.EthereumContractAddress.ShouldBe(addOffChainAggregatorInput
+            offChainAggregationInfo.OffChainQueryInfo[0].AttributesToFetch[0].ShouldBe(registerOffChainAggregationInput
+                .OffChainQueryInfo[0].AttributesToFetch[0]);
+            offChainAggregationInfo.EthereumContractAddress.ShouldBe(registerOffChainAggregationInput
                 .EthereumContractAddress);
-            offChainAggregatorContractInfo.ConfigDigest.ToHex()
-                .ShouldBe(addOffChainAggregatorInput.ConfigDigest.ToHex());
-            offChainAggregatorContractInfo.AggregateThreshold.ShouldBe(addOffChainAggregatorInput.AggregateThreshold);
+            offChainAggregationInfo.ConfigDigest.ToHex()
+                .ShouldBe(registerOffChainAggregationInput.ConfigDigest.ToHex());
+            offChainAggregationInfo.AggregateThreshold.ShouldBe(registerOffChainAggregationInput.AggregateThreshold);
             // Association created.
             var organization =
-                await AssociationContractStub.GetOrganization.CallAsync(offChainAggregatorContractInfo
+                await AssociationContractStub.GetOrganization.CallAsync(offChainAggregationInfo
                     .ObserverAssociationAddress);
             organization.OrganizationMemberList.OrganizationMembers.Count.ShouldBe(5);
             organization.ProposerWhiteList.Proposers.First().ShouldBe(ReportContractAddress);
 
-            return offChainAggregatorContractInfo;
+            return offChainAggregationInfo;
         }
 
         [Fact]
         internal async Task<QueryRecord> QueryOracleTest()
         {
-            var offChainAggregatorContractInfo = await AddOffChainAggregatorTest();
-            
+            var offChainAggregationInfo = await AddOffChainAggregationInfoTest();
+
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
                 Symbol = TokenSymbol,
@@ -108,7 +109,7 @@ namespace AElf.Contracts.Oracle
             var queryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryId);
             queryRecord.Payment.ShouldBe(queryOracleInput.Payment);
             queryRecord.DesignatedNodeList.Value.First()
-                .ShouldBe(offChainAggregatorContractInfo.ObserverAssociationAddress);
+                .ShouldBe(offChainAggregationInfo.ObserverAssociationAddress);
 
             var reportQueryRecord = await ReportContractStub.GetReportQueryRecord.CallAsync(queryId);
             reportQueryRecord.OriginQuerySender.ShouldBe(DefaultSender);
@@ -147,28 +148,28 @@ namespace AElf.Contracts.Oracle
             await InitializeReportContractAsync();
             await ApplyObserversAsync();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
-            var addOffChainAggregatorInput = new AddOffChainAggregatorInput
+            var addOffChainAggregatorInput = new RegisterOffChainAggregationInput
             {
                 ObserverList = new ObserverList
                 {
                     Value = {ObserverAddresses}
                 },
-                OffChainInfo =
+                OffChainQueryInfo =
                 {
-                    new OffChainInfo
+                    new OffChainQueryInfo
                     {
                         UrlToQuery = "www.whatever.com",
-                        AttributeToFetch = "foo"
+                        AttributesToFetch = {"foo"}
                     },
-                    new OffChainInfo
+                    new OffChainQueryInfo
                     {
                         UrlToQuery = "www.youbiteme.com",
-                        AttributeToFetch = "bar"
+                        AttributesToFetch = {"bar"}
                     },
-                    new OffChainInfo
+                    new OffChainQueryInfo
                     {
                         UrlToQuery = "www.helloworld.com",
-                        AttributeToFetch = "yes"
+                        AttributesToFetch = {"yes"}
                     },
                 },
                 EthereumContractAddress = EthereumContractAddress,
@@ -176,13 +177,13 @@ namespace AElf.Contracts.Oracle
                 AggregateThreshold = 5,
                 AggregatorContractAddress = IntegerAggregatorContractAddress
             };
-            var offChainAggregatorContractInfo =
-                (await ReportContractStub.AddOffChainAggregator.SendAsync(addOffChainAggregatorInput)).Output;
-            offChainAggregatorContractInfo.OffChainInfo[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
-                .OffChainInfo[2]
+            var offChainAggregationInfo =
+                (await ReportContractStub.RegisterOffChainAggregation.SendAsync(addOffChainAggregatorInput)).Output;
+            offChainAggregationInfo.OffChainQueryInfo[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
+                .OffChainQueryInfo[2]
                 .UrlToQuery);
-            offChainAggregatorContractInfo.OffChainInfo[2].AttributeToFetch.ShouldBe(addOffChainAggregatorInput
-                .OffChainInfo[2].AttributeToFetch);
+            offChainAggregationInfo.OffChainQueryInfo[2].AttributesToFetch[0].ShouldBe(addOffChainAggregatorInput
+                .OffChainQueryInfo[2].AttributesToFetch[0]);
 
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
@@ -225,7 +226,7 @@ namespace AElf.Contracts.Oracle
 
             var report = await ReportContractStub.GetReport.CallAsync(new GetReportInput
             {
-                EthereumContractAddress = offChainAggregatorContractInfo.EthereumContractAddress,
+                EthereumContractAddress = offChainAggregationInfo.EthereumContractAddress,
                 RoundId = 1
             });
             var string2 = new StringValue {Value = "2"};

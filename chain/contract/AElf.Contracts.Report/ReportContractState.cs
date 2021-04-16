@@ -19,7 +19,7 @@ namespace AElf.Contracts.Report
         /// </summary>
         public MappedState<string, long, Report> ReportMap { get; set; }
 
-        public MappedState<string, OffChainAggregatorContractInfo> OffChainAggregatorContractInfoMap { get; set; }
+        public MappedState<string, OffChainAggregationInfo> OffChainAggregationInfoMap { get; set; }
 
         public MappedState<Address, long> ObserverMortgagedTokensMap { get; set; }
 

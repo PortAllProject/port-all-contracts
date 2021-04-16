@@ -30,8 +30,11 @@ namespace AElf.Contracts.OracleUser
             var queryInput = new QueryInput
             {
                 AggregatorContractAddress = input.AggregatorContractAddress,
-                UrlToQuery = "www.temperature.com",
-                AttributeToFetch = "temperature",
+                QueryInfo = new QueryInfo
+                {
+                    UrlToQuery = "www.temperature.com",
+                    AttributesToFetch = {"temperature"},
+                },
                 CallbackInfo = new CallbackInfo
                 {
                     ContractAddress = Context.Self,

@@ -7,10 +7,11 @@ namespace AElf.Contracts.Report
 {
     public partial class ReportContract
     {
-        public override OffChainAggregatorContractInfo AddOffChainAggregator(AddOffChainAggregatorInput input)
+        public override OffChainAggregationInfo RegisterOffChainAggregation(
+            RegisterOffChainAggregationInput input)
         {
-            Assert(input.OffChainInfo.Count >= 1, "At least 1 off-chain info.");
-            if (input.OffChainInfo.Count > 1)
+            Assert(input.OffChainQueryInfo.Count >= 1, "At least 1 off-chain info.");
+            if (input.OffChainQueryInfo.Count > 1)
             {
                 Assert(input.AggregatorContractAddress != null,
                     "Merkle tree style aggregator must set aggregator contract address.");
@@ -28,23 +29,23 @@ namespace AElf.Contracts.Report
                 organizationAddress = CreateObserverAssociation(input.ObserverList);
             }
 
-            var offChainAggregatorContractInfo = new OffChainAggregatorContractInfo
+            var offChainAggregationInfo = new OffChainAggregationInfo
             {
                 EthereumContractAddress = input.EthereumContractAddress,
-                OffChainInfo = {input.OffChainInfo},
+                OffChainQueryInfo = {input.OffChainQueryInfo},
                 ConfigDigest = input.ConfigDigest,
                 ObserverAssociationAddress = organizationAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress
             };
-            for (var i = 0; i < input.OffChainInfo.Count; i++)
+            for (var i = 0; i < input.OffChainQueryInfo.Count; i++)
             {
-                offChainAggregatorContractInfo.RoundIds.Add(0);
+                offChainAggregationInfo.RoundIds.Add(0);
             }
 
-            State.OffChainAggregatorContractInfoMap[input.EthereumContractAddress] = offChainAggregatorContractInfo;
+            State.OffChainAggregationInfoMap[input.EthereumContractAddress] = offChainAggregationInfo;
             State.CurrentRoundIdMap[input.EthereumContractAddress] = 1;
-            return offChainAggregatorContractInfo;
+            return offChainAggregationInfo;
         }
 
         private void AssertObserversRegistered(ObserverList observerList)

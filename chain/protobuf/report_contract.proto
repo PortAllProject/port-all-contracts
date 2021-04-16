@@ -39,7 +39,7 @@ service ReportContract {
     
     // Offchain Aggregator Contract management.
     
-    rpc AddOffChainAggregator (AddOffChainAggregatorInput) returns (OffChainAggregatorContractInfo) {}
+    rpc RegisterOffChainAggregation (RegisterOffChainAggregationInput) returns (OffChainAggregationInfo) {}
     
     // Merkle tree style aggregator.
     
@@ -55,7 +55,7 @@ service ReportContract {
     rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
-    rpc GetOffChainAggregatorContractInfo (google.protobuf.StringValue) returns (OffChainAggregatorContractInfo) {
+    rpc GetOffChainAggregationInfo (google.protobuf.StringValue) returns (OffChainAggregationInfo) {
         option (aelf.is_view) = true;
     }
     rpc GetReportQueryRecord (aelf.Hash) returns (ReportQueryRecord) {
@@ -128,28 +128,28 @@ message GetSignatureInput {
     aelf.Address address = 3;
 }
 
-message OffChainAggregatorContractInfo {
-    aelf.Address observer_association_address = 1;
-    repeated OffChainInfo off_chain_info = 2;
-    string ethereum_contract_address = 3;
+message OffChainAggregationInfo {
+    string ethereum_contract_address = 1;
+    repeated OffChainQueryInfo off_chain_query_info = 2;
+    aelf.Address observer_association_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
     repeated int32 round_ids = 7;
 }
 
-message AddOffChainAggregatorInput {
+message RegisterOffChainAggregationInput {
     ObserverList observer_list = 1;
-    repeated OffChainInfo off_chain_info = 2;
+    repeated OffChainQueryInfo off_chain_query_info = 2;
     string ethereum_contract_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
 }
 
-message OffChainInfo {
+message OffChainQueryInfo {
     string url_to_query = 1;
-    string attribute_to_fetch = 2;
+    repeated string attributes_to_fetch = 2;
 }
 
 message GetReportInput {

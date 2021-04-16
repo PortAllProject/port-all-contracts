@@ -71,7 +71,7 @@ namespace AElf.Contracts.Report {
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.Report> __Marshaller_Report = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.Report.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int64Value> __Marshaller_google_protobuf_Int64Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int64Value.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.AddOffChainAggregatorInput> __Marshaller_AddOffChainAggregatorInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.AddOffChainAggregatorInput.Parser.ParseFrom);
-    static readonly aelf::Marshaller<global::AElf.Contracts.Report.OffChainAggregatorContractInfo> __Marshaller_OffChainAggregatorContractInfo = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.OffChainAggregatorContractInfo.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Report.OffChainAggregationInfo> __Marshaller_OffChainAggregationInfo = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetMerklePathInput> __Marshaller_GetMerklePathInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetMerklePathInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Types.MerklePath> __Marshaller_aelf_MerklePath = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.MerklePath.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetReportInput> __Marshaller_GetReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetReportInput.Parser.ParseFrom);
@@ -161,12 +161,12 @@ namespace AElf.Contracts.Report {
         __Marshaller_google_protobuf_Int64Value,
         __Marshaller_google_protobuf_Empty);
 
-    static readonly aelf::Method<global::AElf.Contracts.Report.AddOffChainAggregatorInput, global::AElf.Contracts.Report.OffChainAggregatorContractInfo> __Method_AddOffChainAggregator = new aelf::Method<global::AElf.Contracts.Report.AddOffChainAggregatorInput, global::AElf.Contracts.Report.OffChainAggregatorContractInfo>(
+    static readonly aelf::Method<global::AElf.Contracts.Report.AddOffChainAggregatorInput, global::AElf.Contracts.Report.OffChainAggregationInfo> __Method_AddOffChainAggregator = new aelf::Method<global::AElf.Contracts.Report.AddOffChainAggregatorInput, global::AElf.Contracts.Report.OffChainAggregationInfo>(
         aelf::MethodType.Action,
         __ServiceName,
         "AddOffChainAggregator",
         __Marshaller_AddOffChainAggregatorInput,
-        __Marshaller_OffChainAggregatorContractInfo);
+        __Marshaller_OffChainAggregationInfo);
 
     static readonly aelf::Method<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath> __Method_GetMerklePath = new aelf::Method<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath>(
         aelf::MethodType.View,
@@ -189,12 +189,12 @@ namespace AElf.Contracts.Report {
         __Marshaller_GetSignatureInput,
         __Marshaller_google_protobuf_StringValue);
 
-    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.StringValue, global::AElf.Contracts.Report.OffChainAggregatorContractInfo> __Method_GetOffChainAggregatorContractInfo = new aelf::Method<global::Google.Protobuf.WellKnownTypes.StringValue, global::AElf.Contracts.Report.OffChainAggregatorContractInfo>(
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.StringValue, global::AElf.Contracts.Report.OffChainAggregationInfo> __Method_GetOffChainAggregationInfo = new aelf::Method<global::Google.Protobuf.WellKnownTypes.StringValue, global::AElf.Contracts.Report.OffChainAggregationInfo>(
         aelf::MethodType.View,
         __ServiceName,
-        "GetOffChainAggregatorContractInfo",
+        "GetOffChainAggregationInfo",
         __Marshaller_google_protobuf_StringValue,
-        __Marshaller_OffChainAggregatorContractInfo);
+        __Marshaller_OffChainAggregationInfo);
 
     static readonly aelf::Method<global::AElf.Types.Hash, global::AElf.Contracts.Report.ReportQueryRecord> __Method_GetReportQueryRecord = new aelf::Method<global::AElf.Types.Hash, global::AElf.Contracts.Report.ReportQueryRecord>(
         aelf::MethodType.View,

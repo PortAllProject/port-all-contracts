@@ -72,10 +72,9 @@ message QueryInput {
     CallbackInfo callback_info = 2;
     aelf.Address aggregator_contract_address = 3;
     AddressList designated_node_list = 4;// Will be association address if count is 1.
-    string url_to_query = 5;
-    string attribute_to_fetch = 6;
-    int32 aggregate_threshold = 7;
-    string token = 8;
+    QueryInfo query_info = 5;
+    int32 aggregate_threshold = 6;
+    string token = 7;
 }
 
 message CallbackInfo {
@@ -88,23 +87,22 @@ message AddressList {
 }
 
 message QueryRecord {
-    AddressList designated_node_list = 2;
-    aelf.Address aggregator_contract_address = 3;
-    google.protobuf.Timestamp expiration_timestamp = 4;
-    bool is_sufficient_commitments_collected = 5;
-    bool is_sufficient_data_collected = 6;
-    bytes final_result = 7;
-    int64 payment = 8;
-    CallbackInfo callback_info = 9;
-    aelf.Hash query_id = 10;
-    int32 aggregate_threshold = 11;
-    aelf.Address query_sender = 12;
-    bool is_commit_stage_finished = 13;
-    int32 commitments_count = 14;
-    bool is_cancelled = 15;
-    string url_to_query = 16;
-    string attribute_to_fetch = 17;
-    string token = 18;
+    AddressList designated_node_list = 1;
+    aelf.Address aggregator_contract_address = 2;
+    google.protobuf.Timestamp expiration_timestamp = 3;
+    bool is_sufficient_commitments_collected = 4;
+    bool is_sufficient_data_collected = 5;
+    bytes final_result = 6;
+    int64 payment = 7;
+    CallbackInfo callback_info = 8;
+    aelf.Hash query_id = 9;
+    int32 aggregate_threshold = 10;
+    aelf.Address query_sender = 11;
+    bool is_commit_stage_finished = 12;
+    int32 commitments_count = 13;
+    bool is_cancelled = 14;
+    QueryInfo query_info = 15;
+    string token = 16;
 }
 
 message CommitInput {
@@ -141,9 +139,8 @@ message NodeData {
 message NodeDataList {
     repeated NodeData value = 1;
     aelf.Address observer_association_address = 2;
-    string url_to_query = 3;
-    string attribute_to_fetch = 4;
-    string token = 5;
+    QueryInfo query_info = 3;
+    string token = 4;
 }
 
 message LockTokensInput {
@@ -156,6 +153,11 @@ message UnlockTokensInput {
     int64 withdraw_amount = 2;
 }
 
+message QueryInfo {
+    string url_to_query = 1;
+    repeated string attributes_to_fetch = 2;
+}
+
 // Events
 message QueryCreated {
     option (aelf.is_event) = true;
@@ -163,12 +165,11 @@ message QueryCreated {
     CallbackInfo callback_info = 2;
     aelf.Address aggregator_contract_address = 3;
     AddressList designated_node_list = 4;// Will be association address if count is 1.
-    string url_to_query = 5;
-    string attribute_to_fetch = 6;
-    int32 aggregate_threshold = 7;
-    aelf.Address query_manager = 8;
-    aelf.Hash query_id = 9;
-    string token = 10;
+    QueryInfo query_info = 5;
+    int32 aggregate_threshold = 6;
+    aelf.Address query_manager = 7;
+    aelf.Hash query_id = 8;
+    string token = 9;
 }
 
 message QueryCancelled {
