@@ -27,8 +27,7 @@ namespace AElf.Boilerplate.EventHandler
         {
             var reportProposed = new ReportProposed();
             reportProposed.MergeFrom(logEvent);
-            var address = _configOptions.SignAddress;
-            var keyPair = _keyStore.GetAccountKeyPair(address);
+            var keyPair = _keyStore.GetAccountKeyPair(_configOptions.SignAddress, _configOptions.SignPassword);
             var signature = SignHelper.Sign(reportProposed.RawReport, keyPair.PrivateKey);
             var node = new NodeManager(_configOptions.BlockChainEndpoint);
             node.SendTransaction(_configOptions.AccountAddress,

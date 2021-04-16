@@ -69,12 +69,16 @@ namespace AElf.Boilerplate.EventHandler
             return KeyStoreErrors.None;
         }
 
-        public ECKeyPair GetAccountKeyPair(string address)
+        public ECKeyPair GetAccountKeyPair(string address, string pwd = null)
         {
             var kp = _unlockedAccounts.FirstOrDefault(oa => oa.AccountName == address)?.KeyPair;
             if (kp == null)
             {
-                AsyncHelper.RunSync(() => UnlockAccountAsync(address, "123456789"));
+                if (pwd == null)
+                {
+                    pwd = "123456789";
+                }
+                AsyncHelper.RunSync(() => UnlockAccountAsync(address, pwd));
                 kp = _unlockedAccounts.FirstOrDefault(oa => oa.AccountName == address)?.KeyPair;
             }
 

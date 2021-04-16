@@ -8,7 +8,7 @@ namespace AElf.Boilerplate.EventHandler
     {
         Task<KeyStoreErrors> UnlockAccountAsync(string address, string password, bool withTimeout = true);
 
-        ECKeyPair GetAccountKeyPair(string address);
+        ECKeyPair GetAccountKeyPair(string address, string pwd = null);
 
         Task<ECKeyPair> CreateAccountKeyPairAsync(string password);
 
