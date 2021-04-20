@@ -81,10 +81,27 @@ namespace AElf.Contracts.Oracle
                     ? GetAggregateThreshold(designatedNodeList.Value.Count)
                     : input.AggregateThreshold,
                 QueryInfo = input.QueryInfo,
-                Token = input.Token
+                Token = input.Token,
+                MaximumPermissibleDeviation = input.MaximumPermissibleDeviation
             };
 
             State.UserAddresses[queryId] = Context.Sender;
+            
+            Context.Fire(new QueryCreated
+            {
+                QueryId = queryId,
+                QuerySender = Context.Sender,
+                AggregatorContractAddress = input.AggregatorContractAddress,
+                DesignatedNodeList = input.DesignatedNodeList,
+                CallbackInfo = input.CallbackInfo,
+                Payment = input.Payment,
+                AggregateThreshold = input.AggregateThreshold == 0
+                    ? GetAggregateThreshold(designatedNodeList.Value.Count)
+                    : input.AggregateThreshold,
+                QueryInfo = input.QueryInfo,
+                Token = input.Token,
+                MaximumPermissibleDeviation = input.MaximumPermissibleDeviation,
+            });
 
             return queryId;
         }
@@ -257,7 +274,7 @@ namespace AElf.Contracts.Oracle
                 Owner = virtualAddress,
                 Symbol = TokenSymbol
             }).Balance;
-            Assert(balance > 0, $"{helpfulNodeList}");
+            Assert(balance > 0, $"Invalid amount for these nodes: {helpfulNodeList}");
             // Distributed rewards to oracle nodes.
             foreach (var helpfulNode in helpfulNodeList.Value)
             {

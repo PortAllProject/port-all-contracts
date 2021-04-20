@@ -75,6 +75,7 @@ message QueryInput {
     QueryInfo query_info = 5;
     int32 aggregate_threshold = 6;
     string token = 7;
+    int32 maximum_permissible_deviation = 8;
 }
 
 message CallbackInfo {
@@ -103,6 +104,7 @@ message QueryRecord {
     bool is_cancelled = 14;
     QueryInfo query_info = 15;
     string token = 16;
+    int32 maximum_permissible_deviation = 17;
 }
 
 message CommitInput {
@@ -167,20 +169,16 @@ message QueryCreated {
     AddressList designated_node_list = 4;// Will be association address if count is 1.
     QueryInfo query_info = 5;
     int32 aggregate_threshold = 6;
-    aelf.Address query_manager = 7;
+    aelf.Address query_sender = 7;
     aelf.Hash query_id = 8;
     string token = 9;
+    int32 maximum_permissible_deviation = 10;
 }
 
 message QueryCancelled {
     option (aelf.is_event) = true;
     bytes query_id = 1;
     google.protobuf.Timestamp cancel_time = 2;
-}
-
-message SufficientDataCollected {
-    option (aelf.is_event) = true;
-    aelf.Hash request_id = 1;
 }
 
 message SufficientCommitmentsCollected {
