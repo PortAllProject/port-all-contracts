@@ -20,6 +20,8 @@ service ReportContract {
     rpc CancelQueryOracle (aelf.Hash) returns (google.protobuf.Empty) {}
   
     rpc ConfirmReport (ConfirmReportInput) returns (google.protobuf.Empty) {}
+
+    rpc RejectReport (RejectReportInput) returns (google.protobuf.Empty) {}
   
     rpc ProposeReport (CallbackInput) returns (Report) {}
     
@@ -27,7 +29,7 @@ service ReportContract {
 
     rpc WithdrawTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
-    // Notary management.
+    // Observer management.
 
     rpc ApplyObserver (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
@@ -92,6 +94,12 @@ message ConfirmReportInput {
     string signature = 3;
 }
 
+message RejectReportInput {
+    string ethereum_contract_address = 1;
+    int64 round_id = 2;
+    repeated aelf.Address accusing_nodes = 3;
+}
+
 message Report {
     aelf.Hash query_id = 1;
     int64 round_id = 2;
@@ -130,7 +138,7 @@ message GetSignatureInput {
 
 message OffChainAggregationInfo {
     string ethereum_contract_address = 1;
-    repeated OffChainQueryInfo off_chain_query_info = 2;
+    OffChainQueryInfoList off_chain_query_info_list = 2;
     aelf.Address observer_association_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
@@ -140,7 +148,7 @@ message OffChainAggregationInfo {
 
 message RegisterOffChainAggregationInput {
     ObserverList observer_list = 1;
-    repeated OffChainQueryInfo off_chain_query_info = 2;
+    OffChainQueryInfoList off_chain_query_info_list = 2;
     string ethereum_contract_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
@@ -174,6 +182,10 @@ message GenerateEthererumReportInput{
     aelf.Address organization = 3;
 }
 
+message OffChainQueryInfoList {
+    repeated OffChainQueryInfo value = 1;
+}
+
 // Events
 
 message ReportProposed {
@@ -190,4 +202,13 @@ message ReportConfirmed {
     string signature = 2;
     aelf.Address observer_association_address = 3;
     string ethereum_contract_address = 4;
+}
+
+message OffChainAggregationRegistered {
+    string ethereum_contract_address = 1;
+    OffChainQueryInfoList off_chain_query_info_list = 2;
+    aelf.Address observer_association_address = 3;
+    bytes config_digest = 4;
+    int32 aggregate_threshold = 5;
+    aelf.Address aggregator_contract_address = 6;
 }

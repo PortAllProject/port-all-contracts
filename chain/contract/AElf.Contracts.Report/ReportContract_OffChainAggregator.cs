@@ -10,8 +10,8 @@ namespace AElf.Contracts.Report
         public override OffChainAggregationInfo RegisterOffChainAggregation(
             RegisterOffChainAggregationInput input)
         {
-            Assert(input.OffChainQueryInfo.Count >= 1, "At least 1 off-chain info.");
-            if (input.OffChainQueryInfo.Count > 1)
+            Assert(input.OffChainQueryInfoList.Value.Count >= 1, "At least 1 off-chain info.");
+            if (input.OffChainQueryInfoList.Value.Count > 1)
             {
                 Assert(input.AggregatorContractAddress != null,
                     "Merkle tree style aggregator must set aggregator contract address.");
@@ -32,13 +32,13 @@ namespace AElf.Contracts.Report
             var offChainAggregationInfo = new OffChainAggregationInfo
             {
                 EthereumContractAddress = input.EthereumContractAddress,
-                OffChainQueryInfo = {input.OffChainQueryInfo},
+                OffChainQueryInfoList = input.OffChainQueryInfoList,
                 ConfigDigest = input.ConfigDigest,
                 ObserverAssociationAddress = organizationAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress
             };
-            for (var i = 0; i < input.OffChainQueryInfo.Count; i++)
+            for (var i = 0; i < input.OffChainQueryInfoList.Value.Count; i++)
             {
                 offChainAggregationInfo.RoundIds.Add(0);
             }
