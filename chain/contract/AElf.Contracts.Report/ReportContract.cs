@@ -272,7 +272,7 @@ namespace AElf.Contracts.Report
             }
 
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1,
-                "Merkle tree style aggregation doesn't support reject.");
+                "Merkle tree style aggregation doesn't support rejection.");
 
             var organization =
                 State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
@@ -291,9 +291,17 @@ namespace AElf.Contracts.Report
                 var accusedNodeData = report.Observations.Value.First(o => o.Key == accusingNode.ToByteArray().ToHex())
                     .Data;
                 Assert(!senderData.Equals(accusedNodeData), "Invalid accuse.");
+                // Fine.
+                State.ObserverMortgagedTokensMap[accusingNode] = State.ObserverMortgagedTokensMap[accusingNode]
+                    .Sub(GetAmercementAmount(offChainAggregationInfo.ObserverAssociationAddress));
             }
 
+            return new Empty();
+        }
 
+        public override Empty AdjustAmercementAmount(Int64Value input)
+        {
+            State.AmercementAmountMap[Context.Sender] = input.Value;
             return new Empty();
         }
     }

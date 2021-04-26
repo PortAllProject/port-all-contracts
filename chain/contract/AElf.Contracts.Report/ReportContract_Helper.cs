@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AElf.CSharp.Core;
@@ -33,6 +34,7 @@ namespace AElf.Contracts.Report
             {
                 throw new AssertionException("aggregated data is oversize(32 bytes)");
             }
+
             data.Add(FillObservationBytes(report.AggregatedData));
             GenerateMultipleObservation(report, out var observerOrder, out var observationsLength,
                 out var observations);
@@ -46,7 +48,8 @@ namespace AElf.Contracts.Report
             // bytes32: the index of chainInfo
             // bytes32: the answer's length of each chainInfo
             // bytes32[]: the concrete answer
-            return SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32Array).ToArray().ToHex();
+            return SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32Array).ToArray()
+                .ToHex();
         }
 
         private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
@@ -57,6 +60,7 @@ namespace AElf.Contracts.Report
             {
                 throw new AssertionException("invalid round");
             }
+
             // configText consists of:
             // 6-byte zero padding
             // 16-byte configDigest
@@ -115,7 +119,8 @@ namespace AElf.Contracts.Report
             return groupObservation.Count();
         }
 
-        private void GenerateMultipleObservation(Report report, out List<byte> observerOrder, out List<byte> observationsLength,
+        private void GenerateMultipleObservation(Report report, out List<byte> observerOrder,
+            out List<byte> observationsLength,
             out List<byte> observations)
         {
             observerOrder = GetByteListWithCapacity(SlotByteSize);
@@ -126,10 +131,11 @@ namespace AElf.Contracts.Report
             {
                 return;
             }
+
             foreach (var observation in report.Observations.Value)
             {
                 observerOrder[i] = (byte) int.Parse(observation.Key);
-                observationsLength[i] = (byte)observation.Data.Length;
+                observationsLength[i] = (byte) observation.Data.Length;
                 observations.AddRange(FillObservationBytes(observation.Data));
                 i++;
             }
@@ -160,6 +166,7 @@ namespace AElf.Contracts.Report
                         lazyData.AddRange(ConvertLongArray(typePrefix, dataList));
                         continue;
                     }
+
                     var bytesList = data[i] as List<byte>;
                     Assert(bytesList != null, "invalid observations");
                     var bytes32Count = bytesList.Count % SlotByteSize == 0
@@ -179,7 +186,7 @@ namespace AElf.Contracts.Report
                 }
                 else if (dataType[i] == Uint256)
                 {
-                    result.AddRange(ConvertLong((long)data[i]));
+                    result.AddRange(ConvertLong((long) data[i]));
                 }
             }
 
@@ -259,6 +266,13 @@ namespace AElf.Contracts.Report
             var list = new List<byte>();
             list.AddRange(Enumerable.Repeat((byte) 0, count));
             return list;
+        }
+
+        private long GetAmercementAmount(Address associationAddress = null)
+        {
+            return associationAddress == null
+                ? MinimumAmercementAmount
+                : Math.Max(State.AmercementAmountMap[associationAddress], MinimumAmercementAmount);
         }
     }
 }

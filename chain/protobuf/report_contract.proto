@@ -22,6 +22,8 @@ service ReportContract {
     rpc ConfirmReport (ConfirmReportInput) returns (google.protobuf.Empty) {}
 
     rpc RejectReport (RejectReportInput) returns (google.protobuf.Empty) {}
+
+    rpc AdjustAmercementAmount (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
   
     rpc ProposeReport (CallbackInput) returns (Report) {}
     
