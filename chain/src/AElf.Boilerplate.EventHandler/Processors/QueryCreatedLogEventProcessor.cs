@@ -9,7 +9,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class QueryCreatedLogEventProcessor : ILogEventProcessor, ITransientDependency
+    public class QueryCreatedLogEventProcessor : ILogEventProcessor, ISingletonDependency
     {
         private readonly ISaltProvider _saltProvider;
         private readonly IDataProvider _dataProvider;
@@ -41,18 +41,20 @@ namespace AElf.Boilerplate.EventHandler
 
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
+            var commitInput = new CommitInput
+            {
+                QueryId = queryCreated.QueryId,
+                Commitment = HashHelper.ConcatAndCompute(
+                    HashHelper.ComputeFrom(new StringValue
+                    {
+                        Value = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.UrlToQuery,
+                            queryCreated.AttributeToFetch)
+                    }),
+                    _saltProvider.GetSalt(queryCreated.QueryId))
+            };
+            Console.WriteLine($"Sent Commit tx with input: {commitInput}");
             node.SendTransaction(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap[ContractName], "Commit", new CommitInput
-                {
-                    QueryId = queryCreated.QueryId,
-                    Commitment = HashHelper.ConcatAndCompute(
-                        HashHelper.ComputeFrom(new StringValue
-                        {
-                            Value = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.UrlToQuery,
-                                queryCreated.AttributeToFetch)
-                        }),
-                        _saltProvider.GetSalt(queryCreated.QueryId))
-                });
+                _contractAddressOptions.ContractAddressMap[ContractName], "Commit", commitInput);
         }
     }
 }

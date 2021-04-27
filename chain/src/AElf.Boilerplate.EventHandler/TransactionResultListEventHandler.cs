@@ -27,16 +27,16 @@ namespace AElf.Boilerplate.EventHandler
         public async Task HandleEventAsync(TransactionResultListEto eventData)
         {
             Console.WriteLine(
-                $"Start handling {eventData.TransactionResults.Count} new event logs of height {eventData.TransactionResults.First().Value.BlockNumber}.");
+                $"Start handling {eventData.TransactionResults.Values.Sum(r => r.Logs.Length)} new event logs of height {eventData.TransactionResults.First().Value.BlockNumber}.");
             foreach (var logEventProcessor in _logEventProcessors)
             {
                 foreach (var eventLog in eventData.TransactionResults.Values.SelectMany(result => result.Logs))
                 {
-                    Console.WriteLine($"Event log {eventLog.Name} of contract {eventLog.Address}");
                     if (!_contractAddressOptions.ContractAddressMap.TryGetValue(logEventProcessor.ContractName,
                         out var contractAddress)) return;
                     if (_contractAddressOptions.ContractAddressMap.TryGetValue("Consensus", out var consensusAddress) &&
                         eventLog.Address == consensusAddress) return;
+                    Console.WriteLine($"Event log {eventLog.Name} of contract {eventLog.Address}");
                     if (eventLog.Address != contractAddress) return;
                     if (eventLog.Name != logEventProcessor.LogEventName) return;
                     await logEventProcessor.ProcessAsync(new LogEvent
