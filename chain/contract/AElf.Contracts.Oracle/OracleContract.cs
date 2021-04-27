@@ -124,8 +124,15 @@ namespace AElf.Contracts.Oracle
 
             var organization =
                 State.AssociationContract.GetOrganization.Call(designatedNodeList.Value.First());
+            if (organization == null)
+            {
+                throw new AssertionException("Designated association not exists.");
+            }
+
             designatedNodeList = new AddressList
-                {Value = {organization.OrganizationMemberList.OrganizationMembers}};
+            {
+                Value = {organization.OrganizationMemberList.OrganizationMembers}
+            };
             return designatedNodeList;
         }
 

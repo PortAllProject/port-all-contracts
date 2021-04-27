@@ -12,6 +12,6 @@ namespace AElf.Contracts.Oracle
 
         private const int DefaultAggregateThreshold = 6;
 
-        private const int DefaultMinimumOracleNodesCount = 15;
+        private const int DefaultMinimumOracleNodesCount = 3;
     }
 }

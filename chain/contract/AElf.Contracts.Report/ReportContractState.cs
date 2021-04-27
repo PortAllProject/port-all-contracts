@@ -28,5 +28,7 @@ namespace AElf.Contracts.Report
         public MappedState<string, long, int, ObserverList> NodeObserverListMap { get; set; }
 
         public MappedState<Address, long> AmercementAmountMap { get; set; }
+
+        public SingletonState<bool> IsInitialized { get; set; }
     }
 }

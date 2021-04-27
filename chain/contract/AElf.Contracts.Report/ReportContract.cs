@@ -15,6 +15,7 @@ namespace AElf.Contracts.Report
     {
         public override Empty Initialize(InitializeInput input)
         {
+            
             State.OracleContract.Value = input.OracleContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
