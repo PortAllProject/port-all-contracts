@@ -86,7 +86,7 @@ namespace AElf.Contracts.Oracle
             };
 
             State.UserAddresses[queryId] = Context.Sender;
-            
+
             Context.Fire(new QueryCreated
             {
                 QueryId = queryId,
@@ -139,7 +139,9 @@ namespace AElf.Contracts.Oracle
         private AddressList GetDesignatedNodeList(Hash queryId)
         {
             var queryRecord = State.QueryRecords[queryId];
-            return queryRecord == null ? new AddressList() : GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
+            return queryRecord == null
+                ? new AddressList()
+                : GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
         }
 
         public override Empty Commit(CommitInput input)
@@ -377,6 +379,8 @@ namespace AElf.Contracts.Oracle
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
             State.ConsensusContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ConsensusContractSystemName);
+            State.ProfitContract.Value =
+                Context.GetContractAddressByName(SmartContractConstants.ProfitContractSystemName);
         }
 
         private void CreateToken()

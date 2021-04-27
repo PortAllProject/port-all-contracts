@@ -8,9 +8,9 @@ namespace AElf.Contracts.Oracle
 
         private const int DefaultExpirationSeconds = 3600;
 
-        private const int DefaultRevealThreshold = 9;
+        private const int DefaultRevealThreshold = 2;
 
-        private const int DefaultAggregateThreshold = 6;
+        private const int DefaultAggregateThreshold = 1;
 
         private const int DefaultMinimumOracleNodesCount = 3;
     }
