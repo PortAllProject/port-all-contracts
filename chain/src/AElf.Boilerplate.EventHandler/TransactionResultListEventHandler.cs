@@ -39,7 +39,7 @@ namespace AElf.Boilerplate.EventHandler
                         Indexed = {eventLog.Indexed.Select(ByteString.FromBase64)},
                         NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
                     });
-                    Console.WriteLine($"Received log event: {eventLog.Name} from contract address {eventLog.Address}");
+                    Console.WriteLine($"Received event log: {eventLog.Name} from contract address {eventLog.Address}");
                 }
             }
         }
