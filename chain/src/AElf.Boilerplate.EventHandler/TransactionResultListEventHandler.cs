@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -33,11 +34,12 @@ namespace AElf.Boilerplate.EventHandler
                         out var contractAddress)) return;
                     if (eventLog.Address != contractAddress) return;
                     if (eventLog.Name != logEventProcessor.LogEventName) return;
-                    logEventProcessor.ProcessAsync(new LogEvent
+                    await logEventProcessor.ProcessAsync(new LogEvent
                     {
                         Indexed = {eventLog.Indexed.Select(ByteString.FromBase64)},
                         NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
                     });
+                    Console.WriteLine($"Received log event: {eventLog.Name} from contract address {eventLog.Address}");
                 }
             }
         }
