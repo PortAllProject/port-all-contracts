@@ -1,3 +1,4 @@
+using System;
 using AElf.Modularity;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.EventBus.RabbitMq;
@@ -13,7 +14,7 @@ namespace AElf.Boilerplate.EventHandler
         {
             Configure<AbpRabbitMqEventBusOptions>(options =>
             {
-                options.ClientName = "AElfBoilerplate";
+                options.ClientName = "AElfEventHandler" + Guid.NewGuid();
                 options.ExchangeName = "AElfExchange";
             });
 

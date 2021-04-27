@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.Oracle;
@@ -31,6 +32,7 @@ namespace AElf.Boilerplate.EventHandler
         {
             var queryCreated = new QueryCreated();
             queryCreated.MergeFrom(logEvent);
+            Console.WriteLine(queryCreated);
             if (queryCreated.Token != _configOptions.EthereumContractAddress &&
                 !queryCreated.DesignatedNodeList.Value.Contains(Address.FromBase58(_configOptions.AccountAddress)) &&
                 !_configOptions.ObserverAssociationAddressList.Contains(queryCreated.DesignatedNodeList.Value.First()
