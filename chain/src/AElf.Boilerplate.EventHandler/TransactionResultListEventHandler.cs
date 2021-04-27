@@ -35,6 +35,8 @@ namespace AElf.Boilerplate.EventHandler
                     Console.WriteLine($"Event log {eventLog.Name} of contract {eventLog.Address}");
                     if (!_contractAddressOptions.ContractAddressMap.TryGetValue(logEventProcessor.ContractName,
                         out var contractAddress)) return;
+                    if (_contractAddressOptions.ContractAddressMap.TryGetValue("Consensus", out var consensusAddress) &&
+                        eventLog.Address == consensusAddress) return;
                     if (eventLog.Address != contractAddress) return;
                     if (eventLog.Name != logEventProcessor.LogEventName) return;
                     await logEventProcessor.ProcessAsync(new LogEvent
