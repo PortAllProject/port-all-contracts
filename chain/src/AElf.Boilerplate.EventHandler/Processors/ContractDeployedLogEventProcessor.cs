@@ -15,7 +15,7 @@ namespace AElf.Boilerplate.EventHandler
         {
             var contractDeployed = new ContractDeployed();
             contractDeployed.MergeFrom(logEvent);
-            Console.WriteLine(contractDeployed);
+            Console.WriteLine($"New contract deployed: {contractDeployed}");
 
             return Task.CompletedTask;
         }

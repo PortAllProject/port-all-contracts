@@ -26,10 +26,12 @@ namespace AElf.Boilerplate.EventHandler
 
         public async Task HandleEventAsync(TransactionResultListEto eventData)
         {
+            Console.WriteLine("Start handling new event logs.");
             foreach (var logEventProcessor in _logEventProcessors)
             {
                 foreach (var eventLog in eventData.TransactionResults.Values.SelectMany(result => result.Logs))
                 {
+                    Console.WriteLine($"Event log {eventLog.Name} from contract address {eventLog.Address}");
                     if (!_contractAddressOptions.ContractAddressMap.TryGetValue(logEventProcessor.ContractName,
                         out var contractAddress)) return;
                     if (eventLog.Address != contractAddress) return;
@@ -39,7 +41,6 @@ namespace AElf.Boilerplate.EventHandler
                         Indexed = {eventLog.Indexed.Select(ByteString.FromBase64)},
                         NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
                     });
-                    Console.WriteLine($"Received event log: {eventLog.Name} from contract address {eventLog.Address}");
                 }
             }
         }
