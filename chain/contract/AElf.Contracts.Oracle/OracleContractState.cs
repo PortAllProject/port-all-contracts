@@ -18,7 +18,7 @@ namespace AElf.Contracts.Oracle
 
         public SingletonState<int> RevealThreshold { get; set; }
 
-        public SingletonState<long> MinimumOracleNodesCount { get; set; }
+        public SingletonState<int> MinimumOracleNodesCount { get; set; }
 
         public MappedState<Hash, QueryRecord> QueryRecords { get; set; }
 

@@ -35,7 +35,7 @@ service OracleContract {
     
     // config setting
     
-    rpc SetThreshold (SetThresholdInput) returns (google.protobuf.Empty) {}
+    rpc SetThreshold (OracleNodeThreshold) returns (google.protobuf.Empty) {}
     
     // view methods
     
@@ -56,6 +56,10 @@ service OracleContract {
     }
     
     rpc GetLockedTokensAmount (aelf.Address) returns (google.protobuf.Int64Value) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetThreshold (google.protobuf.Empty) returns (OracleNodeThreshold) {
         option (aelf.is_view) = true;
     }
 }
@@ -122,7 +126,7 @@ message CommitmentMap {
     map<string, aelf.Hash> value = 1;
 }
 
-message SetThresholdInput {
+message OracleNodeThreshold {
     int32 minimum_oracle_nodes_count = 1;
     int32 default_reveal_threshold = 2;
     int32 default_aggregate_threshold = 3;

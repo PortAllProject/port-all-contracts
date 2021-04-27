@@ -14,7 +14,7 @@ namespace AElf.Contracts.Oracle
             return new Empty();
         }
 
-        public override Empty SetThreshold(SetThresholdInput input)
+        public override Empty SetThreshold(OracleNodeThreshold input)
         {
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             Assert(input.MinimumOracleNodesCount >= input.DefaultRevealThreshold,
@@ -26,6 +26,16 @@ namespace AElf.Contracts.Oracle
             State.RevealThreshold.Value = input.DefaultRevealThreshold;
             State.AggregateThreshold.Value = input.DefaultAggregateThreshold;
             return new Empty();
+        }
+
+        public override OracleNodeThreshold GetThreshold(Empty input)
+        {
+            return new OracleNodeThreshold
+            {
+                MinimumOracleNodesCount = State.MinimumOracleNodesCount.Value,
+                DefaultRevealThreshold = State.RevealThreshold.Value,
+                DefaultAggregateThreshold = State.AggregateThreshold.Value
+            };
         }
     }
 }
