@@ -56,7 +56,7 @@ namespace AElf.Contracts.OracleUser
         public override Empty RecordTemperature(CallbackInput input)
         {
             Assert(Context.Sender == State.OracleContract.Value, "No permission.");
-            Assert(State.QueryIdMap[input.QueryId], "Query doesn't exist.");
+            //Assert(State.QueryIdMap[input.QueryId], "Query doesn't exist.");
             var temperatureRecord = new TemperatureRecord();
             temperatureRecord.MergeFrom(input.Result);
             var currentList = State.TemperatureRecordList.Value ?? new TemperatureRecordList();
