@@ -42,7 +42,8 @@ namespace AElf.Boilerplate.EventHandler
 
             var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
                 queryCreated.QueryInfo.AttributesToFetch.ToList());
-            _logger.LogInformation($"Queried data: {data}");
+            var salt = _saltProvider.GetSalt(queryCreated.QueryId);
+            _logger.LogInformation($"Queried data: {data}, salt: {salt}");
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
             var commitInput = new CommitInput
@@ -53,11 +54,11 @@ namespace AElf.Boilerplate.EventHandler
                     {
                         Value = data
                     }),
-                    _saltProvider.GetSalt(queryCreated.QueryId))
+                    salt)
             };
             _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
             var txId = node.SendTransaction(_configOptions.AccountAddress, GetContractAddress(), "Commit", commitInput);
-            _logger.LogInformation($"Tx id: {txId}");
+            _logger.LogInformation($"[Commit] Tx id {txId}");
         }
     }
 }

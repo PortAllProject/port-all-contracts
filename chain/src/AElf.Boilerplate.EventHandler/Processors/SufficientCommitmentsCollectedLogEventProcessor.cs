@@ -40,13 +40,16 @@ namespace AElf.Boilerplate.EventHandler
             _logger.LogInformation($"Get data for revealing: {data}");
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
-            node.SendTransaction(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap[ContractName], "Reveal", new RevealInput
-                {
-                    QueryId = collected.QueryId,
-                    Data = new StringValue {Value = data}.ToByteString(),
-                    Salt = _saltProvider.GetSalt(collected.QueryId)
-                });
+            var revealInput = new RevealInput
+            {
+                QueryId = collected.QueryId,
+                Data = new StringValue {Value = data}.ToByteString(),
+                Salt = _saltProvider.GetSalt(collected.QueryId)
+            };
+            _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");
+            var txId = node.SendTransaction(_configOptions.AccountAddress,
+                _contractAddressOptions.ContractAddressMap[ContractName], "Reveal", revealInput);
+            _logger.LogInformation($"[Reveal] Tx id {txId}");
         }
     }
 }
