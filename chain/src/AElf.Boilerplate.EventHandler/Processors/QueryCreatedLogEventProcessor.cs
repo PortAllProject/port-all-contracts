@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AElf.Contracts.Oracle;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
@@ -17,13 +18,15 @@ namespace AElf.Boilerplate.EventHandler
         private readonly ConfigOptions _configOptions;
         public string ContractName => "Oracle";
         public string LogEventName => nameof(QueryCreated);
+        private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
         public QueryCreatedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider, IDataProvider dataProvider)
+            ISaltProvider saltProvider, IDataProvider dataProvider, ILogger<QueryCreatedLogEventProcessor> logger)
         {
             _saltProvider = saltProvider;
             _dataProvider = dataProvider;
+            _logger = logger;
             _contractAddressOptions = contractAddressOptions.Value;
             _configOptions = configOptions.Value;
         }
@@ -32,7 +35,7 @@ namespace AElf.Boilerplate.EventHandler
         {
             var queryCreated = new QueryCreated();
             queryCreated.MergeFrom(logEvent);
-            Console.WriteLine(queryCreated);
+            _logger.LogInformation(queryCreated.ToString());
             if (queryCreated.Token != _configOptions.EthereumContractAddress &&
                 !queryCreated.DesignatedNodeList.Value.Contains(Address.FromBase58(_configOptions.AccountAddress)) &&
                 !_configOptions.ObserverAssociationAddressList.Contains(queryCreated.DesignatedNodeList.Value.First()
@@ -52,7 +55,7 @@ namespace AElf.Boilerplate.EventHandler
                     }),
                     _saltProvider.GetSalt(queryCreated.QueryId))
             };
-            Console.WriteLine($"Sent Commit tx with input: {commitInput}");
+            _logger.LogInformation($"Sent Commit tx with input: {commitInput}");
             node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "Commit", commitInput);
         }

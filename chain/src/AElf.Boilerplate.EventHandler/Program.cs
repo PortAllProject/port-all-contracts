@@ -1,29 +1,54 @@
 ﻿using System;
-using System.Globalization;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text.Json;
-using System.Text.Unicode;
 using System.Threading.Tasks;
-using Volo.Abp;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
 
 namespace AElf.Boilerplate.EventHandler
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            using var application = AbpApplicationFactory.Create<EventHandlerAElfModule>(options =>
+            Log.Logger = new LoggerConfiguration()
+#if DEBUG
+                .MinimumLevel.Debug()
+#else
+                .MinimumLevel.Information()
+#endif
+                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                .Enrich.FromLogContext()
+                .WriteTo.Async(c => c.File("Logs/logs.txt"))
+                .WriteTo.Async(c => c.Console())
+                .CreateLogger();
+
+            try
             {
-                options.UseAutofac();
-            });
+                Log.Information("Starting console host.");
+                await CreateHostBuilder(args).RunConsoleAsync();
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Log.Fatal(ex, "Host terminated unexpectedly!");
+                return 1;
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
 
-            application.Initialize();
-
-            Console.WriteLine("Start subscribing messages.");
-            Console.ReadLine();
-
-            application.Shutdown();
         }
+
+        internal static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseAutofac()
+                .UseSerilog()
+                .ConfigureAppConfiguration((context, config) =>
+                {
+                    //setup your additional configuration sources
+                })
+                .ConfigureServices((hostContext, services) => { services.AddApplication<EventHandlerAppModule>(); });
     }
 }

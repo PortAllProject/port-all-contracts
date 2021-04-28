@@ -1,17 +1,24 @@
 using System;
-using AElf.Modularity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Volo.Abp.Autofac;
 using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Modularity;
 using Volo.Abp.RabbitMQ;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    [DependsOn(typeof(AbpEventBusRabbitMqModule))]
-    public class EventHandlerAElfModule : AElfModule
+    [DependsOn(
+        typeof(AbpAutofacModule),
+        typeof(AbpEventBusRabbitMqModule)
+    )]
+    public class EventHandlerAppModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
+            var configuration = context.Services.GetConfiguration();
+            var hostEnvironment = context.Services.GetSingletonInstance<IHostEnvironment>();
+
             Configure<AbpRabbitMqEventBusOptions>(options =>
             {
                 options.ClientName = "AElfEventHandler" + Guid.NewGuid();
@@ -24,9 +31,9 @@ namespace AElf.Boilerplate.EventHandler
                 options.Connections.Default.Port = 5672;
             });
 
-            var configuration = context.Services.GetConfiguration();
             Configure<ContractAddressOptions>(configuration.GetSection("Contracts"));
             Configure<ConfigOptions>(configuration.GetSection("Config"));
+            context.Services.AddHostedService<EventHandlerAppHostedService>();
         }
     }
 }
