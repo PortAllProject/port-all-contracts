@@ -172,7 +172,7 @@ namespace AElf.Contracts.Oracle
             }
 
             Assert(isSenderInDesignatedNodeList, "No permission to commit for this query.");
-            Assert(actualNodeListCount > State.MinimumOracleNodesCount.Value, "Invalid designated nodes count.");
+            Assert(actualNodeListCount >= State.MinimumOracleNodesCount.Value, "Invalid designated nodes count.");
 
             var updatedResponseCount = State.ResponseCount[input.QueryId].Add(1);
             State.CommitmentMap[input.QueryId][Context.Sender] = input.Commitment;
