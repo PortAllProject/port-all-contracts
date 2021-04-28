@@ -30,18 +30,19 @@ namespace AElf.Boilerplate.EventHandler
         public async Task HandleEventAsync(TransactionResultListEto eventData)
         {
             _logger.LogInformation(
-                $"Start handling {eventData.TransactionResults.Values.Sum(r => r.Logs.Length)} new event logs of height {eventData.TransactionResults.First().Value.BlockNumber}.");
+                $"Start handling {eventData.TransactionResults.Values.Sum(r => r.Logs.Length)} new event logs of height {eventData.TransactionResults.First().Value.BlockNumber}.\n{GetAllLogEvents(eventData)}");
+
             foreach (var logEventProcessor in _logEventProcessors)
             {
                 foreach (var eventLog in eventData.TransactionResults.Values.SelectMany(result => result.Logs))
                 {
-                    if (!_contractAddressOptions.ContractAddressMap.TryGetValue(logEventProcessor.ContractName,
-                        out var contractAddress)) return;
-                    if (_contractAddressOptions.ContractAddressMap.TryGetValue("Consensus", out var consensusAddress) &&
-                        eventLog.Address == consensusAddress) return;
                     _logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
-                    if (eventLog.Address != contractAddress) return;
-                    if (eventLog.Name != logEventProcessor.LogEventName) return;
+                    if (!_contractAddressOptions.ContractAddressMap.TryGetValue(logEventProcessor.ContractName,
+                        out var contractAddress)) break;
+                    if (_contractAddressOptions.ContractAddressMap.TryGetValue("Consensus", out var consensusAddress) &&
+                        eventLog.Address == consensusAddress) break;
+                    if (eventLog.Address != contractAddress) break;
+                    if (eventLog.Name != logEventProcessor.LogEventName) break;
                     _logger.LogInformation("Pushing aforementioned event log to processor.");
                     await logEventProcessor.ProcessAsync(new LogEvent
                     {
@@ -50,6 +51,12 @@ namespace AElf.Boilerplate.EventHandler
                     });
                 }
             }
+        }
+
+        private string GetAllLogEvents(TransactionResultListEto eventData)
+        {
+            return eventData.TransactionResults.Values.SelectMany(r => r.Logs).Select(l => l.Name)
+                .Aggregate("", (c, n) => $"{c}\t{n}");
         }
     }
 }
