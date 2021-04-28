@@ -31,98 +31,115 @@ namespace AElf.Contracts.Oracle {
             "bmltdW1fb3JhY2xlX25vZGVzX2NvdW50GAEgASgFEiAKGGRlZmF1bHRfcmV2",
             "ZWFsX3RocmVzaG9sZBgCIAEoBRIjChtkZWZhdWx0X2FnZ3JlZ2F0ZV90aHJl",
             "c2hvbGQYAyABKAUSIgoaZGVmYXVsdF9leHBpcmF0aW9uX3NlY29uZHMYBCAB",
-            "KAUigQIKClF1ZXJ5SW5wdXQSDwoHcGF5bWVudBgBIAEoAxIkCg1jYWxsYmFj",
+            "KAUilgIKClF1ZXJ5SW5wdXQSDwoHcGF5bWVudBgBIAEoAxIkCg1jYWxsYmFj",
             "a19pbmZvGAIgASgLMg0uQ2FsbGJhY2tJbmZvEjIKG2FnZ3JlZ2F0b3JfY29u",
             "dHJhY3RfYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVzcxIqChRkZXNpZ25h",
-            "dGVkX25vZGVfbGlzdBgEIAEoCzIMLkFkZHJlc3NMaXN0EhQKDHVybF90b19x",
-            "dWVyeRgFIAEoCRIaChJhdHRyaWJ1dGVfdG9fZmV0Y2gYBiABKAkSGwoTYWdn",
-            "cmVnYXRlX3RocmVzaG9sZBgHIAEoBRINCgV0b2tlbhgIIAEoCSJMCgxDYWxs",
-            "YmFja0luZm8SJwoQY29udHJhY3RfYWRkcmVzcxgBIAEoCzINLmFlbGYuQWRk",
-            "cmVzcxITCgttZXRob2RfbmFtZRgCIAEoCSIrCgtBZGRyZXNzTGlzdBIcCgV2",
-            "YWx1ZRgBIAMoCzINLmFlbGYuQWRkcmVzcyK7BAoLUXVlcnlSZWNvcmQSKgoU",
-            "ZGVzaWduYXRlZF9ub2RlX2xpc3QYAiABKAsyDC5BZGRyZXNzTGlzdBIyChth",
-            "Z2dyZWdhdG9yX2NvbnRyYWN0X2FkZHJlc3MYAyABKAsyDS5hZWxmLkFkZHJl",
-            "c3MSOAoUZXhwaXJhdGlvbl90aW1lc3RhbXAYBCABKAsyGi5nb29nbGUucHJv",
-            "dG9idWYuVGltZXN0YW1wEisKI2lzX3N1ZmZpY2llbnRfY29tbWl0bWVudHNf",
-            "Y29sbGVjdGVkGAUgASgIEiQKHGlzX3N1ZmZpY2llbnRfZGF0YV9jb2xsZWN0",
-            "ZWQYBiABKAgSFAoMZmluYWxfcmVzdWx0GAcgASgMEg8KB3BheW1lbnQYCCAB",
-            "KAMSJAoNY2FsbGJhY2tfaW5mbxgJIAEoCzINLkNhbGxiYWNrSW5mbxIcCghx",
-            "dWVyeV9pZBgKIAEoCzIKLmFlbGYuSGFzaBIbChNhZ2dyZWdhdGVfdGhyZXNo",
-            "b2xkGAsgASgFEiMKDHF1ZXJ5X3NlbmRlchgMIAEoCzINLmFlbGYuQWRkcmVz",
-            "cxIgChhpc19jb21taXRfc3RhZ2VfZmluaXNoZWQYDSABKAgSGQoRY29tbWl0",
-            "bWVudHNfY291bnQYDiABKAUSFAoMaXNfY2FuY2VsbGVkGA8gASgIEhQKDHVy",
-            "bF90b19xdWVyeRgQIAEoCRIaChJhdHRyaWJ1dGVfdG9fZmV0Y2gYESABKAkS",
-            "DQoFdG9rZW4YEiABKAkiSwoLQ29tbWl0SW5wdXQSHAoIcXVlcnlfaWQYASAB",
-            "KAsyCi5hZWxmLkhhc2gSHgoKY29tbWl0bWVudBgCIAEoCzIKLmFlbGYuSGFz",
-            "aCJTCgtSZXZlYWxJbnB1dBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFz",
-            "aBIMCgRkYXRhGAIgASgMEhgKBHNhbHQYAyABKAsyCi5hZWxmLkhhc2gicwoN",
-            "Q29tbWl0bWVudE1hcBIoCgV2YWx1ZRgBIAMoCzIZLkNvbW1pdG1lbnRNYXAu",
-            "VmFsdWVFbnRyeRo4CgpWYWx1ZUVudHJ5EgsKA2tleRgBIAEoCRIZCgV2YWx1",
-            "ZRgCIAEoCzIKLmFlbGYuSGFzaDoCOAEifgoRU2V0VGhyZXNob2xkSW5wdXQS",
+            "dGVkX25vZGVfbGlzdBgEIAEoCzIMLkFkZHJlc3NMaXN0Eh4KCnF1ZXJ5X2lu",
+            "Zm8YBSABKAsyCi5RdWVyeUluZm8SGwoTYWdncmVnYXRlX3RocmVzaG9sZBgG",
+            "IAEoBRINCgV0b2tlbhgHIAEoCRIlCh1tYXhpbXVtX3Blcm1pc3NpYmxlX2Rl",
+            "dmlhdGlvbhgIIAEoBSJMCgxDYWxsYmFja0luZm8SJwoQY29udHJhY3RfYWRk",
+            "cmVzcxgBIAEoCzINLmFlbGYuQWRkcmVzcxITCgttZXRob2RfbmFtZRgCIAEo",
+            "CSIrCgtBZGRyZXNzTGlzdBIcCgV2YWx1ZRgBIAMoCzINLmFlbGYuQWRkcmVz",
+            "cyLQBAoLUXVlcnlSZWNvcmQSKgoUZGVzaWduYXRlZF9ub2RlX2xpc3QYASAB",
+            "KAsyDC5BZGRyZXNzTGlzdBIyChthZ2dyZWdhdG9yX2NvbnRyYWN0X2FkZHJl",
+            "c3MYAiABKAsyDS5hZWxmLkFkZHJlc3MSOAoUZXhwaXJhdGlvbl90aW1lc3Rh",
+            "bXAYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEisKI2lzX3N1",
+            "ZmZpY2llbnRfY29tbWl0bWVudHNfY29sbGVjdGVkGAQgASgIEiQKHGlzX3N1",
+            "ZmZpY2llbnRfZGF0YV9jb2xsZWN0ZWQYBSABKAgSFAoMZmluYWxfcmVzdWx0",
+            "GAYgASgMEg8KB3BheW1lbnQYByABKAMSJAoNY2FsbGJhY2tfaW5mbxgIIAEo",
+            "CzINLkNhbGxiYWNrSW5mbxIcCghxdWVyeV9pZBgJIAEoCzIKLmFlbGYuSGFz",
+            "aBIbChNhZ2dyZWdhdGVfdGhyZXNob2xkGAogASgFEiMKDHF1ZXJ5X3NlbmRl",
+            "chgLIAEoCzINLmFlbGYuQWRkcmVzcxIgChhpc19jb21taXRfc3RhZ2VfZmlu",
+            "aXNoZWQYDCABKAgSGQoRY29tbWl0bWVudHNfY291bnQYDSABKAUSFAoMaXNf",
+            "Y2FuY2VsbGVkGA4gASgIEh4KCnF1ZXJ5X2luZm8YDyABKAsyCi5RdWVyeUlu",
+            "Zm8SDQoFdG9rZW4YECABKAkSJQodbWF4aW11bV9wZXJtaXNzaWJsZV9kZXZp",
+            "YXRpb24YESABKAUiSwoLQ29tbWl0SW5wdXQSHAoIcXVlcnlfaWQYASABKAsy",
+            "Ci5hZWxmLkhhc2gSHgoKY29tbWl0bWVudBgCIAEoCzIKLmFlbGYuSGFzaCJT",
+            "CgtSZXZlYWxJbnB1dBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFzaBIM",
+            "CgRkYXRhGAIgASgMEhgKBHNhbHQYAyABKAsyCi5hZWxmLkhhc2gicwoNQ29t",
+            "bWl0bWVudE1hcBIoCgV2YWx1ZRgBIAMoCzIZLkNvbW1pdG1lbnRNYXAuVmFs",
+            "dWVFbnRyeRo4CgpWYWx1ZUVudHJ5EgsKA2tleRgBIAEoCRIZCgV2YWx1ZRgC",
+            "IAEoCzIKLmFlbGYuSGFzaDoCOAEigAEKE09yYWNsZU5vZGVUaHJlc2hvbGQS",
             "IgoabWluaW11bV9vcmFjbGVfbm9kZXNfY291bnQYASABKAUSIAoYZGVmYXVs",
             "dF9yZXZlYWxfdGhyZXNob2xkGAIgASgFEiMKG2RlZmF1bHRfYWdncmVnYXRl",
             "X3RocmVzaG9sZBgDIAEoBSIyCgpSZXN1bHRMaXN0Eg8KB3Jlc3VsdHMYASAD",
             "KAwSEwoLZnJlcXVlbmNpZXMYAiADKAUiOAoITm9kZURhdGESHgoHYWRkcmVz",
-            "cxgBIAEoCzINLmFlbGYuQWRkcmVzcxIMCgRkYXRhGAIgASgMIp4BCgxOb2Rl",
+            "cxgBIAEoCzINLmFlbGYuQWRkcmVzcxIMCgRkYXRhGAIgASgMIowBCgxOb2Rl",
             "RGF0YUxpc3QSGAoFdmFsdWUYASADKAsyCS5Ob2RlRGF0YRIzChxvYnNlcnZl",
-            "cl9hc3NvY2lhdGlvbl9hZGRyZXNzGAIgASgLMg0uYWVsZi5BZGRyZXNzEhQK",
-            "DHVybF90b19xdWVyeRgDIAEoCRIaChJhdHRyaWJ1dGVfdG9fZmV0Y2gYBCAB",
-            "KAkSDQoFdG9rZW4YBSABKAkizQIKDFF1ZXJ5Q3JlYXRlZBIPCgdwYXltZW50",
-            "GAEgASgDEiQKDWNhbGxiYWNrX2luZm8YAiABKAsyDS5DYWxsYmFja0luZm8S",
-            "MgobYWdncmVnYXRvcl9jb250cmFjdF9hZGRyZXNzGAMgASgLMg0uYWVsZi5B",
-            "ZGRyZXNzEioKFGRlc2lnbmF0ZWRfbm9kZV9saXN0GAQgASgLMgwuQWRkcmVz",
-            "c0xpc3QSFAoMdXJsX3RvX3F1ZXJ5GAUgASgJEhoKEmF0dHJpYnV0ZV90b19m",
-            "ZXRjaBgGIAEoCRIbChNhZ2dyZWdhdGVfdGhyZXNob2xkGAcgASgFEiQKDXF1",
-            "ZXJ5X21hbmFnZXIYCCABKAsyDS5hZWxmLkFkZHJlc3MSHAoIcXVlcnlfaWQY",
-            "CSABKAsyCi5hZWxmLkhhc2gSDQoFdG9rZW4YCiABKAk6BKC7GAEiWQoOUXVl",
-            "cnlDYW5jZWxsZWQSEAoIcXVlcnlfaWQYASABKAwSLwoLY2FuY2VsX3RpbWUY",
-            "AiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wOgSguxgBIj8KF1N1",
-            "ZmZpY2llbnREYXRhQ29sbGVjdGVkEh4KCnJlcXVlc3RfaWQYASABKAsyCi5h",
-            "ZWxmLkhhc2g6BKC7GAEiRAoeU3VmZmljaWVudENvbW1pdG1lbnRzQ29sbGVj",
-            "dGVkEhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoOgSguxgBIqwBChJD",
-            "b21taXRtZW50UmV2ZWFsZWQSHAoIcXVlcnlfaWQYASABKAsyCi5hZWxmLkhh",
-            "c2gSKgoTb3JhY2xlX25vZGVfYWRkcmVzcxgCIAEoCzINLmFlbGYuQWRkcmVz",
-            "cxIeCgpjb21taXRtZW50GAMgASgLMgouYWVsZi5IYXNoEgwKBGRhdGEYBCAB",
-            "KAwSGAoEc2FsdBgFIAEoCzIKLmFlbGYuSGFzaDoEoLsYASJECg5RdWVyeUNv",
-            "bXBsZXRlZBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFzaBIOCgZyZXN1",
-            "bHQYAiABKAw6BKC7GAEysAUKDk9yYWNsZUNvbnRyYWN0EjgKCkluaXRpYWxp",
-            "emUSEC5Jbml0aWFsaXplSW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHki",
-            "ABIiCgVRdWVyeRILLlF1ZXJ5SW5wdXQaCi5hZWxmLkhhc2giABIwCgZDb21t",
-            "aXQSDC5Db21taXRJbnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEjAK",
-            "BlJldmVhbBIMLlJldmVhbElucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5",
-            "IgASMwoLQ2FuY2VsUXVlcnkSCi5hZWxmLkhhc2gaFi5nb29nbGUucHJvdG9i",
-            "dWYuRW1wdHkiABI7ChBDaGFuZ2VDb250cm9sbGVyEg0uYWVsZi5BZGRyZXNz",
-            "GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASPAoMU2V0VGhyZXNob2xkEhIu",
-            "U2V0VGhyZXNob2xkSW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABI9",
-            "Cg1HZXRDb250cm9sbGVyEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5Gg0uYWVs",
-            "Zi5BZGRyZXNzIgWIifcBARIxCg5HZXRRdWVyeVJlY29yZBIKLmFlbGYuSGFz",
-            "aBoMLlF1ZXJ5UmVjb3JkIgWIifcBARI1ChBHZXRDb21taXRtZW50TWFwEgou",
-            "YWVsZi5IYXNoGg4uQ29tbWl0bWVudE1hcCIFiIn3AQESUwoUR2V0T3JhY2xl",
-            "VG9rZW5TeW1ib2wSFi5nb29nbGUucHJvdG9idWYuRW1wdHkaHC5nb29nbGUu",
-            "cHJvdG9idWYuU3RyaW5nVmFsdWUiBYiJ9wEBGi6yzPYBKUFFbGYuQ29udHJh",
-            "Y3RzLk9yYWNsZS5PcmFjbGVDb250cmFjdFN0YXRlQhiqAhVBRWxmLkNvbnRy",
-            "YWN0cy5PcmFjbGViBnByb3RvMw=="));
+            "cl9hc3NvY2lhdGlvbl9hZGRyZXNzGAIgASgLMg0uYWVsZi5BZGRyZXNzEh4K",
+            "CnF1ZXJ5X2luZm8YAyABKAsyCi5RdWVyeUluZm8SDQoFdG9rZW4YBCABKAki",
+            "UgoPTG9ja1Rva2Vuc0lucHV0EioKE29yYWNsZV9ub2RlX2FkZHJlc3MYASAB",
+            "KAsyDS5hZWxmLkFkZHJlc3MSEwoLbG9ja19hbW91bnQYAiABKAMiWAoRVW5s",
+            "b2NrVG9rZW5zSW5wdXQSKgoTb3JhY2xlX25vZGVfYWRkcmVzcxgBIAEoCzIN",
+            "LmFlbGYuQWRkcmVzcxIXCg93aXRoZHJhd19hbW91bnQYAiABKAMiPgoJUXVl",
+            "cnlJbmZvEhQKDHVybF90b19xdWVyeRgBIAEoCRIbChNhdHRyaWJ1dGVzX3Rv",
+            "X2ZldGNoGAIgAygJIuECCgxRdWVyeUNyZWF0ZWQSDwoHcGF5bWVudBgBIAEo",
+            "AxIkCg1jYWxsYmFja19pbmZvGAIgASgLMg0uQ2FsbGJhY2tJbmZvEjIKG2Fn",
+            "Z3JlZ2F0b3JfY29udHJhY3RfYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVz",
+            "cxIqChRkZXNpZ25hdGVkX25vZGVfbGlzdBgEIAEoCzIMLkFkZHJlc3NMaXN0",
+            "Eh4KCnF1ZXJ5X2luZm8YBSABKAsyCi5RdWVyeUluZm8SGwoTYWdncmVnYXRl",
+            "X3RocmVzaG9sZBgGIAEoBRIjCgxxdWVyeV9zZW5kZXIYByABKAsyDS5hZWxm",
+            "LkFkZHJlc3MSHAoIcXVlcnlfaWQYCCABKAsyCi5hZWxmLkhhc2gSDQoFdG9r",
+            "ZW4YCSABKAkSJQodbWF4aW11bV9wZXJtaXNzaWJsZV9kZXZpYXRpb24YCiAB",
+            "KAU6BKC7GAEiWQoOUXVlcnlDYW5jZWxsZWQSEAoIcXVlcnlfaWQYASABKAwS",
+            "LwoLY2FuY2VsX3RpbWUYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0",
+            "YW1wOgSguxgBIkQKHlN1ZmZpY2llbnRDb21taXRtZW50c0NvbGxlY3RlZBIc",
+            "CghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFzaDoEoLsYASKsAQoSQ29tbWl0",
+            "bWVudFJldmVhbGVkEhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoEioK",
+            "E29yYWNsZV9ub2RlX2FkZHJlc3MYAiABKAsyDS5hZWxmLkFkZHJlc3MSHgoK",
+            "Y29tbWl0bWVudBgDIAEoCzIKLmFlbGYuSGFzaBIMCgRkYXRhGAQgASgMEhgK",
+            "BHNhbHQYBSABKAsyCi5hZWxmLkhhc2g6BKC7GAEiRAoOUXVlcnlDb21wbGV0",
+            "ZWQSHAoIcXVlcnlfaWQYASABKAsyCi5hZWxmLkhhc2gSDgoGcmVzdWx0GAIg",
+            "ASgMOgSguxgBInsKC1Rva2VuTG9ja2VkEioKE29yYWNsZV9ub2RlX2FkZHJl",
+            "c3MYASABKAsyDS5hZWxmLkFkZHJlc3MSIwoMZnJvbV9hZGRyZXNzGAIgASgL",
+            "Mg0uYWVsZi5BZGRyZXNzEhUKDWxvY2tlZF9hbW91bnQYAyABKAM6BKC7GAEy",
+            "uwcKDk9yYWNsZUNvbnRyYWN0EjgKCkluaXRpYWxpemUSEC5Jbml0aWFsaXpl",
+            "SW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABIiCgVRdWVyeRILLlF1",
+            "ZXJ5SW5wdXQaCi5hZWxmLkhhc2giABIwCgZDb21taXQSDC5Db21taXRJbnB1",
+            "dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEjAKBlJldmVhbBIMLlJldmVh",
+            "bElucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASMwoLQ2FuY2VsUXVl",
+            "cnkSCi5hZWxmLkhhc2gaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABI7ChBD",
+            "aGFuZ2VDb250cm9sbGVyEg0uYWVsZi5BZGRyZXNzGhYuZ29vZ2xlLnByb3Rv",
+            "YnVmLkVtcHR5IgASOAoKTG9ja1Rva2VucxIQLkxvY2tUb2tlbnNJbnB1dBoW",
+            "Lmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEjwKDFVubG9ja1Rva2VucxISLlVu",
+            "bG9ja1Rva2Vuc0lucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASPgoM",
+            "U2V0VGhyZXNob2xkEhQuT3JhY2xlTm9kZVRocmVzaG9sZBoWLmdvb2dsZS5w",
+            "cm90b2J1Zi5FbXB0eSIAEj0KDUdldENvbnRyb2xsZXISFi5nb29nbGUucHJv",
+            "dG9idWYuRW1wdHkaDS5hZWxmLkFkZHJlc3MiBYiJ9wEBEjEKDkdldFF1ZXJ5",
+            "UmVjb3JkEgouYWVsZi5IYXNoGgwuUXVlcnlSZWNvcmQiBYiJ9wEBEjUKEEdl",
+            "dENvbW1pdG1lbnRNYXASCi5hZWxmLkhhc2gaDi5Db21taXRtZW50TWFwIgWI",
+            "ifcBARJTChRHZXRPcmFjbGVUb2tlblN5bWJvbBIWLmdvb2dsZS5wcm90b2J1",
+            "Zi5FbXB0eRocLmdvb2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1ZSIFiIn3AQES",
+            "SgoVR2V0TG9ja2VkVG9rZW5zQW1vdW50Eg0uYWVsZi5BZGRyZXNzGhsuZ29v",
+            "Z2xlLnByb3RvYnVmLkludDY0VmFsdWUiBYiJ9wEBEkMKDEdldFRocmVzaG9s",
+            "ZBIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoULk9yYWNsZU5vZGVUaHJlc2hv",
+            "bGQiBYiJ9wEBGi6yzPYBKUFFbGYuQ29udHJhY3RzLk9yYWNsZS5PcmFjbGVD",
+            "b250cmFjdFN0YXRlQhiqAhVBRWxmLkNvbnRyYWN0cy5PcmFjbGViBnByb3Rv",
+            "Mw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::AElf.Types.CoreReflection.Descriptor, global::AElf.OptionsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.InitializeInput), global::AElf.Contracts.Oracle.InitializeInput.Parser, new[]{ "MinimumOracleNodesCount", "DefaultRevealThreshold", "DefaultAggregateThreshold", "DefaultExpirationSeconds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInput), global::AElf.Contracts.Oracle.QueryInput.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "UrlToQuery", "AttributeToFetch", "AggregateThreshold", "Token" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInput), global::AElf.Contracts.Oracle.QueryInput.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "QueryInfo", "AggregateThreshold", "Token", "MaximumPermissibleDeviation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CallbackInfo), global::AElf.Contracts.Oracle.CallbackInfo.Parser, new[]{ "ContractAddress", "MethodName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.AddressList), global::AElf.Contracts.Oracle.AddressList.Parser, new[]{ "Value" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryRecord), global::AElf.Contracts.Oracle.QueryRecord.Parser, new[]{ "DesignatedNodeList", "AggregatorContractAddress", "ExpirationTimestamp", "IsSufficientCommitmentsCollected", "IsSufficientDataCollected", "FinalResult", "Payment", "CallbackInfo", "QueryId", "AggregateThreshold", "QuerySender", "IsCommitStageFinished", "CommitmentsCount", "IsCancelled", "UrlToQuery", "AttributeToFetch", "Token" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryRecord), global::AElf.Contracts.Oracle.QueryRecord.Parser, new[]{ "DesignatedNodeList", "AggregatorContractAddress", "ExpirationTimestamp", "IsSufficientCommitmentsCollected", "IsSufficientDataCollected", "FinalResult", "Payment", "CallbackInfo", "QueryId", "AggregateThreshold", "QuerySender", "IsCommitStageFinished", "CommitmentsCount", "IsCancelled", "QueryInfo", "Token", "MaximumPermissibleDeviation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitInput), global::AElf.Contracts.Oracle.CommitInput.Parser, new[]{ "QueryId", "Commitment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.RevealInput), global::AElf.Contracts.Oracle.RevealInput.Parser, new[]{ "QueryId", "Data", "Salt" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentMap), global::AElf.Contracts.Oracle.CommitmentMap.Parser, new[]{ "Value" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.SetThresholdInput), global::AElf.Contracts.Oracle.SetThresholdInput.Parser, new[]{ "MinimumOracleNodesCount", "DefaultRevealThreshold", "DefaultAggregateThreshold" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.OracleNodeThreshold), global::AElf.Contracts.Oracle.OracleNodeThreshold.Parser, new[]{ "MinimumOracleNodesCount", "DefaultRevealThreshold", "DefaultAggregateThreshold" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.ResultList), global::AElf.Contracts.Oracle.ResultList.Parser, new[]{ "Results", "Frequencies" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.NodeData), global::AElf.Contracts.Oracle.NodeData.Parser, new[]{ "Address", "Data" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.NodeDataList), global::AElf.Contracts.Oracle.NodeDataList.Parser, new[]{ "Value", "ObserverAssociationAddress", "UrlToQuery", "AttributeToFetch", "Token" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCreated), global::AElf.Contracts.Oracle.QueryCreated.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "UrlToQuery", "AttributeToFetch", "AggregateThreshold", "QueryManager", "QueryId", "Token" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.NodeDataList), global::AElf.Contracts.Oracle.NodeDataList.Parser, new[]{ "Value", "ObserverAssociationAddress", "QueryInfo", "Token" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.LockTokensInput), global::AElf.Contracts.Oracle.LockTokensInput.Parser, new[]{ "OracleNodeAddress", "LockAmount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.UnlockTokensInput), global::AElf.Contracts.Oracle.UnlockTokensInput.Parser, new[]{ "OracleNodeAddress", "WithdrawAmount" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInfo), global::AElf.Contracts.Oracle.QueryInfo.Parser, new[]{ "UrlToQuery", "AttributesToFetch" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCreated), global::AElf.Contracts.Oracle.QueryCreated.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "QueryInfo", "AggregateThreshold", "QuerySender", "QueryId", "Token", "MaximumPermissibleDeviation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCancelled), global::AElf.Contracts.Oracle.QueryCancelled.Parser, new[]{ "QueryId", "CancelTime" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.SufficientDataCollected), global::AElf.Contracts.Oracle.SufficientDataCollected.Parser, new[]{ "RequestId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.SufficientCommitmentsCollected), global::AElf.Contracts.Oracle.SufficientCommitmentsCollected.Parser, new[]{ "QueryId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentRevealed), global::AElf.Contracts.Oracle.CommitmentRevealed.Parser, new[]{ "QueryId", "OracleNodeAddress", "Commitment", "Data", "Salt" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCompleted), global::AElf.Contracts.Oracle.QueryCompleted.Parser, new[]{ "QueryId", "Result" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCompleted), global::AElf.Contracts.Oracle.QueryCompleted.Parser, new[]{ "QueryId", "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.TokenLocked), global::AElf.Contracts.Oracle.TokenLocked.Parser, new[]{ "OracleNodeAddress", "FromAddress", "LockedAmount" }, null, null, null, null)
           }));
     }
     #endregion
@@ -442,10 +459,10 @@ namespace AElf.Contracts.Oracle {
       callbackInfo_ = other.callbackInfo_ != null ? other.callbackInfo_.Clone() : null;
       aggregatorContractAddress_ = other.aggregatorContractAddress_ != null ? other.aggregatorContractAddress_.Clone() : null;
       designatedNodeList_ = other.designatedNodeList_ != null ? other.designatedNodeList_.Clone() : null;
-      urlToQuery_ = other.urlToQuery_;
-      attributeToFetch_ = other.attributeToFetch_;
+      queryInfo_ = other.queryInfo_ != null ? other.queryInfo_.Clone() : null;
       aggregateThreshold_ = other.aggregateThreshold_;
       token_ = other.token_;
+      maximumPermissibleDeviation_ = other.maximumPermissibleDeviation_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -504,30 +521,19 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "url_to_query" field.</summary>
-    public const int UrlToQueryFieldNumber = 5;
-    private string urlToQuery_ = "";
+    /// <summary>Field number for the "query_info" field.</summary>
+    public const int QueryInfoFieldNumber = 5;
+    private global::AElf.Contracts.Oracle.QueryInfo queryInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UrlToQuery {
-      get { return urlToQuery_; }
+    public global::AElf.Contracts.Oracle.QueryInfo QueryInfo {
+      get { return queryInfo_; }
       set {
-        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "attribute_to_fetch" field.</summary>
-    public const int AttributeToFetchFieldNumber = 6;
-    private string attributeToFetch_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AttributeToFetch {
-      get { return attributeToFetch_; }
-      set {
-        attributeToFetch_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        queryInfo_ = value;
       }
     }
 
     /// <summary>Field number for the "aggregate_threshold" field.</summary>
-    public const int AggregateThresholdFieldNumber = 7;
+    public const int AggregateThresholdFieldNumber = 6;
     private int aggregateThreshold_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int AggregateThreshold {
@@ -538,13 +544,24 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 8;
+    public const int TokenFieldNumber = 7;
     private string token_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Token {
       get { return token_; }
       set {
         token_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "maximum_permissible_deviation" field.</summary>
+    public const int MaximumPermissibleDeviationFieldNumber = 8;
+    private int maximumPermissibleDeviation_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MaximumPermissibleDeviation {
+      get { return maximumPermissibleDeviation_; }
+      set {
+        maximumPermissibleDeviation_ = value;
       }
     }
 
@@ -565,10 +582,10 @@ namespace AElf.Contracts.Oracle {
       if (!object.Equals(CallbackInfo, other.CallbackInfo)) return false;
       if (!object.Equals(AggregatorContractAddress, other.AggregatorContractAddress)) return false;
       if (!object.Equals(DesignatedNodeList, other.DesignatedNodeList)) return false;
-      if (UrlToQuery != other.UrlToQuery) return false;
-      if (AttributeToFetch != other.AttributeToFetch) return false;
+      if (!object.Equals(QueryInfo, other.QueryInfo)) return false;
       if (AggregateThreshold != other.AggregateThreshold) return false;
       if (Token != other.Token) return false;
+      if (MaximumPermissibleDeviation != other.MaximumPermissibleDeviation) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -579,10 +596,10 @@ namespace AElf.Contracts.Oracle {
       if (callbackInfo_ != null) hash ^= CallbackInfo.GetHashCode();
       if (aggregatorContractAddress_ != null) hash ^= AggregatorContractAddress.GetHashCode();
       if (designatedNodeList_ != null) hash ^= DesignatedNodeList.GetHashCode();
-      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      if (AttributeToFetch.Length != 0) hash ^= AttributeToFetch.GetHashCode();
+      if (queryInfo_ != null) hash ^= QueryInfo.GetHashCode();
       if (AggregateThreshold != 0) hash ^= AggregateThreshold.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
+      if (MaximumPermissibleDeviation != 0) hash ^= MaximumPermissibleDeviation.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -615,21 +632,21 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(34);
         output.WriteMessage(DesignatedNodeList);
       }
-      if (UrlToQuery.Length != 0) {
+      if (queryInfo_ != null) {
         output.WriteRawTag(42);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(50);
-        output.WriteString(AttributeToFetch);
+        output.WriteMessage(QueryInfo);
       }
       if (AggregateThreshold != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteInt32(AggregateThreshold);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(58);
         output.WriteString(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -656,21 +673,21 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(34);
         output.WriteMessage(DesignatedNodeList);
       }
-      if (UrlToQuery.Length != 0) {
+      if (queryInfo_ != null) {
         output.WriteRawTag(42);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(50);
-        output.WriteString(AttributeToFetch);
+        output.WriteMessage(QueryInfo);
       }
       if (AggregateThreshold != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteInt32(AggregateThreshold);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(66);
+        output.WriteRawTag(58);
         output.WriteString(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        output.WriteRawTag(64);
+        output.WriteInt32(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -693,17 +710,17 @@ namespace AElf.Contracts.Oracle {
       if (designatedNodeList_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(DesignatedNodeList);
       }
-      if (UrlToQuery.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(AttributeToFetch);
+      if (queryInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryInfo);
       }
       if (AggregateThreshold != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(AggregateThreshold);
       }
       if (Token.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -737,17 +754,20 @@ namespace AElf.Contracts.Oracle {
         }
         DesignatedNodeList.MergeFrom(other.DesignatedNodeList);
       }
-      if (other.UrlToQuery.Length != 0) {
-        UrlToQuery = other.UrlToQuery;
-      }
-      if (other.AttributeToFetch.Length != 0) {
-        AttributeToFetch = other.AttributeToFetch;
+      if (other.queryInfo_ != null) {
+        if (queryInfo_ == null) {
+          QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+        }
+        QueryInfo.MergeFrom(other.QueryInfo);
       }
       if (other.AggregateThreshold != 0) {
         AggregateThreshold = other.AggregateThreshold;
       }
       if (other.Token.Length != 0) {
         Token = other.Token;
+      }
+      if (other.MaximumPermissibleDeviation != 0) {
+        MaximumPermissibleDeviation = other.MaximumPermissibleDeviation;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -789,19 +809,22 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 42: {
-            UrlToQuery = input.ReadString();
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
             break;
           }
-          case 50: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 56: {
+          case 48: {
             AggregateThreshold = input.ReadInt32();
             break;
           }
-          case 66: {
+          case 58: {
             Token = input.ReadString();
+            break;
+          }
+          case 64: {
+            MaximumPermissibleDeviation = input.ReadInt32();
             break;
           }
         }
@@ -844,19 +867,22 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 42: {
-            UrlToQuery = input.ReadString();
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
             break;
           }
-          case 50: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 56: {
+          case 48: {
             AggregateThreshold = input.ReadInt32();
             break;
           }
-          case 66: {
+          case 58: {
             Token = input.ReadString();
+            break;
+          }
+          case 64: {
+            MaximumPermissibleDeviation = input.ReadInt32();
             break;
           }
         }
@@ -1287,9 +1313,9 @@ namespace AElf.Contracts.Oracle {
       isCommitStageFinished_ = other.isCommitStageFinished_;
       commitmentsCount_ = other.commitmentsCount_;
       isCancelled_ = other.isCancelled_;
-      urlToQuery_ = other.urlToQuery_;
-      attributeToFetch_ = other.attributeToFetch_;
+      queryInfo_ = other.queryInfo_ != null ? other.queryInfo_.Clone() : null;
       token_ = other.token_;
+      maximumPermissibleDeviation_ = other.maximumPermissibleDeviation_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1299,7 +1325,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "designated_node_list" field.</summary>
-    public const int DesignatedNodeListFieldNumber = 2;
+    public const int DesignatedNodeListFieldNumber = 1;
     private global::AElf.Contracts.Oracle.AddressList designatedNodeList_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AElf.Contracts.Oracle.AddressList DesignatedNodeList {
@@ -1310,7 +1336,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "aggregator_contract_address" field.</summary>
-    public const int AggregatorContractAddressFieldNumber = 3;
+    public const int AggregatorContractAddressFieldNumber = 2;
     private global::AElf.Types.Address aggregatorContractAddress_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AElf.Types.Address AggregatorContractAddress {
@@ -1321,7 +1347,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "expiration_timestamp" field.</summary>
-    public const int ExpirationTimestampFieldNumber = 4;
+    public const int ExpirationTimestampFieldNumber = 3;
     private global::Google.Protobuf.WellKnownTypes.Timestamp expirationTimestamp_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::Google.Protobuf.WellKnownTypes.Timestamp ExpirationTimestamp {
@@ -1332,7 +1358,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "is_sufficient_commitments_collected" field.</summary>
-    public const int IsSufficientCommitmentsCollectedFieldNumber = 5;
+    public const int IsSufficientCommitmentsCollectedFieldNumber = 4;
     private bool isSufficientCommitmentsCollected_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool IsSufficientCommitmentsCollected {
@@ -1343,7 +1369,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "is_sufficient_data_collected" field.</summary>
-    public const int IsSufficientDataCollectedFieldNumber = 6;
+    public const int IsSufficientDataCollectedFieldNumber = 5;
     private bool isSufficientDataCollected_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool IsSufficientDataCollected {
@@ -1354,7 +1380,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "final_result" field.</summary>
-    public const int FinalResultFieldNumber = 7;
+    public const int FinalResultFieldNumber = 6;
     private pb::ByteString finalResult_ = pb::ByteString.Empty;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public pb::ByteString FinalResult {
@@ -1365,7 +1391,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "payment" field.</summary>
-    public const int PaymentFieldNumber = 8;
+    public const int PaymentFieldNumber = 7;
     private long payment_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public long Payment {
@@ -1376,7 +1402,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "callback_info" field.</summary>
-    public const int CallbackInfoFieldNumber = 9;
+    public const int CallbackInfoFieldNumber = 8;
     private global::AElf.Contracts.Oracle.CallbackInfo callbackInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AElf.Contracts.Oracle.CallbackInfo CallbackInfo {
@@ -1387,7 +1413,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "query_id" field.</summary>
-    public const int QueryIdFieldNumber = 10;
+    public const int QueryIdFieldNumber = 9;
     private global::AElf.Types.Hash queryId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AElf.Types.Hash QueryId {
@@ -1398,7 +1424,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "aggregate_threshold" field.</summary>
-    public const int AggregateThresholdFieldNumber = 11;
+    public const int AggregateThresholdFieldNumber = 10;
     private int aggregateThreshold_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int AggregateThreshold {
@@ -1409,7 +1435,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "query_sender" field.</summary>
-    public const int QuerySenderFieldNumber = 12;
+    public const int QuerySenderFieldNumber = 11;
     private global::AElf.Types.Address querySender_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AElf.Types.Address QuerySender {
@@ -1420,7 +1446,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "is_commit_stage_finished" field.</summary>
-    public const int IsCommitStageFinishedFieldNumber = 13;
+    public const int IsCommitStageFinishedFieldNumber = 12;
     private bool isCommitStageFinished_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool IsCommitStageFinished {
@@ -1431,7 +1457,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "commitments_count" field.</summary>
-    public const int CommitmentsCountFieldNumber = 14;
+    public const int CommitmentsCountFieldNumber = 13;
     private int commitmentsCount_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CommitmentsCount {
@@ -1442,7 +1468,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "is_cancelled" field.</summary>
-    public const int IsCancelledFieldNumber = 15;
+    public const int IsCancelledFieldNumber = 14;
     private bool isCancelled_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public bool IsCancelled {
@@ -1452,36 +1478,36 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "url_to_query" field.</summary>
-    public const int UrlToQueryFieldNumber = 16;
-    private string urlToQuery_ = "";
+    /// <summary>Field number for the "query_info" field.</summary>
+    public const int QueryInfoFieldNumber = 15;
+    private global::AElf.Contracts.Oracle.QueryInfo queryInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UrlToQuery {
-      get { return urlToQuery_; }
+    public global::AElf.Contracts.Oracle.QueryInfo QueryInfo {
+      get { return queryInfo_; }
       set {
-        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "attribute_to_fetch" field.</summary>
-    public const int AttributeToFetchFieldNumber = 17;
-    private string attributeToFetch_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AttributeToFetch {
-      get { return attributeToFetch_; }
-      set {
-        attributeToFetch_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        queryInfo_ = value;
       }
     }
 
     /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 18;
+    public const int TokenFieldNumber = 16;
     private string token_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Token {
       get { return token_; }
       set {
         token_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "maximum_permissible_deviation" field.</summary>
+    public const int MaximumPermissibleDeviationFieldNumber = 17;
+    private int maximumPermissibleDeviation_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MaximumPermissibleDeviation {
+      get { return maximumPermissibleDeviation_; }
+      set {
+        maximumPermissibleDeviation_ = value;
       }
     }
 
@@ -1512,9 +1538,9 @@ namespace AElf.Contracts.Oracle {
       if (IsCommitStageFinished != other.IsCommitStageFinished) return false;
       if (CommitmentsCount != other.CommitmentsCount) return false;
       if (IsCancelled != other.IsCancelled) return false;
-      if (UrlToQuery != other.UrlToQuery) return false;
-      if (AttributeToFetch != other.AttributeToFetch) return false;
+      if (!object.Equals(QueryInfo, other.QueryInfo)) return false;
       if (Token != other.Token) return false;
+      if (MaximumPermissibleDeviation != other.MaximumPermissibleDeviation) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1535,9 +1561,9 @@ namespace AElf.Contracts.Oracle {
       if (IsCommitStageFinished != false) hash ^= IsCommitStageFinished.GetHashCode();
       if (CommitmentsCount != 0) hash ^= CommitmentsCount.GetHashCode();
       if (IsCancelled != false) hash ^= IsCancelled.GetHashCode();
-      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      if (AttributeToFetch.Length != 0) hash ^= AttributeToFetch.GetHashCode();
+      if (queryInfo_ != null) hash ^= QueryInfo.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
+      if (MaximumPermissibleDeviation != 0) hash ^= MaximumPermissibleDeviation.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1555,72 +1581,72 @@ namespace AElf.Contracts.Oracle {
       output.WriteRawMessage(this);
     #else
       if (designatedNodeList_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteMessage(DesignatedNodeList);
       }
       if (aggregatorContractAddress_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(AggregatorContractAddress);
       }
       if (expirationTimestamp_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(ExpirationTimestamp);
       }
       if (IsSufficientCommitmentsCollected != false) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteBool(IsSufficientCommitmentsCollected);
       }
       if (IsSufficientDataCollected != false) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteBool(IsSufficientDataCollected);
       }
       if (FinalResult.Length != 0) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteBytes(FinalResult);
       }
       if (Payment != 0L) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(56);
         output.WriteInt64(Payment);
       }
       if (callbackInfo_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(66);
         output.WriteMessage(CallbackInfo);
       }
       if (queryId_ != null) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(74);
         output.WriteMessage(QueryId);
       }
       if (AggregateThreshold != 0) {
-        output.WriteRawTag(88);
+        output.WriteRawTag(80);
         output.WriteInt32(AggregateThreshold);
       }
       if (querySender_ != null) {
-        output.WriteRawTag(98);
+        output.WriteRawTag(90);
         output.WriteMessage(QuerySender);
       }
       if (IsCommitStageFinished != false) {
-        output.WriteRawTag(104);
+        output.WriteRawTag(96);
         output.WriteBool(IsCommitStageFinished);
       }
       if (CommitmentsCount != 0) {
-        output.WriteRawTag(112);
+        output.WriteRawTag(104);
         output.WriteInt32(CommitmentsCount);
       }
       if (IsCancelled != false) {
-        output.WriteRawTag(120);
+        output.WriteRawTag(112);
         output.WriteBool(IsCancelled);
       }
-      if (UrlToQuery.Length != 0) {
-        output.WriteRawTag(130, 1);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(138, 1);
-        output.WriteString(AttributeToFetch);
+      if (queryInfo_ != null) {
+        output.WriteRawTag(122);
+        output.WriteMessage(QueryInfo);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(146, 1);
+        output.WriteRawTag(130, 1);
         output.WriteString(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        output.WriteRawTag(136, 1);
+        output.WriteInt32(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1632,72 +1658,72 @@ namespace AElf.Contracts.Oracle {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       if (designatedNodeList_ != null) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteMessage(DesignatedNodeList);
       }
       if (aggregatorContractAddress_ != null) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteMessage(AggregatorContractAddress);
       }
       if (expirationTimestamp_ != null) {
-        output.WriteRawTag(34);
+        output.WriteRawTag(26);
         output.WriteMessage(ExpirationTimestamp);
       }
       if (IsSufficientCommitmentsCollected != false) {
-        output.WriteRawTag(40);
+        output.WriteRawTag(32);
         output.WriteBool(IsSufficientCommitmentsCollected);
       }
       if (IsSufficientDataCollected != false) {
-        output.WriteRawTag(48);
+        output.WriteRawTag(40);
         output.WriteBool(IsSufficientDataCollected);
       }
       if (FinalResult.Length != 0) {
-        output.WriteRawTag(58);
+        output.WriteRawTag(50);
         output.WriteBytes(FinalResult);
       }
       if (Payment != 0L) {
-        output.WriteRawTag(64);
+        output.WriteRawTag(56);
         output.WriteInt64(Payment);
       }
       if (callbackInfo_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(66);
         output.WriteMessage(CallbackInfo);
       }
       if (queryId_ != null) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(74);
         output.WriteMessage(QueryId);
       }
       if (AggregateThreshold != 0) {
-        output.WriteRawTag(88);
+        output.WriteRawTag(80);
         output.WriteInt32(AggregateThreshold);
       }
       if (querySender_ != null) {
-        output.WriteRawTag(98);
+        output.WriteRawTag(90);
         output.WriteMessage(QuerySender);
       }
       if (IsCommitStageFinished != false) {
-        output.WriteRawTag(104);
+        output.WriteRawTag(96);
         output.WriteBool(IsCommitStageFinished);
       }
       if (CommitmentsCount != 0) {
-        output.WriteRawTag(112);
+        output.WriteRawTag(104);
         output.WriteInt32(CommitmentsCount);
       }
       if (IsCancelled != false) {
-        output.WriteRawTag(120);
+        output.WriteRawTag(112);
         output.WriteBool(IsCancelled);
       }
-      if (UrlToQuery.Length != 0) {
-        output.WriteRawTag(130, 1);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(138, 1);
-        output.WriteString(AttributeToFetch);
+      if (queryInfo_ != null) {
+        output.WriteRawTag(122);
+        output.WriteMessage(QueryInfo);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(146, 1);
+        output.WriteRawTag(130, 1);
         output.WriteString(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        output.WriteRawTag(136, 1);
+        output.WriteInt32(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1750,14 +1776,14 @@ namespace AElf.Contracts.Oracle {
       if (IsCancelled != false) {
         size += 1 + 1;
       }
-      if (UrlToQuery.Length != 0) {
-        size += 2 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        size += 2 + pb::CodedOutputStream.ComputeStringSize(AttributeToFetch);
+      if (queryInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryInfo);
       }
       if (Token.Length != 0) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        size += 2 + pb::CodedOutputStream.ComputeInt32Size(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1830,14 +1856,17 @@ namespace AElf.Contracts.Oracle {
       if (other.IsCancelled != false) {
         IsCancelled = other.IsCancelled;
       }
-      if (other.UrlToQuery.Length != 0) {
-        UrlToQuery = other.UrlToQuery;
-      }
-      if (other.AttributeToFetch.Length != 0) {
-        AttributeToFetch = other.AttributeToFetch;
+      if (other.queryInfo_ != null) {
+        if (queryInfo_ == null) {
+          QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+        }
+        QueryInfo.MergeFrom(other.QueryInfo);
       }
       if (other.Token.Length != 0) {
         Token = other.Token;
+      }
+      if (other.MaximumPermissibleDeviation != 0) {
+        MaximumPermissibleDeviation = other.MaximumPermissibleDeviation;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -1853,90 +1882,93 @@ namespace AElf.Contracts.Oracle {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 18: {
+          case 10: {
             if (designatedNodeList_ == null) {
               DesignatedNodeList = new global::AElf.Contracts.Oracle.AddressList();
             }
             input.ReadMessage(DesignatedNodeList);
             break;
           }
-          case 26: {
+          case 18: {
             if (aggregatorContractAddress_ == null) {
               AggregatorContractAddress = new global::AElf.Types.Address();
             }
             input.ReadMessage(AggregatorContractAddress);
             break;
           }
-          case 34: {
+          case 26: {
             if (expirationTimestamp_ == null) {
               ExpirationTimestamp = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(ExpirationTimestamp);
             break;
           }
-          case 40: {
+          case 32: {
             IsSufficientCommitmentsCollected = input.ReadBool();
             break;
           }
-          case 48: {
+          case 40: {
             IsSufficientDataCollected = input.ReadBool();
             break;
           }
-          case 58: {
+          case 50: {
             FinalResult = input.ReadBytes();
             break;
           }
-          case 64: {
+          case 56: {
             Payment = input.ReadInt64();
             break;
           }
-          case 74: {
+          case 66: {
             if (callbackInfo_ == null) {
               CallbackInfo = new global::AElf.Contracts.Oracle.CallbackInfo();
             }
             input.ReadMessage(CallbackInfo);
             break;
           }
-          case 82: {
+          case 74: {
             if (queryId_ == null) {
               QueryId = new global::AElf.Types.Hash();
             }
             input.ReadMessage(QueryId);
             break;
           }
-          case 88: {
+          case 80: {
             AggregateThreshold = input.ReadInt32();
             break;
           }
-          case 98: {
+          case 90: {
             if (querySender_ == null) {
               QuerySender = new global::AElf.Types.Address();
             }
             input.ReadMessage(QuerySender);
             break;
           }
-          case 104: {
+          case 96: {
             IsCommitStageFinished = input.ReadBool();
             break;
           }
-          case 112: {
+          case 104: {
             CommitmentsCount = input.ReadInt32();
             break;
           }
-          case 120: {
+          case 112: {
             IsCancelled = input.ReadBool();
             break;
           }
+          case 122: {
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
+            break;
+          }
           case 130: {
-            UrlToQuery = input.ReadString();
-            break;
-          }
-          case 138: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 146: {
             Token = input.ReadString();
+            break;
+          }
+          case 136: {
+            MaximumPermissibleDeviation = input.ReadInt32();
             break;
           }
         }
@@ -1953,90 +1985,93 @@ namespace AElf.Contracts.Oracle {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 18: {
+          case 10: {
             if (designatedNodeList_ == null) {
               DesignatedNodeList = new global::AElf.Contracts.Oracle.AddressList();
             }
             input.ReadMessage(DesignatedNodeList);
             break;
           }
-          case 26: {
+          case 18: {
             if (aggregatorContractAddress_ == null) {
               AggregatorContractAddress = new global::AElf.Types.Address();
             }
             input.ReadMessage(AggregatorContractAddress);
             break;
           }
-          case 34: {
+          case 26: {
             if (expirationTimestamp_ == null) {
               ExpirationTimestamp = new global::Google.Protobuf.WellKnownTypes.Timestamp();
             }
             input.ReadMessage(ExpirationTimestamp);
             break;
           }
-          case 40: {
+          case 32: {
             IsSufficientCommitmentsCollected = input.ReadBool();
             break;
           }
-          case 48: {
+          case 40: {
             IsSufficientDataCollected = input.ReadBool();
             break;
           }
-          case 58: {
+          case 50: {
             FinalResult = input.ReadBytes();
             break;
           }
-          case 64: {
+          case 56: {
             Payment = input.ReadInt64();
             break;
           }
-          case 74: {
+          case 66: {
             if (callbackInfo_ == null) {
               CallbackInfo = new global::AElf.Contracts.Oracle.CallbackInfo();
             }
             input.ReadMessage(CallbackInfo);
             break;
           }
-          case 82: {
+          case 74: {
             if (queryId_ == null) {
               QueryId = new global::AElf.Types.Hash();
             }
             input.ReadMessage(QueryId);
             break;
           }
-          case 88: {
+          case 80: {
             AggregateThreshold = input.ReadInt32();
             break;
           }
-          case 98: {
+          case 90: {
             if (querySender_ == null) {
               QuerySender = new global::AElf.Types.Address();
             }
             input.ReadMessage(QuerySender);
             break;
           }
-          case 104: {
+          case 96: {
             IsCommitStageFinished = input.ReadBool();
             break;
           }
-          case 112: {
+          case 104: {
             CommitmentsCount = input.ReadInt32();
             break;
           }
-          case 120: {
+          case 112: {
             IsCancelled = input.ReadBool();
             break;
           }
+          case 122: {
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
+            break;
+          }
           case 130: {
-            UrlToQuery = input.ReadString();
-            break;
-          }
-          case 138: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 146: {
             Token = input.ReadString();
+            break;
+          }
+          case 136: {
+            MaximumPermissibleDeviation = input.ReadInt32();
             break;
           }
         }
@@ -2695,15 +2730,15 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class SetThresholdInput : pb::IMessage<SetThresholdInput>
+  public sealed partial class OracleNodeThreshold : pb::IMessage<OracleNodeThreshold>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<SetThresholdInput> _parser = new pb::MessageParser<SetThresholdInput>(() => new SetThresholdInput());
+    private static readonly pb::MessageParser<OracleNodeThreshold> _parser = new pb::MessageParser<OracleNodeThreshold>(() => new OracleNodeThreshold());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<SetThresholdInput> Parser { get { return _parser; } }
+    public static pb::MessageParser<OracleNodeThreshold> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -2716,14 +2751,14 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SetThresholdInput() {
+    public OracleNodeThreshold() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SetThresholdInput(SetThresholdInput other) : this() {
+    public OracleNodeThreshold(OracleNodeThreshold other) : this() {
       minimumOracleNodesCount_ = other.minimumOracleNodesCount_;
       defaultRevealThreshold_ = other.defaultRevealThreshold_;
       defaultAggregateThreshold_ = other.defaultAggregateThreshold_;
@@ -2731,8 +2766,8 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SetThresholdInput Clone() {
-      return new SetThresholdInput(this);
+    public OracleNodeThreshold Clone() {
+      return new OracleNodeThreshold(this);
     }
 
     /// <summary>Field number for the "minimum_oracle_nodes_count" field.</summary>
@@ -2770,11 +2805,11 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as SetThresholdInput);
+      return Equals(other as OracleNodeThreshold);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(SetThresholdInput other) {
+    public bool Equals(OracleNodeThreshold other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2867,7 +2902,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(SetThresholdInput other) {
+    public void MergeFrom(OracleNodeThreshold other) {
       if (other == null) {
         return;
       }
@@ -3375,8 +3410,7 @@ namespace AElf.Contracts.Oracle {
     public NodeDataList(NodeDataList other) : this() {
       value_ = other.value_.Clone();
       observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
-      urlToQuery_ = other.urlToQuery_;
-      attributeToFetch_ = other.attributeToFetch_;
+      queryInfo_ = other.queryInfo_ != null ? other.queryInfo_.Clone() : null;
       token_ = other.token_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -3407,30 +3441,19 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "url_to_query" field.</summary>
-    public const int UrlToQueryFieldNumber = 3;
-    private string urlToQuery_ = "";
+    /// <summary>Field number for the "query_info" field.</summary>
+    public const int QueryInfoFieldNumber = 3;
+    private global::AElf.Contracts.Oracle.QueryInfo queryInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UrlToQuery {
-      get { return urlToQuery_; }
+    public global::AElf.Contracts.Oracle.QueryInfo QueryInfo {
+      get { return queryInfo_; }
       set {
-        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "attribute_to_fetch" field.</summary>
-    public const int AttributeToFetchFieldNumber = 4;
-    private string attributeToFetch_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AttributeToFetch {
-      get { return attributeToFetch_; }
-      set {
-        attributeToFetch_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        queryInfo_ = value;
       }
     }
 
     /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 5;
+    public const int TokenFieldNumber = 4;
     private string token_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Token {
@@ -3455,8 +3478,7 @@ namespace AElf.Contracts.Oracle {
       }
       if(!value_.Equals(other.value_)) return false;
       if (!object.Equals(ObserverAssociationAddress, other.ObserverAssociationAddress)) return false;
-      if (UrlToQuery != other.UrlToQuery) return false;
-      if (AttributeToFetch != other.AttributeToFetch) return false;
+      if (!object.Equals(QueryInfo, other.QueryInfo)) return false;
       if (Token != other.Token) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -3466,8 +3488,7 @@ namespace AElf.Contracts.Oracle {
       int hash = 1;
       hash ^= value_.GetHashCode();
       if (observerAssociationAddress_ != null) hash ^= ObserverAssociationAddress.GetHashCode();
-      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      if (AttributeToFetch.Length != 0) hash ^= AttributeToFetch.GetHashCode();
+      if (queryInfo_ != null) hash ^= QueryInfo.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -3490,16 +3511,12 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(18);
         output.WriteMessage(ObserverAssociationAddress);
       }
-      if (UrlToQuery.Length != 0) {
+      if (queryInfo_ != null) {
         output.WriteRawTag(26);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteString(AttributeToFetch);
+        output.WriteMessage(QueryInfo);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(34);
         output.WriteString(Token);
       }
       if (_unknownFields != null) {
@@ -3516,16 +3533,12 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(18);
         output.WriteMessage(ObserverAssociationAddress);
       }
-      if (UrlToQuery.Length != 0) {
+      if (queryInfo_ != null) {
         output.WriteRawTag(26);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteString(AttributeToFetch);
+        output.WriteMessage(QueryInfo);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(42);
+        output.WriteRawTag(34);
         output.WriteString(Token);
       }
       if (_unknownFields != null) {
@@ -3541,11 +3554,8 @@ namespace AElf.Contracts.Oracle {
       if (observerAssociationAddress_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverAssociationAddress);
       }
-      if (UrlToQuery.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(AttributeToFetch);
+      if (queryInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryInfo);
       }
       if (Token.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
@@ -3568,11 +3578,11 @@ namespace AElf.Contracts.Oracle {
         }
         ObserverAssociationAddress.MergeFrom(other.ObserverAssociationAddress);
       }
-      if (other.UrlToQuery.Length != 0) {
-        UrlToQuery = other.UrlToQuery;
-      }
-      if (other.AttributeToFetch.Length != 0) {
-        AttributeToFetch = other.AttributeToFetch;
+      if (other.queryInfo_ != null) {
+        if (queryInfo_ == null) {
+          QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+        }
+        QueryInfo.MergeFrom(other.QueryInfo);
       }
       if (other.Token.Length != 0) {
         Token = other.Token;
@@ -3603,14 +3613,13 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 26: {
-            UrlToQuery = input.ReadString();
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
             break;
           }
           case 34: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 42: {
             Token = input.ReadString();
             break;
           }
@@ -3640,15 +3649,645 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 26: {
-            UrlToQuery = input.ReadString();
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
             break;
           }
           case 34: {
-            AttributeToFetch = input.ReadString();
+            Token = input.ReadString();
             break;
           }
-          case 42: {
-            Token = input.ReadString();
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class LockTokensInput : pb::IMessage<LockTokensInput>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<LockTokensInput> _parser = new pb::MessageParser<LockTokensInput>(() => new LockTokensInput());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<LockTokensInput> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public LockTokensInput() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public LockTokensInput(LockTokensInput other) : this() {
+      oracleNodeAddress_ = other.oracleNodeAddress_ != null ? other.oracleNodeAddress_.Clone() : null;
+      lockAmount_ = other.lockAmount_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public LockTokensInput Clone() {
+      return new LockTokensInput(this);
+    }
+
+    /// <summary>Field number for the "oracle_node_address" field.</summary>
+    public const int OracleNodeAddressFieldNumber = 1;
+    private global::AElf.Types.Address oracleNodeAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address OracleNodeAddress {
+      get { return oracleNodeAddress_; }
+      set {
+        oracleNodeAddress_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "lock_amount" field.</summary>
+    public const int LockAmountFieldNumber = 2;
+    private long lockAmount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long LockAmount {
+      get { return lockAmount_; }
+      set {
+        lockAmount_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as LockTokensInput);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(LockTokensInput other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(OracleNodeAddress, other.OracleNodeAddress)) return false;
+      if (LockAmount != other.LockAmount) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (oracleNodeAddress_ != null) hash ^= OracleNodeAddress.GetHashCode();
+      if (LockAmount != 0L) hash ^= LockAmount.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (oracleNodeAddress_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(OracleNodeAddress);
+      }
+      if (LockAmount != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(LockAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (oracleNodeAddress_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(OracleNodeAddress);
+      }
+      if (LockAmount != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(LockAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (oracleNodeAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OracleNodeAddress);
+      }
+      if (LockAmount != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(LockAmount);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(LockTokensInput other) {
+      if (other == null) {
+        return;
+      }
+      if (other.oracleNodeAddress_ != null) {
+        if (oracleNodeAddress_ == null) {
+          OracleNodeAddress = new global::AElf.Types.Address();
+        }
+        OracleNodeAddress.MergeFrom(other.OracleNodeAddress);
+      }
+      if (other.LockAmount != 0L) {
+        LockAmount = other.LockAmount;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (oracleNodeAddress_ == null) {
+              OracleNodeAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(OracleNodeAddress);
+            break;
+          }
+          case 16: {
+            LockAmount = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (oracleNodeAddress_ == null) {
+              OracleNodeAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(OracleNodeAddress);
+            break;
+          }
+          case 16: {
+            LockAmount = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class UnlockTokensInput : pb::IMessage<UnlockTokensInput>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<UnlockTokensInput> _parser = new pb::MessageParser<UnlockTokensInput>(() => new UnlockTokensInput());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<UnlockTokensInput> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[13]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public UnlockTokensInput() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public UnlockTokensInput(UnlockTokensInput other) : this() {
+      oracleNodeAddress_ = other.oracleNodeAddress_ != null ? other.oracleNodeAddress_.Clone() : null;
+      withdrawAmount_ = other.withdrawAmount_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public UnlockTokensInput Clone() {
+      return new UnlockTokensInput(this);
+    }
+
+    /// <summary>Field number for the "oracle_node_address" field.</summary>
+    public const int OracleNodeAddressFieldNumber = 1;
+    private global::AElf.Types.Address oracleNodeAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address OracleNodeAddress {
+      get { return oracleNodeAddress_; }
+      set {
+        oracleNodeAddress_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "withdraw_amount" field.</summary>
+    public const int WithdrawAmountFieldNumber = 2;
+    private long withdrawAmount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long WithdrawAmount {
+      get { return withdrawAmount_; }
+      set {
+        withdrawAmount_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as UnlockTokensInput);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(UnlockTokensInput other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(OracleNodeAddress, other.OracleNodeAddress)) return false;
+      if (WithdrawAmount != other.WithdrawAmount) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (oracleNodeAddress_ != null) hash ^= OracleNodeAddress.GetHashCode();
+      if (WithdrawAmount != 0L) hash ^= WithdrawAmount.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (oracleNodeAddress_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(OracleNodeAddress);
+      }
+      if (WithdrawAmount != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(WithdrawAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (oracleNodeAddress_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(OracleNodeAddress);
+      }
+      if (WithdrawAmount != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(WithdrawAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (oracleNodeAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OracleNodeAddress);
+      }
+      if (WithdrawAmount != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(WithdrawAmount);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(UnlockTokensInput other) {
+      if (other == null) {
+        return;
+      }
+      if (other.oracleNodeAddress_ != null) {
+        if (oracleNodeAddress_ == null) {
+          OracleNodeAddress = new global::AElf.Types.Address();
+        }
+        OracleNodeAddress.MergeFrom(other.OracleNodeAddress);
+      }
+      if (other.WithdrawAmount != 0L) {
+        WithdrawAmount = other.WithdrawAmount;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (oracleNodeAddress_ == null) {
+              OracleNodeAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(OracleNodeAddress);
+            break;
+          }
+          case 16: {
+            WithdrawAmount = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (oracleNodeAddress_ == null) {
+              OracleNodeAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(OracleNodeAddress);
+            break;
+          }
+          case 16: {
+            WithdrawAmount = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class QueryInfo : pb::IMessage<QueryInfo>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<QueryInfo> _parser = new pb::MessageParser<QueryInfo>(() => new QueryInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<QueryInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[14]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QueryInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QueryInfo(QueryInfo other) : this() {
+      urlToQuery_ = other.urlToQuery_;
+      attributesToFetch_ = other.attributesToFetch_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QueryInfo Clone() {
+      return new QueryInfo(this);
+    }
+
+    /// <summary>Field number for the "url_to_query" field.</summary>
+    public const int UrlToQueryFieldNumber = 1;
+    private string urlToQuery_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string UrlToQuery {
+      get { return urlToQuery_; }
+      set {
+        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "attributes_to_fetch" field.</summary>
+    public const int AttributesToFetchFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_attributesToFetch_codec
+        = pb::FieldCodec.ForString(18);
+    private readonly pbc::RepeatedField<string> attributesToFetch_ = new pbc::RepeatedField<string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<string> AttributesToFetch {
+      get { return attributesToFetch_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as QueryInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(QueryInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (UrlToQuery != other.UrlToQuery) return false;
+      if(!attributesToFetch_.Equals(other.attributesToFetch_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
+      hash ^= attributesToFetch_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (UrlToQuery.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UrlToQuery);
+      }
+      attributesToFetch_.WriteTo(output, _repeated_attributesToFetch_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (UrlToQuery.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(UrlToQuery);
+      }
+      attributesToFetch_.WriteTo(ref output, _repeated_attributesToFetch_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (UrlToQuery.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
+      }
+      size += attributesToFetch_.CalculateSize(_repeated_attributesToFetch_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(QueryInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.UrlToQuery.Length != 0) {
+        UrlToQuery = other.UrlToQuery;
+      }
+      attributesToFetch_.Add(other.attributesToFetch_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            UrlToQuery = input.ReadString();
+            break;
+          }
+          case 18: {
+            attributesToFetch_.AddEntriesFrom(input, _repeated_attributesToFetch_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            UrlToQuery = input.ReadString();
+            break;
+          }
+          case 18: {
+            attributesToFetch_.AddEntriesFrom(ref input, _repeated_attributesToFetch_codec);
             break;
           }
         }
@@ -3673,7 +4312,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[12]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3694,12 +4333,12 @@ namespace AElf.Contracts.Oracle {
       callbackInfo_ = other.callbackInfo_ != null ? other.callbackInfo_.Clone() : null;
       aggregatorContractAddress_ = other.aggregatorContractAddress_ != null ? other.aggregatorContractAddress_.Clone() : null;
       designatedNodeList_ = other.designatedNodeList_ != null ? other.designatedNodeList_.Clone() : null;
-      urlToQuery_ = other.urlToQuery_;
-      attributeToFetch_ = other.attributeToFetch_;
+      queryInfo_ = other.queryInfo_ != null ? other.queryInfo_.Clone() : null;
       aggregateThreshold_ = other.aggregateThreshold_;
-      queryManager_ = other.queryManager_ != null ? other.queryManager_.Clone() : null;
+      querySender_ = other.querySender_ != null ? other.querySender_.Clone() : null;
       queryId_ = other.queryId_ != null ? other.queryId_.Clone() : null;
       token_ = other.token_;
+      maximumPermissibleDeviation_ = other.maximumPermissibleDeviation_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3758,30 +4397,19 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "url_to_query" field.</summary>
-    public const int UrlToQueryFieldNumber = 5;
-    private string urlToQuery_ = "";
+    /// <summary>Field number for the "query_info" field.</summary>
+    public const int QueryInfoFieldNumber = 5;
+    private global::AElf.Contracts.Oracle.QueryInfo queryInfo_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UrlToQuery {
-      get { return urlToQuery_; }
+    public global::AElf.Contracts.Oracle.QueryInfo QueryInfo {
+      get { return queryInfo_; }
       set {
-        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "attribute_to_fetch" field.</summary>
-    public const int AttributeToFetchFieldNumber = 6;
-    private string attributeToFetch_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AttributeToFetch {
-      get { return attributeToFetch_; }
-      set {
-        attributeToFetch_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        queryInfo_ = value;
       }
     }
 
     /// <summary>Field number for the "aggregate_threshold" field.</summary>
-    public const int AggregateThresholdFieldNumber = 7;
+    public const int AggregateThresholdFieldNumber = 6;
     private int aggregateThreshold_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int AggregateThreshold {
@@ -3791,19 +4419,19 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "query_manager" field.</summary>
-    public const int QueryManagerFieldNumber = 8;
-    private global::AElf.Types.Address queryManager_;
+    /// <summary>Field number for the "query_sender" field.</summary>
+    public const int QuerySenderFieldNumber = 7;
+    private global::AElf.Types.Address querySender_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::AElf.Types.Address QueryManager {
-      get { return queryManager_; }
+    public global::AElf.Types.Address QuerySender {
+      get { return querySender_; }
       set {
-        queryManager_ = value;
+        querySender_ = value;
       }
     }
 
     /// <summary>Field number for the "query_id" field.</summary>
-    public const int QueryIdFieldNumber = 9;
+    public const int QueryIdFieldNumber = 8;
     private global::AElf.Types.Hash queryId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public global::AElf.Types.Hash QueryId {
@@ -3814,13 +4442,24 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "token" field.</summary>
-    public const int TokenFieldNumber = 10;
+    public const int TokenFieldNumber = 9;
     private string token_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Token {
       get { return token_; }
       set {
         token_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "maximum_permissible_deviation" field.</summary>
+    public const int MaximumPermissibleDeviationFieldNumber = 10;
+    private int maximumPermissibleDeviation_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int MaximumPermissibleDeviation {
+      get { return maximumPermissibleDeviation_; }
+      set {
+        maximumPermissibleDeviation_ = value;
       }
     }
 
@@ -3841,12 +4480,12 @@ namespace AElf.Contracts.Oracle {
       if (!object.Equals(CallbackInfo, other.CallbackInfo)) return false;
       if (!object.Equals(AggregatorContractAddress, other.AggregatorContractAddress)) return false;
       if (!object.Equals(DesignatedNodeList, other.DesignatedNodeList)) return false;
-      if (UrlToQuery != other.UrlToQuery) return false;
-      if (AttributeToFetch != other.AttributeToFetch) return false;
+      if (!object.Equals(QueryInfo, other.QueryInfo)) return false;
       if (AggregateThreshold != other.AggregateThreshold) return false;
-      if (!object.Equals(QueryManager, other.QueryManager)) return false;
+      if (!object.Equals(QuerySender, other.QuerySender)) return false;
       if (!object.Equals(QueryId, other.QueryId)) return false;
       if (Token != other.Token) return false;
+      if (MaximumPermissibleDeviation != other.MaximumPermissibleDeviation) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3857,12 +4496,12 @@ namespace AElf.Contracts.Oracle {
       if (callbackInfo_ != null) hash ^= CallbackInfo.GetHashCode();
       if (aggregatorContractAddress_ != null) hash ^= AggregatorContractAddress.GetHashCode();
       if (designatedNodeList_ != null) hash ^= DesignatedNodeList.GetHashCode();
-      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      if (AttributeToFetch.Length != 0) hash ^= AttributeToFetch.GetHashCode();
+      if (queryInfo_ != null) hash ^= QueryInfo.GetHashCode();
       if (AggregateThreshold != 0) hash ^= AggregateThreshold.GetHashCode();
-      if (queryManager_ != null) hash ^= QueryManager.GetHashCode();
+      if (querySender_ != null) hash ^= QuerySender.GetHashCode();
       if (queryId_ != null) hash ^= QueryId.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
+      if (MaximumPermissibleDeviation != 0) hash ^= MaximumPermissibleDeviation.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3895,29 +4534,29 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(34);
         output.WriteMessage(DesignatedNodeList);
       }
-      if (UrlToQuery.Length != 0) {
+      if (queryInfo_ != null) {
         output.WriteRawTag(42);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(50);
-        output.WriteString(AttributeToFetch);
+        output.WriteMessage(QueryInfo);
       }
       if (AggregateThreshold != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteInt32(AggregateThreshold);
       }
-      if (queryManager_ != null) {
-        output.WriteRawTag(66);
-        output.WriteMessage(QueryManager);
+      if (querySender_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(QuerySender);
       }
       if (queryId_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(66);
         output.WriteMessage(QueryId);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(74);
         output.WriteString(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        output.WriteRawTag(80);
+        output.WriteInt32(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -3944,29 +4583,29 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(34);
         output.WriteMessage(DesignatedNodeList);
       }
-      if (UrlToQuery.Length != 0) {
+      if (queryInfo_ != null) {
         output.WriteRawTag(42);
-        output.WriteString(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(50);
-        output.WriteString(AttributeToFetch);
+        output.WriteMessage(QueryInfo);
       }
       if (AggregateThreshold != 0) {
-        output.WriteRawTag(56);
+        output.WriteRawTag(48);
         output.WriteInt32(AggregateThreshold);
       }
-      if (queryManager_ != null) {
-        output.WriteRawTag(66);
-        output.WriteMessage(QueryManager);
+      if (querySender_ != null) {
+        output.WriteRawTag(58);
+        output.WriteMessage(QuerySender);
       }
       if (queryId_ != null) {
-        output.WriteRawTag(74);
+        output.WriteRawTag(66);
         output.WriteMessage(QueryId);
       }
       if (Token.Length != 0) {
-        output.WriteRawTag(82);
+        output.WriteRawTag(74);
         output.WriteString(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        output.WriteRawTag(80);
+        output.WriteInt32(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -3989,23 +4628,23 @@ namespace AElf.Contracts.Oracle {
       if (designatedNodeList_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(DesignatedNodeList);
       }
-      if (UrlToQuery.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
-      }
-      if (AttributeToFetch.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(AttributeToFetch);
+      if (queryInfo_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryInfo);
       }
       if (AggregateThreshold != 0) {
         size += 1 + pb::CodedOutputStream.ComputeInt32Size(AggregateThreshold);
       }
-      if (queryManager_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryManager);
+      if (querySender_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QuerySender);
       }
       if (queryId_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryId);
       }
       if (Token.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Token);
+      }
+      if (MaximumPermissibleDeviation != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(MaximumPermissibleDeviation);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4039,20 +4678,20 @@ namespace AElf.Contracts.Oracle {
         }
         DesignatedNodeList.MergeFrom(other.DesignatedNodeList);
       }
-      if (other.UrlToQuery.Length != 0) {
-        UrlToQuery = other.UrlToQuery;
-      }
-      if (other.AttributeToFetch.Length != 0) {
-        AttributeToFetch = other.AttributeToFetch;
+      if (other.queryInfo_ != null) {
+        if (queryInfo_ == null) {
+          QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+        }
+        QueryInfo.MergeFrom(other.QueryInfo);
       }
       if (other.AggregateThreshold != 0) {
         AggregateThreshold = other.AggregateThreshold;
       }
-      if (other.queryManager_ != null) {
-        if (queryManager_ == null) {
-          QueryManager = new global::AElf.Types.Address();
+      if (other.querySender_ != null) {
+        if (querySender_ == null) {
+          QuerySender = new global::AElf.Types.Address();
         }
-        QueryManager.MergeFrom(other.QueryManager);
+        QuerySender.MergeFrom(other.QuerySender);
       }
       if (other.queryId_ != null) {
         if (queryId_ == null) {
@@ -4062,6 +4701,9 @@ namespace AElf.Contracts.Oracle {
       }
       if (other.Token.Length != 0) {
         Token = other.Token;
+      }
+      if (other.MaximumPermissibleDeviation != 0) {
+        MaximumPermissibleDeviation = other.MaximumPermissibleDeviation;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4103,33 +4745,36 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 42: {
-            UrlToQuery = input.ReadString();
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
             break;
           }
-          case 50: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 56: {
+          case 48: {
             AggregateThreshold = input.ReadInt32();
             break;
           }
-          case 66: {
-            if (queryManager_ == null) {
-              QueryManager = new global::AElf.Types.Address();
+          case 58: {
+            if (querySender_ == null) {
+              QuerySender = new global::AElf.Types.Address();
             }
-            input.ReadMessage(QueryManager);
+            input.ReadMessage(QuerySender);
             break;
           }
-          case 74: {
+          case 66: {
             if (queryId_ == null) {
               QueryId = new global::AElf.Types.Hash();
             }
             input.ReadMessage(QueryId);
             break;
           }
-          case 82: {
+          case 74: {
             Token = input.ReadString();
+            break;
+          }
+          case 80: {
+            MaximumPermissibleDeviation = input.ReadInt32();
             break;
           }
         }
@@ -4172,33 +4817,36 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 42: {
-            UrlToQuery = input.ReadString();
+            if (queryInfo_ == null) {
+              QueryInfo = new global::AElf.Contracts.Oracle.QueryInfo();
+            }
+            input.ReadMessage(QueryInfo);
             break;
           }
-          case 50: {
-            AttributeToFetch = input.ReadString();
-            break;
-          }
-          case 56: {
+          case 48: {
             AggregateThreshold = input.ReadInt32();
             break;
           }
-          case 66: {
-            if (queryManager_ == null) {
-              QueryManager = new global::AElf.Types.Address();
+          case 58: {
+            if (querySender_ == null) {
+              QuerySender = new global::AElf.Types.Address();
             }
-            input.ReadMessage(QueryManager);
+            input.ReadMessage(QuerySender);
             break;
           }
-          case 74: {
+          case 66: {
             if (queryId_ == null) {
               QueryId = new global::AElf.Types.Hash();
             }
             input.ReadMessage(QueryId);
             break;
           }
-          case 82: {
+          case 74: {
             Token = input.ReadString();
+            break;
+          }
+          case 80: {
+            MaximumPermissibleDeviation = input.ReadInt32();
             break;
           }
         }
@@ -4220,7 +4868,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[13]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4425,187 +5073,6 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class SufficientDataCollected : pb::IMessage<SufficientDataCollected>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<SufficientDataCollected> _parser = new pb::MessageParser<SufficientDataCollected>(() => new SufficientDataCollected());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<SufficientDataCollected> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[14]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SufficientDataCollected() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SufficientDataCollected(SufficientDataCollected other) : this() {
-      requestId_ = other.requestId_ != null ? other.requestId_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SufficientDataCollected Clone() {
-      return new SufficientDataCollected(this);
-    }
-
-    /// <summary>Field number for the "request_id" field.</summary>
-    public const int RequestIdFieldNumber = 1;
-    private global::AElf.Types.Hash requestId_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::AElf.Types.Hash RequestId {
-      get { return requestId_; }
-      set {
-        requestId_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as SufficientDataCollected);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(SufficientDataCollected other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(RequestId, other.RequestId)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (requestId_ != null) hash ^= RequestId.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (requestId_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(RequestId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (requestId_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(RequestId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (requestId_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(RequestId);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(SufficientDataCollected other) {
-      if (other == null) {
-        return;
-      }
-      if (other.requestId_ != null) {
-        if (requestId_ == null) {
-          RequestId = new global::AElf.Types.Hash();
-        }
-        RequestId.MergeFrom(other.RequestId);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (requestId_ == null) {
-              RequestId = new global::AElf.Types.Hash();
-            }
-            input.ReadMessage(RequestId);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (requestId_ == null) {
-              RequestId = new global::AElf.Types.Hash();
-            }
-            input.ReadMessage(RequestId);
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
   public sealed partial class SufficientCommitmentsCollected : pb::IMessage<SufficientCommitmentsCollected>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -4618,7 +5085,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[15]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4799,7 +5266,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[16]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5151,7 +5618,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[17]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5347,6 +5814,268 @@ namespace AElf.Contracts.Oracle {
           }
           case 18: {
             Result = input.ReadBytes();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class TokenLocked : pb::IMessage<TokenLocked>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<TokenLocked> _parser = new pb::MessageParser<TokenLocked>(() => new TokenLocked());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<TokenLocked> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[20]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TokenLocked() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TokenLocked(TokenLocked other) : this() {
+      oracleNodeAddress_ = other.oracleNodeAddress_ != null ? other.oracleNodeAddress_.Clone() : null;
+      fromAddress_ = other.fromAddress_ != null ? other.fromAddress_.Clone() : null;
+      lockedAmount_ = other.lockedAmount_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public TokenLocked Clone() {
+      return new TokenLocked(this);
+    }
+
+    /// <summary>Field number for the "oracle_node_address" field.</summary>
+    public const int OracleNodeAddressFieldNumber = 1;
+    private global::AElf.Types.Address oracleNodeAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address OracleNodeAddress {
+      get { return oracleNodeAddress_; }
+      set {
+        oracleNodeAddress_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "from_address" field.</summary>
+    public const int FromAddressFieldNumber = 2;
+    private global::AElf.Types.Address fromAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address FromAddress {
+      get { return fromAddress_; }
+      set {
+        fromAddress_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "locked_amount" field.</summary>
+    public const int LockedAmountFieldNumber = 3;
+    private long lockedAmount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long LockedAmount {
+      get { return lockedAmount_; }
+      set {
+        lockedAmount_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as TokenLocked);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(TokenLocked other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(OracleNodeAddress, other.OracleNodeAddress)) return false;
+      if (!object.Equals(FromAddress, other.FromAddress)) return false;
+      if (LockedAmount != other.LockedAmount) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (oracleNodeAddress_ != null) hash ^= OracleNodeAddress.GetHashCode();
+      if (fromAddress_ != null) hash ^= FromAddress.GetHashCode();
+      if (LockedAmount != 0L) hash ^= LockedAmount.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (oracleNodeAddress_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(OracleNodeAddress);
+      }
+      if (fromAddress_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(FromAddress);
+      }
+      if (LockedAmount != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(LockedAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (oracleNodeAddress_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(OracleNodeAddress);
+      }
+      if (fromAddress_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(FromAddress);
+      }
+      if (LockedAmount != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(LockedAmount);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (oracleNodeAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OracleNodeAddress);
+      }
+      if (fromAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(FromAddress);
+      }
+      if (LockedAmount != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(LockedAmount);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(TokenLocked other) {
+      if (other == null) {
+        return;
+      }
+      if (other.oracleNodeAddress_ != null) {
+        if (oracleNodeAddress_ == null) {
+          OracleNodeAddress = new global::AElf.Types.Address();
+        }
+        OracleNodeAddress.MergeFrom(other.OracleNodeAddress);
+      }
+      if (other.fromAddress_ != null) {
+        if (fromAddress_ == null) {
+          FromAddress = new global::AElf.Types.Address();
+        }
+        FromAddress.MergeFrom(other.FromAddress);
+      }
+      if (other.LockedAmount != 0L) {
+        LockedAmount = other.LockedAmount;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (oracleNodeAddress_ == null) {
+              OracleNodeAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(OracleNodeAddress);
+            break;
+          }
+          case 18: {
+            if (fromAddress_ == null) {
+              FromAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(FromAddress);
+            break;
+          }
+          case 24: {
+            LockedAmount = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (oracleNodeAddress_ == null) {
+              OracleNodeAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(OracleNodeAddress);
+            break;
+          }
+          case 18: {
+            if (fromAddress_ == null) {
+              FromAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(FromAddress);
+            break;
+          }
+          case 24: {
+            LockedAmount = input.ReadInt64();
             break;
           }
         }

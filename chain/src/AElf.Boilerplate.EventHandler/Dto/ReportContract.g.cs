@@ -36,52 +36,66 @@ namespace AElf.Contracts.Report {
             "b3JfY29udHJhY3RfYWRkcmVzcxgEIAEoCzINLmFlbGYuQWRkcmVzcxISCgpu",
             "b2RlX2luZGV4GAUgASgFIlwKEkNvbmZpcm1SZXBvcnRJbnB1dBIhChlldGhl",
             "cmV1bV9jb250cmFjdF9hZGRyZXNzGAEgASgJEhAKCHJvdW5kX2lkGAIgASgD",
-            "EhEKCXNpZ25hdHVyZRgDIAEoCSJ2CgZSZXBvcnQSHAoIcXVlcnlfaWQYASAB",
-            "KAsyCi5hZWxmLkhhc2gSEAoIcm91bmRfaWQYAiABKAMSIwoMb2JzZXJ2YXRp",
-            "b25zGAMgASgLMg0uT2JzZXJ2YXRpb25zEhcKD2FnZ3JlZ2F0ZWRfZGF0YRgE",
-            "IAEoDCJYChFSZXBvcnRRdWVyeVJlY29yZBIqChNvcmlnaW5fcXVlcnlfc2Vu",
-            "ZGVyGAEgASgLMg0uYWVsZi5BZGRyZXNzEhcKD3BhaWRfcmVwb3J0X2ZlZRgC",
-            "IAEoAyIsCgxPYnNlcnZlckxpc3QSHAoFdmFsdWUYASADKAsyDS5hZWxmLkFk",
-            "ZHJlc3MiNwoSUHJvcG9zZVJlcG9ydElucHV0EiEKDXF1ZXJ5X2lkX2xpc3QY",
-            "ASADKAsyCi5hZWxmLkhhc2giKwoMT2JzZXJ2YXRpb25zEhsKBXZhbHVlGAEg",
-            "AygLMgwuT2JzZXJ2YXRpb24iKAoLT2JzZXJ2YXRpb24SCwoDa2V5GAEgASgJ",
-            "EgwKBGRhdGEYAiABKAwiaAoRR2V0U2lnbmF0dXJlSW5wdXQSIQoZZXRoZXJl",
-            "dW1fY29udHJhY3RfYWRkcmVzcxgBIAEoCRIQCghyb3VuZF9pZBgCIAEoAxIe",
-            "CgdhZGRyZXNzGAMgASgLMg0uYWVsZi5BZGRyZXNzIpoCCh5PZmZDaGFpbkFn",
-            "Z3JlZ2F0b3JDb250cmFjdEluZm8SMwocb2JzZXJ2ZXJfYXNzb2NpYXRpb25f",
-            "YWRkcmVzcxgBIAEoCzINLmFlbGYuQWRkcmVzcxIlCg5vZmZfY2hhaW5faW5m",
-            "bxgCIAMoCzINLk9mZkNoYWluSW5mbxIhChlldGhlcmV1bV9jb250cmFjdF9h",
-            "ZGRyZXNzGAMgASgJEhUKDWNvbmZpZ19kaWdlc3QYBCABKAwSGwoTYWdncmVn",
-            "YXRlX3RocmVzaG9sZBgFIAEoBRIyChthZ2dyZWdhdG9yX2NvbnRyYWN0X2Fk",
-            "ZHJlc3MYBiABKAsyDS5hZWxmLkFkZHJlc3MSEQoJcm91bmRfaWRzGAcgAygF",
-            "IvQBChpBZGRPZmZDaGFpbkFnZ3JlZ2F0b3JJbnB1dBIkCg1vYnNlcnZlcl9s",
-            "aXN0GAEgASgLMg0uT2JzZXJ2ZXJMaXN0EiUKDm9mZl9jaGFpbl9pbmZvGAIg",
-            "AygLMg0uT2ZmQ2hhaW5JbmZvEiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJl",
-            "c3MYAyABKAkSFQoNY29uZmlnX2RpZ2VzdBgEIAEoDBIbChNhZ2dyZWdhdGVf",
-            "dGhyZXNob2xkGAUgASgFEjIKG2FnZ3JlZ2F0b3JfY29udHJhY3RfYWRkcmVz",
-            "cxgGIAEoCzINLmFlbGYuQWRkcmVzcyJACgxPZmZDaGFpbkluZm8SFAoMdXJs",
-            "X3RvX3F1ZXJ5GAEgASgJEhoKEmF0dHJpYnV0ZV90b19mZXRjaBgCIAEoCSJF",
-            "Cg5HZXRSZXBvcnRJbnB1dBIhChlldGhlcmV1bV9jb250cmFjdF9hZGRyZXNz",
-            "GAEgASgJEhAKCHJvdW5kX2lkGAIgASgDIl0KEkdldE1lcmtsZVBhdGhJbnB1",
-            "dBIhChlldGhlcmV1bV9jb250cmFjdF9hZGRyZXNzGAEgASgJEhAKCHJvdW5k",
-            "X2lkGAIgASgDEhIKCm5vZGVfaW5kZXgYAyABKAUiVgonR2V0Q3VycmVudFJv",
-            "dW5kSWRCeUNvbnRyYWN0QWRkcmVzc0lucHV0EisKFG9ic2VydmVyX2Fzc29j",
-            "aWF0aW9uGAEgASgLMg0uYWVsZi5BZGRyZXNzIk4KF0dldEV0aGVyZXJ1bVJl",
-            "cG9ydElucHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJlc3MYASABKAkS",
-            "EAoIcm91bmRfaWQYAiABKAMiTgocR2VuZXJhdGVFdGhlcmVydW1SZXBvcnRJ",
-            "bnB1dBIXCgZyZXBvcnQYASABKAsyBy5SZXBvcnQSFQoNY29uZmlnX2RpZ2Vz",
-            "dBgCIAEoDCKUAQoOUmVwb3J0UHJvcG9zZWQSEgoKcmF3X3JlcG9ydBgBIAEo",
-            "CRIzChxvYnNlcnZlcl9hc3NvY2lhdGlvbl9hZGRyZXNzGAIgASgLMg0uYWVs",
-            "Zi5BZGRyZXNzEiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJlc3MYAyABKAkS",
-            "EAoIcm91bmRfaWQYBCABKAM6BKC7GAEilAEKD1JlcG9ydENvbmZpcm1lZBIQ",
-            "Cghyb3VuZF9pZBgBIAEoAxIRCglzaWduYXR1cmUYAiABKAkSMwocb2JzZXJ2",
-            "ZXJfYXNzb2NpYXRpb25fYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVzcxIh",
-            "ChlldGhlcmV1bV9jb250cmFjdF9hZGRyZXNzGAQgASgJOgSguxgBMvILCg5S",
-            "ZXBvcnRDb250cmFjdBI4CgpJbml0aWFsaXplEhAuSW5pdGlhbGl6ZUlucHV0",
-            "GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASLgoLUXVlcnlPcmFjbGUSES5R",
-            "dWVyeU9yYWNsZUlucHV0GgouYWVsZi5IYXNoIgASOQoRQ2FuY2VsUXVlcnlP",
-            "cmFjbGUSCi5hZWxmLkhhc2gaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABI+",
-            "Cg1Db25maXJtUmVwb3J0EhMuQ29uZmlybVJlcG9ydElucHV0GhYuZ29vZ2xl",
+            "EhEKCXNpZ25hdHVyZRgDIAEoCSJvChFSZWplY3RSZXBvcnRJbnB1dBIhChll",
+            "dGhlcmV1bV9jb250cmFjdF9hZGRyZXNzGAEgASgJEhAKCHJvdW5kX2lkGAIg",
+            "ASgDEiUKDmFjY3VzaW5nX25vZGVzGAMgAygLMg0uYWVsZi5BZGRyZXNzIpgB",
+            "CgZSZXBvcnQSHAoIcXVlcnlfaWQYASABKAsyCi5hZWxmLkhhc2gSEAoIcm91",
+            "bmRfaWQYAiABKAMSIwoMb2JzZXJ2YXRpb25zGAMgASgLMg0uT2JzZXJ2YXRp",
+            "b25zEhcKD2FnZ3JlZ2F0ZWRfZGF0YRgEIAEoDBIgCglvYnNlcnZlcnMYBSAD",
+            "KAsyDS5PYnNlcnZlckxpc3QiWAoRUmVwb3J0UXVlcnlSZWNvcmQSKgoTb3Jp",
+            "Z2luX3F1ZXJ5X3NlbmRlchgBIAEoCzINLmFlbGYuQWRkcmVzcxIXCg9wYWlk",
+            "X3JlcG9ydF9mZWUYAiABKAMiLAoMT2JzZXJ2ZXJMaXN0EhwKBXZhbHVlGAEg",
+            "AygLMg0uYWVsZi5BZGRyZXNzIjcKElByb3Bvc2VSZXBvcnRJbnB1dBIhCg1x",
+            "dWVyeV9pZF9saXN0GAEgAygLMgouYWVsZi5IYXNoIisKDE9ic2VydmF0aW9u",
+            "cxIbCgV2YWx1ZRgBIAMoCzIMLk9ic2VydmF0aW9uIigKC09ic2VydmF0aW9u",
+            "EgsKA2tleRgBIAEoCRIMCgRkYXRhGAIgASgMImgKEUdldFNpZ25hdHVyZUlu",
+            "cHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJlc3MYASABKAkSEAoIcm91",
+            "bmRfaWQYAiABKAMSHgoHYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVzcyKn",
+            "AgoXT2ZmQ2hhaW5BZ2dyZWdhdGlvbkluZm8SIQoZZXRoZXJldW1fY29udHJh",
+            "Y3RfYWRkcmVzcxgBIAEoCRI5ChlvZmZfY2hhaW5fcXVlcnlfaW5mb19saXN0",
+            "GAIgASgLMhYuT2ZmQ2hhaW5RdWVyeUluZm9MaXN0EjMKHG9ic2VydmVyX2Fz",
+            "c29jaWF0aW9uX2FkZHJlc3MYAyABKAsyDS5hZWxmLkFkZHJlc3MSFQoNY29u",
+            "ZmlnX2RpZ2VzdBgEIAEoDBIbChNhZ2dyZWdhdGVfdGhyZXNob2xkGAUgASgF",
+            "EjIKG2FnZ3JlZ2F0b3JfY29udHJhY3RfYWRkcmVzcxgGIAEoCzINLmFlbGYu",
+            "QWRkcmVzcxIRCglyb3VuZF9pZHMYByADKAUijgIKIFJlZ2lzdGVyT2ZmQ2hh",
+            "aW5BZ2dyZWdhdGlvbklucHV0EiQKDW9ic2VydmVyX2xpc3QYASABKAsyDS5P",
+            "YnNlcnZlckxpc3QSOQoZb2ZmX2NoYWluX3F1ZXJ5X2luZm9fbGlzdBgCIAEo",
+            "CzIWLk9mZkNoYWluUXVlcnlJbmZvTGlzdBIhChlldGhlcmV1bV9jb250cmFj",
+            "dF9hZGRyZXNzGAMgASgJEhUKDWNvbmZpZ19kaWdlc3QYBCABKAwSGwoTYWdn",
+            "cmVnYXRlX3RocmVzaG9sZBgFIAEoBRIyChthZ2dyZWdhdG9yX2NvbnRyYWN0",
+            "X2FkZHJlc3MYBiABKAsyDS5hZWxmLkFkZHJlc3MiRgoRT2ZmQ2hhaW5RdWVy",
+            "eUluZm8SFAoMdXJsX3RvX3F1ZXJ5GAEgASgJEhsKE2F0dHJpYnV0ZXNfdG9f",
+            "ZmV0Y2gYAiADKAkiRQoOR2V0UmVwb3J0SW5wdXQSIQoZZXRoZXJldW1fY29u",
+            "dHJhY3RfYWRkcmVzcxgBIAEoCRIQCghyb3VuZF9pZBgCIAEoAyJdChJHZXRN",
+            "ZXJrbGVQYXRoSW5wdXQSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgB",
+            "IAEoCRIQCghyb3VuZF9pZBgCIAEoAxISCgpub2RlX2luZGV4GAMgASgFIk4K",
+            "F0dldEV0aGVyZXJ1bVJlcG9ydElucHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0",
+            "X2FkZHJlc3MYASABKAkSEAoIcm91bmRfaWQYAiABKAMicwocR2VuZXJhdGVF",
+            "dGhlcmVydW1SZXBvcnRJbnB1dBIXCgZyZXBvcnQYASABKAsyBy5SZXBvcnQS",
+            "FQoNY29uZmlnX2RpZ2VzdBgCIAEoDBIjCgxvcmdhbml6YXRpb24YAyABKAsy",
+            "DS5hZWxmLkFkZHJlc3MiOgoVT2ZmQ2hhaW5RdWVyeUluZm9MaXN0EiEKBXZh",
+            "bHVlGAEgAygLMhIuT2ZmQ2hhaW5RdWVyeUluZm8ilAEKDlJlcG9ydFByb3Bv",
+            "c2VkEhIKCnJhd19yZXBvcnQYASABKAkSMwocb2JzZXJ2ZXJfYXNzb2NpYXRp",
+            "b25fYWRkcmVzcxgCIAEoCzINLmFlbGYuQWRkcmVzcxIhChlldGhlcmV1bV9j",
+            "b250cmFjdF9hZGRyZXNzGAMgASgJEhAKCHJvdW5kX2lkGAQgASgDOgSguxgB",
+            "IpQBCg9SZXBvcnRDb25maXJtZWQSEAoIcm91bmRfaWQYASABKAMSEQoJc2ln",
+            "bmF0dXJlGAIgASgJEjMKHG9ic2VydmVyX2Fzc29jaWF0aW9uX2FkZHJlc3MY",
+            "AyABKAsyDS5hZWxmLkFkZHJlc3MSIQoZZXRoZXJldW1fY29udHJhY3RfYWRk",
+            "cmVzcxgEIAEoCToEoLsYASKaAgodT2ZmQ2hhaW5BZ2dyZWdhdGlvblJlZ2lz",
+            "dGVyZWQSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgBIAEoCRI5Chlv",
+            "ZmZfY2hhaW5fcXVlcnlfaW5mb19saXN0GAIgASgLMhYuT2ZmQ2hhaW5RdWVy",
+            "eUluZm9MaXN0EjMKHG9ic2VydmVyX2Fzc29jaWF0aW9uX2FkZHJlc3MYAyAB",
+            "KAsyDS5hZWxmLkFkZHJlc3MSFQoNY29uZmlnX2RpZ2VzdBgEIAEoDBIbChNh",
+            "Z2dyZWdhdGVfdGhyZXNob2xkGAUgASgFEjIKG2FnZ3JlZ2F0b3JfY29udHJh",
+            "Y3RfYWRkcmVzcxgGIAEoCzINLmFlbGYuQWRkcmVzczLbDAoOUmVwb3J0Q29u",
+            "dHJhY3QSOAoKSW5pdGlhbGl6ZRIQLkluaXRpYWxpemVJbnB1dBoWLmdvb2ds",
+            "ZS5wcm90b2J1Zi5FbXB0eSIAEi4KC1F1ZXJ5T3JhY2xlEhEuUXVlcnlPcmFj",
+            "bGVJbnB1dBoKLmFlbGYuSGFzaCIAEjkKEUNhbmNlbFF1ZXJ5T3JhY2xlEgou",
+            "YWVsZi5IYXNoGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASPgoNQ29uZmly",
+            "bVJlcG9ydBITLkNvbmZpcm1SZXBvcnRJbnB1dBoWLmdvb2dsZS5wcm90b2J1",
+            "Zi5FbXB0eSIAEjwKDFJlamVjdFJlcG9ydBISLlJlamVjdFJlcG9ydElucHV0",
+            "GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASTwoWQWRqdXN0QW1lcmNlbWVu",
+            "dEFtb3VudBIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xl",
             "LnByb3RvYnVmLkVtcHR5IgASKgoNUHJvcG9zZVJlcG9ydBIOLkNhbGxiYWNr",
             "SW5wdXQaBy5SZXBvcnQiABJHCg5Nb3J0Z2FnZVRva2VucxIbLmdvb2dsZS5w",
             "cm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgAS",
@@ -93,48 +107,49 @@ namespace AElf.Contracts.Report {
             "bHlPYnNlcnZlckZlZRIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYu",
             "Z29vZ2xlLnByb3RvYnVmLkVtcHR5IgASTwoWQWRqdXN0QXBwbHlPYnNlcnZl",
             "ckZlZRIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xlLnBy",
-            "b3RvYnVmLkVtcHR5IgASVwoVQWRkT2ZmQ2hhaW5BZ2dyZWdhdG9yEhsuQWRk",
-            "T2ZmQ2hhaW5BZ2dyZWdhdG9ySW5wdXQaHy5PZmZDaGFpbkFnZ3JlZ2F0b3JD",
-            "b250cmFjdEluZm8iABI9Cg1HZXRNZXJrbGVQYXRoEhMuR2V0TWVya2xlUGF0",
-            "aElucHV0GhAuYWVsZi5NZXJrbGVQYXRoIgWIifcBARIsCglHZXRSZXBvcnQS",
-            "Dy5HZXRSZXBvcnRJbnB1dBoHLlJlcG9ydCIFiIn3AQESRwoMR2V0U2lnbmF0",
-            "dXJlEhIuR2V0U2lnbmF0dXJlSW5wdXQaHC5nb29nbGUucHJvdG9idWYuU3Ry",
-            "aW5nVmFsdWUiBYiJ9wEBEmkKIUdldE9mZkNoYWluQWdncmVnYXRvckNvbnRy",
-            "YWN0SW5mbxIcLmdvb2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1ZRofLk9mZkNo",
-            "YWluQWdncmVnYXRvckNvbnRyYWN0SW5mbyIFiIn3AQESPQoUR2V0UmVwb3J0",
-            "UXVlcnlSZWNvcmQSCi5hZWxmLkhhc2gaEi5SZXBvcnRRdWVyeVJlY29yZCIF",
-            "iIn3AQEScgoiR2V0Q3VycmVudFJvdW5kSWRCeUNvbnRyYWN0QWRkcmVzcxIo",
-            "LkdldEN1cnJlbnRSb3VuZElkQnlDb250cmFjdEFkZHJlc3NJbnB1dBobLmdv",
-            "b2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlIgWIifcBARJTChJHZXRFdGhlcmVy",
-            "dW1SZXBvcnQSGC5HZXRFdGhlcmVydW1SZXBvcnRJbnB1dBocLmdvb2dsZS5w",
-            "cm90b2J1Zi5TdHJpbmdWYWx1ZSIFiIn3AQESXQoXR2VuZXJhdGVFdGhlcmVy",
-            "dW1SZXBvcnQSHS5HZW5lcmF0ZUV0aGVyZXJ1bVJlcG9ydElucHV0GhwuZ29v",
-            "Z2xlLnByb3RvYnVmLlN0cmluZ1ZhbHVlIgWIifcBARoussz2ASlBRWxmLkNv",
-            "bnRyYWN0cy5SZXBvcnQuUmVwb3J0Q29udHJhY3RTdGF0ZUIYqgIVQUVsZi5D",
-            "b250cmFjdHMuUmVwb3J0YgZwcm90bzM="));
+            "b3RvYnVmLkVtcHR5IgASXAobUmVnaXN0ZXJPZmZDaGFpbkFnZ3JlZ2F0aW9u",
+            "EiEuUmVnaXN0ZXJPZmZDaGFpbkFnZ3JlZ2F0aW9uSW5wdXQaGC5PZmZDaGFp",
+            "bkFnZ3JlZ2F0aW9uSW5mbyIAEj0KDUdldE1lcmtsZVBhdGgSEy5HZXRNZXJr",
+            "bGVQYXRoSW5wdXQaEC5hZWxmLk1lcmtsZVBhdGgiBYiJ9wEBEiwKCUdldFJl",
+            "cG9ydBIPLkdldFJlcG9ydElucHV0GgcuUmVwb3J0IgWIifcBARJHCgxHZXRT",
+            "aWduYXR1cmUSEi5HZXRTaWduYXR1cmVJbnB1dBocLmdvb2dsZS5wcm90b2J1",
+            "Zi5TdHJpbmdWYWx1ZSIFiIn3AQESWwoaR2V0T2ZmQ2hhaW5BZ2dyZWdhdGlv",
+            "bkluZm8SHC5nb29nbGUucHJvdG9idWYuU3RyaW5nVmFsdWUaGC5PZmZDaGFp",
+            "bkFnZ3JlZ2F0aW9uSW5mbyIFiIn3AQESPQoUR2V0UmVwb3J0UXVlcnlSZWNv",
+            "cmQSCi5hZWxmLkhhc2gaEi5SZXBvcnRRdWVyeVJlY29yZCIFiIn3AQESVQoR",
+            "R2V0Q3VycmVudFJvdW5kSWQSHC5nb29nbGUucHJvdG9idWYuU3RyaW5nVmFs",
+            "dWUaGy5nb29nbGUucHJvdG9idWYuSW50NjRWYWx1ZSIFiIn3AQESUwoSR2V0",
+            "RXRoZXJlcnVtUmVwb3J0EhguR2V0RXRoZXJlcnVtUmVwb3J0SW5wdXQaHC5n",
+            "b29nbGUucHJvdG9idWYuU3RyaW5nVmFsdWUiBYiJ9wEBEl0KF0dlbmVyYXRl",
+            "RXRoZXJlcnVtUmVwb3J0Eh0uR2VuZXJhdGVFdGhlcmVydW1SZXBvcnRJbnB1",
+            "dBocLmdvb2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1ZSIFiIn3AQEaLrLM9gEp",
+            "QUVsZi5Db250cmFjdHMuUmVwb3J0LlJlcG9ydENvbnRyYWN0U3RhdGVCGKoC",
+            "FUFFbGYuQ29udHJhY3RzLlJlcG9ydGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::AElf.Types.CoreReflection.Descriptor, global::AElf.OptionsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, global::CallbackInputReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.InitializeInput), global::AElf.Contracts.Report.InitializeInput.Parser, new[]{ "OracleContractAddress", "ReportFee", "ApplyObserverFee" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.QueryOracleInput), global::AElf.Contracts.Report.QueryOracleInput.Parser, new[]{ "Payment", "EthereumContractAddress", "AggregateThreshold", "AggregatorContractAddress", "NodeIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ConfirmReportInput), global::AElf.Contracts.Report.ConfirmReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "Signature" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Report), global::AElf.Contracts.Report.Report.Parser, new[]{ "QueryId", "RoundId", "Observations", "AggregatedData" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.RejectReportInput), global::AElf.Contracts.Report.RejectReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "AccusingNodes" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Report), global::AElf.Contracts.Report.Report.Parser, new[]{ "QueryId", "RoundId", "Observations", "AggregatedData", "Observers" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportQueryRecord), global::AElf.Contracts.Report.ReportQueryRecord.Parser, new[]{ "OriginQuerySender", "PaidReportFee" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ObserverList), global::AElf.Contracts.Report.ObserverList.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ProposeReportInput), global::AElf.Contracts.Report.ProposeReportInput.Parser, new[]{ "QueryIdList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Observations), global::AElf.Contracts.Report.Observations.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Observation), global::AElf.Contracts.Report.Observation.Parser, new[]{ "Key", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetSignatureInput), global::AElf.Contracts.Report.GetSignatureInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "Address" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationInfo), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser, new[]{ "ObserverAssociationAddress", "OffChainInfo", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "RoundIds" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.AddOffChainAggregatorInput), global::AElf.Contracts.Report.AddOffChainAggregatorInput.Parser, new[]{ "ObserverList", "OffChainInfo", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainInfo), global::AElf.Contracts.Report.OffChainInfo.Parser, new[]{ "UrlToQuery", "AttributeToFetch" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationInfo), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser, new[]{ "EthereumContractAddress", "OffChainQueryInfoList", "ObserverAssociationAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "RoundIds" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.RegisterOffChainAggregationInput), global::AElf.Contracts.Report.RegisterOffChainAggregationInput.Parser, new[]{ "ObserverList", "OffChainQueryInfoList", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainQueryInfo), global::AElf.Contracts.Report.OffChainQueryInfo.Parser, new[]{ "UrlToQuery", "AttributesToFetch" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetReportInput), global::AElf.Contracts.Report.GetReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetMerklePathInput), global::AElf.Contracts.Report.GetMerklePathInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "NodeIndex" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetCurrentRoundIdByContractAddressInput), global::AElf.Contracts.Report.GetCurrentRoundIdByContractAddressInput.Parser, new[]{ "ObserverAssociation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetEthererumReportInput), global::AElf.Contracts.Report.GetEthererumReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GenerateEthererumReportInput), global::AElf.Contracts.Report.GenerateEthererumReportInput.Parser, new[]{ "Report", "ConfigDigest" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GenerateEthererumReportInput), global::AElf.Contracts.Report.GenerateEthererumReportInput.Parser, new[]{ "Report", "ConfigDigest", "Organization" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainQueryInfoList), global::AElf.Contracts.Report.OffChainQueryInfoList.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportProposed), global::AElf.Contracts.Report.ReportProposed.Parser, new[]{ "RawReport", "ObserverAssociationAddress", "EthereumContractAddress", "RoundId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportConfirmed), global::AElf.Contracts.Report.ReportConfirmed.Parser, new[]{ "RoundId", "Signature", "ObserverAssociationAddress", "EthereumContractAddress" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportConfirmed), global::AElf.Contracts.Report.ReportConfirmed.Parser, new[]{ "RoundId", "Signature", "ObserverAssociationAddress", "EthereumContractAddress" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationRegistered), global::AElf.Contracts.Report.OffChainAggregationRegistered.Parser, new[]{ "EthereumContractAddress", "OffChainQueryInfoList", "ObserverAssociationAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null)
           }));
     }
     #endregion
@@ -963,6 +978,239 @@ namespace AElf.Contracts.Report {
 
   }
 
+  public sealed partial class RejectReportInput : pb::IMessage<RejectReportInput>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<RejectReportInput> _parser = new pb::MessageParser<RejectReportInput>(() => new RejectReportInput());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<RejectReportInput> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RejectReportInput() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RejectReportInput(RejectReportInput other) : this() {
+      ethereumContractAddress_ = other.ethereumContractAddress_;
+      roundId_ = other.roundId_;
+      accusingNodes_ = other.accusingNodes_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public RejectReportInput Clone() {
+      return new RejectReportInput(this);
+    }
+
+    /// <summary>Field number for the "ethereum_contract_address" field.</summary>
+    public const int EthereumContractAddressFieldNumber = 1;
+    private string ethereumContractAddress_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string EthereumContractAddress {
+      get { return ethereumContractAddress_; }
+      set {
+        ethereumContractAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "round_id" field.</summary>
+    public const int RoundIdFieldNumber = 2;
+    private long roundId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long RoundId {
+      get { return roundId_; }
+      set {
+        roundId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "accusing_nodes" field.</summary>
+    public const int AccusingNodesFieldNumber = 3;
+    private static readonly pb::FieldCodec<global::AElf.Types.Address> _repeated_accusingNodes_codec
+        = pb::FieldCodec.ForMessage(26, global::AElf.Types.Address.Parser);
+    private readonly pbc::RepeatedField<global::AElf.Types.Address> accusingNodes_ = new pbc::RepeatedField<global::AElf.Types.Address>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AElf.Types.Address> AccusingNodes {
+      get { return accusingNodes_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as RejectReportInput);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(RejectReportInput other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EthereumContractAddress != other.EthereumContractAddress) return false;
+      if (RoundId != other.RoundId) return false;
+      if(!accusingNodes_.Equals(other.accusingNodes_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
+      if (RoundId != 0L) hash ^= RoundId.GetHashCode();
+      hash ^= accusingNodes_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (EthereumContractAddress.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EthereumContractAddress);
+      }
+      if (RoundId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(RoundId);
+      }
+      accusingNodes_.WriteTo(output, _repeated_accusingNodes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (EthereumContractAddress.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EthereumContractAddress);
+      }
+      if (RoundId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(RoundId);
+      }
+      accusingNodes_.WriteTo(ref output, _repeated_accusingNodes_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (EthereumContractAddress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
+      }
+      if (RoundId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(RoundId);
+      }
+      size += accusingNodes_.CalculateSize(_repeated_accusingNodes_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(RejectReportInput other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EthereumContractAddress.Length != 0) {
+        EthereumContractAddress = other.EthereumContractAddress;
+      }
+      if (other.RoundId != 0L) {
+        RoundId = other.RoundId;
+      }
+      accusingNodes_.Add(other.accusingNodes_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            EthereumContractAddress = input.ReadString();
+            break;
+          }
+          case 16: {
+            RoundId = input.ReadInt64();
+            break;
+          }
+          case 26: {
+            accusingNodes_.AddEntriesFrom(input, _repeated_accusingNodes_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            EthereumContractAddress = input.ReadString();
+            break;
+          }
+          case 16: {
+            RoundId = input.ReadInt64();
+            break;
+          }
+          case 26: {
+            accusingNodes_.AddEntriesFrom(ref input, _repeated_accusingNodes_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
   public sealed partial class Report : pb::IMessage<Report>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
@@ -975,7 +1223,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[3]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -996,6 +1244,7 @@ namespace AElf.Contracts.Report {
       roundId_ = other.roundId_;
       observations_ = other.observations_ != null ? other.observations_.Clone() : null;
       aggregatedData_ = other.aggregatedData_;
+      observers_ = other.observers_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1048,6 +1297,16 @@ namespace AElf.Contracts.Report {
       }
     }
 
+    /// <summary>Field number for the "observers" field.</summary>
+    public const int ObserversFieldNumber = 5;
+    private static readonly pb::FieldCodec<global::AElf.Contracts.Report.ObserverList> _repeated_observers_codec
+        = pb::FieldCodec.ForMessage(42, global::AElf.Contracts.Report.ObserverList.Parser);
+    private readonly pbc::RepeatedField<global::AElf.Contracts.Report.ObserverList> observers_ = new pbc::RepeatedField<global::AElf.Contracts.Report.ObserverList>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AElf.Contracts.Report.ObserverList> Observers {
+      get { return observers_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as Report);
@@ -1065,6 +1324,7 @@ namespace AElf.Contracts.Report {
       if (RoundId != other.RoundId) return false;
       if (!object.Equals(Observations, other.Observations)) return false;
       if (AggregatedData != other.AggregatedData) return false;
+      if(!observers_.Equals(other.observers_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1075,6 +1335,7 @@ namespace AElf.Contracts.Report {
       if (RoundId != 0L) hash ^= RoundId.GetHashCode();
       if (observations_ != null) hash ^= Observations.GetHashCode();
       if (AggregatedData.Length != 0) hash ^= AggregatedData.GetHashCode();
+      hash ^= observers_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1107,6 +1368,7 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(34);
         output.WriteBytes(AggregatedData);
       }
+      observers_.WriteTo(output, _repeated_observers_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -1132,6 +1394,7 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(34);
         output.WriteBytes(AggregatedData);
       }
+      observers_.WriteTo(ref output, _repeated_observers_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1153,6 +1416,7 @@ namespace AElf.Contracts.Report {
       if (AggregatedData.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(AggregatedData);
       }
+      size += observers_.CalculateSize(_repeated_observers_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -1182,6 +1446,7 @@ namespace AElf.Contracts.Report {
       if (other.AggregatedData.Length != 0) {
         AggregatedData = other.AggregatedData;
       }
+      observers_.Add(other.observers_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1216,6 +1481,10 @@ namespace AElf.Contracts.Report {
           }
           case 34: {
             AggregatedData = input.ReadBytes();
+            break;
+          }
+          case 42: {
+            observers_.AddEntriesFrom(input, _repeated_observers_codec);
             break;
           }
         }
@@ -1254,6 +1523,10 @@ namespace AElf.Contracts.Report {
             AggregatedData = input.ReadBytes();
             break;
           }
+          case 42: {
+            observers_.AddEntriesFrom(ref input, _repeated_observers_codec);
+            break;
+          }
         }
       }
     }
@@ -1273,7 +1546,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[4]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1490,7 +1763,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[5]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[6]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1651,7 +1924,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[6]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[7]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1812,7 +2085,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[7]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[8]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1973,7 +2246,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[8]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[9]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2181,7 +2454,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[9]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2434,7 +2707,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[10]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2451,9 +2724,9 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public OffChainAggregationInfo(OffChainAggregationInfo other) : this() {
-      observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
-      offChainInfo_ = other.offChainInfo_.Clone();
       ethereumContractAddress_ = other.ethereumContractAddress_;
+      offChainQueryInfoList_ = other.offChainQueryInfoList_ != null ? other.offChainQueryInfoList_.Clone() : null;
+      observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
       configDigest_ = other.configDigest_;
       aggregateThreshold_ = other.aggregateThreshold_;
       aggregatorContractAddress_ = other.aggregatorContractAddress_ != null ? other.aggregatorContractAddress_.Clone() : null;
@@ -2466,35 +2739,36 @@ namespace AElf.Contracts.Report {
       return new OffChainAggregationInfo(this);
     }
 
-    /// <summary>Field number for the "observer_association_address" field.</summary>
-    public const int ObserverAssociationAddressFieldNumber = 1;
-    private global::AElf.Types.Address observerAssociationAddress_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::AElf.Types.Address ObserverAssociationAddress {
-      get { return observerAssociationAddress_; }
-      set {
-        observerAssociationAddress_ = value;
-      }
-    }
-
-    /// <summary>Field number for the "off_chain_info" field.</summary>
-    public const int OffChainInfoFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::AElf.Contracts.Report.OffChainInfo> _repeated_offChainInfo_codec
-        = pb::FieldCodec.ForMessage(18, global::AElf.Contracts.Report.OffChainInfo.Parser);
-    private readonly pbc::RepeatedField<global::AElf.Contracts.Report.OffChainInfo> offChainInfo_ = new pbc::RepeatedField<global::AElf.Contracts.Report.OffChainInfo>();
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::AElf.Contracts.Report.OffChainInfo> OffChainInfo {
-      get { return offChainInfo_; }
-    }
-
     /// <summary>Field number for the "ethereum_contract_address" field.</summary>
-    public const int EthereumContractAddressFieldNumber = 3;
+    public const int EthereumContractAddressFieldNumber = 1;
     private string ethereumContractAddress_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string EthereumContractAddress {
       get { return ethereumContractAddress_; }
       set {
         ethereumContractAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "off_chain_query_info_list" field.</summary>
+    public const int OffChainQueryInfoListFieldNumber = 2;
+    private global::AElf.Contracts.Report.OffChainQueryInfoList offChainQueryInfoList_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Contracts.Report.OffChainQueryInfoList OffChainQueryInfoList {
+      get { return offChainQueryInfoList_; }
+      set {
+        offChainQueryInfoList_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "observer_association_address" field.</summary>
+    public const int ObserverAssociationAddressFieldNumber = 3;
+    private global::AElf.Types.Address observerAssociationAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address ObserverAssociationAddress {
+      get { return observerAssociationAddress_; }
+      set {
+        observerAssociationAddress_ = value;
       }
     }
 
@@ -2554,9 +2828,9 @@ namespace AElf.Contracts.Report {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (!object.Equals(ObserverAssociationAddress, other.ObserverAssociationAddress)) return false;
-      if(!offChainInfo_.Equals(other.offChainInfo_)) return false;
       if (EthereumContractAddress != other.EthereumContractAddress) return false;
+      if (!object.Equals(OffChainQueryInfoList, other.OffChainQueryInfoList)) return false;
+      if (!object.Equals(ObserverAssociationAddress, other.ObserverAssociationAddress)) return false;
       if (ConfigDigest != other.ConfigDigest) return false;
       if (AggregateThreshold != other.AggregateThreshold) return false;
       if (!object.Equals(AggregatorContractAddress, other.AggregatorContractAddress)) return false;
@@ -2567,9 +2841,9 @@ namespace AElf.Contracts.Report {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (observerAssociationAddress_ != null) hash ^= ObserverAssociationAddress.GetHashCode();
-      hash ^= offChainInfo_.GetHashCode();
       if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
+      if (offChainQueryInfoList_ != null) hash ^= OffChainQueryInfoList.GetHashCode();
+      if (observerAssociationAddress_ != null) hash ^= ObserverAssociationAddress.GetHashCode();
       if (ConfigDigest.Length != 0) hash ^= ConfigDigest.GetHashCode();
       if (AggregateThreshold != 0) hash ^= AggregateThreshold.GetHashCode();
       if (aggregatorContractAddress_ != null) hash ^= AggregatorContractAddress.GetHashCode();
@@ -2590,14 +2864,17 @@ namespace AElf.Contracts.Report {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (observerAssociationAddress_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(ObserverAssociationAddress);
-      }
-      offChainInfo_.WriteTo(output, _repeated_offChainInfo_codec);
       if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
+      }
+      if (offChainQueryInfoList_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(OffChainQueryInfoList);
+      }
+      if (observerAssociationAddress_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ObserverAssociationAddress);
       }
       if (ConfigDigest.Length != 0) {
         output.WriteRawTag(34);
@@ -2621,14 +2898,17 @@ namespace AElf.Contracts.Report {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (observerAssociationAddress_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(ObserverAssociationAddress);
-      }
-      offChainInfo_.WriteTo(ref output, _repeated_offChainInfo_codec);
       if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
+      }
+      if (offChainQueryInfoList_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(OffChainQueryInfoList);
+      }
+      if (observerAssociationAddress_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ObserverAssociationAddress);
       }
       if (ConfigDigest.Length != 0) {
         output.WriteRawTag(34);
@@ -2652,12 +2932,14 @@ namespace AElf.Contracts.Report {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (observerAssociationAddress_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverAssociationAddress);
-      }
-      size += offChainInfo_.CalculateSize(_repeated_offChainInfo_codec);
       if (EthereumContractAddress.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
+      }
+      if (offChainQueryInfoList_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OffChainQueryInfoList);
+      }
+      if (observerAssociationAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverAssociationAddress);
       }
       if (ConfigDigest.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ConfigDigest);
@@ -2680,15 +2962,20 @@ namespace AElf.Contracts.Report {
       if (other == null) {
         return;
       }
+      if (other.EthereumContractAddress.Length != 0) {
+        EthereumContractAddress = other.EthereumContractAddress;
+      }
+      if (other.offChainQueryInfoList_ != null) {
+        if (offChainQueryInfoList_ == null) {
+          OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+        }
+        OffChainQueryInfoList.MergeFrom(other.OffChainQueryInfoList);
+      }
       if (other.observerAssociationAddress_ != null) {
         if (observerAssociationAddress_ == null) {
           ObserverAssociationAddress = new global::AElf.Types.Address();
         }
         ObserverAssociationAddress.MergeFrom(other.ObserverAssociationAddress);
-      }
-      offChainInfo_.Add(other.offChainInfo_);
-      if (other.EthereumContractAddress.Length != 0) {
-        EthereumContractAddress = other.EthereumContractAddress;
       }
       if (other.ConfigDigest.Length != 0) {
         ConfigDigest = other.ConfigDigest;
@@ -2718,18 +3005,21 @@ namespace AElf.Contracts.Report {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
+            EthereumContractAddress = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (offChainQueryInfoList_ == null) {
+              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+            }
+            input.ReadMessage(OffChainQueryInfoList);
+            break;
+          }
+          case 26: {
             if (observerAssociationAddress_ == null) {
               ObserverAssociationAddress = new global::AElf.Types.Address();
             }
             input.ReadMessage(ObserverAssociationAddress);
-            break;
-          }
-          case 18: {
-            offChainInfo_.AddEntriesFrom(input, _repeated_offChainInfo_codec);
-            break;
-          }
-          case 26: {
-            EthereumContractAddress = input.ReadString();
             break;
           }
           case 34: {
@@ -2767,18 +3057,21 @@ namespace AElf.Contracts.Report {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
+            EthereumContractAddress = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (offChainQueryInfoList_ == null) {
+              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+            }
+            input.ReadMessage(OffChainQueryInfoList);
+            break;
+          }
+          case 26: {
             if (observerAssociationAddress_ == null) {
               ObserverAssociationAddress = new global::AElf.Types.Address();
             }
             input.ReadMessage(ObserverAssociationAddress);
-            break;
-          }
-          case 18: {
-            offChainInfo_.AddEntriesFrom(ref input, _repeated_offChainInfo_codec);
-            break;
-          }
-          case 26: {
-            EthereumContractAddress = input.ReadString();
             break;
           }
           case 34: {
@@ -2808,19 +3101,19 @@ namespace AElf.Contracts.Report {
 
   }
 
-  public sealed partial class AddOffChainAggregatorInput : pb::IMessage<AddOffChainAggregatorInput>
+  public sealed partial class RegisterOffChainAggregationInput : pb::IMessage<RegisterOffChainAggregationInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<AddOffChainAggregatorInput> _parser = new pb::MessageParser<AddOffChainAggregatorInput>(() => new AddOffChainAggregatorInput());
+    private static readonly pb::MessageParser<RegisterOffChainAggregationInput> _parser = new pb::MessageParser<RegisterOffChainAggregationInput>(() => new RegisterOffChainAggregationInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<AddOffChainAggregatorInput> Parser { get { return _parser; } }
+    public static pb::MessageParser<RegisterOffChainAggregationInput> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[11]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2829,16 +3122,16 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddOffChainAggregatorInput() {
+    public RegisterOffChainAggregationInput() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddOffChainAggregatorInput(AddOffChainAggregatorInput other) : this() {
+    public RegisterOffChainAggregationInput(RegisterOffChainAggregationInput other) : this() {
       observerList_ = other.observerList_ != null ? other.observerList_.Clone() : null;
-      offChainInfo_ = other.offChainInfo_.Clone();
+      offChainQueryInfoList_ = other.offChainQueryInfoList_ != null ? other.offChainQueryInfoList_.Clone() : null;
       ethereumContractAddress_ = other.ethereumContractAddress_;
       configDigest_ = other.configDigest_;
       aggregateThreshold_ = other.aggregateThreshold_;
@@ -2847,8 +3140,8 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public AddOffChainAggregatorInput Clone() {
-      return new AddOffChainAggregatorInput(this);
+    public RegisterOffChainAggregationInput Clone() {
+      return new RegisterOffChainAggregationInput(this);
     }
 
     /// <summary>Field number for the "observer_list" field.</summary>
@@ -2862,14 +3155,15 @@ namespace AElf.Contracts.Report {
       }
     }
 
-    /// <summary>Field number for the "off_chain_info" field.</summary>
-    public const int OffChainInfoFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::AElf.Contracts.Report.OffChainInfo> _repeated_offChainInfo_codec
-        = pb::FieldCodec.ForMessage(18, global::AElf.Contracts.Report.OffChainInfo.Parser);
-    private readonly pbc::RepeatedField<global::AElf.Contracts.Report.OffChainInfo> offChainInfo_ = new pbc::RepeatedField<global::AElf.Contracts.Report.OffChainInfo>();
+    /// <summary>Field number for the "off_chain_query_info_list" field.</summary>
+    public const int OffChainQueryInfoListFieldNumber = 2;
+    private global::AElf.Contracts.Report.OffChainQueryInfoList offChainQueryInfoList_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::AElf.Contracts.Report.OffChainInfo> OffChainInfo {
-      get { return offChainInfo_; }
+    public global::AElf.Contracts.Report.OffChainQueryInfoList OffChainQueryInfoList {
+      get { return offChainQueryInfoList_; }
+      set {
+        offChainQueryInfoList_ = value;
+      }
     }
 
     /// <summary>Field number for the "ethereum_contract_address" field.</summary>
@@ -2918,11 +3212,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as AddOffChainAggregatorInput);
+      return Equals(other as RegisterOffChainAggregationInput);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(AddOffChainAggregatorInput other) {
+    public bool Equals(RegisterOffChainAggregationInput other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -2930,7 +3224,7 @@ namespace AElf.Contracts.Report {
         return true;
       }
       if (!object.Equals(ObserverList, other.ObserverList)) return false;
-      if(!offChainInfo_.Equals(other.offChainInfo_)) return false;
+      if (!object.Equals(OffChainQueryInfoList, other.OffChainQueryInfoList)) return false;
       if (EthereumContractAddress != other.EthereumContractAddress) return false;
       if (ConfigDigest != other.ConfigDigest) return false;
       if (AggregateThreshold != other.AggregateThreshold) return false;
@@ -2942,7 +3236,7 @@ namespace AElf.Contracts.Report {
     public override int GetHashCode() {
       int hash = 1;
       if (observerList_ != null) hash ^= ObserverList.GetHashCode();
-      hash ^= offChainInfo_.GetHashCode();
+      if (offChainQueryInfoList_ != null) hash ^= OffChainQueryInfoList.GetHashCode();
       if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
       if (ConfigDigest.Length != 0) hash ^= ConfigDigest.GetHashCode();
       if (AggregateThreshold != 0) hash ^= AggregateThreshold.GetHashCode();
@@ -2967,7 +3261,10 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(10);
         output.WriteMessage(ObserverList);
       }
-      offChainInfo_.WriteTo(output, _repeated_offChainInfo_codec);
+      if (offChainQueryInfoList_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(OffChainQueryInfoList);
+      }
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(26);
         output.WriteString(EthereumContractAddress);
@@ -2997,7 +3294,10 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(10);
         output.WriteMessage(ObserverList);
       }
-      offChainInfo_.WriteTo(ref output, _repeated_offChainInfo_codec);
+      if (offChainQueryInfoList_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(OffChainQueryInfoList);
+      }
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(26);
         output.WriteString(EthereumContractAddress);
@@ -3026,7 +3326,9 @@ namespace AElf.Contracts.Report {
       if (observerList_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverList);
       }
-      size += offChainInfo_.CalculateSize(_repeated_offChainInfo_codec);
+      if (offChainQueryInfoList_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OffChainQueryInfoList);
+      }
       if (EthereumContractAddress.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
       }
@@ -3046,7 +3348,7 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(AddOffChainAggregatorInput other) {
+    public void MergeFrom(RegisterOffChainAggregationInput other) {
       if (other == null) {
         return;
       }
@@ -3056,7 +3358,12 @@ namespace AElf.Contracts.Report {
         }
         ObserverList.MergeFrom(other.ObserverList);
       }
-      offChainInfo_.Add(other.offChainInfo_);
+      if (other.offChainQueryInfoList_ != null) {
+        if (offChainQueryInfoList_ == null) {
+          OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+        }
+        OffChainQueryInfoList.MergeFrom(other.OffChainQueryInfoList);
+      }
       if (other.EthereumContractAddress.Length != 0) {
         EthereumContractAddress = other.EthereumContractAddress;
       }
@@ -3094,7 +3401,10 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 18: {
-            offChainInfo_.AddEntriesFrom(input, _repeated_offChainInfo_codec);
+            if (offChainQueryInfoList_ == null) {
+              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+            }
+            input.ReadMessage(OffChainQueryInfoList);
             break;
           }
           case 26: {
@@ -3138,7 +3448,10 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 18: {
-            offChainInfo_.AddEntriesFrom(ref input, _repeated_offChainInfo_codec);
+            if (offChainQueryInfoList_ == null) {
+              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+            }
+            input.ReadMessage(OffChainQueryInfoList);
             break;
           }
           case 26: {
@@ -3167,19 +3480,19 @@ namespace AElf.Contracts.Report {
 
   }
 
-  public sealed partial class OffChainInfo : pb::IMessage<OffChainInfo>
+  public sealed partial class OffChainQueryInfo : pb::IMessage<OffChainQueryInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<OffChainInfo> _parser = new pb::MessageParser<OffChainInfo>(() => new OffChainInfo());
+    private static readonly pb::MessageParser<OffChainQueryInfo> _parser = new pb::MessageParser<OffChainQueryInfo>(() => new OffChainQueryInfo());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<OffChainInfo> Parser { get { return _parser; } }
+    public static pb::MessageParser<OffChainQueryInfo> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[12]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3188,22 +3501,22 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public OffChainInfo() {
+    public OffChainQueryInfo() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public OffChainInfo(OffChainInfo other) : this() {
+    public OffChainQueryInfo(OffChainQueryInfo other) : this() {
       urlToQuery_ = other.urlToQuery_;
-      attributeToFetch_ = other.attributeToFetch_;
+      attributesToFetch_ = other.attributesToFetch_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public OffChainInfo Clone() {
-      return new OffChainInfo(this);
+    public OffChainQueryInfo Clone() {
+      return new OffChainQueryInfo(this);
     }
 
     /// <summary>Field number for the "url_to_query" field.</summary>
@@ -3217,24 +3530,23 @@ namespace AElf.Contracts.Report {
       }
     }
 
-    /// <summary>Field number for the "attribute_to_fetch" field.</summary>
-    public const int AttributeToFetchFieldNumber = 2;
-    private string attributeToFetch_ = "";
+    /// <summary>Field number for the "attributes_to_fetch" field.</summary>
+    public const int AttributesToFetchFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_attributesToFetch_codec
+        = pb::FieldCodec.ForString(18);
+    private readonly pbc::RepeatedField<string> attributesToFetch_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string AttributeToFetch {
-      get { return attributeToFetch_; }
-      set {
-        attributeToFetch_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
+    public pbc::RepeatedField<string> AttributesToFetch {
+      get { return attributesToFetch_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as OffChainInfo);
+      return Equals(other as OffChainQueryInfo);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(OffChainInfo other) {
+    public bool Equals(OffChainQueryInfo other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3242,7 +3554,7 @@ namespace AElf.Contracts.Report {
         return true;
       }
       if (UrlToQuery != other.UrlToQuery) return false;
-      if (AttributeToFetch != other.AttributeToFetch) return false;
+      if(!attributesToFetch_.Equals(other.attributesToFetch_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -3250,7 +3562,7 @@ namespace AElf.Contracts.Report {
     public override int GetHashCode() {
       int hash = 1;
       if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      if (AttributeToFetch.Length != 0) hash ^= AttributeToFetch.GetHashCode();
+      hash ^= attributesToFetch_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3271,10 +3583,7 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(10);
         output.WriteString(UrlToQuery);
       }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(AttributeToFetch);
-      }
+      attributesToFetch_.WriteTo(output, _repeated_attributesToFetch_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3288,10 +3597,7 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(10);
         output.WriteString(UrlToQuery);
       }
-      if (AttributeToFetch.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(AttributeToFetch);
-      }
+      attributesToFetch_.WriteTo(ref output, _repeated_attributesToFetch_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -3304,9 +3610,7 @@ namespace AElf.Contracts.Report {
       if (UrlToQuery.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
       }
-      if (AttributeToFetch.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(AttributeToFetch);
-      }
+      size += attributesToFetch_.CalculateSize(_repeated_attributesToFetch_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3314,16 +3618,14 @@ namespace AElf.Contracts.Report {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(OffChainInfo other) {
+    public void MergeFrom(OffChainQueryInfo other) {
       if (other == null) {
         return;
       }
       if (other.UrlToQuery.Length != 0) {
         UrlToQuery = other.UrlToQuery;
       }
-      if (other.AttributeToFetch.Length != 0) {
-        AttributeToFetch = other.AttributeToFetch;
-      }
+      attributesToFetch_.Add(other.attributesToFetch_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3343,7 +3645,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 18: {
-            AttributeToFetch = input.ReadString();
+            attributesToFetch_.AddEntriesFrom(input, _repeated_attributesToFetch_codec);
             break;
           }
         }
@@ -3365,7 +3667,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 18: {
-            AttributeToFetch = input.ReadString();
+            attributesToFetch_.AddEntriesFrom(ref input, _repeated_attributesToFetch_codec);
             break;
           }
         }
@@ -3387,7 +3689,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[13]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3595,7 +3897,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[14]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3818,187 +4120,6 @@ namespace AElf.Contracts.Report {
           }
           case 24: {
             NodeIndex = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
-
-  }
-
-  public sealed partial class GetCurrentRoundIdByContractAddressInput : pb::IMessage<GetCurrentRoundIdByContractAddressInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
-    private static readonly pb::MessageParser<GetCurrentRoundIdByContractAddressInput> _parser = new pb::MessageParser<GetCurrentRoundIdByContractAddressInput>(() => new GetCurrentRoundIdByContractAddressInput());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<GetCurrentRoundIdByContractAddressInput> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[15]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetCurrentRoundIdByContractAddressInput() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetCurrentRoundIdByContractAddressInput(GetCurrentRoundIdByContractAddressInput other) : this() {
-      observerAssociation_ = other.observerAssociation_ != null ? other.observerAssociation_.Clone() : null;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public GetCurrentRoundIdByContractAddressInput Clone() {
-      return new GetCurrentRoundIdByContractAddressInput(this);
-    }
-
-    /// <summary>Field number for the "observer_association" field.</summary>
-    public const int ObserverAssociationFieldNumber = 1;
-    private global::AElf.Types.Address observerAssociation_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::AElf.Types.Address ObserverAssociation {
-      get { return observerAssociation_; }
-      set {
-        observerAssociation_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as GetCurrentRoundIdByContractAddressInput);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(GetCurrentRoundIdByContractAddressInput other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (!object.Equals(ObserverAssociation, other.ObserverAssociation)) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (observerAssociation_ != null) hash ^= ObserverAssociation.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
-      if (observerAssociation_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(ObserverAssociation);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (observerAssociation_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(ObserverAssociation);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (observerAssociation_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverAssociation);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(GetCurrentRoundIdByContractAddressInput other) {
-      if (other == null) {
-        return;
-      }
-      if (other.observerAssociation_ != null) {
-        if (observerAssociation_ == null) {
-          ObserverAssociation = new global::AElf.Types.Address();
-        }
-        ObserverAssociation.MergeFrom(other.ObserverAssociation);
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 10: {
-            if (observerAssociation_ == null) {
-              ObserverAssociation = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(ObserverAssociation);
-            break;
-          }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (observerAssociation_ == null) {
-              ObserverAssociation = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(ObserverAssociation);
             break;
           }
         }
@@ -4247,6 +4368,7 @@ namespace AElf.Contracts.Report {
     public GenerateEthererumReportInput(GenerateEthererumReportInput other) : this() {
       report_ = other.report_ != null ? other.report_.Clone() : null;
       configDigest_ = other.configDigest_;
+      organization_ = other.organization_ != null ? other.organization_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4277,6 +4399,17 @@ namespace AElf.Contracts.Report {
       }
     }
 
+    /// <summary>Field number for the "organization" field.</summary>
+    public const int OrganizationFieldNumber = 3;
+    private global::AElf.Types.Address organization_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address Organization {
+      get { return organization_; }
+      set {
+        organization_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as GenerateEthererumReportInput);
@@ -4292,6 +4425,7 @@ namespace AElf.Contracts.Report {
       }
       if (!object.Equals(Report, other.Report)) return false;
       if (ConfigDigest != other.ConfigDigest) return false;
+      if (!object.Equals(Organization, other.Organization)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -4300,6 +4434,7 @@ namespace AElf.Contracts.Report {
       int hash = 1;
       if (report_ != null) hash ^= Report.GetHashCode();
       if (ConfigDigest.Length != 0) hash ^= ConfigDigest.GetHashCode();
+      if (organization_ != null) hash ^= Organization.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4324,6 +4459,10 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(18);
         output.WriteBytes(ConfigDigest);
       }
+      if (organization_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Organization);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4341,6 +4480,10 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(18);
         output.WriteBytes(ConfigDigest);
       }
+      if (organization_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Organization);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4355,6 +4498,9 @@ namespace AElf.Contracts.Report {
       }
       if (ConfigDigest.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeBytesSize(ConfigDigest);
+      }
+      if (organization_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Organization);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4375,6 +4521,12 @@ namespace AElf.Contracts.Report {
       }
       if (other.ConfigDigest.Length != 0) {
         ConfigDigest = other.ConfigDigest;
+      }
+      if (other.organization_ != null) {
+        if (organization_ == null) {
+          Organization = new global::AElf.Types.Address();
+        }
+        Organization.MergeFrom(other.Organization);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -4399,6 +4551,13 @@ namespace AElf.Contracts.Report {
           }
           case 18: {
             ConfigDigest = input.ReadBytes();
+            break;
+          }
+          case 26: {
+            if (organization_ == null) {
+              Organization = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(Organization);
             break;
           }
         }
@@ -4426,6 +4585,174 @@ namespace AElf.Contracts.Report {
             ConfigDigest = input.ReadBytes();
             break;
           }
+          case 26: {
+            if (organization_ == null) {
+              Organization = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(Organization);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class OffChainQueryInfoList : pb::IMessage<OffChainQueryInfoList>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<OffChainQueryInfoList> _parser = new pb::MessageParser<OffChainQueryInfoList>(() => new OffChainQueryInfoList());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<OffChainQueryInfoList> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[18]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public OffChainQueryInfoList() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public OffChainQueryInfoList(OffChainQueryInfoList other) : this() {
+      value_ = other.value_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public OffChainQueryInfoList Clone() {
+      return new OffChainQueryInfoList(this);
+    }
+
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::AElf.Contracts.Report.OffChainQueryInfo> _repeated_value_codec
+        = pb::FieldCodec.ForMessage(10, global::AElf.Contracts.Report.OffChainQueryInfo.Parser);
+    private readonly pbc::RepeatedField<global::AElf.Contracts.Report.OffChainQueryInfo> value_ = new pbc::RepeatedField<global::AElf.Contracts.Report.OffChainQueryInfo>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AElf.Contracts.Report.OffChainQueryInfo> Value {
+      get { return value_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as OffChainQueryInfoList);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(OffChainQueryInfoList other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!value_.Equals(other.value_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= value_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      value_.WriteTo(output, _repeated_value_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      value_.WriteTo(ref output, _repeated_value_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += value_.CalculateSize(_repeated_value_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(OffChainQueryInfoList other) {
+      if (other == null) {
+        return;
+      }
+      value_.Add(other.value_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            value_.AddEntriesFrom(input, _repeated_value_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            value_.AddEntriesFrom(ref input, _repeated_value_codec);
+            break;
+          }
         }
       }
     }
@@ -4445,7 +4772,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[18]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4734,7 +5061,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[19]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5002,6 +5329,385 @@ namespace AElf.Contracts.Report {
           }
           case 34: {
             EthereumContractAddress = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class OffChainAggregationRegistered : pb::IMessage<OffChainAggregationRegistered>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<OffChainAggregationRegistered> _parser = new pb::MessageParser<OffChainAggregationRegistered>(() => new OffChainAggregationRegistered());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<OffChainAggregationRegistered> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[21]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public OffChainAggregationRegistered() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public OffChainAggregationRegistered(OffChainAggregationRegistered other) : this() {
+      ethereumContractAddress_ = other.ethereumContractAddress_;
+      offChainQueryInfoList_ = other.offChainQueryInfoList_ != null ? other.offChainQueryInfoList_.Clone() : null;
+      observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
+      configDigest_ = other.configDigest_;
+      aggregateThreshold_ = other.aggregateThreshold_;
+      aggregatorContractAddress_ = other.aggregatorContractAddress_ != null ? other.aggregatorContractAddress_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public OffChainAggregationRegistered Clone() {
+      return new OffChainAggregationRegistered(this);
+    }
+
+    /// <summary>Field number for the "ethereum_contract_address" field.</summary>
+    public const int EthereumContractAddressFieldNumber = 1;
+    private string ethereumContractAddress_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string EthereumContractAddress {
+      get { return ethereumContractAddress_; }
+      set {
+        ethereumContractAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "off_chain_query_info_list" field.</summary>
+    public const int OffChainQueryInfoListFieldNumber = 2;
+    private global::AElf.Contracts.Report.OffChainQueryInfoList offChainQueryInfoList_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Contracts.Report.OffChainQueryInfoList OffChainQueryInfoList {
+      get { return offChainQueryInfoList_; }
+      set {
+        offChainQueryInfoList_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "observer_association_address" field.</summary>
+    public const int ObserverAssociationAddressFieldNumber = 3;
+    private global::AElf.Types.Address observerAssociationAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address ObserverAssociationAddress {
+      get { return observerAssociationAddress_; }
+      set {
+        observerAssociationAddress_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "config_digest" field.</summary>
+    public const int ConfigDigestFieldNumber = 4;
+    private pb::ByteString configDigest_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString ConfigDigest {
+      get { return configDigest_; }
+      set {
+        configDigest_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "aggregate_threshold" field.</summary>
+    public const int AggregateThresholdFieldNumber = 5;
+    private int aggregateThreshold_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int AggregateThreshold {
+      get { return aggregateThreshold_; }
+      set {
+        aggregateThreshold_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "aggregator_contract_address" field.</summary>
+    public const int AggregatorContractAddressFieldNumber = 6;
+    private global::AElf.Types.Address aggregatorContractAddress_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Address AggregatorContractAddress {
+      get { return aggregatorContractAddress_; }
+      set {
+        aggregatorContractAddress_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as OffChainAggregationRegistered);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(OffChainAggregationRegistered other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EthereumContractAddress != other.EthereumContractAddress) return false;
+      if (!object.Equals(OffChainQueryInfoList, other.OffChainQueryInfoList)) return false;
+      if (!object.Equals(ObserverAssociationAddress, other.ObserverAssociationAddress)) return false;
+      if (ConfigDigest != other.ConfigDigest) return false;
+      if (AggregateThreshold != other.AggregateThreshold) return false;
+      if (!object.Equals(AggregatorContractAddress, other.AggregatorContractAddress)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
+      if (offChainQueryInfoList_ != null) hash ^= OffChainQueryInfoList.GetHashCode();
+      if (observerAssociationAddress_ != null) hash ^= ObserverAssociationAddress.GetHashCode();
+      if (ConfigDigest.Length != 0) hash ^= ConfigDigest.GetHashCode();
+      if (AggregateThreshold != 0) hash ^= AggregateThreshold.GetHashCode();
+      if (aggregatorContractAddress_ != null) hash ^= AggregatorContractAddress.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (EthereumContractAddress.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EthereumContractAddress);
+      }
+      if (offChainQueryInfoList_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(OffChainQueryInfoList);
+      }
+      if (observerAssociationAddress_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ObserverAssociationAddress);
+      }
+      if (ConfigDigest.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteBytes(ConfigDigest);
+      }
+      if (AggregateThreshold != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(AggregateThreshold);
+      }
+      if (aggregatorContractAddress_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(AggregatorContractAddress);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (EthereumContractAddress.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EthereumContractAddress);
+      }
+      if (offChainQueryInfoList_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(OffChainQueryInfoList);
+      }
+      if (observerAssociationAddress_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(ObserverAssociationAddress);
+      }
+      if (ConfigDigest.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteBytes(ConfigDigest);
+      }
+      if (AggregateThreshold != 0) {
+        output.WriteRawTag(40);
+        output.WriteInt32(AggregateThreshold);
+      }
+      if (aggregatorContractAddress_ != null) {
+        output.WriteRawTag(50);
+        output.WriteMessage(AggregatorContractAddress);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (EthereumContractAddress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
+      }
+      if (offChainQueryInfoList_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(OffChainQueryInfoList);
+      }
+      if (observerAssociationAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverAssociationAddress);
+      }
+      if (ConfigDigest.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(ConfigDigest);
+      }
+      if (AggregateThreshold != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(AggregateThreshold);
+      }
+      if (aggregatorContractAddress_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(AggregatorContractAddress);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(OffChainAggregationRegistered other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EthereumContractAddress.Length != 0) {
+        EthereumContractAddress = other.EthereumContractAddress;
+      }
+      if (other.offChainQueryInfoList_ != null) {
+        if (offChainQueryInfoList_ == null) {
+          OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+        }
+        OffChainQueryInfoList.MergeFrom(other.OffChainQueryInfoList);
+      }
+      if (other.observerAssociationAddress_ != null) {
+        if (observerAssociationAddress_ == null) {
+          ObserverAssociationAddress = new global::AElf.Types.Address();
+        }
+        ObserverAssociationAddress.MergeFrom(other.ObserverAssociationAddress);
+      }
+      if (other.ConfigDigest.Length != 0) {
+        ConfigDigest = other.ConfigDigest;
+      }
+      if (other.AggregateThreshold != 0) {
+        AggregateThreshold = other.AggregateThreshold;
+      }
+      if (other.aggregatorContractAddress_ != null) {
+        if (aggregatorContractAddress_ == null) {
+          AggregatorContractAddress = new global::AElf.Types.Address();
+        }
+        AggregatorContractAddress.MergeFrom(other.AggregatorContractAddress);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            EthereumContractAddress = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (offChainQueryInfoList_ == null) {
+              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+            }
+            input.ReadMessage(OffChainQueryInfoList);
+            break;
+          }
+          case 26: {
+            if (observerAssociationAddress_ == null) {
+              ObserverAssociationAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(ObserverAssociationAddress);
+            break;
+          }
+          case 34: {
+            ConfigDigest = input.ReadBytes();
+            break;
+          }
+          case 40: {
+            AggregateThreshold = input.ReadInt32();
+            break;
+          }
+          case 50: {
+            if (aggregatorContractAddress_ == null) {
+              AggregatorContractAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(AggregatorContractAddress);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            EthereumContractAddress = input.ReadString();
+            break;
+          }
+          case 18: {
+            if (offChainQueryInfoList_ == null) {
+              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
+            }
+            input.ReadMessage(OffChainQueryInfoList);
+            break;
+          }
+          case 26: {
+            if (observerAssociationAddress_ == null) {
+              ObserverAssociationAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(ObserverAssociationAddress);
+            break;
+          }
+          case 34: {
+            ConfigDigest = input.ReadBytes();
+            break;
+          }
+          case 40: {
+            AggregateThreshold = input.ReadInt32();
+            break;
+          }
+          case 50: {
+            if (aggregatorContractAddress_ == null) {
+              AggregatorContractAddress = new global::AElf.Types.Address();
+            }
+            input.ReadMessage(AggregatorContractAddress);
             break;
           }
         }

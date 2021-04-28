@@ -67,10 +67,11 @@ namespace AElf.Contracts.Report {
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.QueryOracleInput> __Marshaller_QueryOracleInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.QueryOracleInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Types.Hash> __Marshaller_aelf_Hash = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.Hash.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.ConfirmReportInput> __Marshaller_ConfirmReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.ConfirmReportInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Report.RejectReportInput> __Marshaller_RejectReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.RejectReportInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int64Value> __Marshaller_google_protobuf_Int64Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int64Value.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::CallbackInput> __Marshaller_CallbackInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::CallbackInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.Report> __Marshaller_Report = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.Report.Parser.ParseFrom);
-    static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int64Value> __Marshaller_google_protobuf_Int64Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int64Value.Parser.ParseFrom);
-    static readonly aelf::Marshaller<global::AElf.Contracts.Report.AddOffChainAggregatorInput> __Marshaller_AddOffChainAggregatorInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.AddOffChainAggregatorInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Report.RegisterOffChainAggregationInput> __Marshaller_RegisterOffChainAggregationInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.RegisterOffChainAggregationInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.OffChainAggregationInfo> __Marshaller_OffChainAggregationInfo = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetMerklePathInput> __Marshaller_GetMerklePathInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetMerklePathInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Types.MerklePath> __Marshaller_aelf_MerklePath = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.MerklePath.Parser.ParseFrom);
@@ -78,7 +79,6 @@ namespace AElf.Contracts.Report {
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetSignatureInput> __Marshaller_GetSignatureInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetSignatureInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.StringValue> __Marshaller_google_protobuf_StringValue = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.StringValue.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.ReportQueryRecord> __Marshaller_ReportQueryRecord = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.ReportQueryRecord.Parser.ParseFrom);
-    static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetCurrentRoundIdByContractAddressInput> __Marshaller_GetCurrentRoundIdByContractAddressInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetCurrentRoundIdByContractAddressInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetEthererumReportInput> __Marshaller_GetEthererumReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetEthererumReportInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GenerateEthererumReportInput> __Marshaller_GenerateEthererumReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GenerateEthererumReportInput.Parser.ParseFrom);
     #endregion
@@ -110,6 +110,20 @@ namespace AElf.Contracts.Report {
         __ServiceName,
         "ConfirmReport",
         __Marshaller_ConfirmReportInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Report.RejectReportInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_RejectReport = new aelf::Method<global::AElf.Contracts.Report.RejectReportInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "RejectReport",
+        __Marshaller_RejectReportInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> __Method_AdjustAmercementAmount = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "AdjustAmercementAmount",
+        __Marshaller_google_protobuf_Int64Value,
         __Marshaller_google_protobuf_Empty);
 
     static readonly aelf::Method<global::CallbackInput, global::AElf.Contracts.Report.Report> __Method_ProposeReport = new aelf::Method<global::CallbackInput, global::AElf.Contracts.Report.Report>(
@@ -161,11 +175,11 @@ namespace AElf.Contracts.Report {
         __Marshaller_google_protobuf_Int64Value,
         __Marshaller_google_protobuf_Empty);
 
-    static readonly aelf::Method<global::AElf.Contracts.Report.AddOffChainAggregatorInput, global::AElf.Contracts.Report.OffChainAggregationInfo> __Method_AddOffChainAggregator = new aelf::Method<global::AElf.Contracts.Report.AddOffChainAggregatorInput, global::AElf.Contracts.Report.OffChainAggregationInfo>(
+    static readonly aelf::Method<global::AElf.Contracts.Report.RegisterOffChainAggregationInput, global::AElf.Contracts.Report.OffChainAggregationInfo> __Method_RegisterOffChainAggregation = new aelf::Method<global::AElf.Contracts.Report.RegisterOffChainAggregationInput, global::AElf.Contracts.Report.OffChainAggregationInfo>(
         aelf::MethodType.Action,
         __ServiceName,
-        "AddOffChainAggregator",
-        __Marshaller_AddOffChainAggregatorInput,
+        "RegisterOffChainAggregation",
+        __Marshaller_RegisterOffChainAggregationInput,
         __Marshaller_OffChainAggregationInfo);
 
     static readonly aelf::Method<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath> __Method_GetMerklePath = new aelf::Method<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath>(
@@ -203,11 +217,11 @@ namespace AElf.Contracts.Report {
         __Marshaller_aelf_Hash,
         __Marshaller_ReportQueryRecord);
 
-    static readonly aelf::Method<global::AElf.Contracts.Report.GetCurrentRoundIdByContractAddressInput, global::Google.Protobuf.WellKnownTypes.Int64Value> __Method_GetCurrentRoundIdByContractAddress = new aelf::Method<global::AElf.Contracts.Report.GetCurrentRoundIdByContractAddressInput, global::Google.Protobuf.WellKnownTypes.Int64Value>(
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.StringValue, global::Google.Protobuf.WellKnownTypes.Int64Value> __Method_GetCurrentRoundId = new aelf::Method<global::Google.Protobuf.WellKnownTypes.StringValue, global::Google.Protobuf.WellKnownTypes.Int64Value>(
         aelf::MethodType.View,
         __ServiceName,
-        "GetCurrentRoundIdByContractAddress",
-        __Marshaller_GetCurrentRoundIdByContractAddressInput,
+        "GetCurrentRoundId",
+        __Marshaller_google_protobuf_StringValue,
         __Marshaller_google_protobuf_Int64Value);
 
     static readonly aelf::Method<global::AElf.Contracts.Report.GetEthererumReportInput, global::Google.Protobuf.WellKnownTypes.StringValue> __Method_GetEthererumReport = new aelf::Method<global::AElf.Contracts.Report.GetEthererumReportInput, global::Google.Protobuf.WellKnownTypes.StringValue>(

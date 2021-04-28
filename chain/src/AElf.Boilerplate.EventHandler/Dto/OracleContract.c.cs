@@ -28,12 +28,12 @@ namespace AElf.Contracts.Oracle {
         CallbackInfo = CallbackInfo,
         AggregatorContractAddress = AggregatorContractAddress,
         DesignatedNodeList = DesignatedNodeList,
-        UrlToQuery = UrlToQuery,
-        AttributeToFetch = AttributeToFetch,
+        QueryInfo = QueryInfo,
         AggregateThreshold = AggregateThreshold,
-        QueryManager = QueryManager,
+        QuerySender = QuerySender,
         QueryId = QueryId,
         Token = Token,
+        MaximumPermissibleDeviation = MaximumPermissibleDeviation,
       };
     }
   }
@@ -53,24 +53,6 @@ namespace AElf.Contracts.Oracle {
       {
         QueryId = QueryId,
         CancelTime = CancelTime,
-      };
-    }
-  }
-
-  public partial class SufficientDataCollected : aelf::IEvent<SufficientDataCollected>
-  {
-    public global::System.Collections.Generic.IEnumerable<SufficientDataCollected> GetIndexed()
-    {
-      return new List<SufficientDataCollected>
-      {
-      };
-    }
-
-    public SufficientDataCollected GetNonIndexed()
-    {
-      return new SufficientDataCollected
-      {
-        RequestId = RequestId,
       };
     }
   }
@@ -134,6 +116,26 @@ namespace AElf.Contracts.Oracle {
     }
   }
 
+  public partial class TokenLocked : aelf::IEvent<TokenLocked>
+  {
+    public global::System.Collections.Generic.IEnumerable<TokenLocked> GetIndexed()
+    {
+      return new List<TokenLocked>
+      {
+      };
+    }
+
+    public TokenLocked GetNonIndexed()
+    {
+      return new TokenLocked
+      {
+        OracleNodeAddress = OracleNodeAddress,
+        FromAddress = FromAddress,
+        LockedAmount = LockedAmount,
+      };
+    }
+  }
+
   #endregion
   public static partial class OracleContractContainer
   {
@@ -147,10 +149,13 @@ namespace AElf.Contracts.Oracle {
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CommitInput> __Marshaller_CommitInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CommitInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.RevealInput> __Marshaller_RevealInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.RevealInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Types.Address> __Marshaller_aelf_Address = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.Address.Parser.ParseFrom);
-    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.SetThresholdInput> __Marshaller_SetThresholdInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.SetThresholdInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.LockTokensInput> __Marshaller_LockTokensInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.LockTokensInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.UnlockTokensInput> __Marshaller_UnlockTokensInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.UnlockTokensInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.OracleNodeThreshold> __Marshaller_OracleNodeThreshold = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.OracleNodeThreshold.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.QueryRecord> __Marshaller_QueryRecord = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.QueryRecord.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CommitmentMap> __Marshaller_CommitmentMap = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CommitmentMap.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.StringValue> __Marshaller_google_protobuf_StringValue = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.StringValue.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int64Value> __Marshaller_google_protobuf_Int64Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int64Value.Parser.ParseFrom);
     #endregion
 
     #region Methods
@@ -196,11 +201,25 @@ namespace AElf.Contracts.Oracle {
         __Marshaller_aelf_Address,
         __Marshaller_google_protobuf_Empty);
 
-    static readonly aelf::Method<global::AElf.Contracts.Oracle.SetThresholdInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_SetThreshold = new aelf::Method<global::AElf.Contracts.Oracle.SetThresholdInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.LockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_LockTokens = new aelf::Method<global::AElf.Contracts.Oracle.LockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "LockTokens",
+        __Marshaller_LockTokensInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.UnlockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_UnlockTokens = new aelf::Method<global::AElf.Contracts.Oracle.UnlockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "UnlockTokens",
+        __Marshaller_UnlockTokensInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.OracleNodeThreshold, global::Google.Protobuf.WellKnownTypes.Empty> __Method_SetThreshold = new aelf::Method<global::AElf.Contracts.Oracle.OracleNodeThreshold, global::Google.Protobuf.WellKnownTypes.Empty>(
         aelf::MethodType.Action,
         __ServiceName,
         "SetThreshold",
-        __Marshaller_SetThresholdInput,
+        __Marshaller_OracleNodeThreshold,
         __Marshaller_google_protobuf_Empty);
 
     static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address> __Method_GetController = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address>(
@@ -230,6 +249,20 @@ namespace AElf.Contracts.Oracle {
         "GetOracleTokenSymbol",
         __Marshaller_google_protobuf_Empty,
         __Marshaller_google_protobuf_StringValue);
+
+    static readonly aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Int64Value> __Method_GetLockedTokensAmount = new aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Int64Value>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetLockedTokensAmount",
+        __Marshaller_aelf_Address,
+        __Marshaller_google_protobuf_Int64Value);
+
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Contracts.Oracle.OracleNodeThreshold> __Method_GetThreshold = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Contracts.Oracle.OracleNodeThreshold>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetThreshold",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_OracleNodeThreshold);
 
     #endregion
 
