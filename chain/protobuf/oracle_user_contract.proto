@@ -35,3 +35,10 @@ message TemperatureRecord {
 message TemperatureRecordList {
   repeated TemperatureRecord value = 1;
 }
+
+// Events
+message QueryDataRecorded {
+    option (aelf.is_event) = true;
+    string data = 1;
+    google.protobuf.Timestamp timestamp = 2;
+}

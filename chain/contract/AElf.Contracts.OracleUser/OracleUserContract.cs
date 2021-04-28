@@ -62,6 +62,11 @@ namespace AElf.Contracts.OracleUser
             var currentList = State.TemperatureRecordList.Value ?? new TemperatureRecordList();
             currentList.Value.Add(temperatureRecord);
             State.TemperatureRecordList.Value = currentList;
+            Context.Fire(new QueryDataRecorded
+            {
+                Data = temperatureRecord.Temperature,
+                Timestamp = temperatureRecord.Timestamp
+            });
             return new Empty();
         }
 
