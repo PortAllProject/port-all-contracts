@@ -32,23 +32,25 @@ namespace AElf.Boilerplate.EventHandler
             _logger.LogInformation(
                 $"Start handling {eventData.TransactionResults.Values.Sum(r => r.Logs.Length)} new event logs of height {eventData.TransactionResults.First().Value.BlockNumber}.\n{GetAllLogEvents(eventData)}");
 
-            foreach (var logEventProcessor in _logEventProcessors)
+            var usefulLogEventProcessors = _logEventProcessors.Where(p =>
+                _contractAddressOptions.ContractAddressMap.ContainsKey(p.ContractName)).ToList();
+
+            foreach (var eventLog in eventData.TransactionResults.Values.SelectMany(result => result.Logs))
             {
-                foreach (var eventLog in eventData.TransactionResults.Values.SelectMany(result => result.Logs))
+                _logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
+                foreach (var logEventProcessor in usefulLogEventProcessors)
                 {
-                    _logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
-                    if (!_contractAddressOptions.ContractAddressMap.TryGetValue(logEventProcessor.ContractName,
-                        out var contractAddress)) break;
                     if (_contractAddressOptions.ContractAddressMap.TryGetValue("Consensus", out var consensusAddress) &&
                         eventLog.Address == consensusAddress) break;
-                    if (eventLog.Address != contractAddress) break;
-                    if (eventLog.Name != logEventProcessor.LogEventName) break;
-                    _logger.LogInformation("Pushing aforementioned event log to processor.");
-                    await logEventProcessor.ProcessAsync(new LogEvent
+                    if (logEventProcessor.IsMatch(eventLog.Address, eventLog.Name))
                     {
-                        Indexed = {eventLog.Indexed.Select(ByteString.FromBase64)},
-                        NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
-                    });
+                        _logger.LogInformation("Pushing aforementioned event log to processor.");
+                        await logEventProcessor.ProcessAsync(new LogEvent
+                        {
+                            Indexed = {eventLog.Indexed.Select(ByteString.FromBase64)},
+                            NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
+                        });
+                    }
                 }
             }
         }

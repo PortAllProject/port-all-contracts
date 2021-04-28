@@ -2,22 +2,24 @@ using System.Threading.Tasks;
 using AElf.Standards.ACS0;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ContractDeployedLogEventProcessor : ILogEventProcessor, ITransientDependency
+    public class ContractDeployedLogEventProcessor : LogEventProcessorBase, ITransientDependency
     {
-        public string ContractName => "BasicZero";
-        public string LogEventName => nameof(ContractDeployed);
+        public override string ContractName => "BasicZero";
+        public override string LogEventName => nameof(ContractDeployed);
         private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
-        public ContractDeployedLogEventProcessor(ILogger<QueryCreatedLogEventProcessor> logger)
+        public ContractDeployedLogEventProcessor(ILogger<QueryCreatedLogEventProcessor> logger,
+            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions) : base(contractAddressOptions)
         {
             _logger = logger;
         }
 
-        public Task ProcessAsync(LogEvent logEvent)
+        public override Task ProcessAsync(LogEvent logEvent)
         {
             var contractDeployed = new ContractDeployed();
             contractDeployed.MergeFrom(logEvent);

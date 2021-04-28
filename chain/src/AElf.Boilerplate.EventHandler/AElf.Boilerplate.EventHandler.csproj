@@ -33,6 +33,10 @@
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="aelf\keys\4zT74bCjganXgwFhcnW8DNLVt3Lebq2speF362oQoAqR4S7WX.json" />
+        <Content Include="aelf\keys\4zT74bCjganXgwFhcnW8DNLVt3Lebq2speF362oQoAqR4S7WX.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

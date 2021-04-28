@@ -6,17 +6,17 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ReportProposedLogEventProcessor : ILogEventProcessor, ITransientDependency
+    public class ReportProposedLogEventProcessor : LogEventProcessorBase, ITransientDependency
     {
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
         private readonly IKeyStore _keyStore;
 
-        public string ContractName => "Report";
-        public string LogEventName => nameof(ReportProposed);
+        public override string ContractName => "Report";
+        public override string LogEventName => nameof(ReportProposed);
 
         public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
-            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions)
+            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions) : base(contractAddressOptions)
         {
             _configOptions = configOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
@@ -24,7 +24,7 @@ namespace AElf.Boilerplate.EventHandler
                 configOptions.Value.AccountPassword);
         }
 
-        public Task ProcessAsync(LogEvent logEvent)
+        public override Task ProcessAsync(LogEvent logEvent)
         {
             var reportProposed = new ReportProposed();
             reportProposed.MergeFrom(logEvent);

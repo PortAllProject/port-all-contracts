@@ -43,11 +43,11 @@ namespace AElf.Boilerplate.EventHandler
         public Transaction SignTransaction(Transaction tx)
         {
             var txData = tx.GetHash().ToByteArray();
-            tx.Signature = Sign(txData);
+            tx.Signature = GetSignature(txData);
             return tx;
         }
 
-        public ByteString Sign(byte[] txData)
+        private ByteString GetSignature(byte[] txData)
         {
             var kp = _keyStore.GetAccountKeyPair();
 
@@ -59,6 +59,11 @@ namespace AElf.Boilerplate.EventHandler
             // Sign the hash
             var signature = CryptoHelper.SignWithPrivateKey(kp.PrivateKey, txData);
             return ByteString.CopyFrom(signature);
+        }
+
+        public bool IsKeyReady()
+        {
+            return _keyStore.GetAccountKeyPair() != null;
         }
 
         public string ConvertTransactionRawTxString(Transaction tx)

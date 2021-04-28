@@ -159,7 +159,6 @@ namespace AElf.Boilerplate.EventHandler
                 RawTransaction = rawTransaction
             }));
 
-            Console.WriteLine($"Tx id: {transactionOutput.TransactionId}");
             return transactionOutput.TransactionId;
         }
 

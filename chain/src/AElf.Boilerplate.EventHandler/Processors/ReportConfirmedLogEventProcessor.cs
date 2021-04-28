@@ -2,22 +2,24 @@ using System.Threading.Tasks;
 using AElf.Contracts.Report;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ReportConfirmedLogEventProcessor : ILogEventProcessor, ITransientDependency
+    public class ReportConfirmedLogEventProcessor : LogEventProcessorBase, ITransientDependency
     {
-        public string ContractName => "Report";
-        public string LogEventName => nameof(ReportConfirmed);
+        public override string ContractName => "Report";
+        public override string LogEventName => nameof(ReportConfirmed);
         private readonly ILogger<QueryCompletedLogEventProcessor> _logger;
 
-        public ReportConfirmedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger)
+        public ReportConfirmedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger,
+            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions) : base(contractAddressOptions)
         {
             _logger = logger;
         }
 
-        public Task ProcessAsync(LogEvent logEvent)
+        public override Task ProcessAsync(LogEvent logEvent)
         {
             var reportConfirmed = new ReportConfirmed();
             reportConfirmed.MergeFrom(logEvent);

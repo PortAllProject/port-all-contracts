@@ -59,7 +59,6 @@ namespace AElf.Boilerplate.EventHandler
                 }
             }
 
-            _dictionary[queryId] = data;
             return data;
         }
     }

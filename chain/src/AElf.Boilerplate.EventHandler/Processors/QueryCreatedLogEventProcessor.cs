@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.Oracle;
@@ -10,28 +9,27 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class QueryCreatedLogEventProcessor : ILogEventProcessor, ISingletonDependency
+    public class QueryCreatedLogEventProcessor : LogEventProcessorBase, ISingletonDependency
     {
         private readonly ISaltProvider _saltProvider;
         private readonly IDataProvider _dataProvider;
-        private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
-        public string ContractName => "Oracle";
-        public string LogEventName => nameof(QueryCreated);
+        public override string ContractName => "Oracle";
+        public override string LogEventName => nameof(QueryCreated);
         private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
         public QueryCreatedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider, IDataProvider dataProvider, ILogger<QueryCreatedLogEventProcessor> logger)
+            ISaltProvider saltProvider, IDataProvider dataProvider, ILogger<QueryCreatedLogEventProcessor> logger) :
+            base(contractAddressOptions)
         {
             _saltProvider = saltProvider;
             _dataProvider = dataProvider;
             _logger = logger;
-            _contractAddressOptions = contractAddressOptions.Value;
             _configOptions = configOptions.Value;
         }
 
-        public async Task ProcessAsync(LogEvent logEvent)
+        public override async Task ProcessAsync(LogEvent logEvent)
         {
             var queryCreated = new QueryCreated();
             queryCreated.MergeFrom(logEvent);
@@ -42,6 +40,9 @@ namespace AElf.Boilerplate.EventHandler
                     .ToBase58()))
                 return;
 
+            var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
+                queryCreated.QueryInfo.AttributesToFetch.ToList());
+            _logger.LogInformation($"Queried data: {data}");
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
             var commitInput = new CommitInput
@@ -50,14 +51,13 @@ namespace AElf.Boilerplate.EventHandler
                 Commitment = HashHelper.ConcatAndCompute(
                     HashHelper.ComputeFrom(new StringValue
                     {
-                        Value = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
-                            queryCreated.QueryInfo.AttributesToFetch.ToList())
+                        Value = data
                     }),
                     _saltProvider.GetSalt(queryCreated.QueryId))
             };
-            _logger.LogInformation($"Sent Commit tx with input: {commitInput}");
-            node.SendTransaction(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap[ContractName], "Commit", commitInput);
+            _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
+            var txId = node.SendTransaction(_configOptions.AccountAddress, GetContractAddress(), "Commit", commitInput);
+            _logger.LogInformation($"Tx id: {txId}");
         }
     }
 }
