@@ -9,7 +9,7 @@ namespace AElf.Boilerplate.EventHandler
     public class QueryCompletedLogEventProcessor : ILogEventProcessor, ITransientDependency
     {
         public string ContractName => "Oracle";
-        public string LogEventName => nameof(SufficientDataCollected);
+        public string LogEventName => nameof(QueryCompleted);
         private readonly ILogger<QueryCompletedLogEventProcessor> _logger;
 
         public QueryCompletedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger)

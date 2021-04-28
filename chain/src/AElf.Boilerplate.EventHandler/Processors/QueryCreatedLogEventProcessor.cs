@@ -50,8 +50,8 @@ namespace AElf.Boilerplate.EventHandler
                 Commitment = HashHelper.ConcatAndCompute(
                     HashHelper.ComputeFrom(new StringValue
                     {
-                        Value = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.UrlToQuery,
-                            queryCreated.AttributeToFetch)
+                        Value = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
+                            queryCreated.QueryInfo.AttributesToFetch.ToList())
                     }),
                     _saltProvider.GetSalt(queryCreated.QueryId))
             };
