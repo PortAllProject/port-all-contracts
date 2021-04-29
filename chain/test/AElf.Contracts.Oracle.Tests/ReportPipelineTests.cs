@@ -43,12 +43,15 @@ namespace AElf.Contracts.Oracle
                 {
                     Value = {ObserverAddresses}
                 },
-                OffChainQueryInfo =
+                OffChainQueryInfoList = new OffChainQueryInfoList
                 {
-                    new OffChainQueryInfo
+                    Value =
                     {
-                        UrlToQuery = "www.whatever.com",
-                        AttributesToFetch = {"foo"}
+                        new OffChainQueryInfo
+                        {
+                            UrlToQuery = "www.whatever.com",
+                            AttributesToFetch = {"foo"}
+                        }
                     }
                 },
                 EthereumContractAddress = EthereumContractAddress,
@@ -60,11 +63,12 @@ namespace AElf.Contracts.Oracle
                 await ReportContractStub.RegisterOffChainAggregation.SendAsync(registerOffChainAggregationInput);
 
             var offChainAggregationInfo = executionResult.Output;
-            offChainAggregationInfo.OffChainQueryInfo[0].UrlToQuery.ShouldBe(registerOffChainAggregationInput
-                .OffChainQueryInfo[0]
+            offChainAggregationInfo.OffChainQueryInfoList.Value[0].UrlToQuery.ShouldBe(registerOffChainAggregationInput
+                .OffChainQueryInfoList.Value[0]
                 .UrlToQuery);
-            offChainAggregationInfo.OffChainQueryInfo[0].AttributesToFetch[0].ShouldBe(registerOffChainAggregationInput
-                .OffChainQueryInfo[0].AttributesToFetch[0]);
+            offChainAggregationInfo.OffChainQueryInfoList.Value[0].AttributesToFetch[0].ShouldBe(
+                registerOffChainAggregationInput
+                    .OffChainQueryInfoList.Value[0].AttributesToFetch[0]);
             offChainAggregationInfo.EthereumContractAddress.ShouldBe(registerOffChainAggregationInput
                 .EthereumContractAddress);
             offChainAggregationInfo.ConfigDigest.ToHex()
@@ -154,23 +158,26 @@ namespace AElf.Contracts.Oracle
                 {
                     Value = {ObserverAddresses}
                 },
-                OffChainQueryInfo =
+                OffChainQueryInfoList = new OffChainQueryInfoList
                 {
-                    new OffChainQueryInfo
+                    Value =
                     {
-                        UrlToQuery = "www.whatever.com",
-                        AttributesToFetch = {"foo"}
-                    },
-                    new OffChainQueryInfo
-                    {
-                        UrlToQuery = "www.youbiteme.com",
-                        AttributesToFetch = {"bar"}
-                    },
-                    new OffChainQueryInfo
-                    {
-                        UrlToQuery = "www.helloworld.com",
-                        AttributesToFetch = {"yes"}
-                    },
+                        new OffChainQueryInfo
+                        {
+                            UrlToQuery = "www.whatever.com",
+                            AttributesToFetch = {"foo"}
+                        },
+                        new OffChainQueryInfo
+                        {
+                            UrlToQuery = "www.youbiteme.com",
+                            AttributesToFetch = {"bar"}
+                        },
+                        new OffChainQueryInfo
+                        {
+                            UrlToQuery = "www.helloworld.com",
+                            AttributesToFetch = {"yes"}
+                        },
+                    }
                 },
                 EthereumContractAddress = EthereumContractAddress,
                 ConfigDigest = ByteStringHelper.FromHexString(digestStr),
@@ -179,11 +186,12 @@ namespace AElf.Contracts.Oracle
             };
             var offChainAggregationInfo =
                 (await ReportContractStub.RegisterOffChainAggregation.SendAsync(addOffChainAggregatorInput)).Output;
-            offChainAggregationInfo.OffChainQueryInfo[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
-                .OffChainQueryInfo[2]
+            offChainAggregationInfo.OffChainQueryInfoList.Value[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
+                .OffChainQueryInfoList.Value[2]
                 .UrlToQuery);
-            offChainAggregationInfo.OffChainQueryInfo[2].AttributesToFetch[0].ShouldBe(addOffChainAggregatorInput
-                .OffChainQueryInfo[2].AttributesToFetch[0]);
+            offChainAggregationInfo.OffChainQueryInfoList.Value[2].AttributesToFetch[0].ShouldBe(
+                addOffChainAggregatorInput
+                    .OffChainQueryInfoList.Value[2].AttributesToFetch[0]);
 
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {
@@ -244,12 +252,14 @@ namespace AElf.Contracts.Oracle
         {
             for (var i = 0; i < ObserverOracleStubs.Count; i++)
             {
+                var address = ObserverAccounts[i].Address;
                 await ObserverOracleStubs[i].Commit.SendAsync(new CommitInput
                 {
                     QueryId = queryId,
                     Commitment = HashHelper.ConcatAndCompute(
                         HashHelper.ComputeFrom(new StringValue {Value = i.ToString()}),
-                        HashHelper.ComputeFrom($"Salt{i}"))
+                        HashHelper.ConcatAndCompute(HashHelper.ComputeFrom($"Salt{i}"),
+                            HashHelper.ComputeFrom(address.ToBase58())))
                 });
 
                 var commitmentMap = await OracleContractStub.GetCommitmentMap.CallAsync(queryId);

@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using AElf.Types;
+using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
@@ -28,8 +30,9 @@ namespace AElf.Boilerplate.EventHandler
                 return salt;
             }
 
-            salt = HashHelper.ConcatAndCompute(queryId,
-                HashHelper.ComputeFrom(DateTime.UtcNow.ToString(CultureInfo.InvariantCulture)));
+            var randomStr = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture).Concat(Guid.NewGuid().ToString())
+                .ToString();
+            salt = HashHelper.ConcatAndCompute(queryId, HashHelper.ComputeFrom(randomStr));
             _dictionary[queryId] = salt;
             return salt;
         }

@@ -107,12 +107,14 @@ namespace AElf.Contracts.Oracle
             for (var i = 0; i < temperatures.Count; i++)
             {
                 var temperature = temperatures[i];
+                var address = _oracleNodeAccounts[i].Address;
                 await OracleNodeList[i].Commit.SendAsync(new CommitInput
                 {
                     QueryId = queryId,
                     Commitment = HashHelper.ConcatAndCompute(
                         HashHelper.ComputeFrom(new StringValue {Value = temperature}),
-                        HashHelper.ComputeFrom($"Salt{i}"))
+                        HashHelper.ConcatAndCompute(HashHelper.ComputeFrom($"Salt{i}"),
+                            HashHelper.ComputeFrom(address.ToBase58())))
                 });
 
                 var commitmentMap = await OracleContractStub.GetCommitmentMap.CallAsync(queryId);

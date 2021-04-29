@@ -68,7 +68,7 @@ namespace AElf.Contracts.Oracle
             Assert(designatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value,
                 $"Invalid designated nodes count, should at least be {State.MinimumOracleNodesCount.Value}.");
 
-            State.QueryRecords[queryId] = new QueryRecord
+            var queryRecord = new QueryRecord
             {
                 QueryId = queryId,
                 QuerySender = Context.Sender,
@@ -83,23 +83,22 @@ namespace AElf.Contracts.Oracle
                 Token = input.Token,
                 MaximumPermissibleDeviation = input.MaximumPermissibleDeviation
             };
+            State.QueryRecords[queryId] = queryRecord;
 
             State.UserAddresses[queryId] = Context.Sender;
 
             Context.Fire(new QueryCreated
             {
-                QueryId = queryId,
-                QuerySender = Context.Sender,
-                AggregatorContractAddress = input.AggregatorContractAddress,
-                DesignatedNodeList = input.DesignatedNodeList,
-                CallbackInfo = input.CallbackInfo,
-                Payment = input.Payment,
-                AggregateThreshold = input.AggregateThreshold == 0
-                    ? GetAggregateThreshold(designatedNodeList.Value.Count)
-                    : input.AggregateThreshold,
-                QueryInfo = input.QueryInfo,
-                Token = input.Token,
-                MaximumPermissibleDeviation = input.MaximumPermissibleDeviation,
+                QueryId = queryRecord.QueryId,
+                QuerySender = queryRecord.QuerySender,
+                AggregatorContractAddress = queryRecord.AggregatorContractAddress,
+                DesignatedNodeList = queryRecord.DesignatedNodeList,
+                CallbackInfo = queryRecord.CallbackInfo,
+                Payment = queryRecord.Payment,
+                AggregateThreshold = queryRecord.AggregateThreshold,
+                QueryInfo = queryRecord.QueryInfo,
+                Token = queryRecord.Token,
+                MaximumPermissibleDeviation = queryRecord.MaximumPermissibleDeviation
             });
 
             return queryId;
@@ -235,7 +234,10 @@ namespace AElf.Contracts.Oracle
 
             // Check commitment.
             var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
-            Assert(HashHelper.ConcatAndCompute(dataHash, input.Salt) == commitment, "Incorrect commitment.");
+            Assert(
+                HashHelper.ConcatAndCompute(dataHash,
+                    HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58()))) ==
+                commitment, "Incorrect commitment.");
 
             if (queryRecord.AggregatorContractAddress != null)
             {

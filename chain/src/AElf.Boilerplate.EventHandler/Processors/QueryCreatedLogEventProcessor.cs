@@ -54,7 +54,7 @@ namespace AElf.Boilerplate.EventHandler
                     {
                         Value = data
                     }),
-                    salt)
+                    HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_configOptions.AccountAddress)))
             };
             _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
             var txId = node.SendTransaction(_configOptions.AccountAddress, GetContractAddress(), "Commit", commitInput);
