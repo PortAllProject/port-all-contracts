@@ -77,9 +77,8 @@ namespace AElf.Contracts.Oracle
                 ExpirationTimestamp = expirationTimestamp,
                 CallbackInfo = input.CallbackInfo,
                 Payment = input.Payment,
-                AggregateThreshold = input.AggregateThreshold == 0
-                    ? GetAggregateThreshold(designatedNodeList.Value.Count)
-                    : input.AggregateThreshold,
+                AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
+                    input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
                 Token = input.Token,
                 MaximumPermissibleDeviation = input.MaximumPermissibleDeviation
