@@ -9,6 +9,13 @@ namespace AElf.Contracts.OracleUser
 {
     public class OracleUserContract : OracleUserContractContainer.OracleUserContractBase
     {
+        public override Empty Initialize(Address address)
+        {
+            Assert(State.OracleContract.Value == null, "Already initialized.");
+            State.OracleContract.Value = address;
+            return new Empty();
+        }
+
         public override Hash QueryTemperature(QueryTemperatureInput input)
         {
             State.OracleContract.Value = input.OracleContractAddress;
@@ -73,6 +80,28 @@ namespace AElf.Contracts.OracleUser
         public override TemperatureRecordList GetHistoryTemperatures(Empty input)
         {
             return State.TemperatureRecordList.Value;
+        }
+        
+        public override Empty RecordPrice(CallbackInput input)
+        {
+            Assert(Context.Sender == State.OracleContract.Value, "No permission.");
+            // Assert(State.QueryIdMap[input.QueryId], "Query doesn't exist.");
+            var priceRecord = new PriceRecord();
+            priceRecord.MergeFrom(input.Result);
+            var currentList = State.PriceRecordList.Value ?? new PriceRecordList();
+            currentList.Value.Add(priceRecord);
+            State.PriceRecordList.Value = currentList;
+            Context.Fire(new QueryDataRecorded
+            {
+                Data = priceRecord.Price,
+                Timestamp = priceRecord.Timestamp
+            });
+            return new Empty();
+        }
+
+        public override PriceRecordList GetHistoryPrices(Empty input)
+        {
+            return State.PriceRecordList.Value;
         }
     }
 }
