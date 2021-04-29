@@ -50,7 +50,15 @@ namespace AElf.Boilerplate.EventHandler
             {
                 if (jsonDoc.RootElement.TryGetProperty(attribute, out var targetElement))
                 {
-                    data += $";{targetElement.GetRawText()}";
+                    if (data == string.Empty)
+                    {
+                        data = targetElement.GetRawText();
+                    }
+                    else
+                    {
+                        data += $";{targetElement.GetRawText()}";
+                    }
+
                     _dictionary[queryId] = data;
                 }
                 else

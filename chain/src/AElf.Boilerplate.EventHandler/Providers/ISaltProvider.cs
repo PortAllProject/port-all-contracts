@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using AElf.Types;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
@@ -16,9 +15,11 @@ namespace AElf.Boilerplate.EventHandler
     public class SaltProvider : ISaltProvider, ISingletonDependency
     {
         private readonly Dictionary<Hash, Hash> _dictionary;
+        private readonly ILogger<SaltProvider> _logger;
 
-        public SaltProvider()
+        public SaltProvider(ILogger<SaltProvider> logger)
         {
+            _logger = logger;
             _dictionary = new Dictionary<Hash, Hash>();
         }
 
@@ -30,10 +31,10 @@ namespace AElf.Boilerplate.EventHandler
                 return salt;
             }
 
-            var randomStr = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture).Concat(Guid.NewGuid().ToString())
-                .ToString();
+            var randomStr = DateTime.UtcNow.Millisecond.ToString(CultureInfo.InvariantCulture) + Guid.NewGuid();
             salt = HashHelper.ConcatAndCompute(queryId, HashHelper.ComputeFrom(randomStr));
             _dictionary[queryId] = salt;
+            _logger.LogInformation($"New salt for queryId {queryId}: {salt}. Using random string: {randomStr}");
             return salt;
         }
     }

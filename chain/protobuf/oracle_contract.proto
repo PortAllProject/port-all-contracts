@@ -33,6 +33,8 @@ service OracleContract {
 
     rpc UnlockTokens (UnlockTokensInput) returns (google.protobuf.Empty) {}
     
+    rpc Agree
+    
     // config setting
     
     rpc SetThreshold (OracleNodeThreshold) returns (google.protobuf.Empty) {}
