@@ -281,14 +281,6 @@ namespace AElf.Contracts.Oracle
         private void PayToNodesAndAggregateResults(QueryRecord queryRecord, AddressList helpfulNodeList)
         {
             queryRecord.IsSufficientDataCollected = true;
-
-            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryRecord.QueryId);
-            var balance = State.TokenContract.GetBalance.Call(new GetBalanceInput
-            {
-                Owner = virtualAddress,
-                Symbol = TokenSymbol
-            }).Balance;
-            Assert(balance > 0, $"Invalid amount for these nodes: {helpfulNodeList}");
             // Distributed rewards to oracle nodes.
             foreach (var helpfulNode in helpfulNodeList.Value)
             {
