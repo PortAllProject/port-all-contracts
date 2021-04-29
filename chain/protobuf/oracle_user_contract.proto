@@ -11,12 +11,17 @@ option csharp_namespace = "AElf.Contracts.OracleUser";
 service OracleUserContract {
   option (aelf.csharp_state) = "AElf.Contracts.OracleUser.OracleUserContractState";
 
+  rpc Initialize (aelf.Address) returns (google.protobuf.Empty) {}
   rpc QueryTemperature (QueryTemperatureInput) returns (aelf.Hash) {}
-  
+
   rpc RecordTemperature (CallbackInput) returns (google.protobuf.Empty) {}
+  rpc RecordPrice (CallbackInput) returns (google.protobuf.Empty) {}
 
   rpc GetHistoryTemperatures (google.protobuf.Empty) returns (TemperatureRecordList) {
-      option (aelf.is_view) = true;
+    option (aelf.is_view) = true;
+  }
+  rpc GetHistoryPrices (google.protobuf.Empty) returns (PriceRecordList) {
+    option (aelf.is_view) = true;
   }
 }
 
@@ -38,7 +43,17 @@ message TemperatureRecordList {
 
 // Events
 message QueryDataRecorded {
-    option (aelf.is_event) = true;
-    string data = 1;
-    google.protobuf.Timestamp timestamp = 2;
+  option (aelf.is_event) = true;
+  string data = 1;
+  google.protobuf.Timestamp timestamp = 2;
+}
+    
+message PriceRecord {
+  string token = 1;
+  string price = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message PriceRecordList {
+  repeated PriceRecord value = 1;
 }

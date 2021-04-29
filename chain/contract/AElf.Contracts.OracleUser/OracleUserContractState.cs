@@ -14,5 +14,6 @@ namespace AElf.Contracts.OracleUser
 
         // Test whether query id is computed correctly.
         public MappedState<Hash, bool> QueryIdMap { get; set; }
+        public SingletonState<PriceRecordList> PriceRecordList { get; set; }
     }
 }
