@@ -85,8 +85,6 @@ namespace AElf.Contracts.Oracle
             };
             State.QueryRecords[queryId] = queryRecord;
 
-            State.UserAddresses[queryId] = Context.Sender;
-
             Context.Fire(new QueryCreated
             {
                 QueryId = queryRecord.QueryId,
@@ -366,6 +364,16 @@ namespace AElf.Contracts.Oracle
                     Symbol = TokenSymbol,
                     Amount = queryRecord.Payment
                 });
+
+            State.ResponseCount.Remove(input);
+            State.HelpfulNodeListMap.Remove(input);
+            if (queryRecord.CommitmentsCount > 0)
+            {
+                foreach (var address in GetActualDesignatedNodeList(queryRecord.DesignatedNodeList).Value)
+                {
+                    State.CommitmentMap[input].Remove(address);
+                }
+            }
 
             return new Empty();
         }

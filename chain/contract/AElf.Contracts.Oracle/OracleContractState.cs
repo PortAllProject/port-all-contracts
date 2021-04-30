@@ -22,8 +22,6 @@ namespace AElf.Contracts.Oracle
 
         public MappedState<Hash, QueryRecord> QueryRecords { get; set; }
 
-        public MappedState<Hash, Address> UserAddresses { get; set; }
-
         public MappedState<Hash, int> ResponseCount { get; set; }
 
         public MappedState<Hash, Address, Hash> CommitmentMap { get; set; }
