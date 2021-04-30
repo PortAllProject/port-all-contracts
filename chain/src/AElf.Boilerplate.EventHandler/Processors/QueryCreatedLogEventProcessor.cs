@@ -34,31 +34,36 @@ namespace AElf.Boilerplate.EventHandler
             var queryCreated = new QueryCreated();
             queryCreated.MergeFrom(logEvent);
             _logger.LogInformation(queryCreated.ToString());
-            if (queryCreated.Token != _configOptions.EthereumContractAddress &&
-                !queryCreated.DesignatedNodeList.Value.Contains(Address.FromBase58(_configOptions.AccountAddress)) &&
-                !_configOptions.ObserverAssociationAddressList.Contains(queryCreated.DesignatedNodeList.Value.First()
-                    .ToBase58()))
-                return;
 
-            var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
-                queryCreated.QueryInfo.AttributesToFetch.ToList());
-            var salt = _saltProvider.GetSalt(queryCreated.QueryId);
-            _logger.LogInformation($"Queried data: {data}, salt: {salt}");
-            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
-                _configOptions.AccountPassword);
-            var commitInput = new CommitInput
+            var nodeAddress = Address.FromBase58(_configOptions.AccountAddress);
+            var firstDesignatedNodeAddress = queryCreated.DesignatedNodeList.Value.First();
+            var queryToken = queryCreated
+                .Token; // Query token means the ethereum contract address oracle node should cares in report case.
+            if (queryCreated.DesignatedNodeList.Value.Contains(nodeAddress) ||
+                _configOptions.ObserverAssociationAddressList.Contains(firstDesignatedNodeAddress.ToBase58()) ||
+                _configOptions.EthereumContractAddress == queryToken)
             {
-                QueryId = queryCreated.QueryId,
-                Commitment = HashHelper.ConcatAndCompute(
-                    HashHelper.ComputeFrom(new StringValue
-                    {
-                        Value = data
-                    }),
-                    HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_configOptions.AccountAddress)))
-            };
-            _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
-            var txId = node.SendTransaction(_configOptions.AccountAddress, GetContractAddress(), "Commit", commitInput);
-            _logger.LogInformation($"[Commit] Tx id {txId}");
+                var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
+                    queryCreated.QueryInfo.AttributesToFetch.ToList());
+                var salt = _saltProvider.GetSalt(queryCreated.QueryId);
+                _logger.LogInformation($"Queried data: {data}, salt: {salt}");
+                var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
+                    _configOptions.AccountPassword);
+                var commitInput = new CommitInput
+                {
+                    QueryId = queryCreated.QueryId,
+                    Commitment = HashHelper.ConcatAndCompute(
+                        HashHelper.ComputeFrom(new StringValue
+                        {
+                            Value = data
+                        }),
+                        HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_configOptions.AccountAddress)))
+                };
+                _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
+                var txId = node.SendTransaction(_configOptions.AccountAddress, GetContractAddress(), "Commit",
+                    commitInput);
+                _logger.LogInformation($"[Commit] Tx id {txId}");
+            }
         }
     }
 }
