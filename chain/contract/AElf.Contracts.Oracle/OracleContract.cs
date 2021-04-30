@@ -147,6 +147,7 @@ namespace AElf.Contracts.Oracle
             var queryRecord = State.QueryRecords[input.QueryId];
 
             Assert(queryRecord.ExpirationTimestamp > Context.CurrentBlockTime, "Query expired.");
+            Assert(!queryRecord.IsCancelled, "Query already cancelled.");
 
             // Confirm this query is still in Commit stage.
             Assert(!queryRecord.IsCommitStageFinished, "Commit stage of this query is already finished.");
@@ -199,9 +200,12 @@ namespace AElf.Contracts.Oracle
 
         public override Empty Reveal(RevealInput input)
         {
+            Assert(input.Data != null && input.Salt != null, $"Invalid input: {input}");
+
             var queryRecord = State.QueryRecords[input.QueryId];
 
             Assert(queryRecord.ExpirationTimestamp > Context.CurrentBlockTime, "Query expired.");
+            Assert(!queryRecord.IsCancelled, "Query already cancelled.");
 
             // Confirm this query is in stage Commit.
             Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
