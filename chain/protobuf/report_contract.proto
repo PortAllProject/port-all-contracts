@@ -207,6 +207,7 @@ message ReportConfirmed {
 }
 
 message OffChainAggregationRegistered {
+    option (aelf.is_event) = true;
     string ethereum_contract_address = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
     aelf.Address observer_association_address = 3;

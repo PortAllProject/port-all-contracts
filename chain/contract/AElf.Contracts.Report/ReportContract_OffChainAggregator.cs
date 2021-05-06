@@ -1,5 +1,6 @@
 using System.Linq;
 using AElf.Contracts.Association;
+using AElf.Sdk.CSharp;
 using AElf.Standards.ACS3;
 using AElf.Types;
 
@@ -17,15 +18,27 @@ namespace AElf.Contracts.Report
                     "Merkle tree style aggregator must set aggregator contract address.");
             }
 
-            AssertObserversRegistered(input.ObserverList);
             Address organizationAddress;
-            if (input.ObserverList.Value.Count == 1 &&
-                input.ObserverList.Value.Single() == State.ParliamentContract.Value)
+            if (input.ObserverList.Value.Count == 1)
             {
-                organizationAddress = State.ParliamentContract.Value;
+                // Using an already-exist organization.
+
+                organizationAddress = input.ObserverList.Value.First();
+                if (organizationAddress != State.ParliamentContract.Value)
+                {
+                    var maybeOrganization = State.AssociationContract.GetOrganization.Call(organizationAddress);
+                    if (maybeOrganization == null)
+                    {
+                        throw new AssertionException("Association not exists.");
+                    }
+
+                    AssertObserversRegistered(new ObserverList
+                        {Value = {maybeOrganization.OrganizationMemberList.OrganizationMembers}});
+                }
             }
             else
             {
+                AssertObserversRegistered(input.ObserverList);
                 organizationAddress = CreateObserverAssociation(input.ObserverList);
             }
 
@@ -45,6 +58,16 @@ namespace AElf.Contracts.Report
 
             State.OffChainAggregationInfoMap[input.EthereumContractAddress] = offChainAggregationInfo;
             State.CurrentRoundIdMap[input.EthereumContractAddress] = 1;
+
+            Context.Fire(new OffChainAggregationRegistered
+            {
+                EthereumContractAddress = offChainAggregationInfo.EthereumContractAddress,
+                OffChainQueryInfoList = offChainAggregationInfo.OffChainQueryInfoList,
+                ConfigDigest = offChainAggregationInfo.ConfigDigest,
+                ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
+                AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
+                AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress
+            });
             return offChainAggregationInfo;
         }
 
@@ -65,8 +88,8 @@ namespace AElf.Contracts.Report
                 OrganizationMemberList = new OrganizationMemberList {OrganizationMembers = {observerList.Value}},
                 ProposalReleaseThreshold = new ProposalReleaseThreshold
                 {
-                    MinimalApprovalThreshold = 5,
-                    MinimalVoteThreshold = 5
+                    MinimalApprovalThreshold = 1,
+                    MinimalVoteThreshold = 1
                 },
                 ProposerWhiteList = new ProposerWhiteList {Proposers = {Context.Self}}
             };
