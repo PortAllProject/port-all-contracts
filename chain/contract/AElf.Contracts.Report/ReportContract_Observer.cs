@@ -18,13 +18,13 @@ namespace AElf.Contracts.Report
         public override Empty QuitObserver(Empty input)
         {
             var currentAmount = GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value);
-            State.TokenContract.TransferFrom.Send(new TransferFromInput
-            {
-                From = Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(Context.Sender)),
-                To = Context.Sender,
-                Symbol = State.ObserverMortgageTokenSymbol.Value,
-                Amount = currentAmount
-            });
+            Context.SendVirtualInline(HashHelper.ComputeFrom(Context.Sender), State.TokenContract.Value,
+                nameof(State.TokenContract.Transfer), new TransferInput
+                {
+                    To = Context.Sender,
+                    Symbol = State.ObserverMortgageTokenSymbol.Value,
+                    Amount = currentAmount
+                }.ToByteString());
             State.ObserverMortgagedTokensMap[Context.Sender] = 0;
             return new Empty();
         }
@@ -83,13 +83,13 @@ namespace AElf.Contracts.Report
 
         private void TransferTokenFromSenderVirtualAddress(string symbol, long amount)
         {
-            State.TokenContract.TransferFrom.Send(new TransferFromInput
-            {
-                From = Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(Context.Sender)),
-                To = Context.Sender,
-                Symbol = symbol,
-                Amount = amount
-            });
+            Context.SendVirtualInline(HashHelper.ComputeFrom(Context.Sender), State.TokenContract.Value,
+                nameof(State.TokenContract.Transfer), new TransferInput
+                {
+                    To = Context.Sender,
+                    Symbol = symbol,
+                    Amount = amount
+                }.ToByteString());
             var currentAmount = GetSenderVirtualAddressBalance(symbol);
             State.ObserverMortgagedTokensMap[Context.Sender] = currentAmount.Sub(amount);
         }
