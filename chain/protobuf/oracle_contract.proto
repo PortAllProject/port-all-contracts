@@ -37,6 +37,8 @@ service OracleContract {
     
     rpc SetThreshold (OracleNodeThreshold) returns (google.protobuf.Empty) {}
     
+    rpc ChangeDefaultExpirationSeconds (google.protobuf.Int32Value) returns (google.protobuf.Empty) {}
+    
     // view methods
     
     rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
@@ -62,6 +64,10 @@ service OracleContract {
     rpc GetThreshold (google.protobuf.Empty) returns (OracleNodeThreshold) {
         option (aelf.is_view) = true;
     }
+    
+    rpc GetDefaultExpirationSeconds (google.protobuf.Empty) returns (google.protobuf.Int32Value) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput{
@@ -79,7 +85,6 @@ message QueryInput {
     QueryInfo query_info = 5;
     int32 aggregate_threshold = 6;
     string token = 7;
-    int32 maximum_permissible_deviation = 8;
 }
 
 message CallbackInfo {
@@ -108,7 +113,6 @@ message QueryRecord {
     bool is_cancelled = 14;
     QueryInfo query_info = 15;
     string token = 16;
-    int32 maximum_permissible_deviation = 17;
 }
 
 message CommitInput {
@@ -190,6 +194,13 @@ message SufficientCommitmentsCollected {
     aelf.Hash query_id = 1;
 }
 
+message Committed {
+    option (aelf.is_event) = true;
+    aelf.Hash query_id = 1;
+    aelf.Address oracle_node_address = 2;
+    aelf.Hash commitment = 3;
+}
+
 message CommitmentRevealed {
     option (aelf.is_event) = true;
     aelf.Hash query_id = 1;
@@ -197,6 +208,7 @@ message CommitmentRevealed {
     aelf.Hash commitment = 3;
     bytes data = 4;
     aelf.Hash salt = 5;
+    bool is_match = 6;
 }
 
 message QueryCompleted {

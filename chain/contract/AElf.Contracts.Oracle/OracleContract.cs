@@ -81,7 +81,6 @@ namespace AElf.Contracts.Oracle
                     input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
                 Token = input.Token,
-                MaximumPermissibleDeviation = input.MaximumPermissibleDeviation
             };
             State.QueryRecords[queryId] = queryRecord;
 
@@ -96,7 +95,6 @@ namespace AElf.Contracts.Oracle
                 AggregateThreshold = queryRecord.AggregateThreshold,
                 QueryInfo = queryRecord.QueryInfo,
                 Token = queryRecord.Token,
-                MaximumPermissibleDeviation = queryRecord.MaximumPermissibleDeviation
             });
 
             return queryId;
@@ -193,12 +191,52 @@ namespace AElf.Contracts.Oracle
             queryRecord.CommitmentsCount = queryRecord.CommitmentsCount.Add(1);
             State.QueryRecords[input.QueryId] = queryRecord;
 
+            Context.Fire(new Committed
+            {
+                OracleNodeAddress = Context.Sender,
+                QueryId = input.QueryId,
+                Commitment = input.Commitment
+            });
+
             return new Empty();
         }
 
         public override Empty Reveal(RevealInput input)
         {
-            Assert(input.Data != null && input.Salt != null, $"Invalid input: {input}");
+            if (input.Data == null || input.Salt == null)
+            {
+                throw new AssertionException($"Invalid input: {input}");
+            }
+
+            // Permission check.
+            var commitment = State.CommitmentMap[input.QueryId][Context.Sender];
+            if (commitment == null)
+            {
+                throw new AssertionException(
+                    "No permission to reveal for this query. Sender hasn't submit commitment.");
+            }
+
+            var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
+
+            var commitmentRevealed = new CommitmentRevealed
+            {
+                QueryId = input.QueryId,
+                Commitment = commitment,
+                Data = input.Data,
+                Salt = input.Salt,
+                OracleNodeAddress = Context.Sender
+            };
+            // Check commitment.
+            if (HashHelper.ConcatAndCompute(dataHash,
+                    HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58()))) !=
+                commitment)
+            {
+                Context.Fire(commitmentRevealed);
+                return new Empty();
+            }
+
+            commitmentRevealed.IsMatch = true;
+            Context.Fire(commitmentRevealed);
 
             var queryRecord = State.QueryRecords[input.QueryId];
 
@@ -209,13 +247,6 @@ namespace AElf.Contracts.Oracle
             Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
             Assert(!queryRecord.IsSufficientDataCollected, "Query already finished.");
 
-            // Permission check.
-            var commitment = State.CommitmentMap[input.QueryId][Context.Sender];
-            if (commitment == null)
-            {
-                throw new AssertionException(
-                    "No permission to reveal for this query. Sender hasn't submit commitment.");
-            }
 
             if (!queryRecord.IsCommitStageFinished)
             {
@@ -234,12 +265,7 @@ namespace AElf.Contracts.Oracle
             helpfulNodeList.Value.Add(Context.Sender);
             State.HelpfulNodeListMap[input.QueryId] = helpfulNodeList;
 
-            // Check commitment.
-            var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
-            Assert(
-                HashHelper.ConcatAndCompute(dataHash,
-                    HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58()))) ==
-                commitment, "Incorrect commitment.");
+
 
             if (queryRecord.AggregatorContractAddress != null)
             {
