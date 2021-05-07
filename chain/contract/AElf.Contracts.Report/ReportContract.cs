@@ -15,6 +15,7 @@ namespace AElf.Contracts.Report
     {
         public override Empty Initialize(InitializeInput input)
         {
+            Assert(!State.IsInitialized.Value, "Already initialized.");
             State.OracleContract.Value = input.OracleContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
@@ -35,6 +36,7 @@ namespace AElf.Contracts.Report
                 Symbol = State.OracleTokenSymbol.Value,
                 Amount = long.MaxValue
             });
+            State.IsInitialized.Value = true;
             return new Empty();
         }
 
@@ -265,6 +267,10 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Observer Association not exists.");
             }
 
+            var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
+            var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
+            Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
+
             var organization =
                 State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
             Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
@@ -316,6 +322,9 @@ namespace AElf.Contracts.Report
                     .Sub(GetAmercementAmount(offChainAggregationInfo.ObserverAssociationAddress));
             }
 
+            var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
+            reportQueryRecord.IsRejected = true;
+            State.ReportQueryRecordMap[report.QueryId] = reportQueryRecord;
             return new Empty();
         }
 
