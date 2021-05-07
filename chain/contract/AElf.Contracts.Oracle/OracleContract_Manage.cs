@@ -28,6 +28,13 @@ namespace AElf.Contracts.Oracle
             return new Empty();
         }
 
+        public override Empty ChangeDefaultExpirationSeconds(Int32Value input)
+        {
+            Assert(Context.Sender == State.Controller.Value, "Not authorized");
+            State.DefaultExpirationSeconds.Value = input.Value;
+            return new Empty();
+        }
+
         public override OracleNodeThreshold GetThreshold(Empty input)
         {
             return new OracleNodeThreshold
@@ -36,6 +43,11 @@ namespace AElf.Contracts.Oracle
                 DefaultRevealThreshold = State.RevealThreshold.Value,
                 DefaultAggregateThreshold = State.AggregateThreshold.Value
             };
+        }
+
+        public override Int32Value GetDefaultExpirationSeconds(Empty input)
+        {
+            return new Int32Value {Value = State.DefaultExpirationSeconds.Value};
         }
     }
 }

@@ -265,8 +265,6 @@ namespace AElf.Contracts.Oracle
             helpfulNodeList.Value.Add(Context.Sender);
             State.HelpfulNodeListMap[input.QueryId] = helpfulNodeList;
 
-
-
             if (queryRecord.AggregatorContractAddress != null)
             {
                 // Record data to result list.

@@ -292,6 +292,8 @@ namespace AElf.Contracts.Report
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1,
                 "Merkle tree style aggregation doesn't support rejection.");
 
+            Assert(State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] == null,
+                "Sender already confirmed this report.");
             var organization =
                 State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
             Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),

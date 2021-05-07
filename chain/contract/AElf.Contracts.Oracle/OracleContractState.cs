@@ -10,7 +10,7 @@ namespace AElf.Contracts.Oracle
     {
         public SingletonState<bool> Initialized { get; set; }
 
-        public SingletonState<long> DefaultExpirationSeconds { get; set; }
+        public SingletonState<int> DefaultExpirationSeconds { get; set; }
 
         public SingletonState<Address> Controller { get; set; }
 
