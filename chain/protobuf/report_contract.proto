@@ -74,6 +74,9 @@ service ReportContract {
     rpc GenerateEthererumReport (GenerateEthererumReportInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
+    rpc GetSignatureMap (GetSignatureMapInput) returns (SignatureMap) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput {
@@ -136,6 +139,15 @@ message GetSignatureInput {
     string ethereum_contract_address = 1;
     int64 round_id = 2;
     aelf.Address address = 3;
+}
+
+message GetSignatureMapInput {
+    string ethereum_contract_address = 1;
+    int64 round_id = 2;
+}
+
+message SignatureMap {
+    map<string,string> value = 1;
 }
 
 message OffChainAggregationInfo {

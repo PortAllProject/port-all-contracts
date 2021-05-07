@@ -32,13 +32,13 @@ namespace AElf.Contracts.Report
                         throw new AssertionException("Association not exists.");
                     }
 
-                    AssertObserversRegistered(new ObserverList
+                    AssertObserversQualified(new ObserverList
                         {Value = {maybeOrganization.OrganizationMemberList.OrganizationMembers}});
                 }
             }
             else
             {
-                AssertObserversRegistered(input.ObserverList);
+                AssertObserversQualified(input.ObserverList);
                 organizationAddress = CreateObserverAssociation(input.ObserverList);
             }
 
@@ -71,13 +71,18 @@ namespace AElf.Contracts.Report
             return offChainAggregationInfo;
         }
 
-        private void AssertObserversRegistered(ObserverList observerList)
+        private void AssertObserversQualified(ObserverList observerList)
         {
             foreach (var address in observerList.Value)
             {
-                Assert(State.ObserverMortgagedTokensMap[address] >= State.ApplyObserverFee.Value,
-                    $"{address} in observer list is not an observer candidate.");
+                AssertObserverQualified(address);
             }
+        }
+
+        private void AssertObserverQualified(Address address)
+        {
+            Assert(State.ObserverMortgagedTokensMap[address] >= State.ApplyObserverFee.Value,
+                $"{address} is not an observer candidate or mortgaged token not enough.");
         }
 
         private Address CreateObserverAssociation(ObserverList observerList)

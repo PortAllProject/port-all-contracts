@@ -15,7 +15,6 @@ namespace AElf.Contracts.Report
     {
         public override Empty Initialize(InitializeInput input)
         {
-            
             State.OracleContract.Value = input.OracleContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
@@ -87,6 +86,18 @@ namespace AElf.Contracts.Report
                 },
                 Token = input.EthereumContractAddress
             };
+            if (offChainAggregatorContract.ObserverAssociationAddress != State.ParliamentContract.Value)
+            {
+                // Check oracle node ability again.
+                var oracleNodeList = State.AssociationContract.GetOrganization
+                    .Call(offChainAggregatorContract.ObserverAssociationAddress).OrganizationMemberList
+                    .OrganizationMembers.ToList();
+                foreach (var nodeAddress in oracleNodeList)
+                {
+                    AssertObserverQualified(nodeAddress);
+                }
+            }
+
             State.OracleContract.Query.Send(queryInput);
 
             var queryId = Context.GenerateId(State.OracleContract.Value, HashHelper.ComputeFrom(queryInput));
@@ -260,7 +271,13 @@ namespace AElf.Contracts.Report
                 "Sender isn't a member of certain Observer Association.");
             State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] =
                 input.Signature;
-            Context.Fire((new ReportConfirmed {RoundId = input.RoundId, Signature = input.Signature}));
+            Context.Fire(new ReportConfirmed
+            {
+                EthereumContractAddress = input.EthereumContractAddress,
+                RoundId = input.RoundId,
+                Signature = input.Signature,
+                ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress
+            });
             return new Empty();
         }
 

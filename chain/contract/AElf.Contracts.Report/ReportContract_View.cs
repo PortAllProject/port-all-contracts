@@ -1,3 +1,4 @@
+using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
 
@@ -54,17 +55,44 @@ namespace AElf.Contracts.Report
 
         public override StringValue GetEthererumReport(GetEthererumReportInput input)
         {
-            var contractInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
-            Assert(contractInfo != null, $"contract: [{input.EthereumContractAddress}] info does not exist");
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            if (offChainAggregationInfo == null)
+            {
+                throw new AssertionException($"contract: [{input.EthereumContractAddress}] info does not exist");
+            }
             var roundReport = State.ReportMap[input.EthereumContractAddress][input.RoundId];
-            Assert(roundReport != null, $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");
-            var configDigest = contractInfo.ConfigDigest;
-            var organization = contractInfo.ObserverAssociationAddress;
+            Assert(roundReport != null,
+                $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");
+            var configDigest = offChainAggregationInfo.ConfigDigest;
+            var organization = offChainAggregationInfo.ObserverAssociationAddress;
             var report = GenerateEthereumReport(configDigest, organization, roundReport);
             return new StringValue
             {
                 Value = report
             };
+        }
+
+        public override SignatureMap GetSignatureMap(GetSignatureMapInput input)
+        {
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            if (offChainAggregationInfo == null)
+            {
+                throw new AssertionException("Report not exists.");
+            }
+
+            var organization =
+                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
+            var signatureMap = new SignatureMap();
+            foreach (var observer in organization.OrganizationMemberList.OrganizationMembers)
+            {
+                var signature = State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][observer];
+                if (signature != null)
+                {
+                    signatureMap.Value[observer.ToBase58()] = signature;
+                }
+            }
+
+            return signatureMap;
         }
     }
 }
