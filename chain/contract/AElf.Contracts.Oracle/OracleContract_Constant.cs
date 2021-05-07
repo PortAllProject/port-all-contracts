@@ -2,8 +2,8 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContract
     {
-        private const string TokenSymbol = "AEL";
-        private const string TokenName = "AelfLinK";
+        private const string TokenSymbol = "PORT";
+        private const string TokenName = "Portal Token";
         private const long TotalSupply = 100_000_000_00000000;
 
         private const int DefaultExpirationSeconds = 3600;

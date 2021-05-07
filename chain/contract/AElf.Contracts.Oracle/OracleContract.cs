@@ -20,8 +20,6 @@ namespace AElf.Contracts.Oracle
             // Controller will be the sender by default.
             State.Controller.Value = Context.Sender;
 
-            CreateToken();
-
             input.MinimumOracleNodesCount = input.MinimumOracleNodesCount == 0
                 ? DefaultMinimumOracleNodesCount
                 : input.MinimumOracleNodesCount;
@@ -44,6 +42,18 @@ namespace AElf.Contracts.Oracle
             State.AggregateThreshold.Value = input.DefaultAggregateThreshold;
             State.MinimumOracleNodesCount.Value = input.MinimumOracleNodesCount;
             State.Initialized.Value = true;
+            return new Empty();
+        }
+
+        /// <summary>
+        /// For testing.
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public override Empty InitializeAndCreateToken(InitializeInput input)
+        {
+            Initialize(input);
+            CreateToken();
             return new Empty();
         }
 

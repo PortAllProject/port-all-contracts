@@ -5,7 +5,6 @@ namespace AElf.Contracts.Report
 {
     public partial class ReportContractState : ContractState
     {
-        public SingletonState<Address> ReportControllerAddress { get; set; }
         public SingletonState<string> OracleTokenSymbol { get; set; }
         public SingletonState<string> ObserverMortgageTokenSymbol { get; set; }
         public SingletonState<long> ReportFee { get; set; }

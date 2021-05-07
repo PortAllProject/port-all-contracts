@@ -12,6 +12,7 @@ service OracleContract {
     option (aelf.csharp_state) = "AElf.Contracts.Oracle.OracleContractState";
     
     rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
+    rpc InitializeAndCreateToken (InitializeInput) returns (google.protobuf.Empty) {}
 
     // base function
 
