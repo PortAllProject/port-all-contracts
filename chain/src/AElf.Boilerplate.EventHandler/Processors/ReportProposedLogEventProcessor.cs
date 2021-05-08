@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AElf.Contracts.Report;
 using AElf.Types;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
@@ -14,10 +15,13 @@ namespace AElf.Boilerplate.EventHandler
 
         public override string ContractName => "Report";
         public override string LogEventName => nameof(ReportProposed);
+        private readonly ILogger<ReportProposedLogEventProcessor> _logger;
 
         public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
-            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions) : base(contractAddressOptions)
+            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
+            ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
         {
+            _logger = logger;
             _configOptions = configOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
             _keyStore = AElfKeyStore.GetKeyStore(configOptions.Value.AccountAddress,
@@ -28,9 +32,12 @@ namespace AElf.Boilerplate.EventHandler
         {
             var reportProposed = new ReportProposed();
             reportProposed.MergeFrom(logEvent);
+
+            _logger.LogInformation($"New report: {reportProposed}");
+
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
-            node.SendTransaction(_configOptions.AccountAddress,
+            var txId = node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "ConfirmReport", new ConfirmReportInput
                 {
                     EthereumContractAddress = _configOptions.EthereumContractAddress,
@@ -38,6 +45,7 @@ namespace AElf.Boilerplate.EventHandler
                     Signature = SignHelper
                         .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
                 });
+            _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
 
             return Task.CompletedTask;
         }
