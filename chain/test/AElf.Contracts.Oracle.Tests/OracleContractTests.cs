@@ -23,7 +23,8 @@ namespace AElf.Contracts.Oracle
                 MinimumOracleNodesCount = DefaultMinimumOracleNodesCount,
                 DefaultRevealThreshold = DefaultRevealThreshold,
                 DefaultAggregateThreshold = DefaultAggregateThreshold,
-                DefaultExpirationSeconds = DefaultExpirationSeconds
+                DefaultExpirationSeconds = DefaultExpirationSeconds,
+                IsChargeFee = true
             });
         }
 

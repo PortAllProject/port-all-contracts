@@ -35,6 +35,10 @@ namespace AElf.Contracts.Report
                 Symbol = State.OracleTokenSymbol.Value,
                 Amount = long.MaxValue
             });
+            foreach (var address in input.InitialRegisterWhiteList)
+            {
+                State.RegisterWhiteListMap[address] = true;
+            }
             State.IsInitialized.Value = true;
             return new Empty();
         }

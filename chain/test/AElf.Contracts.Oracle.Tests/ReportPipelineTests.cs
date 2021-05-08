@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Report;
+using AElf.ContractTestKit;
 using AElf.Types;
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Shouldly;
 using Xunit;
@@ -137,12 +139,15 @@ namespace AElf.Contracts.Oracle
             });
             for (var i = 0; i < report.Observations.Value.Count; i++)
             {
-                report.Observations.Value[i].Data.ShouldBe(new StringValue {Value = i.ToString()}.ToByteString());
+                report.Observations.Value[i].Data.ShouldBe(new StringValue
+                {
+                    Value = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)
+                }.ToByteString());
             }
 
             var aggregatedValue = new StringValue();
             aggregatedValue.MergeFrom(report.AggregatedData);
-            aggregatedValue.Value.ShouldBe("2");
+            aggregatedValue.Value.ShouldBe("2.222");
         }
 
         [Fact]
@@ -285,12 +290,14 @@ namespace AElf.Contracts.Oracle
 
         private async Task InitializeReportContractAsync()
         {
-            await ReportContractStub.Initialize.SendAsync(new Report.InitializeInput
+            var input = new Report.InitializeInput
             {
                 ApplyObserverFee = DefaultApplyObserverFee,
                 ReportFee = 1_00000000,
                 OracleContractAddress = DAppContractAddress
-            });
+            };
+            input.InitialRegisterWhiteList.Add(SampleAccount.Accounts.First().Address);
+            await ReportContractStub.Initialize.SendAsync(input);
         }
 
         private async Task ApplyObserversAsync()

@@ -85,6 +85,7 @@ message InitializeInput {
     aelf.Address oracle_contract_address = 1;
     int64 report_fee = 2;
     int64 apply_observer_fee = 3;
+    repeated aelf.Address initial_register_white_list = 4;
 }
 
 message QueryOracleInput {
