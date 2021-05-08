@@ -3,6 +3,7 @@ using AElf.Contracts.Association;
 using AElf.Sdk.CSharp;
 using AElf.Standards.ACS3;
 using AElf.Types;
+using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Report
 {
@@ -11,6 +12,7 @@ namespace AElf.Contracts.Report
         public override OffChainAggregationInfo RegisterOffChainAggregation(
             RegisterOffChainAggregationInput input)
         {
+            Assert(State.RegisterWhiteListMap[Context.Sender], "Sender not in register white list.");
             Assert(input.OffChainQueryInfoList.Value.Count >= 1, "At least 1 off-chain info.");
             if (input.OffChainQueryInfoList.Value.Count > 1)
             {
@@ -68,7 +70,16 @@ namespace AElf.Contracts.Report
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
                 AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress
             });
+
             return offChainAggregationInfo;
+        }
+
+        public override Empty AddRegisterWhiteList(Address input)
+        {
+            Assert(Context.Sender == State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
+                "No permission.");
+            State.RegisterWhiteListMap[input] = true;
+            return new Empty();
         }
 
         private void AssertObserversQualified(ObserverList observerList)

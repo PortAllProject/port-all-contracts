@@ -29,5 +29,7 @@ namespace AElf.Contracts.Report
         public MappedState<Address, long> AmercementAmountMap { get; set; }
 
         public SingletonState<bool> IsInitialized { get; set; }
+
+        public MappedState<Address, bool> RegisterWhiteListMap { get; set; }
     }
 }
