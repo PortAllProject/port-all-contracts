@@ -11,3 +11,13 @@ service IntegerAggregatorContract {
     option (aelf.csharp_state) = "AElf.Contracts.IntegerAggregator.IntegerAggregatorContractState";
     option (aelf.base) = "acs13.proto";
 }
+
+message AggregateDataReceived {
+    option (aelf.is_event) = true;
+    Results results = 1;
+    string final_result = 2;
+}
+
+message Results {
+    repeated string value = 1;
+}

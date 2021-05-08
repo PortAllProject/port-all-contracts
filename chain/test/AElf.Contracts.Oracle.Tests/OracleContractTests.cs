@@ -18,7 +18,7 @@ namespace AElf.Contracts.Oracle
     {
         private async Task InitializeOracleContractAsync()
         {
-            await OracleContractStub.Initialize.SendAsync(new InitializeInput
+            await OracleContractStub.InitializeAndCreateToken.SendAsync(new InitializeInput
             {
                 MinimumOracleNodesCount = DefaultMinimumOracleNodesCount,
                 DefaultRevealThreshold = DefaultRevealThreshold,

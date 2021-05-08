@@ -32,7 +32,6 @@ namespace AElf.Boilerplate.EventHandler
                 return data;
             }
 
-            data = string.Empty;
             if (url == null || attributes == null)
             {
                 return string.Empty;
@@ -43,13 +42,48 @@ namespace AElf.Boilerplate.EventHandler
             var client = new HttpClient();
             var responseMessage = await client.PostAsync(url, null);
             var response = await responseMessage.Content.ReadAsStringAsync();
+            data = ParseJson(response, attributes);
+            _dictionary[queryId] = data;
+            return data;
+        }
 
+        private string ParseJson(string response, List<string> attributes)
+        {
             var jsonDoc = JsonDocument.Parse(response);
+            var data = string.Empty;
 
             foreach (var attribute in attributes)
             {
-                if (jsonDoc.RootElement.TryGetProperty(attribute, out var targetElement))
+                if (!attribute.Contains('/'))
                 {
+                    if (jsonDoc.RootElement.TryGetProperty(attribute, out var targetElement))
+                    {
+                        if (data == string.Empty)
+                        {
+                            data = targetElement.GetRawText();
+                        }
+                        else
+                        {
+                            data += $";{targetElement.GetRawText()}";
+                        }
+                    }
+                    else
+                    {
+                        return data;
+                    }
+                }
+                else
+                {
+                    var attrs = attribute.Split('/');
+                    var targetElement = jsonDoc.RootElement.GetProperty(attrs[0]);
+                    foreach (var attr in attrs.Skip(1))
+                    {
+                        if (!targetElement.TryGetProperty(attr, out targetElement))
+                        {
+                            return attr;
+                        }
+                    }
+
                     if (data == string.Empty)
                     {
                         data = targetElement.GetRawText();
@@ -58,12 +92,6 @@ namespace AElf.Boilerplate.EventHandler
                     {
                         data += $";{targetElement.GetRawText()}";
                     }
-
-                    _dictionary[queryId] = data;
-                }
-                else
-                {
-                    return data;
                 }
             }
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.OracleUser;
@@ -134,6 +135,68 @@ namespace AElf.Contracts.Oracle
                     Salt = HashHelper.ComputeFrom($"Salt{i}")
                 });
             }
+        }
+
+        [Fact]
+        public void ParseJsonTest()
+        {
+            var result = ParseJson("{\"data\":{\"priceUsd\":\"59207.0439511409731526\"},\"timestamp\":1620463326939}",
+                new List<string>
+                {
+                    "data/priceUsd", "timestamp"
+                });
+            
+            result.ShouldBe("\"59207.0439511409731526\";1620463326939");
+        }
+
+        private string ParseJson(string response, List<string> attributes)
+        {
+            var jsonDoc = JsonDocument.Parse(response);
+            var data = string.Empty;
+
+            foreach (var attribute in attributes)
+            {
+                if (!attribute.Contains('/'))
+                {
+                    if (jsonDoc.RootElement.TryGetProperty(attribute, out var targetElement))
+                    {
+                        if (data == string.Empty)
+                        {
+                            data = targetElement.GetRawText();
+                        }
+                        else
+                        {
+                            data += $";{targetElement.GetRawText()}";
+                        }
+                    }
+                    else
+                    {
+                        return data;
+                    }
+                }
+                else
+                {
+                    var attrs = attribute.Split('/');
+                    var targetElement = jsonDoc.RootElement.GetProperty(attrs[0]);
+                    foreach (var attr in attrs.Skip(1))
+                    {
+                        if (!targetElement.TryGetProperty(attr, out targetElement))
+                        {
+                            return attr;
+                        }
+                    }
+                    if (data == string.Empty)
+                    {
+                        data = targetElement.GetRawText();
+                    }
+                    else
+                    {
+                        data += $";{targetElement.GetRawText()}";
+                    }
+                }
+            }
+
+            return data;
         }
     }
 }

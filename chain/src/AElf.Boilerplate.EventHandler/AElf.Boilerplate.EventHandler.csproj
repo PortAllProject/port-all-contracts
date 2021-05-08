@@ -40,6 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\contract\AElf.Contracts.IntegerAggregator\AElf.Contracts.IntegerAggregator.csproj" />
       <ProjectReference Include="..\..\contract\AElf.Contracts.OracleUser\AElf.Contracts.OracleUser.csproj" />
     </ItemGroup>
 

@@ -2,7 +2,7 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContractTests
     {
-        private const string TokenSymbol = "AEL";
+        private const string TokenSymbol = "PORT";
 
         private const int DefaultExpirationSeconds = 300;
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
@@ -237,7 +238,7 @@ namespace AElf.Contracts.Oracle
                 EthereumContractAddress = offChainAggregationInfo.EthereumContractAddress,
                 RoundId = 1
             });
-            var string2 = new StringValue {Value = "2"};
+            var string2 = new StringValue {Value = "2.222"};
             foreach (var observation in report.Observations.Value)
             {
                 observation.Data.ShouldBe(string2.ToByteString());
@@ -257,7 +258,8 @@ namespace AElf.Contracts.Oracle
                 {
                     QueryId = queryId,
                     Commitment = HashHelper.ConcatAndCompute(
-                        HashHelper.ComputeFrom(new StringValue {Value = i.ToString()}),
+                        HashHelper.ComputeFrom(new StringValue
+                            {Value = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)}),
                         HashHelper.ConcatAndCompute(HashHelper.ComputeFrom($"Salt{i}"),
                             HashHelper.ComputeFrom(address.ToBase58())))
                 });
@@ -274,7 +276,8 @@ namespace AElf.Contracts.Oracle
                 await ObserverOracleStubs[i].Reveal.SendAsync(new RevealInput
                 {
                     QueryId = queryId,
-                    Data = new StringValue {Value = i.ToString()}.ToByteString(),
+                    Data = new StringValue {Value = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)}
+                        .ToByteString(),
                     Salt = HashHelper.ComputeFrom($"Salt{i}")
                 });
             }
