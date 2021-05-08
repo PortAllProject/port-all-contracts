@@ -40,6 +40,8 @@ service OracleContract {
     
     rpc ChangeDefaultExpirationSeconds (google.protobuf.Int32Value) returns (google.protobuf.Empty) {}
     
+    rpc EnableChargeFee (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    
     // view methods
     
     rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
@@ -76,6 +78,7 @@ message InitializeInput{
     int32 default_reveal_threshold = 2;
     int32 default_aggregate_threshold = 3;
     int32 default_expiration_seconds = 4;
+    bool is_charge_fee = 5;
 }
 
 message QueryInput {

@@ -41,5 +41,7 @@ namespace AElf.Contracts.Oracle
         /// From address -> Oracle node address -> Amount
         /// </summary>
         public MappedState<Address, Address, long> LockedTokenFromAddressMap { get; set; }
+
+        public BoolState IsChargeFee { get; set; }
     }
 }

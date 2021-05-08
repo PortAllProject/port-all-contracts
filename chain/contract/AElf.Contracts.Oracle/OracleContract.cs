@@ -30,6 +30,8 @@ namespace AElf.Contracts.Oracle
                 ? DefaultAggregateThreshold
                 : input.DefaultAggregateThreshold;
 
+            State.IsChargeFee.Value = input.IsChargeFee;
+
             Assert(input.MinimumOracleNodesCount >= input.DefaultRevealThreshold,
                 "MinimumOracleNodesCount should be greater than or equal to DefaultRevealThreshold.");
             Assert(input.DefaultRevealThreshold >= input.DefaultAggregateThreshold,
@@ -86,7 +88,7 @@ namespace AElf.Contracts.Oracle
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
                 CallbackInfo = input.CallbackInfo,
-                Payment = input.Payment,
+                Payment = State.IsChargeFee.Value ? input.Payment : 0,
                 AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
                     input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
@@ -321,7 +323,7 @@ namespace AElf.Contracts.Oracle
             foreach (var helpfulNode in helpfulNodeList.Value)
             {
                 var paymentToEachNode = queryRecord.Payment.Div(helpfulNodeList.Value.Count);
-                if (paymentToEachNode > 0)
+                if (paymentToEachNode > 0 && State.IsChargeFee.Value)
                 {
                     Context.SendVirtualInline(queryRecord.QueryId, State.TokenContract.Value,
                         nameof(State.TokenContract.Transfer), new TransferInput
@@ -390,14 +392,17 @@ namespace AElf.Contracts.Oracle
 
             State.QueryRecords[input] = queryRecord;
 
-            // Return tokens to query manager.
-            Context.SendVirtualInline(queryRecord.QueryId, State.TokenContract.Value,
-                nameof(State.TokenContract.Transfer), new TransferInput
-                {
-                    To = queryRecord.QuerySender,
-                    Symbol = TokenSymbol,
-                    Amount = queryRecord.Payment
-                });
+            if (queryRecord.Payment > 0 && State.IsChargeFee.Value)
+            {
+                // Return tokens to query manager.
+                Context.SendVirtualInline(queryRecord.QueryId, State.TokenContract.Value,
+                    nameof(State.TokenContract.Transfer), new TransferInput
+                    {
+                        To = queryRecord.QuerySender,
+                        Symbol = TokenSymbol,
+                        Amount = queryRecord.Payment
+                    });
+            }
 
             State.ResponseCount.Remove(input);
             State.HelpfulNodeListMap.Remove(input);

@@ -49,5 +49,12 @@ namespace AElf.Contracts.Oracle
         {
             return new Int32Value {Value = State.DefaultExpirationSeconds.Value};
         }
+
+        public override Empty EnableChargeFee(Empty input)
+        {
+            Assert(Context.Sender == State.Controller.Value, "Not authorized");
+            State.IsChargeFee.Value = true;
+            return new Empty();
+        }
     }
 }

@@ -27,9 +27,8 @@ namespace AElf.Contracts.Report
                 Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
             State.ConsensusContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ConsensusContractSystemName);
-            State.ReportFee.Value = input.ReportFee == 0 ? DefaultReportFee : input.ReportFee;
-            State.ApplyObserverFee.Value =
-                input.ApplyObserverFee == 0 ? DefaultApplyObserverFee : input.ApplyObserverFee;
+            State.ReportFee.Value = input.ReportFee;
+            State.ApplyObserverFee.Value = input.ApplyObserverFee;
             State.TokenContract.Approve.Send(new ApproveInput
             {
                 Spender = State.OracleContract.Value,
