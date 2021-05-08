@@ -107,5 +107,13 @@ namespace AElf.Contracts.Report
                 Symbol = symbol
             }).Balance;
         }
+
+        public override Empty AdjustReportFee(Int64Value input)
+        {
+            Assert(Context.Sender == State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
+                "No permission.");
+            State.ReportFee.Value = input.Value;
+            return new Empty();
+        }
     }
 }
