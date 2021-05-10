@@ -40,7 +40,7 @@ namespace AElf.Boilerplate.EventHandler
             _logger.LogCritical($"Querying {url} for attribute {attributes.First()} etc..");
 
             var client = new HttpClient();
-            var responseMessage = await client.PostAsync(url, null);
+            var responseMessage = await client.GetAsync(url);
             var response = await responseMessage.Content.ReadAsStringAsync();
             data = ParseJson(response, attributes);
             _dictionary[queryId] = data;

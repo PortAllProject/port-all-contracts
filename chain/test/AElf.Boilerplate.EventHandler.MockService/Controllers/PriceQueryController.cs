@@ -9,7 +9,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
     [Route("price")]
     public class PriceQueryController : ControllerBase
     {
-        [HttpPost("elf")]
+        [HttpGet("elf")]
         public PriceDto QueryElfPrice()
         {
             return new PriceDto
@@ -22,7 +22,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
             };
         }
 
-        [HttpPost("btc")]
+        [HttpGet("btc")]
         public PriceDto QueryBtcPrice()
         {
             return new PriceDto
@@ -35,7 +35,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
             };
         }
 
-        [HttpPost("eth")]
+        [HttpGet("eth")]
         public PriceDto QueryEthPrice()
         {
             return new PriceDto
@@ -48,7 +48,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpGet]
         public PriceDto QueryPrice(string symbol)
         {
             return new PriceDto

@@ -8,7 +8,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
     [Route("score")]
     public class ScoreQueryController : ControllerBase
     {
-        [HttpPost("query")]
+        [HttpGet("query")]
         public ScoreDto QueryScore(QueryScoreInput input)
         {
             return new ScoreDto
@@ -21,7 +21,7 @@ namespace AElf.Boilerplate.EventHandler.MockService.Controllers
             };
         }
 
-        [HttpPost]
+        [HttpGet]
         public ScoreDto QueryScore(string id, string player1, string player2)
         {
             return new ScoreDto
