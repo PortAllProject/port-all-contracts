@@ -212,7 +212,15 @@ message CommitmentRevealed {
     aelf.Hash commitment = 3;
     bytes data = 4;
     aelf.Hash salt = 5;
-    bool is_match = 6;
+}
+
+message CommitmentRevealFailed {
+    option (aelf.is_event) = true;
+    aelf.Hash query_id = 1;
+    aelf.Address oracle_node_address = 2;
+    aelf.Hash commitment = 3;
+    bytes data = 4;
+    aelf.Hash salt = 5;
 }
 
 message QueryCompleted {

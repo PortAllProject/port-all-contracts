@@ -17,13 +17,13 @@ namespace AElf.Boilerplate.EventHandler
             _logger = logger;
         }
 
-        public override string ContractName => "IntegerAggregatorContract";
+        public override string ContractName => "IntegerAggregator";
 
         public override Task ProcessAsync(LogEvent logEvent)
         {
-            var reportConfirmed = new AggregateDataReceived();
-            reportConfirmed.MergeFrom(logEvent);
-            _logger.LogInformation(reportConfirmed.ToString());
+            var aggregateDataReceived = new AggregateDataReceived();
+            aggregateDataReceived.MergeFrom(logEvent);
+            _logger.LogInformation(aggregateDataReceived.ToString());
 
             return Task.CompletedTask;
         }

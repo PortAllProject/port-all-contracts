@@ -230,25 +230,30 @@ namespace AElf.Contracts.Oracle
 
             var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
 
-            var commitmentRevealed = new CommitmentRevealed
+            // Check commitment.
+            if (HashHelper.ConcatAndCompute(dataHash,
+                    HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58()))) !=
+                commitment)
+            {
+                Context.Fire(new CommitmentRevealFailed
+                {
+                    QueryId = input.QueryId,
+                    Commitment = commitment,
+                    Data = input.Data,
+                    Salt = input.Salt,
+                    OracleNodeAddress = Context.Sender
+                });
+                return new Empty();
+            }
+
+            Context.Fire(new CommitmentRevealed
             {
                 QueryId = input.QueryId,
                 Commitment = commitment,
                 Data = input.Data,
                 Salt = input.Salt,
                 OracleNodeAddress = Context.Sender
-            };
-            // Check commitment.
-            if (HashHelper.ConcatAndCompute(dataHash,
-                    HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58()))) !=
-                commitment)
-            {
-                Context.Fire(commitmentRevealed);
-                return new Empty();
-            }
-
-            commitmentRevealed.IsMatch = true;
-            Context.Fire(commitmentRevealed);
+            });
 
             var queryRecord = State.QueryRecords[input.QueryId];
 
@@ -258,7 +263,6 @@ namespace AElf.Contracts.Oracle
             // Confirm this query is in stage Commit.
             Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
             Assert(!queryRecord.IsSufficientDataCollected, "Query already finished.");
-
 
             if (!queryRecord.IsCommitStageFinished)
             {
