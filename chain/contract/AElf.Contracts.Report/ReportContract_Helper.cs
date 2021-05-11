@@ -30,11 +30,7 @@ namespace AElf.Contracts.Report
             data.Add(observerIndex);
             data.Add(observationsCount);
             var aggregatedData = report.AggregatedData;
-            if (aggregatedData.Length > SlotByteSize)
-            {
-                throw new AssertionException("aggregated data is oversize(32 bytes)");
-            }
-
+            Assert(aggregatedData.Length <= SlotByteSize, "aggregated data is oversize(32 bytes)");
             data.Add(FillObservationBytes(report.AggregatedData));
             GenerateMultipleObservation(report, out var observerOrder, out var observationsLength,
                 out var observations);
@@ -126,15 +122,16 @@ namespace AElf.Contracts.Report
             observerOrder = GetByteListWithCapacity(SlotByteSize);
             observationsLength = GetByteListWithCapacity(SlotByteSize);
             observations = new List<byte>();
-            int i = 0;
             if (report.Observations.Value.Any() && !int.TryParse(report.Observations.Value[0].Key, out _))
             {
                 return;
             }
 
+            int i = 0;
             foreach (var observation in report.Observations.Value)
             {
-                observerOrder[i] = (byte) int.Parse(observation.Key);
+                Assert(int.TryParse(observation.Key, out var order), $"invalid observation key : {observation.Key}");
+                observerOrder[i] = (byte) order;
                 observationsLength[i] = (byte) observation.Data.Length;
                 observations.AddRange(FillObservationBytes(observation.Data));
                 i++;

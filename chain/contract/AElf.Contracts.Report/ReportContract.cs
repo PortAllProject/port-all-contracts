@@ -240,8 +240,8 @@ namespace AElf.Contracts.Report
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         EthereumContractAddress = nodeDataList.Token,
                         RoundId = currentRoundId,
-                        //RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress,
-                            //report)
+                        RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress,
+                            report)
                     });
                     State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
                 }
