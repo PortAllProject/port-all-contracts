@@ -31,5 +31,7 @@ namespace AElf.Contracts.Report
         public SingletonState<bool> IsInitialized { get; set; }
 
         public MappedState<Address, bool> RegisterWhiteListMap { get; set; }
+
+        public MappedState<Address, bool> ObserverMap { get; set; }
     }
 }

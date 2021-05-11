@@ -11,8 +11,17 @@ namespace AElf.Contracts.Report
     {
         public override Empty ApplyObserver(Empty input)
         {
-            Assert(GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value) == 0,
-                "Sender already applied.");
+            if (State.ApplyObserverFee.Value > 0)
+            {
+                Assert(GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value) == 0,
+                    "Sender already applied.");
+            }
+            else
+            {
+                Assert(!State.ObserverMap[Context.Sender], "Sender is an observer.");
+            }
+
+            State.ObserverMap[Context.Sender] = true;
             TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, State.ApplyObserverFee.Value);
             return new Empty();
         }
@@ -20,15 +29,25 @@ namespace AElf.Contracts.Report
         public override Empty QuitObserver(Empty input)
         {
             var currentAmount = GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value);
-            Assert(currentAmount > 0, "Sender is not an observer.");
-            Context.SendVirtualInline(HashHelper.ComputeFrom(Context.Sender), State.TokenContract.Value,
-                nameof(State.TokenContract.Transfer), new TransferInput
-                {
-                    To = Context.Sender,
-                    Symbol = State.ObserverMortgageTokenSymbol.Value,
-                    Amount = currentAmount
-                }.ToByteString());
-            State.ObserverMortgagedTokensMap[Context.Sender] = 0;
+            if (currentAmount > 0)
+            {
+                Context.SendVirtualInline(HashHelper.ComputeFrom(Context.Sender), State.TokenContract.Value,
+                    nameof(State.TokenContract.Transfer), new TransferInput
+                    {
+                        To = Context.Sender,
+                        Symbol = State.ObserverMortgageTokenSymbol.Value,
+                        Amount = currentAmount
+                    }.ToByteString());
+                State.ObserverMortgagedTokensMap[Context.Sender] = 0;
+            }
+            else
+            {
+                Assert(State.ApplyObserverFee.Value <= 0 && State.ObserverMap[Context.Sender],
+                    "Sender is not an observer.");
+            }
+
+            State.ObserverMap[Context.Sender] = false;
+
             return new Empty();
         }
 
@@ -73,6 +92,7 @@ namespace AElf.Contracts.Report
 
         private void TransferTokenToSenderVirtualAddress(string symbol, long amount)
         {
+            if (amount <= 0) return;
             var virtualAddress = Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(Context.Sender));
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
@@ -87,6 +107,7 @@ namespace AElf.Contracts.Report
 
         private void TransferTokenFromSenderVirtualAddress(string symbol, long amount)
         {
+            if (amount <= 0) return;
             Context.SendVirtualInline(HashHelper.ComputeFrom(Context.Sender), State.TokenContract.Value,
                 nameof(State.TokenContract.Transfer), new TransferInput
                 {
