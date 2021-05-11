@@ -286,10 +286,21 @@ namespace AElf.Contracts.Report
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
 
-            var organization =
-                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
-            Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
-                "Sender isn't a member of certain Observer Association.");
+            if (State.ParliamentContract.Value == offChainAggregationInfo.ObserverAssociationAddress)
+            {
+                var currentMinerList = State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
+                    .Select(p => Address.FromPublicKey(p.ToByteArray()));
+                Assert(currentMinerList.Contains(Context.Sender),
+                    "Sender isn't a member of certain Observer Association.");
+            }
+            else
+            {
+                var organization =
+                    State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
+                Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
+                    "Sender isn't a member of certain Observer Association.");
+            }
+
             State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] =
                 input.Signature;
             Context.Fire(new ReportConfirmed
