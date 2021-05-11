@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using AElf.Contracts.IntegerAggregator;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Report;
 using AElf.ContractTestKit;
@@ -327,5 +328,7 @@ namespace AElf.Contracts.Oracle
                 await observerStub.ApplyObserver.SendAsync(new Empty());
             }
         }
+
+
     }
 }

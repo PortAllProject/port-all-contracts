@@ -232,3 +232,11 @@ message OffChainAggregationRegistered {
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
 }
+
+message MerkleReportNodeAdded {
+    option (aelf.is_event) = true;
+    string ethereum_contract_address = 1;
+    int32 node_index = 2;
+    int64 node_round_id = 3;
+    bytes aggregated_data = 4;
+}

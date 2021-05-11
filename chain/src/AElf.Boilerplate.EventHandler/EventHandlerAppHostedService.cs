@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +37,11 @@ namespace AElf.Boilerplate.EventHandler
             {
                 _logger.LogError("Something wrong with key store.");
             }
+
+            var contractAddressOptions =
+                _serviceProvider.GetRequiredService<IOptionsSnapshot<ContractAddressOptions>>().Value;
+            _logger.LogInformation(
+                $"ContractAddressOptions contains: {contractAddressOptions.ContractAddressMap.Keys.Aggregate("", (t, n) => $"{t}\t{n}")}");
 
             return Task.CompletedTask;
         }

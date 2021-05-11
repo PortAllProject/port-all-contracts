@@ -213,6 +213,13 @@ namespace AElf.Contracts.Report
                 {
                     Value = {nodeDataList.Value.Select(d => d.Address)}
                 };
+                Context.Fire(new MerkleReportNodeAdded
+                {
+                    EthereumContractAddress = nodeDataList.Token,
+                    NodeIndex = nodeIndex,
+                    NodeRoundId = nodeRoundId,
+                    AggregatedData = aggregatedData.Value
+                });
                 if (offChainAggregationInfo.RoundIds.All(i => i >= currentRoundId))
                 {
                     // Time to generate merkle tree.
@@ -233,8 +240,8 @@ namespace AElf.Contracts.Report
                         ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
                         EthereumContractAddress = nodeDataList.Token,
                         RoundId = currentRoundId,
-                        RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress,
-                            report)
+                        //RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress,
+                            //report)
                     });
                     State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
                 }
