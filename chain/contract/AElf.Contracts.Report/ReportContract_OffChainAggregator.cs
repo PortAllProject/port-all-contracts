@@ -13,6 +13,8 @@ namespace AElf.Contracts.Report
             RegisterOffChainAggregationInput input)
         {
             Assert(State.RegisterWhiteListMap[Context.Sender], "Sender not in register white list.");
+            Assert(State.OffChainAggregationInfoMap[input.EthereumContractAddress] == null,
+                $"Off chain aggregation info of {input.EthereumContractAddress} already registered.");
             Assert(input.OffChainQueryInfoList.Value.Count >= 1, "At least 1 off-chain info.");
             if (input.OffChainQueryInfoList.Value.Count > 1)
             {
