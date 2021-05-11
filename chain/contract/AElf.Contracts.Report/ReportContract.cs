@@ -124,13 +124,18 @@ namespace AElf.Contracts.Report
             }
 
             Assert(reportQueryRecord.OriginQuerySender == Context.Sender, "No permission.");
+
             // Return report fee.
-            State.TokenContract.Transfer.Send(new TransferInput
+            if (reportQueryRecord.PaidReportFee > 0)
             {
-                To = reportQueryRecord.OriginQuerySender,
-                Symbol = State.OracleTokenSymbol.Value,
-                Amount = reportQueryRecord.PaidReportFee
-            });
+                State.TokenContract.Transfer.Send(new TransferInput
+                {
+                    To = reportQueryRecord.OriginQuerySender,
+                    Symbol = State.OracleTokenSymbol.Value,
+                    Amount = reportQueryRecord.PaidReportFee
+                });
+            }
+
             State.OracleContract.CancelQuery.Send(input);
             return new Empty();
         }

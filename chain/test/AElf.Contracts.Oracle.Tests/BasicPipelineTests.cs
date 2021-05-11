@@ -105,6 +105,7 @@ namespace AElf.Contracts.Oracle
 
         private async Task CommitTemperaturesAsync(Hash queryId, IReadOnlyList<string> temperatures)
         {
+            temperatures = temperatures.Select(t => $"\"{t}\"").ToList();
             for (var i = 0; i < temperatures.Count; i++)
             {
                 var temperature = temperatures[i];
@@ -125,6 +126,7 @@ namespace AElf.Contracts.Oracle
 
         private async Task RevealTemperaturesAsync(Hash queryId, List<string> temperatures, int startIndex = 0)
         {
+            temperatures = temperatures.Select(t => $"\"{t}\"").ToList();
             for (var i = startIndex; i < temperatures.Count; i++)
             {
                 var temperature = temperatures[i];

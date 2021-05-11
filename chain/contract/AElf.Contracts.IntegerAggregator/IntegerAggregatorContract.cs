@@ -14,10 +14,11 @@ namespace AElf.Contracts.IntegerAggregator
             var actualResults = input.Results.Select(r =>
             {
                 var str = StringValue.Parser.ParseFrom(r).Value;
-                if (str.Contains('"'))
+                if (str.Contains("\""))
                 {
-                    str = str.Remove('"');
+                    str = str.Replace("\"", "");
                 }
+
                 return str.Contains(';') ? str.Split(';').Last() : str;
             }).ToList();
             var results = actualResults.Select(decimal.Parse).ToList();

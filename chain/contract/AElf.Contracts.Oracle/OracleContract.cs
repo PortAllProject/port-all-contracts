@@ -220,6 +220,15 @@ namespace AElf.Contracts.Oracle
                 throw new AssertionException($"Invalid input: {input}");
             }
 
+            var queryRecord = State.QueryRecords[input.QueryId];
+
+            Assert(queryRecord.ExpirationTimestamp > Context.CurrentBlockTime, "Query expired.");
+            Assert(!queryRecord.IsCancelled, "Query already cancelled.");
+
+            // Confirm this query is in stage Commit.
+            Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
+            Assert(!queryRecord.IsSufficientDataCollected, "Query already finished.");
+
             // Permission check.
             var commitment = State.CommitmentMap[input.QueryId][Context.Sender];
             if (commitment == null)
@@ -254,15 +263,6 @@ namespace AElf.Contracts.Oracle
                 Salt = input.Salt,
                 OracleNodeAddress = Context.Sender
             });
-
-            var queryRecord = State.QueryRecords[input.QueryId];
-
-            Assert(queryRecord.ExpirationTimestamp > Context.CurrentBlockTime, "Query expired.");
-            Assert(!queryRecord.IsCancelled, "Query already cancelled.");
-
-            // Confirm this query is in stage Commit.
-            Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
-            Assert(!queryRecord.IsSufficientDataCollected, "Query already finished.");
 
             if (!queryRecord.IsCommitStageFinished)
             {
