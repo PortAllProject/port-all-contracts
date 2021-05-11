@@ -282,6 +282,9 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Observer Association not exists.");
             }
 
+            Assert(State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] == null,
+                "Sender already confirmed this report.");
+
             var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
