@@ -121,6 +121,8 @@ message ReportQueryRecord {
     aelf.Address origin_query_sender = 1;
     int64 paid_report_fee = 2;
     bool is_rejected = 3;
+    bool is_all_confirmed = 4;
+    int64 node_confirm_count = 5;
 }
 
 message ObserverList {
@@ -221,6 +223,7 @@ message ReportConfirmed {
     string signature = 2;
     aelf.Address observer_association_address = 3;
     string ethereum_contract_address = 4;
+    bool is_all_node_confirm = 5;
 }
 
 message OffChainAggregationRegistered {

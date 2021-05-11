@@ -12,7 +12,7 @@ using scg = global::System.Collections.Generic;
 namespace AElf.Contracts.Report {
 
   /// <summary>Holder for reflection information generated from report_contract.proto</summary>
-  public static partial class ReportContractReflection {
+  internal static partial class ReportContractReflection {
 
     #region Descriptor
     /// <summary>File descriptor for report_contract.proto</summary>
@@ -27,118 +27,135 @@ namespace AElf.Contracts.Report {
             "ChVyZXBvcnRfY29udHJhY3QucHJvdG8aD2FlbGYvY29yZS5wcm90bxoSYWVs",
             "Zi9vcHRpb25zLnByb3RvGhtnb29nbGUvcHJvdG9idWYvZW1wdHkucHJvdG8a",
             "H2dvb2dsZS9wcm90b2J1Zi90aW1lc3RhbXAucHJvdG8aHmdvb2dsZS9wcm90",
-            "b2J1Zi93cmFwcGVycy5wcm90bxoUY2FsbGJhY2tfaW5wdXQucHJvdG8icQoP",
-            "SW5pdGlhbGl6ZUlucHV0Ei4KF29yYWNsZV9jb250cmFjdF9hZGRyZXNzGAEg",
-            "ASgLMg0uYWVsZi5BZGRyZXNzEhIKCnJlcG9ydF9mZWUYAiABKAMSGgoSYXBw",
-            "bHlfb2JzZXJ2ZXJfZmVlGAMgASgDIqsBChBRdWVyeU9yYWNsZUlucHV0Eg8K",
-            "B3BheW1lbnQYASABKAMSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgC",
-            "IAEoCRIbChNhZ2dyZWdhdGVfdGhyZXNob2xkGAMgASgFEjIKG2FnZ3JlZ2F0",
-            "b3JfY29udHJhY3RfYWRkcmVzcxgEIAEoCzINLmFlbGYuQWRkcmVzcxISCgpu",
-            "b2RlX2luZGV4GAUgASgFIlwKEkNvbmZpcm1SZXBvcnRJbnB1dBIhChlldGhl",
-            "cmV1bV9jb250cmFjdF9hZGRyZXNzGAEgASgJEhAKCHJvdW5kX2lkGAIgASgD",
-            "EhEKCXNpZ25hdHVyZRgDIAEoCSJvChFSZWplY3RSZXBvcnRJbnB1dBIhChll",
-            "dGhlcmV1bV9jb250cmFjdF9hZGRyZXNzGAEgASgJEhAKCHJvdW5kX2lkGAIg",
-            "ASgDEiUKDmFjY3VzaW5nX25vZGVzGAMgAygLMg0uYWVsZi5BZGRyZXNzIpgB",
-            "CgZSZXBvcnQSHAoIcXVlcnlfaWQYASABKAsyCi5hZWxmLkhhc2gSEAoIcm91",
-            "bmRfaWQYAiABKAMSIwoMb2JzZXJ2YXRpb25zGAMgASgLMg0uT2JzZXJ2YXRp",
-            "b25zEhcKD2FnZ3JlZ2F0ZWRfZGF0YRgEIAEoDBIgCglvYnNlcnZlcnMYBSAD",
-            "KAsyDS5PYnNlcnZlckxpc3QiWAoRUmVwb3J0UXVlcnlSZWNvcmQSKgoTb3Jp",
-            "Z2luX3F1ZXJ5X3NlbmRlchgBIAEoCzINLmFlbGYuQWRkcmVzcxIXCg9wYWlk",
-            "X3JlcG9ydF9mZWUYAiABKAMiLAoMT2JzZXJ2ZXJMaXN0EhwKBXZhbHVlGAEg",
-            "AygLMg0uYWVsZi5BZGRyZXNzIjcKElByb3Bvc2VSZXBvcnRJbnB1dBIhCg1x",
-            "dWVyeV9pZF9saXN0GAEgAygLMgouYWVsZi5IYXNoIisKDE9ic2VydmF0aW9u",
-            "cxIbCgV2YWx1ZRgBIAMoCzIMLk9ic2VydmF0aW9uIigKC09ic2VydmF0aW9u",
-            "EgsKA2tleRgBIAEoCRIMCgRkYXRhGAIgASgMImgKEUdldFNpZ25hdHVyZUlu",
+            "b2J1Zi93cmFwcGVycy5wcm90bxoUY2FsbGJhY2tfaW5wdXQucHJvdG8ipQEK",
+            "D0luaXRpYWxpemVJbnB1dBIuChdvcmFjbGVfY29udHJhY3RfYWRkcmVzcxgB",
+            "IAEoCzINLmFlbGYuQWRkcmVzcxISCgpyZXBvcnRfZmVlGAIgASgDEhoKEmFw",
+            "cGx5X29ic2VydmVyX2ZlZRgDIAEoAxIyChtpbml0aWFsX3JlZ2lzdGVyX3do",
+            "aXRlX2xpc3QYBCADKAsyDS5hZWxmLkFkZHJlc3MiqwEKEFF1ZXJ5T3JhY2xl",
+            "SW5wdXQSDwoHcGF5bWVudBgBIAEoAxIhChlldGhlcmV1bV9jb250cmFjdF9h",
+            "ZGRyZXNzGAIgASgJEhsKE2FnZ3JlZ2F0ZV90aHJlc2hvbGQYAyABKAUSMgob",
+            "YWdncmVnYXRvcl9jb250cmFjdF9hZGRyZXNzGAQgASgLMg0uYWVsZi5BZGRy",
+            "ZXNzEhIKCm5vZGVfaW5kZXgYBSABKAUiXAoSQ29uZmlybVJlcG9ydElucHV0",
+            "EiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJlc3MYASABKAkSEAoIcm91bmRf",
+            "aWQYAiABKAMSEQoJc2lnbmF0dXJlGAMgASgJIm8KEVJlamVjdFJlcG9ydElu",
             "cHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJlc3MYASABKAkSEAoIcm91",
-            "bmRfaWQYAiABKAMSHgoHYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVzcyKn",
-            "AgoXT2ZmQ2hhaW5BZ2dyZWdhdGlvbkluZm8SIQoZZXRoZXJldW1fY29udHJh",
-            "Y3RfYWRkcmVzcxgBIAEoCRI5ChlvZmZfY2hhaW5fcXVlcnlfaW5mb19saXN0",
-            "GAIgASgLMhYuT2ZmQ2hhaW5RdWVyeUluZm9MaXN0EjMKHG9ic2VydmVyX2Fz",
-            "c29jaWF0aW9uX2FkZHJlc3MYAyABKAsyDS5hZWxmLkFkZHJlc3MSFQoNY29u",
-            "ZmlnX2RpZ2VzdBgEIAEoDBIbChNhZ2dyZWdhdGVfdGhyZXNob2xkGAUgASgF",
-            "EjIKG2FnZ3JlZ2F0b3JfY29udHJhY3RfYWRkcmVzcxgGIAEoCzINLmFlbGYu",
-            "QWRkcmVzcxIRCglyb3VuZF9pZHMYByADKAUijgIKIFJlZ2lzdGVyT2ZmQ2hh",
-            "aW5BZ2dyZWdhdGlvbklucHV0EiQKDW9ic2VydmVyX2xpc3QYASABKAsyDS5P",
-            "YnNlcnZlckxpc3QSOQoZb2ZmX2NoYWluX3F1ZXJ5X2luZm9fbGlzdBgCIAEo",
-            "CzIWLk9mZkNoYWluUXVlcnlJbmZvTGlzdBIhChlldGhlcmV1bV9jb250cmFj",
-            "dF9hZGRyZXNzGAMgASgJEhUKDWNvbmZpZ19kaWdlc3QYBCABKAwSGwoTYWdn",
-            "cmVnYXRlX3RocmVzaG9sZBgFIAEoBRIyChthZ2dyZWdhdG9yX2NvbnRyYWN0",
-            "X2FkZHJlc3MYBiABKAsyDS5hZWxmLkFkZHJlc3MiRgoRT2ZmQ2hhaW5RdWVy",
-            "eUluZm8SFAoMdXJsX3RvX3F1ZXJ5GAEgASgJEhsKE2F0dHJpYnV0ZXNfdG9f",
-            "ZmV0Y2gYAiADKAkiRQoOR2V0UmVwb3J0SW5wdXQSIQoZZXRoZXJldW1fY29u",
-            "dHJhY3RfYWRkcmVzcxgBIAEoCRIQCghyb3VuZF9pZBgCIAEoAyJdChJHZXRN",
-            "ZXJrbGVQYXRoSW5wdXQSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgB",
-            "IAEoCRIQCghyb3VuZF9pZBgCIAEoAxISCgpub2RlX2luZGV4GAMgASgFIk4K",
-            "F0dldEV0aGVyZXJ1bVJlcG9ydElucHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0",
-            "X2FkZHJlc3MYASABKAkSEAoIcm91bmRfaWQYAiABKAMicwocR2VuZXJhdGVF",
-            "dGhlcmVydW1SZXBvcnRJbnB1dBIXCgZyZXBvcnQYASABKAsyBy5SZXBvcnQS",
-            "FQoNY29uZmlnX2RpZ2VzdBgCIAEoDBIjCgxvcmdhbml6YXRpb24YAyABKAsy",
-            "DS5hZWxmLkFkZHJlc3MiOgoVT2ZmQ2hhaW5RdWVyeUluZm9MaXN0EiEKBXZh",
-            "bHVlGAEgAygLMhIuT2ZmQ2hhaW5RdWVyeUluZm8ilAEKDlJlcG9ydFByb3Bv",
-            "c2VkEhIKCnJhd19yZXBvcnQYASABKAkSMwocb2JzZXJ2ZXJfYXNzb2NpYXRp",
-            "b25fYWRkcmVzcxgCIAEoCzINLmFlbGYuQWRkcmVzcxIhChlldGhlcmV1bV9j",
-            "b250cmFjdF9hZGRyZXNzGAMgASgJEhAKCHJvdW5kX2lkGAQgASgDOgSguxgB",
-            "IpQBCg9SZXBvcnRDb25maXJtZWQSEAoIcm91bmRfaWQYASABKAMSEQoJc2ln",
-            "bmF0dXJlGAIgASgJEjMKHG9ic2VydmVyX2Fzc29jaWF0aW9uX2FkZHJlc3MY",
-            "AyABKAsyDS5hZWxmLkFkZHJlc3MSIQoZZXRoZXJldW1fY29udHJhY3RfYWRk",
-            "cmVzcxgEIAEoCToEoLsYASKaAgodT2ZmQ2hhaW5BZ2dyZWdhdGlvblJlZ2lz",
-            "dGVyZWQSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgBIAEoCRI5Chlv",
-            "ZmZfY2hhaW5fcXVlcnlfaW5mb19saXN0GAIgASgLMhYuT2ZmQ2hhaW5RdWVy",
-            "eUluZm9MaXN0EjMKHG9ic2VydmVyX2Fzc29jaWF0aW9uX2FkZHJlc3MYAyAB",
-            "KAsyDS5hZWxmLkFkZHJlc3MSFQoNY29uZmlnX2RpZ2VzdBgEIAEoDBIbChNh",
-            "Z2dyZWdhdGVfdGhyZXNob2xkGAUgASgFEjIKG2FnZ3JlZ2F0b3JfY29udHJh",
-            "Y3RfYWRkcmVzcxgGIAEoCzINLmFlbGYuQWRkcmVzczLbDAoOUmVwb3J0Q29u",
-            "dHJhY3QSOAoKSW5pdGlhbGl6ZRIQLkluaXRpYWxpemVJbnB1dBoWLmdvb2ds",
-            "ZS5wcm90b2J1Zi5FbXB0eSIAEi4KC1F1ZXJ5T3JhY2xlEhEuUXVlcnlPcmFj",
-            "bGVJbnB1dBoKLmFlbGYuSGFzaCIAEjkKEUNhbmNlbFF1ZXJ5T3JhY2xlEgou",
-            "YWVsZi5IYXNoGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASPgoNQ29uZmly",
-            "bVJlcG9ydBITLkNvbmZpcm1SZXBvcnRJbnB1dBoWLmdvb2dsZS5wcm90b2J1",
-            "Zi5FbXB0eSIAEjwKDFJlamVjdFJlcG9ydBISLlJlamVjdFJlcG9ydElucHV0",
-            "GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASTwoWQWRqdXN0QW1lcmNlbWVu",
-            "dEFtb3VudBIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xl",
-            "LnByb3RvYnVmLkVtcHR5IgASKgoNUHJvcG9zZVJlcG9ydBIOLkNhbGxiYWNr",
-            "SW5wdXQaBy5SZXBvcnQiABJHCg5Nb3J0Z2FnZVRva2VucxIbLmdvb2dsZS5w",
-            "cm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgAS",
-            "RwoOV2l0aGRyYXdUb2tlbnMSGy5nb29nbGUucHJvdG9idWYuSW50NjRWYWx1",
-            "ZRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEkEKDUFwcGx5T2JzZXJ2ZXIS",
-            "Fi5nb29nbGUucHJvdG9idWYuRW1wdHkaFi5nb29nbGUucHJvdG9idWYuRW1w",
-            "dHkiABJACgxRdWl0T2JzZXJ2ZXISFi5nb29nbGUucHJvdG9idWYuRW1wdHka",
-            "Fi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJWCh1Qcm9wb3NlQWRqdXN0QXBw",
-            "bHlPYnNlcnZlckZlZRIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYu",
-            "Z29vZ2xlLnByb3RvYnVmLkVtcHR5IgASTwoWQWRqdXN0QXBwbHlPYnNlcnZl",
-            "ckZlZRIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xlLnBy",
-            "b3RvYnVmLkVtcHR5IgASXAobUmVnaXN0ZXJPZmZDaGFpbkFnZ3JlZ2F0aW9u",
-            "EiEuUmVnaXN0ZXJPZmZDaGFpbkFnZ3JlZ2F0aW9uSW5wdXQaGC5PZmZDaGFp",
-            "bkFnZ3JlZ2F0aW9uSW5mbyIAEj0KDUdldE1lcmtsZVBhdGgSEy5HZXRNZXJr",
-            "bGVQYXRoSW5wdXQaEC5hZWxmLk1lcmtsZVBhdGgiBYiJ9wEBEiwKCUdldFJl",
-            "cG9ydBIPLkdldFJlcG9ydElucHV0GgcuUmVwb3J0IgWIifcBARJHCgxHZXRT",
-            "aWduYXR1cmUSEi5HZXRTaWduYXR1cmVJbnB1dBocLmdvb2dsZS5wcm90b2J1",
-            "Zi5TdHJpbmdWYWx1ZSIFiIn3AQESWwoaR2V0T2ZmQ2hhaW5BZ2dyZWdhdGlv",
-            "bkluZm8SHC5nb29nbGUucHJvdG9idWYuU3RyaW5nVmFsdWUaGC5PZmZDaGFp",
-            "bkFnZ3JlZ2F0aW9uSW5mbyIFiIn3AQESPQoUR2V0UmVwb3J0UXVlcnlSZWNv",
-            "cmQSCi5hZWxmLkhhc2gaEi5SZXBvcnRRdWVyeVJlY29yZCIFiIn3AQESVQoR",
-            "R2V0Q3VycmVudFJvdW5kSWQSHC5nb29nbGUucHJvdG9idWYuU3RyaW5nVmFs",
-            "dWUaGy5nb29nbGUucHJvdG9idWYuSW50NjRWYWx1ZSIFiIn3AQESUwoSR2V0",
-            "RXRoZXJlcnVtUmVwb3J0EhguR2V0RXRoZXJlcnVtUmVwb3J0SW5wdXQaHC5n",
-            "b29nbGUucHJvdG9idWYuU3RyaW5nVmFsdWUiBYiJ9wEBEl0KF0dlbmVyYXRl",
-            "RXRoZXJlcnVtUmVwb3J0Eh0uR2VuZXJhdGVFdGhlcmVydW1SZXBvcnRJbnB1",
-            "dBocLmdvb2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1ZSIFiIn3AQEaLrLM9gEp",
-            "QUVsZi5Db250cmFjdHMuUmVwb3J0LlJlcG9ydENvbnRyYWN0U3RhdGVCGKoC",
-            "FUFFbGYuQ29udHJhY3RzLlJlcG9ydGIGcHJvdG8z"));
+            "bmRfaWQYAiABKAMSJQoOYWNjdXNpbmdfbm9kZXMYAyADKAsyDS5hZWxmLkFk",
+            "ZHJlc3MimAEKBlJlcG9ydBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFz",
+            "aBIQCghyb3VuZF9pZBgCIAEoAxIjCgxvYnNlcnZhdGlvbnMYAyABKAsyDS5P",
+            "YnNlcnZhdGlvbnMSFwoPYWdncmVnYXRlZF9kYXRhGAQgASgMEiAKCW9ic2Vy",
+            "dmVycxgFIAMoCzINLk9ic2VydmVyTGlzdCKjAQoRUmVwb3J0UXVlcnlSZWNv",
+            "cmQSKgoTb3JpZ2luX3F1ZXJ5X3NlbmRlchgBIAEoCzINLmFlbGYuQWRkcmVz",
+            "cxIXCg9wYWlkX3JlcG9ydF9mZWUYAiABKAMSEwoLaXNfcmVqZWN0ZWQYAyAB",
+            "KAgSGAoQaXNfYWxsX2NvbmZpcm1lZBgEIAEoCBIaChJub2RlX2NvbmZpcm1f",
+            "Y291bnQYBSABKAMiLAoMT2JzZXJ2ZXJMaXN0EhwKBXZhbHVlGAEgAygLMg0u",
+            "YWVsZi5BZGRyZXNzIjcKElByb3Bvc2VSZXBvcnRJbnB1dBIhCg1xdWVyeV9p",
+            "ZF9saXN0GAEgAygLMgouYWVsZi5IYXNoIisKDE9ic2VydmF0aW9ucxIbCgV2",
+            "YWx1ZRgBIAMoCzIMLk9ic2VydmF0aW9uIigKC09ic2VydmF0aW9uEgsKA2tl",
+            "eRgBIAEoCRIMCgRkYXRhGAIgASgMImgKEUdldFNpZ25hdHVyZUlucHV0EiEK",
+            "GWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJlc3MYASABKAkSEAoIcm91bmRfaWQY",
+            "AiABKAMSHgoHYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVzcyJLChRHZXRT",
+            "aWduYXR1cmVNYXBJbnB1dBIhChlldGhlcmV1bV9jb250cmFjdF9hZGRyZXNz",
+            "GAEgASgJEhAKCHJvdW5kX2lkGAIgASgDImUKDFNpZ25hdHVyZU1hcBInCgV2",
+            "YWx1ZRgBIAMoCzIYLlNpZ25hdHVyZU1hcC5WYWx1ZUVudHJ5GiwKClZhbHVl",
+            "RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASKnAgoXT2Zm",
+            "Q2hhaW5BZ2dyZWdhdGlvbkluZm8SIQoZZXRoZXJldW1fY29udHJhY3RfYWRk",
+            "cmVzcxgBIAEoCRI5ChlvZmZfY2hhaW5fcXVlcnlfaW5mb19saXN0GAIgASgL",
+            "MhYuT2ZmQ2hhaW5RdWVyeUluZm9MaXN0EjMKHG9ic2VydmVyX2Fzc29jaWF0",
+            "aW9uX2FkZHJlc3MYAyABKAsyDS5hZWxmLkFkZHJlc3MSFQoNY29uZmlnX2Rp",
+            "Z2VzdBgEIAEoDBIbChNhZ2dyZWdhdGVfdGhyZXNob2xkGAUgASgFEjIKG2Fn",
+            "Z3JlZ2F0b3JfY29udHJhY3RfYWRkcmVzcxgGIAEoCzINLmFlbGYuQWRkcmVz",
+            "cxIRCglyb3VuZF9pZHMYByADKAUijgIKIFJlZ2lzdGVyT2ZmQ2hhaW5BZ2dy",
+            "ZWdhdGlvbklucHV0EiQKDW9ic2VydmVyX2xpc3QYASABKAsyDS5PYnNlcnZl",
+            "ckxpc3QSOQoZb2ZmX2NoYWluX3F1ZXJ5X2luZm9fbGlzdBgCIAEoCzIWLk9m",
+            "ZkNoYWluUXVlcnlJbmZvTGlzdBIhChlldGhlcmV1bV9jb250cmFjdF9hZGRy",
+            "ZXNzGAMgASgJEhUKDWNvbmZpZ19kaWdlc3QYBCABKAwSGwoTYWdncmVnYXRl",
+            "X3RocmVzaG9sZBgFIAEoBRIyChthZ2dyZWdhdG9yX2NvbnRyYWN0X2FkZHJl",
+            "c3MYBiABKAsyDS5hZWxmLkFkZHJlc3MiRgoRT2ZmQ2hhaW5RdWVyeUluZm8S",
+            "FAoMdXJsX3RvX3F1ZXJ5GAEgASgJEhsKE2F0dHJpYnV0ZXNfdG9fZmV0Y2gY",
+            "AiADKAkiRQoOR2V0UmVwb3J0SW5wdXQSIQoZZXRoZXJldW1fY29udHJhY3Rf",
+            "YWRkcmVzcxgBIAEoCRIQCghyb3VuZF9pZBgCIAEoAyJdChJHZXRNZXJrbGVQ",
+            "YXRoSW5wdXQSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgBIAEoCRIQ",
+            "Cghyb3VuZF9pZBgCIAEoAxISCgpub2RlX2luZGV4GAMgASgFIk4KF0dldEV0",
+            "aGVyZXJ1bVJlcG9ydElucHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJl",
+            "c3MYASABKAkSEAoIcm91bmRfaWQYAiABKAMicwocR2VuZXJhdGVFdGhlcmVy",
+            "dW1SZXBvcnRJbnB1dBIXCgZyZXBvcnQYASABKAsyBy5SZXBvcnQSFQoNY29u",
+            "ZmlnX2RpZ2VzdBgCIAEoDBIjCgxvcmdhbml6YXRpb24YAyABKAsyDS5hZWxm",
+            "LkFkZHJlc3MiOgoVT2ZmQ2hhaW5RdWVyeUluZm9MaXN0EiEKBXZhbHVlGAEg",
+            "AygLMhIuT2ZmQ2hhaW5RdWVyeUluZm8ilAEKDlJlcG9ydFByb3Bvc2VkEhIK",
+            "CnJhd19yZXBvcnQYASABKAkSMwocb2JzZXJ2ZXJfYXNzb2NpYXRpb25fYWRk",
+            "cmVzcxgCIAEoCzINLmFlbGYuQWRkcmVzcxIhChlldGhlcmV1bV9jb250cmFj",
+            "dF9hZGRyZXNzGAMgASgJEhAKCHJvdW5kX2lkGAQgASgDOgSguxgBIrEBCg9S",
+            "ZXBvcnRDb25maXJtZWQSEAoIcm91bmRfaWQYASABKAMSEQoJc2lnbmF0dXJl",
+            "GAIgASgJEjMKHG9ic2VydmVyX2Fzc29jaWF0aW9uX2FkZHJlc3MYAyABKAsy",
+            "DS5hZWxmLkFkZHJlc3MSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgE",
+            "IAEoCRIbChNpc19hbGxfbm9kZV9jb25maXJtGAUgASgIOgSguxgBIqACCh1P",
+            "ZmZDaGFpbkFnZ3JlZ2F0aW9uUmVnaXN0ZXJlZBIhChlldGhlcmV1bV9jb250",
+            "cmFjdF9hZGRyZXNzGAEgASgJEjkKGW9mZl9jaGFpbl9xdWVyeV9pbmZvX2xp",
+            "c3QYAiABKAsyFi5PZmZDaGFpblF1ZXJ5SW5mb0xpc3QSMwocb2JzZXJ2ZXJf",
+            "YXNzb2NpYXRpb25fYWRkcmVzcxgDIAEoCzINLmFlbGYuQWRkcmVzcxIVCg1j",
+            "b25maWdfZGlnZXN0GAQgASgMEhsKE2FnZ3JlZ2F0ZV90aHJlc2hvbGQYBSAB",
+            "KAUSMgobYWdncmVnYXRvcl9jb250cmFjdF9hZGRyZXNzGAYgASgLMg0uYWVs",
+            "Zi5BZGRyZXNzOgSguxgBIoQBChVNZXJrbGVSZXBvcnROb2RlQWRkZWQSIQoZ",
+            "ZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgBIAEoCRISCgpub2RlX2luZGV4",
+            "GAIgASgFEhUKDW5vZGVfcm91bmRfaWQYAyABKAMSFwoPYWdncmVnYXRlZF9k",
+            "YXRhGAQgASgMOgSguxgBMqYOCg5SZXBvcnRDb250cmFjdBI4CgpJbml0aWFs",
+            "aXplEhAuSW5pdGlhbGl6ZUlucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5",
+            "IgASLgoLUXVlcnlPcmFjbGUSES5RdWVyeU9yYWNsZUlucHV0GgouYWVsZi5I",
+            "YXNoIgASOQoRQ2FuY2VsUXVlcnlPcmFjbGUSCi5hZWxmLkhhc2gaFi5nb29n",
+            "bGUucHJvdG9idWYuRW1wdHkiABI+Cg1Db25maXJtUmVwb3J0EhMuQ29uZmly",
+            "bVJlcG9ydElucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASPAoMUmVq",
+            "ZWN0UmVwb3J0EhIuUmVqZWN0UmVwb3J0SW5wdXQaFi5nb29nbGUucHJvdG9i",
+            "dWYuRW1wdHkiABJPChZBZGp1c3RBbWVyY2VtZW50QW1vdW50EhsuZ29vZ2xl",
+            "LnByb3RvYnVmLkludDY0VmFsdWUaFi5nb29nbGUucHJvdG9idWYuRW1wdHki",
+            "ABIqCg1Qcm9wb3NlUmVwb3J0Eg4uQ2FsbGJhY2tJbnB1dBoHLlJlcG9ydCIA",
+            "EkcKDk1vcnRnYWdlVG9rZW5zEhsuZ29vZ2xlLnByb3RvYnVmLkludDY0VmFs",
+            "dWUaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJHCg5XaXRoZHJhd1Rva2Vu",
+            "cxIbLmdvb2dsZS5wcm90b2J1Zi5JbnQ2NFZhbHVlGhYuZ29vZ2xlLnByb3Rv",
+            "YnVmLkVtcHR5IgASQQoNQXBwbHlPYnNlcnZlchIWLmdvb2dsZS5wcm90b2J1",
+            "Zi5FbXB0eRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEkAKDFF1aXRPYnNl",
+            "cnZlchIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoWLmdvb2dsZS5wcm90b2J1",
+            "Zi5FbXB0eSIAElYKHVByb3Bvc2VBZGp1c3RBcHBseU9ic2VydmVyRmVlEhsu",
+            "Z29vZ2xlLnByb3RvYnVmLkludDY0VmFsdWUaFi5nb29nbGUucHJvdG9idWYu",
+            "RW1wdHkiABJPChZBZGp1c3RBcHBseU9ic2VydmVyRmVlEhsuZ29vZ2xlLnBy",
+            "b3RvYnVmLkludDY0VmFsdWUaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJI",
+            "Cg9BZGp1c3RSZXBvcnRGZWUSGy5nb29nbGUucHJvdG9idWYuSW50NjRWYWx1",
+            "ZRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAElwKG1JlZ2lzdGVyT2ZmQ2hh",
+            "aW5BZ2dyZWdhdGlvbhIhLlJlZ2lzdGVyT2ZmQ2hhaW5BZ2dyZWdhdGlvbklu",
+            "cHV0GhguT2ZmQ2hhaW5BZ2dyZWdhdGlvbkluZm8iABI/ChRBZGRSZWdpc3Rl",
+            "cldoaXRlTGlzdBINLmFlbGYuQWRkcmVzcxoWLmdvb2dsZS5wcm90b2J1Zi5F",
+            "bXB0eSIAEj0KDUdldE1lcmtsZVBhdGgSEy5HZXRNZXJrbGVQYXRoSW5wdXQa",
+            "EC5hZWxmLk1lcmtsZVBhdGgiBYiJ9wEBEiwKCUdldFJlcG9ydBIPLkdldFJl",
+            "cG9ydElucHV0GgcuUmVwb3J0IgWIifcBARJHCgxHZXRTaWduYXR1cmUSEi5H",
+            "ZXRTaWduYXR1cmVJbnB1dBocLmdvb2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1",
+            "ZSIFiIn3AQESWwoaR2V0T2ZmQ2hhaW5BZ2dyZWdhdGlvbkluZm8SHC5nb29n",
+            "bGUucHJvdG9idWYuU3RyaW5nVmFsdWUaGC5PZmZDaGFpbkFnZ3JlZ2F0aW9u",
+            "SW5mbyIFiIn3AQESPQoUR2V0UmVwb3J0UXVlcnlSZWNvcmQSCi5hZWxmLkhh",
+            "c2gaEi5SZXBvcnRRdWVyeVJlY29yZCIFiIn3AQESVQoRR2V0Q3VycmVudFJv",
+            "dW5kSWQSHC5nb29nbGUucHJvdG9idWYuU3RyaW5nVmFsdWUaGy5nb29nbGUu",
+            "cHJvdG9idWYuSW50NjRWYWx1ZSIFiIn3AQESUwoSR2V0RXRoZXJlcnVtUmVw",
+            "b3J0EhguR2V0RXRoZXJlcnVtUmVwb3J0SW5wdXQaHC5nb29nbGUucHJvdG9i",
+            "dWYuU3RyaW5nVmFsdWUiBYiJ9wEBEl0KF0dlbmVyYXRlRXRoZXJlcnVtUmVw",
+            "b3J0Eh0uR2VuZXJhdGVFdGhlcmVydW1SZXBvcnRJbnB1dBocLmdvb2dsZS5w",
+            "cm90b2J1Zi5TdHJpbmdWYWx1ZSIFiIn3AQESPgoPR2V0U2lnbmF0dXJlTWFw",
+            "EhUuR2V0U2lnbmF0dXJlTWFwSW5wdXQaDS5TaWduYXR1cmVNYXAiBYiJ9wEB",
+            "Gi6yzPYBKUFFbGYuQ29udHJhY3RzLlJlcG9ydC5SZXBvcnRDb250cmFjdFN0",
+            "YXRlQhiqAhVBRWxmLkNvbnRyYWN0cy5SZXBvcnRiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::AElf.Types.CoreReflection.Descriptor, global::AElf.OptionsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, global::CallbackInputReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.InitializeInput), global::AElf.Contracts.Report.InitializeInput.Parser, new[]{ "OracleContractAddress", "ReportFee", "ApplyObserverFee" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.InitializeInput), global::AElf.Contracts.Report.InitializeInput.Parser, new[]{ "OracleContractAddress", "ReportFee", "ApplyObserverFee", "InitialRegisterWhiteList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.QueryOracleInput), global::AElf.Contracts.Report.QueryOracleInput.Parser, new[]{ "Payment", "EthereumContractAddress", "AggregateThreshold", "AggregatorContractAddress", "NodeIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ConfirmReportInput), global::AElf.Contracts.Report.ConfirmReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "Signature" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.RejectReportInput), global::AElf.Contracts.Report.RejectReportInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "AccusingNodes" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Report), global::AElf.Contracts.Report.Report.Parser, new[]{ "QueryId", "RoundId", "Observations", "AggregatedData", "Observers" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportQueryRecord), global::AElf.Contracts.Report.ReportQueryRecord.Parser, new[]{ "OriginQuerySender", "PaidReportFee" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportQueryRecord), global::AElf.Contracts.Report.ReportQueryRecord.Parser, new[]{ "OriginQuerySender", "PaidReportFee", "IsRejected", "IsAllConfirmed", "NodeConfirmCount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ObserverList), global::AElf.Contracts.Report.ObserverList.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ProposeReportInput), global::AElf.Contracts.Report.ProposeReportInput.Parser, new[]{ "QueryIdList" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Observations), global::AElf.Contracts.Report.Observations.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.Observation), global::AElf.Contracts.Report.Observation.Parser, new[]{ "Key", "Data" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetSignatureInput), global::AElf.Contracts.Report.GetSignatureInput.Parser, new[]{ "EthereumContractAddress", "RoundId", "Address" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetSignatureMapInput), global::AElf.Contracts.Report.GetSignatureMapInput.Parser, new[]{ "EthereumContractAddress", "RoundId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.SignatureMap), global::AElf.Contracts.Report.SignatureMap.Parser, new[]{ "Value" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationInfo), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser, new[]{ "EthereumContractAddress", "OffChainQueryInfoList", "ObserverAssociationAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "RoundIds" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.RegisterOffChainAggregationInput), global::AElf.Contracts.Report.RegisterOffChainAggregationInput.Parser, new[]{ "ObserverList", "OffChainQueryInfoList", "EthereumContractAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainQueryInfo), global::AElf.Contracts.Report.OffChainQueryInfo.Parser, new[]{ "UrlToQuery", "AttributesToFetch" }, null, null, null, null),
@@ -148,19 +165,16 @@ namespace AElf.Contracts.Report {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GenerateEthererumReportInput), global::AElf.Contracts.Report.GenerateEthererumReportInput.Parser, new[]{ "Report", "ConfigDigest", "Organization" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainQueryInfoList), global::AElf.Contracts.Report.OffChainQueryInfoList.Parser, new[]{ "Value" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportProposed), global::AElf.Contracts.Report.ReportProposed.Parser, new[]{ "RawReport", "ObserverAssociationAddress", "EthereumContractAddress", "RoundId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportConfirmed), global::AElf.Contracts.Report.ReportConfirmed.Parser, new[]{ "RoundId", "Signature", "ObserverAssociationAddress", "EthereumContractAddress" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationRegistered), global::AElf.Contracts.Report.OffChainAggregationRegistered.Parser, new[]{ "EthereumContractAddress", "OffChainQueryInfoList", "ObserverAssociationAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.ReportConfirmed), global::AElf.Contracts.Report.ReportConfirmed.Parser, new[]{ "RoundId", "Signature", "ObserverAssociationAddress", "EthereumContractAddress", "IsAllNodeConfirm" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationRegistered), global::AElf.Contracts.Report.OffChainAggregationRegistered.Parser, new[]{ "EthereumContractAddress", "OffChainQueryInfoList", "ObserverAssociationAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.MerkleReportNodeAdded), global::AElf.Contracts.Report.MerkleReportNodeAdded.Parser, new[]{ "EthereumContractAddress", "NodeIndex", "NodeRoundId", "AggregatedData" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class InitializeInput : pb::IMessage<InitializeInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class InitializeInput : pb::IMessage<InitializeInput> {
     private static readonly pb::MessageParser<InitializeInput> _parser = new pb::MessageParser<InitializeInput>(() => new InitializeInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -188,6 +202,7 @@ namespace AElf.Contracts.Report {
       oracleContractAddress_ = other.oracleContractAddress_ != null ? other.oracleContractAddress_.Clone() : null;
       reportFee_ = other.reportFee_;
       applyObserverFee_ = other.applyObserverFee_;
+      initialRegisterWhiteList_ = other.initialRegisterWhiteList_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -229,6 +244,16 @@ namespace AElf.Contracts.Report {
       }
     }
 
+    /// <summary>Field number for the "initial_register_white_list" field.</summary>
+    public const int InitialRegisterWhiteListFieldNumber = 4;
+    private static readonly pb::FieldCodec<global::AElf.Types.Address> _repeated_initialRegisterWhiteList_codec
+        = pb::FieldCodec.ForMessage(34, global::AElf.Types.Address.Parser);
+    private readonly pbc::RepeatedField<global::AElf.Types.Address> initialRegisterWhiteList_ = new pbc::RepeatedField<global::AElf.Types.Address>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AElf.Types.Address> InitialRegisterWhiteList {
+      get { return initialRegisterWhiteList_; }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as InitializeInput);
@@ -245,6 +270,7 @@ namespace AElf.Contracts.Report {
       if (!object.Equals(OracleContractAddress, other.OracleContractAddress)) return false;
       if (ReportFee != other.ReportFee) return false;
       if (ApplyObserverFee != other.ApplyObserverFee) return false;
+      if(!initialRegisterWhiteList_.Equals(other.initialRegisterWhiteList_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -254,6 +280,7 @@ namespace AElf.Contracts.Report {
       if (oracleContractAddress_ != null) hash ^= OracleContractAddress.GetHashCode();
       if (ReportFee != 0L) hash ^= ReportFee.GetHashCode();
       if (ApplyObserverFee != 0L) hash ^= ApplyObserverFee.GetHashCode();
+      hash ^= initialRegisterWhiteList_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -267,9 +294,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (oracleContractAddress_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(OracleContractAddress);
@@ -282,32 +306,11 @@ namespace AElf.Contracts.Report {
         output.WriteRawTag(24);
         output.WriteInt64(ApplyObserverFee);
       }
+      initialRegisterWhiteList_.WriteTo(output, _repeated_initialRegisterWhiteList_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (oracleContractAddress_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(OracleContractAddress);
-      }
-      if (ReportFee != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(ReportFee);
-      }
-      if (ApplyObserverFee != 0L) {
-        output.WriteRawTag(24);
-        output.WriteInt64(ApplyObserverFee);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -321,6 +324,7 @@ namespace AElf.Contracts.Report {
       if (ApplyObserverFee != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(ApplyObserverFee);
       }
+      size += initialRegisterWhiteList_.CalculateSize(_repeated_initialRegisterWhiteList_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -344,14 +348,12 @@ namespace AElf.Contracts.Report {
       if (other.ApplyObserverFee != 0L) {
         ApplyObserverFee = other.ApplyObserverFee;
       }
+      initialRegisterWhiteList_.Add(other.initialRegisterWhiteList_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -373,47 +375,17 @@ namespace AElf.Contracts.Report {
             ApplyObserverFee = input.ReadInt64();
             break;
           }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (oracleContractAddress_ == null) {
-              OracleContractAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(OracleContractAddress);
-            break;
-          }
-          case 16: {
-            ReportFee = input.ReadInt64();
-            break;
-          }
-          case 24: {
-            ApplyObserverFee = input.ReadInt64();
+          case 34: {
+            initialRegisterWhiteList_.AddEntriesFrom(input, _repeated_initialRegisterWhiteList_codec);
             break;
           }
         }
       }
     }
-    #endif
 
   }
 
-  public sealed partial class QueryOracleInput : pb::IMessage<QueryOracleInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class QueryOracleInput : pb::IMessage<QueryOracleInput> {
     private static readonly pb::MessageParser<QueryOracleInput> _parser = new pb::MessageParser<QueryOracleInput>(() => new QueryOracleInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -548,9 +520,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (Payment != 0L) {
         output.WriteRawTag(8);
         output.WriteInt64(Payment);
@@ -574,37 +543,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Payment != 0L) {
-        output.WriteRawTag(8);
-        output.WriteInt64(Payment);
-      }
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (AggregateThreshold != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(AggregateThreshold);
-      }
-      if (aggregatorContractAddress_ != null) {
-        output.WriteRawTag(34);
-        output.WriteMessage(AggregatorContractAddress);
-      }
-      if (NodeIndex != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(NodeIndex);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -658,9 +597,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -692,53 +628,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            Payment = input.ReadInt64();
-            break;
-          }
-          case 18: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 24: {
-            AggregateThreshold = input.ReadInt32();
-            break;
-          }
-          case 34: {
-            if (aggregatorContractAddress_ == null) {
-              AggregatorContractAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(AggregatorContractAddress);
-            break;
-          }
-          case 40: {
-            NodeIndex = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class ConfirmReportInput : pb::IMessage<ConfirmReportInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class ConfirmReportInput : pb::IMessage<ConfirmReportInput> {
     private static readonly pb::MessageParser<ConfirmReportInput> _parser = new pb::MessageParser<ConfirmReportInput>(() => new ConfirmReportInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -845,9 +739,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -863,29 +754,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      if (Signature.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(Signature);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -924,9 +793,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -947,42 +813,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 16: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-          case 26: {
-            Signature = input.ReadString();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class RejectReportInput : pb::IMessage<RejectReportInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class RejectReportInput : pb::IMessage<RejectReportInput> {
     private static readonly pb::MessageParser<RejectReportInput> _parser = new pb::MessageParser<RejectReportInput>(() => new RejectReportInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1088,9 +923,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -1103,26 +935,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      accusingNodes_.WriteTo(ref output, _repeated_accusingNodes_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1157,9 +970,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1180,42 +990,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 16: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-          case 26: {
-            accusingNodes_.AddEntriesFrom(ref input, _repeated_accusingNodes_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class Report : pb::IMessage<Report>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class Report : pb::IMessage<Report> {
     private static readonly pb::MessageParser<Report> _parser = new pb::MessageParser<Report>(() => new Report());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1349,9 +1128,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (queryId_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(QueryId);
@@ -1372,34 +1148,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (queryId_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(QueryId);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      if (observations_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(Observations);
-      }
-      if (AggregatedData.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteBytes(AggregatedData);
-      }
-      observers_.WriteTo(ref output, _repeated_observers_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1452,9 +1201,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1489,56 +1235,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (queryId_ == null) {
-              QueryId = new global::AElf.Types.Hash();
-            }
-            input.ReadMessage(QueryId);
-            break;
-          }
-          case 16: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-          case 26: {
-            if (observations_ == null) {
-              Observations = new global::AElf.Contracts.Report.Observations();
-            }
-            input.ReadMessage(Observations);
-            break;
-          }
-          case 34: {
-            AggregatedData = input.ReadBytes();
-            break;
-          }
-          case 42: {
-            observers_.AddEntriesFrom(ref input, _repeated_observers_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class ReportQueryRecord : pb::IMessage<ReportQueryRecord>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class ReportQueryRecord : pb::IMessage<ReportQueryRecord> {
     private static readonly pb::MessageParser<ReportQueryRecord> _parser = new pb::MessageParser<ReportQueryRecord>(() => new ReportQueryRecord());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1565,6 +1266,9 @@ namespace AElf.Contracts.Report {
     public ReportQueryRecord(ReportQueryRecord other) : this() {
       originQuerySender_ = other.originQuerySender_ != null ? other.originQuerySender_.Clone() : null;
       paidReportFee_ = other.paidReportFee_;
+      isRejected_ = other.isRejected_;
+      isAllConfirmed_ = other.isAllConfirmed_;
+      nodeConfirmCount_ = other.nodeConfirmCount_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1595,6 +1299,39 @@ namespace AElf.Contracts.Report {
       }
     }
 
+    /// <summary>Field number for the "is_rejected" field.</summary>
+    public const int IsRejectedFieldNumber = 3;
+    private bool isRejected_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsRejected {
+      get { return isRejected_; }
+      set {
+        isRejected_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "is_all_confirmed" field.</summary>
+    public const int IsAllConfirmedFieldNumber = 4;
+    private bool isAllConfirmed_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsAllConfirmed {
+      get { return isAllConfirmed_; }
+      set {
+        isAllConfirmed_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "node_confirm_count" field.</summary>
+    public const int NodeConfirmCountFieldNumber = 5;
+    private long nodeConfirmCount_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long NodeConfirmCount {
+      get { return nodeConfirmCount_; }
+      set {
+        nodeConfirmCount_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ReportQueryRecord);
@@ -1610,6 +1347,9 @@ namespace AElf.Contracts.Report {
       }
       if (!object.Equals(OriginQuerySender, other.OriginQuerySender)) return false;
       if (PaidReportFee != other.PaidReportFee) return false;
+      if (IsRejected != other.IsRejected) return false;
+      if (IsAllConfirmed != other.IsAllConfirmed) return false;
+      if (NodeConfirmCount != other.NodeConfirmCount) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1618,6 +1358,9 @@ namespace AElf.Contracts.Report {
       int hash = 1;
       if (originQuerySender_ != null) hash ^= OriginQuerySender.GetHashCode();
       if (PaidReportFee != 0L) hash ^= PaidReportFee.GetHashCode();
+      if (IsRejected != false) hash ^= IsRejected.GetHashCode();
+      if (IsAllConfirmed != false) hash ^= IsAllConfirmed.GetHashCode();
+      if (NodeConfirmCount != 0L) hash ^= NodeConfirmCount.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1631,9 +1374,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (originQuerySender_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(OriginQuerySender);
@@ -1641,29 +1381,23 @@ namespace AElf.Contracts.Report {
       if (PaidReportFee != 0L) {
         output.WriteRawTag(16);
         output.WriteInt64(PaidReportFee);
+      }
+      if (IsRejected != false) {
+        output.WriteRawTag(24);
+        output.WriteBool(IsRejected);
+      }
+      if (IsAllConfirmed != false) {
+        output.WriteRawTag(32);
+        output.WriteBool(IsAllConfirmed);
+      }
+      if (NodeConfirmCount != 0L) {
+        output.WriteRawTag(40);
+        output.WriteInt64(NodeConfirmCount);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (originQuerySender_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(OriginQuerySender);
-      }
-      if (PaidReportFee != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(PaidReportFee);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1673,6 +1407,15 @@ namespace AElf.Contracts.Report {
       }
       if (PaidReportFee != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(PaidReportFee);
+      }
+      if (IsRejected != false) {
+        size += 1 + 1;
+      }
+      if (IsAllConfirmed != false) {
+        size += 1 + 1;
+      }
+      if (NodeConfirmCount != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(NodeConfirmCount);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1694,14 +1437,20 @@ namespace AElf.Contracts.Report {
       if (other.PaidReportFee != 0L) {
         PaidReportFee = other.PaidReportFee;
       }
+      if (other.IsRejected != false) {
+        IsRejected = other.IsRejected;
+      }
+      if (other.IsAllConfirmed != false) {
+        IsAllConfirmed = other.IsAllConfirmed;
+      }
+      if (other.NodeConfirmCount != 0L) {
+        NodeConfirmCount = other.NodeConfirmCount;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1719,43 +1468,25 @@ namespace AElf.Contracts.Report {
             PaidReportFee = input.ReadInt64();
             break;
           }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (originQuerySender_ == null) {
-              OriginQuerySender = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(OriginQuerySender);
+          case 24: {
+            IsRejected = input.ReadBool();
             break;
           }
-          case 16: {
-            PaidReportFee = input.ReadInt64();
+          case 32: {
+            IsAllConfirmed = input.ReadBool();
+            break;
+          }
+          case 40: {
+            NodeConfirmCount = input.ReadInt64();
             break;
           }
         }
       }
     }
-    #endif
 
   }
 
-  public sealed partial class ObserverList : pb::IMessage<ObserverList>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class ObserverList : pb::IMessage<ObserverList> {
     private static readonly pb::MessageParser<ObserverList> _parser = new pb::MessageParser<ObserverList>(() => new ObserverList());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1833,25 +1564,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       value_.WriteTo(output, _repeated_value_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      value_.WriteTo(ref output, _repeated_value_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -1874,9 +1591,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -1889,34 +1603,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            value_.AddEntriesFrom(ref input, _repeated_value_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class ProposeReportInput : pb::IMessage<ProposeReportInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class ProposeReportInput : pb::IMessage<ProposeReportInput> {
     private static readonly pb::MessageParser<ProposeReportInput> _parser = new pb::MessageParser<ProposeReportInput>(() => new ProposeReportInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1994,25 +1685,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       queryIdList_.WriteTo(output, _repeated_queryIdList_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      queryIdList_.WriteTo(ref output, _repeated_queryIdList_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -2035,9 +1712,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2050,34 +1724,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            queryIdList_.AddEntriesFrom(ref input, _repeated_queryIdList_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class Observations : pb::IMessage<Observations>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class Observations : pb::IMessage<Observations> {
     private static readonly pb::MessageParser<Observations> _parser = new pb::MessageParser<Observations>(() => new Observations());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2155,25 +1806,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       value_.WriteTo(output, _repeated_value_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      value_.WriteTo(ref output, _repeated_value_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -2196,9 +1833,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2211,34 +1845,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            value_.AddEntriesFrom(ref input, _repeated_value_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class Observation : pb::IMessage<Observation>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class Observation : pb::IMessage<Observation> {
     private static readonly pb::MessageParser<Observation> _parser = new pb::MessageParser<Observation>(() => new Observation());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2331,9 +1942,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (Key.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(Key);
@@ -2345,25 +1953,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Key.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Key);
-      }
-      if (Data.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteBytes(Data);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -2396,9 +1986,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2415,38 +2002,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            Key = input.ReadString();
-            break;
-          }
-          case 18: {
-            Data = input.ReadBytes();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class GetSignatureInput : pb::IMessage<GetSignatureInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class GetSignatureInput : pb::IMessage<GetSignatureInput> {
     private static readonly pb::MessageParser<GetSignatureInput> _parser = new pb::MessageParser<GetSignatureInput>(() => new GetSignatureInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2553,9 +2113,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -2571,29 +2128,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      if (address_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(Address);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -2635,9 +2170,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -2661,17 +2193,152 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+  }
+
+  internal sealed partial class GetSignatureMapInput : pb::IMessage<GetSignatureMapInput> {
+    private static readonly pb::MessageParser<GetSignatureMapInput> _parser = new pb::MessageParser<GetSignatureMapInput>(() => new GetSignatureMapInput());
+    private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    public static pb::MessageParser<GetSignatureMapInput> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[11]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetSignatureMapInput() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetSignatureMapInput(GetSignatureMapInput other) : this() {
+      ethereumContractAddress_ = other.ethereumContractAddress_;
+      roundId_ = other.roundId_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GetSignatureMapInput Clone() {
+      return new GetSignatureMapInput(this);
+    }
+
+    /// <summary>Field number for the "ethereum_contract_address" field.</summary>
+    public const int EthereumContractAddressFieldNumber = 1;
+    private string ethereumContractAddress_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string EthereumContractAddress {
+      get { return ethereumContractAddress_; }
+      set {
+        ethereumContractAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "round_id" field.</summary>
+    public const int RoundIdFieldNumber = 2;
+    private long roundId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long RoundId {
+      get { return roundId_; }
+      set {
+        roundId_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GetSignatureMapInput);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GetSignatureMapInput other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EthereumContractAddress != other.EthereumContractAddress) return false;
+      if (RoundId != other.RoundId) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
+      if (RoundId != 0L) hash ^= RoundId.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (EthereumContractAddress.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EthereumContractAddress);
+      }
+      if (RoundId != 0L) {
+        output.WriteRawTag(16);
+        output.WriteInt64(RoundId);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (EthereumContractAddress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
+      }
+      if (RoundId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(RoundId);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GetSignatureMapInput other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EthereumContractAddress.Length != 0) {
+        EthereumContractAddress = other.EthereumContractAddress;
+      }
+      if (other.RoundId != 0L) {
+        RoundId = other.RoundId;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
           default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
             EthereumContractAddress = input.ReadString();
@@ -2681,25 +2348,134 @@ namespace AElf.Contracts.Report {
             RoundId = input.ReadInt64();
             break;
           }
-          case 26: {
-            if (address_ == null) {
-              Address = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(Address);
+        }
+      }
+    }
+
+  }
+
+  internal sealed partial class SignatureMap : pb::IMessage<SignatureMap> {
+    private static readonly pb::MessageParser<SignatureMap> _parser = new pb::MessageParser<SignatureMap>(() => new SignatureMap());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<SignatureMap> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SignatureMap() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SignatureMap(SignatureMap other) : this() {
+      value_ = other.value_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public SignatureMap Clone() {
+      return new SignatureMap(this);
+    }
+
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 1;
+    private static readonly pbc::MapField<string, string>.Codec _map_value_codec
+        = new pbc::MapField<string, string>.Codec(pb::FieldCodec.ForString(10, ""), pb::FieldCodec.ForString(18, ""), 10);
+    private readonly pbc::MapField<string, string> value_ = new pbc::MapField<string, string>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::MapField<string, string> Value {
+      get { return value_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as SignatureMap);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(SignatureMap other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!Value.Equals(other.Value)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= Value.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      value_.WriteTo(output, _map_value_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += value_.CalculateSize(_map_value_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(SignatureMap other) {
+      if (other == null) {
+        return;
+      }
+      value_.Add(other.value_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            value_.AddEntriesFrom(input, _map_value_codec);
             break;
           }
         }
       }
     }
-    #endif
 
   }
 
-  public sealed partial class OffChainAggregationInfo : pb::IMessage<OffChainAggregationInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class OffChainAggregationInfo : pb::IMessage<OffChainAggregationInfo> {
     private static readonly pb::MessageParser<OffChainAggregationInfo> _parser = new pb::MessageParser<OffChainAggregationInfo>(() => new OffChainAggregationInfo());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2707,7 +2483,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[11]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2861,9 +2637,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -2892,42 +2665,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (offChainQueryInfoList_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(OffChainQueryInfoList);
-      }
-      if (observerAssociationAddress_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(ObserverAssociationAddress);
-      }
-      if (ConfigDigest.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteBytes(ConfigDigest);
-      }
-      if (AggregateThreshold != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(AggregateThreshold);
-      }
-      if (aggregatorContractAddress_ != null) {
-        output.WriteRawTag(50);
-        output.WriteMessage(AggregatorContractAddress);
-      }
-      roundIds_.WriteTo(ref output, _repeated_roundIds_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -2995,9 +2733,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3044,68 +2779,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 18: {
-            if (offChainQueryInfoList_ == null) {
-              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
-            }
-            input.ReadMessage(OffChainQueryInfoList);
-            break;
-          }
-          case 26: {
-            if (observerAssociationAddress_ == null) {
-              ObserverAssociationAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(ObserverAssociationAddress);
-            break;
-          }
-          case 34: {
-            ConfigDigest = input.ReadBytes();
-            break;
-          }
-          case 40: {
-            AggregateThreshold = input.ReadInt32();
-            break;
-          }
-          case 50: {
-            if (aggregatorContractAddress_ == null) {
-              AggregatorContractAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(AggregatorContractAddress);
-            break;
-          }
-          case 58:
-          case 56: {
-            roundIds_.AddEntriesFrom(ref input, _repeated_roundIds_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class RegisterOffChainAggregationInput : pb::IMessage<RegisterOffChainAggregationInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class RegisterOffChainAggregationInput : pb::IMessage<RegisterOffChainAggregationInput> {
     private static readonly pb::MessageParser<RegisterOffChainAggregationInput> _parser = new pb::MessageParser<RegisterOffChainAggregationInput>(() => new RegisterOffChainAggregationInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3113,7 +2791,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[12]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3254,9 +2932,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (observerList_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(ObserverList);
@@ -3284,41 +2959,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (observerList_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(ObserverList);
-      }
-      if (offChainQueryInfoList_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(OffChainQueryInfoList);
-      }
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (ConfigDigest.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteBytes(ConfigDigest);
-      }
-      if (AggregateThreshold != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(AggregateThreshold);
-      }
-      if (aggregatorContractAddress_ != null) {
-        output.WriteRawTag(50);
-        output.WriteMessage(AggregatorContractAddress);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -3384,9 +3025,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3428,63 +3066,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (observerList_ == null) {
-              ObserverList = new global::AElf.Contracts.Report.ObserverList();
-            }
-            input.ReadMessage(ObserverList);
-            break;
-          }
-          case 18: {
-            if (offChainQueryInfoList_ == null) {
-              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
-            }
-            input.ReadMessage(OffChainQueryInfoList);
-            break;
-          }
-          case 26: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 34: {
-            ConfigDigest = input.ReadBytes();
-            break;
-          }
-          case 40: {
-            AggregateThreshold = input.ReadInt32();
-            break;
-          }
-          case 50: {
-            if (aggregatorContractAddress_ == null) {
-              AggregatorContractAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(AggregatorContractAddress);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class OffChainQueryInfo : pb::IMessage<OffChainQueryInfo>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class OffChainQueryInfo : pb::IMessage<OffChainQueryInfo> {
     private static readonly pb::MessageParser<OffChainQueryInfo> _parser = new pb::MessageParser<OffChainQueryInfo>(() => new OffChainQueryInfo());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3492,7 +3078,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[13]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3576,9 +3162,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (UrlToQuery.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(UrlToQuery);
@@ -3587,22 +3170,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (UrlToQuery.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(UrlToQuery);
-      }
-      attributesToFetch_.WriteTo(ref output, _repeated_attributesToFetch_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -3631,9 +3199,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3650,38 +3215,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            UrlToQuery = input.ReadString();
-            break;
-          }
-          case 18: {
-            attributesToFetch_.AddEntriesFrom(ref input, _repeated_attributesToFetch_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class GetReportInput : pb::IMessage<GetReportInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class GetReportInput : pb::IMessage<GetReportInput> {
     private static readonly pb::MessageParser<GetReportInput> _parser = new pb::MessageParser<GetReportInput>(() => new GetReportInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3689,7 +3227,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[14]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3774,9 +3312,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -3788,25 +3323,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -3839,9 +3356,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -3858,38 +3372,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 16: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class GetMerklePathInput : pb::IMessage<GetMerklePathInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class GetMerklePathInput : pb::IMessage<GetMerklePathInput> {
     private static readonly pb::MessageParser<GetMerklePathInput> _parser = new pb::MessageParser<GetMerklePathInput>(() => new GetMerklePathInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3897,7 +3384,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[15]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3996,9 +3483,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -4014,29 +3498,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      if (NodeIndex != 0) {
-        output.WriteRawTag(24);
-        output.WriteInt32(NodeIndex);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -4075,9 +3537,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -4098,42 +3557,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 16: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-          case 24: {
-            NodeIndex = input.ReadInt32();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class GetEthererumReportInput : pb::IMessage<GetEthererumReportInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class GetEthererumReportInput : pb::IMessage<GetEthererumReportInput> {
     private static readonly pb::MessageParser<GetEthererumReportInput> _parser = new pb::MessageParser<GetEthererumReportInput>(() => new GetEthererumReportInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4141,7 +3569,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[16]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4226,9 +3654,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -4240,25 +3665,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(16);
-        output.WriteInt64(RoundId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -4291,9 +3698,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -4310,38 +3714,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 16: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class GenerateEthererumReportInput : pb::IMessage<GenerateEthererumReportInput>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class GenerateEthererumReportInput : pb::IMessage<GenerateEthererumReportInput> {
     private static readonly pb::MessageParser<GenerateEthererumReportInput> _parser = new pb::MessageParser<GenerateEthererumReportInput>(() => new GenerateEthererumReportInput());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4349,7 +3726,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[17]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4448,9 +3825,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (report_ != null) {
         output.WriteRawTag(10);
         output.WriteMessage(Report);
@@ -4466,29 +3840,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (report_ != null) {
-        output.WriteRawTag(10);
-        output.WriteMessage(Report);
-      }
-      if (ConfigDigest.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteBytes(ConfigDigest);
-      }
-      if (organization_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(Organization);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -4533,9 +3885,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -4562,48 +3911,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            if (report_ == null) {
-              Report = new global::AElf.Contracts.Report.Report();
-            }
-            input.ReadMessage(Report);
-            break;
-          }
-          case 18: {
-            ConfigDigest = input.ReadBytes();
-            break;
-          }
-          case 26: {
-            if (organization_ == null) {
-              Organization = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(Organization);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class OffChainQueryInfoList : pb::IMessage<OffChainQueryInfoList>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class OffChainQueryInfoList : pb::IMessage<OffChainQueryInfoList> {
     private static readonly pb::MessageParser<OffChainQueryInfoList> _parser = new pb::MessageParser<OffChainQueryInfoList>(() => new OffChainQueryInfoList());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4611,7 +3923,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[18]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4681,25 +3993,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       value_.WriteTo(output, _repeated_value_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      value_.WriteTo(ref output, _repeated_value_codec);
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -4722,9 +4020,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -4737,34 +4032,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            value_.AddEntriesFrom(ref input, _repeated_value_codec);
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class ReportProposed : pb::IMessage<ReportProposed>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class ReportProposed : pb::IMessage<ReportProposed> {
     private static readonly pb::MessageParser<ReportProposed> _parser = new pb::MessageParser<ReportProposed>(() => new ReportProposed());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4772,7 +4044,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[19]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4885,9 +4157,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (RawReport.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(RawReport);
@@ -4907,33 +4176,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (RawReport.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(RawReport);
-      }
-      if (observerAssociationAddress_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(ObserverAssociationAddress);
-      }
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(26);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (RoundId != 0L) {
-        output.WriteRawTag(32);
-        output.WriteInt64(RoundId);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -4981,9 +4224,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -5011,49 +4251,11 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 10: {
-            RawReport = input.ReadString();
-            break;
-          }
-          case 18: {
-            if (observerAssociationAddress_ == null) {
-              ObserverAssociationAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(ObserverAssociationAddress);
-            break;
-          }
-          case 26: {
-            EthereumContractAddress = input.ReadString();
-            break;
-          }
-          case 32: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-        }
-      }
-    }
-    #endif
 
   }
 
-  public sealed partial class ReportConfirmed : pb::IMessage<ReportConfirmed>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class ReportConfirmed : pb::IMessage<ReportConfirmed> {
     private static readonly pb::MessageParser<ReportConfirmed> _parser = new pb::MessageParser<ReportConfirmed>(() => new ReportConfirmed());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5061,7 +4263,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[20]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5082,6 +4284,7 @@ namespace AElf.Contracts.Report {
       signature_ = other.signature_;
       observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
       ethereumContractAddress_ = other.ethereumContractAddress_;
+      isAllNodeConfirm_ = other.isAllNodeConfirm_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -5134,6 +4337,17 @@ namespace AElf.Contracts.Report {
       }
     }
 
+    /// <summary>Field number for the "is_all_node_confirm" field.</summary>
+    public const int IsAllNodeConfirmFieldNumber = 5;
+    private bool isAllNodeConfirm_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool IsAllNodeConfirm {
+      get { return isAllNodeConfirm_; }
+      set {
+        isAllNodeConfirm_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as ReportConfirmed);
@@ -5151,6 +4365,7 @@ namespace AElf.Contracts.Report {
       if (Signature != other.Signature) return false;
       if (!object.Equals(ObserverAssociationAddress, other.ObserverAssociationAddress)) return false;
       if (EthereumContractAddress != other.EthereumContractAddress) return false;
+      if (IsAllNodeConfirm != other.IsAllNodeConfirm) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -5161,6 +4376,7 @@ namespace AElf.Contracts.Report {
       if (Signature.Length != 0) hash ^= Signature.GetHashCode();
       if (observerAssociationAddress_ != null) hash ^= ObserverAssociationAddress.GetHashCode();
       if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
+      if (IsAllNodeConfirm != false) hash ^= IsAllNodeConfirm.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -5174,9 +4390,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (RoundId != 0L) {
         output.WriteRawTag(8);
         output.WriteInt64(RoundId);
@@ -5192,37 +4405,15 @@ namespace AElf.Contracts.Report {
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(34);
         output.WriteString(EthereumContractAddress);
+      }
+      if (IsAllNodeConfirm != false) {
+        output.WriteRawTag(40);
+        output.WriteBool(IsAllNodeConfirm);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (RoundId != 0L) {
-        output.WriteRawTag(8);
-        output.WriteInt64(RoundId);
-      }
-      if (Signature.Length != 0) {
-        output.WriteRawTag(18);
-        output.WriteString(Signature);
-      }
-      if (observerAssociationAddress_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(ObserverAssociationAddress);
-      }
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -5238,6 +4429,9 @@ namespace AElf.Contracts.Report {
       }
       if (EthereumContractAddress.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
+      }
+      if (IsAllNodeConfirm != false) {
+        size += 1 + 1;
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -5265,14 +4459,14 @@ namespace AElf.Contracts.Report {
       if (other.EthereumContractAddress.Length != 0) {
         EthereumContractAddress = other.EthereumContractAddress;
       }
+      if (other.IsAllNodeConfirm != false) {
+        IsAllNodeConfirm = other.IsAllNodeConfirm;
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -5298,51 +4492,17 @@ namespace AElf.Contracts.Report {
             EthereumContractAddress = input.ReadString();
             break;
           }
-        }
-      }
-    #endif
-    }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
-            break;
-          case 8: {
-            RoundId = input.ReadInt64();
-            break;
-          }
-          case 18: {
-            Signature = input.ReadString();
-            break;
-          }
-          case 26: {
-            if (observerAssociationAddress_ == null) {
-              ObserverAssociationAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(ObserverAssociationAddress);
-            break;
-          }
-          case 34: {
-            EthereumContractAddress = input.ReadString();
+          case 40: {
+            IsAllNodeConfirm = input.ReadBool();
             break;
           }
         }
       }
     }
-    #endif
 
   }
 
-  public sealed partial class OffChainAggregationRegistered : pb::IMessage<OffChainAggregationRegistered>
-  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      , pb::IBufferMessage
-  #endif
-  {
+  internal sealed partial class OffChainAggregationRegistered : pb::IMessage<OffChainAggregationRegistered> {
     private static readonly pb::MessageParser<OffChainAggregationRegistered> _parser = new pb::MessageParser<OffChainAggregationRegistered>(() => new OffChainAggregationRegistered());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5350,7 +4510,7 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[21]; }
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[23]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5491,9 +4651,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      output.WriteRawMessage(this);
-    #else
       if (EthereumContractAddress.Length != 0) {
         output.WriteRawTag(10);
         output.WriteString(EthereumContractAddress);
@@ -5521,41 +4678,7 @@ namespace AElf.Contracts.Report {
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
-    #endif
     }
-
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (EthereumContractAddress.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(EthereumContractAddress);
-      }
-      if (offChainQueryInfoList_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(OffChainQueryInfoList);
-      }
-      if (observerAssociationAddress_ != null) {
-        output.WriteRawTag(26);
-        output.WriteMessage(ObserverAssociationAddress);
-      }
-      if (ConfigDigest.Length != 0) {
-        output.WriteRawTag(34);
-        output.WriteBytes(ConfigDigest);
-      }
-      if (AggregateThreshold != 0) {
-        output.WriteRawTag(40);
-        output.WriteInt32(AggregateThreshold);
-      }
-      if (aggregatorContractAddress_ != null) {
-        output.WriteRawTag(50);
-        output.WriteMessage(AggregatorContractAddress);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(ref output);
-      }
-    }
-    #endif
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
@@ -5621,9 +4744,6 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void MergeFrom(pb::CodedInputStream input) {
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
-      input.ReadRawMessage(this);
-    #else
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
@@ -5665,55 +4785,220 @@ namespace AElf.Contracts.Report {
           }
         }
       }
-    #endif
     }
 
-    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+  }
+
+  internal sealed partial class MerkleReportNodeAdded : pb::IMessage<MerkleReportNodeAdded> {
+    private static readonly pb::MessageParser<MerkleReportNodeAdded> _parser = new pb::MessageParser<MerkleReportNodeAdded>(() => new MerkleReportNodeAdded());
+    private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+    public static pb::MessageParser<MerkleReportNodeAdded> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Report.ReportContractReflection.Descriptor.MessageTypes[24]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public MerkleReportNodeAdded() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public MerkleReportNodeAdded(MerkleReportNodeAdded other) : this() {
+      ethereumContractAddress_ = other.ethereumContractAddress_;
+      nodeIndex_ = other.nodeIndex_;
+      nodeRoundId_ = other.nodeRoundId_;
+      aggregatedData_ = other.aggregatedData_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public MerkleReportNodeAdded Clone() {
+      return new MerkleReportNodeAdded(this);
+    }
+
+    /// <summary>Field number for the "ethereum_contract_address" field.</summary>
+    public const int EthereumContractAddressFieldNumber = 1;
+    private string ethereumContractAddress_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string EthereumContractAddress {
+      get { return ethereumContractAddress_; }
+      set {
+        ethereumContractAddress_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "node_index" field.</summary>
+    public const int NodeIndexFieldNumber = 2;
+    private int nodeIndex_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int NodeIndex {
+      get { return nodeIndex_; }
+      set {
+        nodeIndex_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "node_round_id" field.</summary>
+    public const int NodeRoundIdFieldNumber = 3;
+    private long nodeRoundId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long NodeRoundId {
+      get { return nodeRoundId_; }
+      set {
+        nodeRoundId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "aggregated_data" field.</summary>
+    public const int AggregatedDataFieldNumber = 4;
+    private pb::ByteString aggregatedData_ = pb::ByteString.Empty;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pb::ByteString AggregatedData {
+      get { return aggregatedData_; }
+      set {
+        aggregatedData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as MerkleReportNodeAdded);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(MerkleReportNodeAdded other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (EthereumContractAddress != other.EthereumContractAddress) return false;
+      if (NodeIndex != other.NodeIndex) return false;
+      if (NodeRoundId != other.NodeRoundId) return false;
+      if (AggregatedData != other.AggregatedData) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (EthereumContractAddress.Length != 0) hash ^= EthereumContractAddress.GetHashCode();
+      if (NodeIndex != 0) hash ^= NodeIndex.GetHashCode();
+      if (NodeRoundId != 0L) hash ^= NodeRoundId.GetHashCode();
+      if (AggregatedData.Length != 0) hash ^= AggregatedData.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (EthereumContractAddress.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(EthereumContractAddress);
+      }
+      if (NodeIndex != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(NodeIndex);
+      }
+      if (NodeRoundId != 0L) {
+        output.WriteRawTag(24);
+        output.WriteInt64(NodeRoundId);
+      }
+      if (AggregatedData.Length != 0) {
+        output.WriteRawTag(34);
+        output.WriteBytes(AggregatedData);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (EthereumContractAddress.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(EthereumContractAddress);
+      }
+      if (NodeIndex != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(NodeIndex);
+      }
+      if (NodeRoundId != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(NodeRoundId);
+      }
+      if (AggregatedData.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeBytesSize(AggregatedData);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(MerkleReportNodeAdded other) {
+      if (other == null) {
+        return;
+      }
+      if (other.EthereumContractAddress.Length != 0) {
+        EthereumContractAddress = other.EthereumContractAddress;
+      }
+      if (other.NodeIndex != 0) {
+        NodeIndex = other.NodeIndex;
+      }
+      if (other.NodeRoundId != 0L) {
+        NodeRoundId = other.NodeRoundId;
+      }
+      if (other.AggregatedData.Length != 0) {
+        AggregatedData = other.AggregatedData;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
       uint tag;
       while ((tag = input.ReadTag()) != 0) {
         switch(tag) {
           default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
             EthereumContractAddress = input.ReadString();
             break;
           }
-          case 18: {
-            if (offChainQueryInfoList_ == null) {
-              OffChainQueryInfoList = new global::AElf.Contracts.Report.OffChainQueryInfoList();
-            }
-            input.ReadMessage(OffChainQueryInfoList);
+          case 16: {
+            NodeIndex = input.ReadInt32();
             break;
           }
-          case 26: {
-            if (observerAssociationAddress_ == null) {
-              ObserverAssociationAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(ObserverAssociationAddress);
+          case 24: {
+            NodeRoundId = input.ReadInt64();
             break;
           }
           case 34: {
-            ConfigDigest = input.ReadBytes();
-            break;
-          }
-          case 40: {
-            AggregateThreshold = input.ReadInt32();
-            break;
-          }
-          case 50: {
-            if (aggregatorContractAddress_ == null) {
-              AggregatorContractAddress = new global::AElf.Types.Address();
-            }
-            input.ReadMessage(AggregatorContractAddress);
+            AggregatedData = input.ReadBytes();
             break;
           }
         }
       }
     }
-    #endif
 
   }
 

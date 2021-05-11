@@ -285,19 +285,33 @@ namespace AElf.Contracts.Report
             var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
+            Assert(!reportQueryRecord.IsAllConfirmed, "This report is already confirmed by all nodes");
 
             var organization =
                 State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
-            Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
+            var memberList = organization.OrganizationMemberList.OrganizationMembers;
+            Assert(memberList.Contains(Context.Sender),
                 "Sender isn't a member of certain Observer Association.");
+            Assert(
+                string.IsNullOrEmpty(
+                    State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender]),
+                $"Sender: {Context.Sender} has confirmed");
             State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] =
                 input.Signature;
+            reportQueryRecord.NodeConfirmCount = reportQueryRecord.NodeConfirmCount.Add(1);
+            if (reportQueryRecord.NodeConfirmCount == memberList.Count)
+            {
+                reportQueryRecord.IsAllConfirmed = true;
+            }
+
+            State.ReportQueryRecordMap[report.QueryId] = reportQueryRecord;
             Context.Fire(new ReportConfirmed
             {
                 EthereumContractAddress = input.EthereumContractAddress,
                 RoundId = input.RoundId,
                 Signature = input.Signature,
-                ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress
+                ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
+                IsAllNodeConfirm = reportQueryRecord.IsAllConfirmed
             });
             return new Empty();
         }
