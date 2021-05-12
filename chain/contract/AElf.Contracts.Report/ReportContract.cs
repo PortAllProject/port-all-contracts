@@ -53,13 +53,17 @@ namespace AElf.Contracts.Report
             }
 
             // Pay oracle tokens to this contract, amount: report fee + oracle nodes payment.
-            State.TokenContract.TransferFrom.Send(new TransferFromInput
+            var totalPayment = State.ReportFee.Value.Add(input.Payment);
+            if (totalPayment > 0)
             {
-                From = Context.Sender,
-                To = Context.Self,
-                Symbol = State.OracleTokenSymbol.Value,
-                Amount = State.ReportFee.Value.Add(input.Payment)
-            });
+                State.TokenContract.TransferFrom.Send(new TransferFromInput
+                {
+                    From = Context.Sender,
+                    To = Context.Self,
+                    Symbol = State.OracleTokenSymbol.Value,
+                    Amount = totalPayment
+                });
+            }
 
             Assert(offChainAggregatorContract.OffChainQueryInfoList.Value.Count > input.NodeIndex,
                 "Invalid node index.");
