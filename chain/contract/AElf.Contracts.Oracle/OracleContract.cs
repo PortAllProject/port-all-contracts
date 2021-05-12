@@ -65,14 +65,17 @@ namespace AElf.Contracts.Oracle
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
             // Transfer tokens to virtual address for this query.
-            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
-            State.TokenContract.TransferFrom.Send(new TransferFromInput
+            if (input.Payment > 0)
             {
-                From = Context.Sender,
-                To = virtualAddress,
-                Amount = input.Payment,
-                Symbol = TokenSymbol
-            });
+                var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
+                State.TokenContract.TransferFrom.Send(new TransferFromInput
+                {
+                    From = Context.Sender,
+                    To = virtualAddress,
+                    Amount = input.Payment,
+                    Symbol = TokenSymbol
+                });
+            }
 
             Assert(State.QueryRecords[queryId] == null, "Query already exists.");
 
