@@ -148,6 +148,8 @@ namespace AElf.Contracts.Report
         {
             Assert(Context.Sender == State.OracleContract.Value,
                 "Only Oracle Contract can propose report.");
+            Assert(State.ReportQueryRecordMap[input.QueryId] != null, "This query is not initialed by Report Contract.");
+
             var nodeDataList = new NodeDataList();
             nodeDataList.MergeFrom(input.Result);
 

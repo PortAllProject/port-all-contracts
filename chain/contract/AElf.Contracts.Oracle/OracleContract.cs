@@ -91,7 +91,7 @@ namespace AElf.Contracts.Oracle
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
                 CallbackInfo = input.CallbackInfo,
-                Payment = State.IsChargeFee.Value ? input.Payment : 0,
+                Payment = input.Payment,
                 AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
                     input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
@@ -330,7 +330,7 @@ namespace AElf.Contracts.Oracle
             foreach (var helpfulNode in helpfulNodeList.Value)
             {
                 var paymentToEachNode = queryRecord.Payment.Div(helpfulNodeList.Value.Count);
-                if (paymentToEachNode > 0 && State.IsChargeFee.Value)
+                if (paymentToEachNode > 0)
                 {
                     Context.SendVirtualInline(queryRecord.QueryId, State.TokenContract.Value,
                         nameof(State.TokenContract.Transfer), new TransferInput
