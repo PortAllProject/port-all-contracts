@@ -22,10 +22,12 @@
         <PackageReference Include="Volo.Abp.Autofac" Version="4.0.2" />
         <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" Version="3.1.0" />
         <PackageReference Include="Volo.Abp.Threading" Version="4.0.2" />
+        <PackageReference Include="Nethereum.web3" Version="3.8.0" />
     </ItemGroup>
 
     <ItemGroup>
         <Folder Include="aelf\keys" />
+        <Folder Include="ContractBuild" />
     </ItemGroup>
 
     <ItemGroup>
@@ -36,6 +38,11 @@
         <None Remove="aelf\keys\4zT74bCjganXgwFhcnW8DNLVt3Lebq2speF362oQoAqR4S7WX.json" />
         <Content Include="aelf\keys\4zT74bCjganXgwFhcnW8DNLVt3Lebq2speF362oQoAqR4S7WX.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        
+        <None Remove="ContractBuild\TransmitAbi.json" />
+        <Content Include="ContractBuild\TransmitAbi.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 

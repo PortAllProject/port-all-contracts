@@ -1,10 +1,10 @@
 using System;
 using System.Numerics;
 using System.Threading.Tasks;
-using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 using Nethereum.Web3.Accounts;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ReportGenerator
 {
@@ -23,7 +23,6 @@ namespace ReportGenerator
             var account = new Account(_privateKey);
             _web3 = new Web3(account, _url);
             //_web3 = new Web3(_url);
-            
         }
 
         public async Task SetValue(string contractAddress, string abi, int newValue)
@@ -57,6 +56,32 @@ namespace ReportGenerator
             var getValueFunction = contract.GetFunction(methodName);
             var getValue = await getValueFunction.CallAsync<long>();
             return getValue;
+        }
+        
+        public async Task TransmitValue(string contractAddress, string abi, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs)
+        {
+            var contract = _web3.Eth.GetContract(abi, contractAddress);
+            const string methodName = "transmit";
+            var setValueFunction = contract.GetFunction(methodName);
+            try
+            {
+                var gas = await setValueFunction.EstimateGasAsync(_address, null, null, report, rs, ss, rawVs);
+                await setValueFunction.SendTransactionAsync(_address, gas, null, null, report, rs, ss, rawVs);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+                Console.WriteLine(ex.Message);
+            }
+        }
+        
+        public static string ReadJson(string jsonfile, string key)
+        {
+            using var file = System.IO.File.OpenText(jsonfile);
+            using var reader = new JsonTextReader(file);
+            var o = (JObject)JToken.ReadFrom(reader);
+            var value = o[key].ToString();
+            return value;
         }
     }
 }

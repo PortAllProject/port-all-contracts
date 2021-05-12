@@ -12,6 +12,7 @@ namespace AElf.Boilerplate.EventHandler
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
         private readonly IKeyStore _keyStore;
+        private readonly IReportProvider _reportProvider;
 
         public override string ContractName => "Report";
         public override string LogEventName => nameof(ReportProposed);
@@ -19,6 +20,7 @@ namespace AElf.Boilerplate.EventHandler
 
         public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
+            IReportProvider reportProvider,
             ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
         {
             _logger = logger;
@@ -26,6 +28,7 @@ namespace AElf.Boilerplate.EventHandler
             _contractAddressOptions = contractAddressOptions.Value;
             _keyStore = AElfKeyStore.GetKeyStore(configOptions.Value.AccountAddress,
                 configOptions.Value.AccountPassword);
+            _reportProvider = reportProvider;
         }
 
         public override Task ProcessAsync(LogEvent logEvent)
@@ -45,6 +48,7 @@ namespace AElf.Boilerplate.EventHandler
                     Signature = SignHelper
                         .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
                 });
+            _reportProvider.SetReport(_configOptions.EthereumContractAddress, reportProposed.RoundId, reportProposed.RawReport);
             _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
 
             return Task.CompletedTask;

@@ -21,4 +21,8 @@
         </CommonMessage>
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="contractBuild" />
+    </ItemGroup>
+
 </Project>
