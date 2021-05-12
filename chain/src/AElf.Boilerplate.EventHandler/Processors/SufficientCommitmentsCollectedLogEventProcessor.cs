@@ -37,6 +37,12 @@ namespace AElf.Boilerplate.EventHandler
             var collected = new SufficientCommitmentsCollected();
             collected.MergeFrom(logEvent);
             var data = await _dataProvider.GetDataAsync(collected.QueryId);
+            if (string.IsNullOrEmpty(data))
+            {
+                _logger.LogError($"Failed to reveal data for query {collected.QueryId}.");
+                return;
+            }
+
             _logger.LogInformation($"Get data for revealing: {data}");
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);

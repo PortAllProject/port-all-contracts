@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -39,11 +40,33 @@ namespace AElf.Boilerplate.EventHandler
 
             _logger.LogCritical($"Querying {url} for attribute {attributes.First()} etc..");
 
-            var client = new HttpClient();
-            var responseMessage = await client.GetAsync(url);
-            var response = await responseMessage.Content.ReadAsStringAsync();
-            data = ParseJson(response, attributes);
-            _dictionary[queryId] = data;
+            var response = string.Empty;
+            try
+            {
+                var client = new HttpClient();
+                var responseMessage = await client.GetAsync(url);
+                response = await responseMessage.Content.ReadAsStringAsync();
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error during querying: {e.Message}");
+            }
+
+            try
+            {
+                if (response != string.Empty)
+                {
+                    data = ParseJson(response, attributes);
+                    _dictionary[queryId] = data;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError($"Error during parsing json: {response}\n{e.Message}");
+                throw;
+            }
+
             return data;
         }
 

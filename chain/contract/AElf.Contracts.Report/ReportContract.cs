@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
@@ -53,13 +54,17 @@ namespace AElf.Contracts.Report
             }
 
             // Pay oracle tokens to this contract, amount: report fee + oracle nodes payment.
-            State.TokenContract.TransferFrom.Send(new TransferFromInput
+            var totalPayment = State.ReportFee.Value.Add(input.Payment);
+            if (totalPayment > 0)
             {
-                From = Context.Sender,
-                To = Context.Self,
-                Symbol = State.OracleTokenSymbol.Value,
-                Amount = State.ReportFee.Value.Add(input.Payment)
-            });
+                State.TokenContract.TransferFrom.Send(new TransferFromInput
+                {
+                    From = Context.Sender,
+                    To = Context.Self,
+                    Symbol = State.OracleTokenSymbol.Value,
+                    Amount = totalPayment
+                });
+            }
 
             Assert(offChainAggregatorContract.OffChainQueryInfoList.Value.Count > input.NodeIndex,
                 "Invalid node index.");
@@ -144,6 +149,8 @@ namespace AElf.Contracts.Report
         {
             Assert(Context.Sender == State.OracleContract.Value,
                 "Only Oracle Contract can propose report.");
+            Assert(State.ReportQueryRecordMap[input.QueryId] != null, "This query is not initialed by Report Contract.");
+
             var nodeDataList = new NodeDataList();
             nodeDataList.MergeFrom(input.Result);
 
@@ -282,24 +289,35 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Observer Association not exists.");
             }
 
+            Assert(State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] == null,
+                "Sender already confirmed this report.");
+
             var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
             Assert(!reportQueryRecord.IsAllConfirmed, "This report is already confirmed by all nodes");
-
-            var organization =
-                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
-            var memberList = organization.OrganizationMemberList.OrganizationMembers;
+            IEnumerable<Address> memberList;
+            if (State.ParliamentContract.Value == offChainAggregationInfo.ObserverAssociationAddress)
+            {
+                memberList = State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
+                    .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
+            }
+            else
+            {
+                var organization =
+                    State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
+                memberList = organization.OrganizationMemberList.OrganizationMembers.ToList();
+            }
             Assert(memberList.Contains(Context.Sender),
-                "Sender isn't a member of certain Observer Association.");
+                    "Sender isn't a member of certain Observer Association.");
             Assert(
-                string.IsNullOrEmpty(
-                    State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender]),
-                $"Sender: {Context.Sender} has confirmed");
+                    string.IsNullOrEmpty(
+                        State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender]),
+                    $"Sender: {Context.Sender} has confirmed");
             State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] =
                 input.Signature;
             reportQueryRecord.NodeConfirmCount = reportQueryRecord.NodeConfirmCount.Add(1);
-            if (reportQueryRecord.NodeConfirmCount == memberList.Count)
+            if (reportQueryRecord.NodeConfirmCount == memberList.Count())
             {
                 reportQueryRecord.IsAllConfirmed = true;
             }

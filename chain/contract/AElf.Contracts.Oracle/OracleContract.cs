@@ -65,14 +65,17 @@ namespace AElf.Contracts.Oracle
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
             // Transfer tokens to virtual address for this query.
-            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
-            State.TokenContract.TransferFrom.Send(new TransferFromInput
+            if (input.Payment > 0)
             {
-                From = Context.Sender,
-                To = virtualAddress,
-                Amount = input.Payment,
-                Symbol = TokenSymbol
-            });
+                var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
+                State.TokenContract.TransferFrom.Send(new TransferFromInput
+                {
+                    From = Context.Sender,
+                    To = virtualAddress,
+                    Amount = input.Payment,
+                    Symbol = TokenSymbol
+                });
+            }
 
             Assert(State.QueryRecords[queryId] == null, "Query already exists.");
 
@@ -88,7 +91,7 @@ namespace AElf.Contracts.Oracle
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
                 CallbackInfo = input.CallbackInfo,
-                Payment = State.IsChargeFee.Value ? input.Payment : 0,
+                Payment = input.Payment,
                 AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
                     input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
@@ -327,7 +330,7 @@ namespace AElf.Contracts.Oracle
             foreach (var helpfulNode in helpfulNodeList.Value)
             {
                 var paymentToEachNode = queryRecord.Payment.Div(helpfulNodeList.Value.Count);
-                if (paymentToEachNode > 0 && State.IsChargeFee.Value)
+                if (paymentToEachNode > 0)
                 {
                     Context.SendVirtualInline(queryRecord.QueryId, State.TokenContract.Value,
                         nameof(State.TokenContract.Transfer), new TransferInput
