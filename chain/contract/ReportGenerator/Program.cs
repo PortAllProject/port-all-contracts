@@ -1,23 +1,94 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AElf;
 using AElf.Contracts.Report;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
+using Nethereum.Hex.HexConvertors.Extensions;
+using ReportGenerator;
 
 namespace ReportGenerator
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //TestWithMultipleObservations();
             //TestWithSingleOneObservation();
             //TestSignWithAelfKey();
-            TestSignWithEthereumPrivateKey();
+            //TestSignWithEthereumPrivateKey();
+            //await TestSetContractInteraction();
+            //await TestGetContractInteraction();
+            //await TestTransmit();
+            var reportDictionary = new Dictionary<string, Dictionary<long, string>>();
+            reportDictionary.TryGetValue("sad", out var re);
+            if (re == null)
+            {
+                Console.WriteLine("defalut is null");
+            }
+            else
+            {
+                Console.WriteLine("defalut is not null");
+            }
+        }
+        
+        static async Task TestTransmit()
+        {
+            var file = "./contractBuild/Test.json";
+            var abi = AbiCodeService.ReadJson(file, "abi");
+            var contractAddress = "0xce457474cacfba0e618c15925a59525b9e7e0cb4";
+            var service = new AbiCodeService();
+            var report = "0x000000000000f6f3ed664fd0e7be332f035ec351acf1000000000000000a0007000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0a056173646173000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e00000000000000000000000000000000000000000000000000000000000000000".HexToByteArray();
+            // var rs = new []
+            // {
+            //     "0x366740b1d0afaed7dcabe6008068675a8e65a8cdaa4ed1b2f042ddcec9c242d7",
+            //     "0x446dfa1ada5c498c5c689ae0a7c28d8e7f9632465f17574a7841f2c630538e80"
+            // };
+            var rs = new[]
+            {
+                "0x366740b1d0afaed7dcabe6008068675a8e65a8cdaa4ed1b2f042ddcec9c242d7".HexToByteArray(),
+                "0x446dfa1ada5c498c5c689ae0a7c28d8e7f9632465f17574a7841f2c630538e80".HexToByteArray()
+            };
+               
+            // var ss = new []
+            // {
+            //     "0x13afc3c576972824fe5d252c7276639710ff1ee45330948bf335c086241ea8a6",
+            //     "0x30974bcb26f23d06f9af47798fd4bc234d03cc3a1467f90a06943c5b2dda1109"
+            // };
+            var ss = new []
+            {
+                "0x13afc3c576972824fe5d252c7276639710ff1ee45330948bf335c086241ea8a6".HexToByteArray(),
+                "0x30974bcb26f23d06f9af47798fd4bc234d03cc3a1467f90a06943c5b2dda1109".HexToByteArray()
+            };
+            var rawVs = "0x13afc3c576972824fe5d252c7276639710ff1ee45330948bf335c086241ea8a6".HexToByteArray();
+            await service.TransmitValue(contractAddress, abi, report,rs,ss,rawVs);
+        }
+
+        static async Task TestSetContractInteraction()
+        {
+            var abi = @"[{""inputs"": [],""name"": ""value"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""},{""inputs"": [{""internalType"": ""uint256"",""name"": ""_value"",""type"": ""uint256""}],""name"": ""setValue"",""outputs"": [],""stateMutability"": ""nonpayable"",""type"": ""function""},{""inputs"": [],""name"": ""getValue"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""}]";
+            var contractAddress1 = "0xf64996f528c37ebc09c0f6f51f3c80e33780aee6";
+            var contractAddress2 = "0xd03a0e125de8991cc8d59fddde0df478d467d2cc";
+            var newValue = 1213;
+            var service = new AbiCodeService();
+            await service.SetValue(contractAddress1, abi, newValue);
+            await service.SetValue(contractAddress2, abi, newValue);
+        }
+        
+        static async Task TestGetContractInteraction()
+        {
+            var abi = @"[{""inputs"": [],""name"": ""value"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""},{""inputs"": [{""internalType"": ""uint256"",""name"": ""_value"",""type"": ""uint256""}],""name"": ""setValue"",""outputs"": [],""stateMutability"": ""nonpayable"",""type"": ""function""},{""inputs"": [],""name"": ""getValue"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""}]";
+            var contractAddress1 = "0xf64996f528c37ebc09c0f6f51f3c80e33780aee6";
+            var contractAddress2 = "0xd03a0e125de8991cc8d59fddde0df478d467d2cc";
+            var service = new AbiCodeService();
+            var value1 = await service.GetValue(contractAddress1, abi);
+            var value2 = await service.GetValue(contractAddress2, abi);
+            Console.WriteLine(value1);
+            Console.WriteLine(value2);
         }
 
         static void TestSignWithAelfKey()
@@ -141,7 +212,7 @@ namespace ReportGenerator
             data.Add(observerOrder);
             data.Add(observationLength);
             data.Add(observations);
-            return SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32Array).ToArray().ToHex();
+            return ByteExtensions.ToHex(SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32Array).ToArray());
         }
 
         private void GenerateMultipleObservation(Report report, out byte[] observerOrder, out byte[] observationLength, 

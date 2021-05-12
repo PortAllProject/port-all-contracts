@@ -33,6 +33,7 @@ namespace AElf.Boilerplate.EventHandler
 
             Configure<ContractAddressOptions>(configuration.GetSection("Contracts"));
             Configure<ConfigOptions>(configuration.GetSection("Config"));
+            Configure<EthereumConfigOptions>(configuration.GetSection("Ethereum"));
             context.Services.AddHostedService<EventHandlerAppHostedService>();
         }
     }

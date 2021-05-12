@@ -11,7 +11,7 @@ using aelf = global::AElf.CSharp.Core;
 namespace AElf.Contracts.Report {
 
   #region Events
-  public partial class ReportProposed : aelf::IEvent<ReportProposed>
+  internal partial class ReportProposed : aelf::IEvent<ReportProposed>
   {
     public global::System.Collections.Generic.IEnumerable<ReportProposed> GetIndexed()
     {
@@ -32,7 +32,7 @@ namespace AElf.Contracts.Report {
     }
   }
 
-  public partial class ReportConfirmed : aelf::IEvent<ReportConfirmed>
+  internal partial class ReportConfirmed : aelf::IEvent<ReportConfirmed>
   {
     public global::System.Collections.Generic.IEnumerable<ReportConfirmed> GetIndexed()
     {
@@ -49,6 +49,51 @@ namespace AElf.Contracts.Report {
         Signature = Signature,
         ObserverAssociationAddress = ObserverAssociationAddress,
         EthereumContractAddress = EthereumContractAddress,
+        IsAllNodeConfirm = IsAllNodeConfirm,
+      };
+    }
+  }
+
+  internal partial class OffChainAggregationRegistered : aelf::IEvent<OffChainAggregationRegistered>
+  {
+    public global::System.Collections.Generic.IEnumerable<OffChainAggregationRegistered> GetIndexed()
+    {
+      return new List<OffChainAggregationRegistered>
+      {
+      };
+    }
+
+    public OffChainAggregationRegistered GetNonIndexed()
+    {
+      return new OffChainAggregationRegistered
+      {
+        EthereumContractAddress = EthereumContractAddress,
+        OffChainQueryInfoList = OffChainQueryInfoList,
+        ObserverAssociationAddress = ObserverAssociationAddress,
+        ConfigDigest = ConfigDigest,
+        AggregateThreshold = AggregateThreshold,
+        AggregatorContractAddress = AggregatorContractAddress,
+      };
+    }
+  }
+
+  internal partial class MerkleReportNodeAdded : aelf::IEvent<MerkleReportNodeAdded>
+  {
+    public global::System.Collections.Generic.IEnumerable<MerkleReportNodeAdded> GetIndexed()
+    {
+      return new List<MerkleReportNodeAdded>
+      {
+      };
+    }
+
+    public MerkleReportNodeAdded GetNonIndexed()
+    {
+      return new MerkleReportNodeAdded
+      {
+        EthereumContractAddress = EthereumContractAddress,
+        NodeIndex = NodeIndex,
+        NodeRoundId = NodeRoundId,
+        AggregatedData = AggregatedData,
       };
     }
   }
@@ -57,7 +102,7 @@ namespace AElf.Contracts.Report {
   /// <summary>
   /// the contract definition: a gRPC service definition.
   /// </summary>
-  public static partial class ReportContractContainer
+  internal static partial class ReportContractContainer
   {
     static readonly string __ServiceName = "ReportContract";
 
@@ -73,6 +118,7 @@ namespace AElf.Contracts.Report {
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.Report> __Marshaller_Report = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.Report.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.RegisterOffChainAggregationInput> __Marshaller_RegisterOffChainAggregationInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.RegisterOffChainAggregationInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.OffChainAggregationInfo> __Marshaller_OffChainAggregationInfo = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Types.Address> __Marshaller_aelf_Address = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.Address.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetMerklePathInput> __Marshaller_GetMerklePathInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetMerklePathInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Types.MerklePath> __Marshaller_aelf_MerklePath = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.MerklePath.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetReportInput> __Marshaller_GetReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetReportInput.Parser.ParseFrom);
@@ -81,6 +127,8 @@ namespace AElf.Contracts.Report {
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.ReportQueryRecord> __Marshaller_ReportQueryRecord = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.ReportQueryRecord.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetEthererumReportInput> __Marshaller_GetEthererumReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetEthererumReportInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Report.GenerateEthererumReportInput> __Marshaller_GenerateEthererumReportInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GenerateEthererumReportInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Report.GetSignatureMapInput> __Marshaller_GetSignatureMapInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.GetSignatureMapInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Report.SignatureMap> __Marshaller_SignatureMap = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Report.SignatureMap.Parser.ParseFrom);
     #endregion
 
     #region Methods
@@ -175,12 +223,26 @@ namespace AElf.Contracts.Report {
         __Marshaller_google_protobuf_Int64Value,
         __Marshaller_google_protobuf_Empty);
 
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> __Method_AdjustReportFee = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "AdjustReportFee",
+        __Marshaller_google_protobuf_Int64Value,
+        __Marshaller_google_protobuf_Empty);
+
     static readonly aelf::Method<global::AElf.Contracts.Report.RegisterOffChainAggregationInput, global::AElf.Contracts.Report.OffChainAggregationInfo> __Method_RegisterOffChainAggregation = new aelf::Method<global::AElf.Contracts.Report.RegisterOffChainAggregationInput, global::AElf.Contracts.Report.OffChainAggregationInfo>(
         aelf::MethodType.Action,
         __ServiceName,
         "RegisterOffChainAggregation",
         __Marshaller_RegisterOffChainAggregationInput,
         __Marshaller_OffChainAggregationInfo);
+
+    static readonly aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> __Method_AddRegisterWhiteList = new aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "AddRegisterWhiteList",
+        __Marshaller_aelf_Address,
+        __Marshaller_google_protobuf_Empty);
 
     static readonly aelf::Method<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath> __Method_GetMerklePath = new aelf::Method<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath>(
         aelf::MethodType.View,
@@ -238,6 +300,13 @@ namespace AElf.Contracts.Report {
         __Marshaller_GenerateEthererumReportInput,
         __Marshaller_google_protobuf_StringValue);
 
+    static readonly aelf::Method<global::AElf.Contracts.Report.GetSignatureMapInput, global::AElf.Contracts.Report.SignatureMap> __Method_GetSignatureMap = new aelf::Method<global::AElf.Contracts.Report.GetSignatureMapInput, global::AElf.Contracts.Report.SignatureMap>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetSignatureMap",
+        __Marshaller_GetSignatureMapInput,
+        __Marshaller_SignatureMap);
+
     #endregion
 
     #region Descriptors
@@ -257,6 +326,135 @@ namespace AElf.Contracts.Report {
       }
     }
     #endregion
+
+    public class ReportContractStub : aelf::ContractStubBase
+    {
+      public aelf::IMethodStub<global::AElf.Contracts.Report.InitializeInput, global::Google.Protobuf.WellKnownTypes.Empty> Initialize
+      {
+        get { return __factory.Create(__Method_Initialize); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.QueryOracleInput, global::AElf.Types.Hash> QueryOracle
+      {
+        get { return __factory.Create(__Method_QueryOracle); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Types.Hash, global::Google.Protobuf.WellKnownTypes.Empty> CancelQueryOracle
+      {
+        get { return __factory.Create(__Method_CancelQueryOracle); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.ConfirmReportInput, global::Google.Protobuf.WellKnownTypes.Empty> ConfirmReport
+      {
+        get { return __factory.Create(__Method_ConfirmReport); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.RejectReportInput, global::Google.Protobuf.WellKnownTypes.Empty> RejectReport
+      {
+        get { return __factory.Create(__Method_RejectReport); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> AdjustAmercementAmount
+      {
+        get { return __factory.Create(__Method_AdjustAmercementAmount); }
+      }
+
+      public aelf::IMethodStub<global::CallbackInput, global::AElf.Contracts.Report.Report> ProposeReport
+      {
+        get { return __factory.Create(__Method_ProposeReport); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> MortgageTokens
+      {
+        get { return __factory.Create(__Method_MortgageTokens); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> WithdrawTokens
+      {
+        get { return __factory.Create(__Method_WithdrawTokens); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Empty> ApplyObserver
+      {
+        get { return __factory.Create(__Method_ApplyObserver); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Empty> QuitObserver
+      {
+        get { return __factory.Create(__Method_QuitObserver); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> ProposeAdjustApplyObserverFee
+      {
+        get { return __factory.Create(__Method_ProposeAdjustApplyObserverFee); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> AdjustApplyObserverFee
+      {
+        get { return __factory.Create(__Method_AdjustApplyObserverFee); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.Int64Value, global::Google.Protobuf.WellKnownTypes.Empty> AdjustReportFee
+      {
+        get { return __factory.Create(__Method_AdjustReportFee); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.RegisterOffChainAggregationInput, global::AElf.Contracts.Report.OffChainAggregationInfo> RegisterOffChainAggregation
+      {
+        get { return __factory.Create(__Method_RegisterOffChainAggregation); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> AddRegisterWhiteList
+      {
+        get { return __factory.Create(__Method_AddRegisterWhiteList); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.GetMerklePathInput, global::AElf.Types.MerklePath> GetMerklePath
+      {
+        get { return __factory.Create(__Method_GetMerklePath); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.GetReportInput, global::AElf.Contracts.Report.Report> GetReport
+      {
+        get { return __factory.Create(__Method_GetReport); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.GetSignatureInput, global::Google.Protobuf.WellKnownTypes.StringValue> GetSignature
+      {
+        get { return __factory.Create(__Method_GetSignature); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.StringValue, global::AElf.Contracts.Report.OffChainAggregationInfo> GetOffChainAggregationInfo
+      {
+        get { return __factory.Create(__Method_GetOffChainAggregationInfo); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Types.Hash, global::AElf.Contracts.Report.ReportQueryRecord> GetReportQueryRecord
+      {
+        get { return __factory.Create(__Method_GetReportQueryRecord); }
+      }
+
+      public aelf::IMethodStub<global::Google.Protobuf.WellKnownTypes.StringValue, global::Google.Protobuf.WellKnownTypes.Int64Value> GetCurrentRoundId
+      {
+        get { return __factory.Create(__Method_GetCurrentRoundId); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.GetEthererumReportInput, global::Google.Protobuf.WellKnownTypes.StringValue> GetEthererumReport
+      {
+        get { return __factory.Create(__Method_GetEthererumReport); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.GenerateEthererumReportInput, global::Google.Protobuf.WellKnownTypes.StringValue> GenerateEthererumReport
+      {
+        get { return __factory.Create(__Method_GenerateEthererumReport); }
+      }
+
+      public aelf::IMethodStub<global::AElf.Contracts.Report.GetSignatureMapInput, global::AElf.Contracts.Report.SignatureMap> GetSignatureMap
+      {
+        get { return __factory.Create(__Method_GetSignatureMap); }
+      }
+
+    }
   }
 }
 #endregion
