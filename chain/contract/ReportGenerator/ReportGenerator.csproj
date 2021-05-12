@@ -1,20 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-<PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-</PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
 
-<ItemGroup>
-    <CommonMessage Include="..\..\protobuf\report_contract.proto">
-        <Link>Protobuf\Proto\report_contract.proto</Link>
-    </CommonMessage>
-    <CommonMessage Include="..\..\protobuf\oracle_contract.proto">
-        <Link>Protobuf\Proto\oracle_contract.proto</Link>
-    </CommonMessage>
-    <CommonMessage Include="..\..\protobuf\callback_input.proto">
-        <Link>Protobuf\Proto\callback_input.proto</Link>
-    </CommonMessage>
-</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Nethereum.web3" Version="3.8.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <CommonMessage Include="..\..\protobuf\report_contract.proto">
+            <Link>Protobuf\Proto\report_contract.proto</Link>
+        </CommonMessage>
+        <CommonMessage Include="..\..\protobuf\oracle_contract.proto">
+            <Link>Protobuf\Proto\oracle_contract.proto</Link>
+        </CommonMessage>
+        <CommonMessage Include="..\..\protobuf\callback_input.proto">
+            <Link>Protobuf\Proto\callback_input.proto</Link>
+        </CommonMessage>
+    </ItemGroup>
 
 </Project>

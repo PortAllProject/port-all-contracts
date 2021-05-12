@@ -1,23 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AElf;
 using AElf.Contracts.Report;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
+using ReportGenerator;
 
 namespace ReportGenerator
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //TestWithMultipleObservations();
             //TestWithSingleOneObservation();
             //TestSignWithAelfKey();
-            TestSignWithEthereumPrivateKey();
+            //TestSignWithEthereumPrivateKey();
+            //await TestSetContractInteraction();
+            await TestGetContractInteraction();
+        }
+
+        static async Task TestSetContractInteraction()
+        {
+            var abi = @"[{""inputs"": [],""name"": ""value"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""},{""inputs"": [{""internalType"": ""uint256"",""name"": ""_value"",""type"": ""uint256""}],""name"": ""setValue"",""outputs"": [],""stateMutability"": ""nonpayable"",""type"": ""function""},{""inputs"": [],""name"": ""getValue"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""}]";
+            var contractAddress1 = "0xf64996f528c37ebc09c0f6f51f3c80e33780aee6";
+            var contractAddress2 = "0xd03a0e125de8991cc8d59fddde0df478d467d2cc";
+            var newValue = 1213;
+            var service = new AbiCodeService();
+            await service.SetValue(contractAddress1, abi, newValue);
+            await service.SetValue(contractAddress2, abi, newValue);
+        }
+        
+        static async Task TestGetContractInteraction()
+        {
+            var abi = @"[{""inputs"": [],""name"": ""value"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""},{""inputs"": [{""internalType"": ""uint256"",""name"": ""_value"",""type"": ""uint256""}],""name"": ""setValue"",""outputs"": [],""stateMutability"": ""nonpayable"",""type"": ""function""},{""inputs"": [],""name"": ""getValue"",""outputs"": [{""internalType"": ""uint256"",""name"": """",""type"": ""uint256""}],""stateMutability"": ""view"",""type"": ""function""}]";
+            var contractAddress1 = "0xf64996f528c37ebc09c0f6f51f3c80e33780aee6";
+            var contractAddress2 = "0xd03a0e125de8991cc8d59fddde0df478d467d2cc";
+            var service = new AbiCodeService();
+            var value1 = await service.GetValue(contractAddress1, abi);
+            var value2 = await service.GetValue(contractAddress2, abi);
+            Console.WriteLine(value1);
+            Console.WriteLine(value2);
         }
 
         static void TestSignWithAelfKey()
