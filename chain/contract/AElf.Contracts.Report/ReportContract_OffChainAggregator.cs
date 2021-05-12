@@ -80,7 +80,17 @@ namespace AElf.Contracts.Report
         {
             Assert(Context.Sender == State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
                 "No permission.");
+            Assert(!State.RegisterWhiteListMap[input], $"{input} already in register white list.");
             State.RegisterWhiteListMap[input] = true;
+            return new Empty();
+        }
+
+        public override Empty RemoveFromRegisterWhiteList(Address input)
+        {
+            Assert(Context.Sender == State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
+                "No permission.");
+            Assert(State.RegisterWhiteListMap[input], $"{input} is not in register white list.");
+            State.RegisterWhiteListMap[input] = false;
             return new Empty();
         }
 

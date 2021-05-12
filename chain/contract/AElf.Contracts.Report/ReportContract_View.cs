@@ -60,6 +60,7 @@ namespace AElf.Contracts.Report
             {
                 throw new AssertionException($"contract: [{input.EthereumContractAddress}] info does not exist");
             }
+
             var roundReport = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             Assert(roundReport != null,
                 $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");
@@ -93,6 +94,14 @@ namespace AElf.Contracts.Report
             }
 
             return signatureMap;
+        }
+
+        public override BoolValue IsInRegisterWhiteList(Address input)
+        {
+            return new BoolValue
+            {
+                Value = State.RegisterWhiteListMap[input]
+            };
         }
     }
 }
