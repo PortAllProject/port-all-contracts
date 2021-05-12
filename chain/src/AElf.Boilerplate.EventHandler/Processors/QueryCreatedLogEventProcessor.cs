@@ -45,6 +45,12 @@ namespace AElf.Boilerplate.EventHandler
             {
                 var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
                     queryCreated.QueryInfo.AttributesToFetch.ToList());
+                if (string.IsNullOrEmpty(data))
+                {
+                    _logger.LogError($"Failed to response to query {queryCreated.QueryId}.");
+                    return;
+                }
+
                 var salt = _saltProvider.GetSalt(queryCreated.QueryId);
                 _logger.LogInformation($"Queried data: {data}, salt: {salt}");
                 var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
