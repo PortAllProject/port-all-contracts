@@ -1,5 +1,4 @@
 using System;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +41,14 @@ namespace AElf.Boilerplate.EventHandler
                 _serviceProvider.GetRequiredService<IOptionsSnapshot<ContractAddressOptions>>().Value;
             _logger.LogInformation(
                 $"ContractAddressOptions contains: {contractAddressOptions.ContractAddressMap.Keys.Aggregate("", (t, n) => $"{t}\t{n}")}");
+
+            var messageQueueOptions =
+                _serviceProvider.GetRequiredService<IOptionsSnapshot<MessageQueueOptions>>().Value;
+            _logger.LogInformation($"Message Queue Configs:\n" +
+                                   $"HostName: {messageQueueOptions.HostName}\n" +
+                                   $"Port:{messageQueueOptions.Port}\n" +
+                                   $"ClientName: {messageQueueOptions.ClientName}\n" +
+                                   $"ExchangeName: {messageQueueOptions.ExchangeName}");
 
             return Task.CompletedTask;
         }
