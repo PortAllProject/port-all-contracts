@@ -18,11 +18,14 @@ namespace AElf.Boilerplate.EventHandler
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var configuration = context.Services.GetConfiguration();
-            var hostEnvironment = context.Services.GetSingletonInstance<IHostEnvironment>();
 
-            Configure<MessageQueueOptions>(options => { configuration.GetSection("MessageQueue").Bind(options); });
+            var messageQueueOptions = new MessageQueueOptions();
 
-            var messageQueueOptions = context.Services.GetRequiredServiceLazy<MessageQueueOptions>().Value;
+            Configure<MessageQueueOptions>(options =>
+            {
+                configuration.GetSection("MessageQueue").Bind(options);
+                messageQueueOptions = options;
+            });
 
             Configure<AbpRabbitMqEventBusOptions>(options =>
             {
