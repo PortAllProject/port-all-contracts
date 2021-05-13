@@ -83,6 +83,11 @@ namespace AElf.Contracts.Oracle
             Assert(designatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value,
                 $"Invalid designated nodes count, should at least be {State.MinimumOracleNodesCount.Value}.");
 
+            var callbackInfo = input.CallbackInfo ?? new CallbackInfo
+            {
+                ContractAddress = Context.Self,
+                MethodName = "NotSetCallbackInfo"
+            };
             var queryRecord = new QueryRecord
             {
                 QueryId = queryId,
@@ -90,7 +95,7 @@ namespace AElf.Contracts.Oracle
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
-                CallbackInfo = input.CallbackInfo,
+                CallbackInfo = callbackInfo,
                 Payment = input.Payment,
                 AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
                     input.AggregateThreshold),
@@ -367,12 +372,15 @@ namespace AElf.Contracts.Oracle
 
             // Callback User Contract
             var callbackInfo = queryRecord.CallbackInfo;
-            Context.SendInline(callbackInfo.ContractAddress, callbackInfo.MethodName, new CallbackInput
+            if (queryRecord.CallbackInfo.ContractAddress != Context.Self)
             {
-                QueryId = queryRecord.QueryId,
-                Result = finalResult.Value,
-                OracleNodes = {queryRecord.DesignatedNodeList.Value}
-            });
+                Context.SendInline(callbackInfo.ContractAddress, callbackInfo.MethodName, new CallbackInput
+                {
+                    QueryId = queryRecord.QueryId,
+                    Result = finalResult.Value,
+                    OracleNodes = {queryRecord.DesignatedNodeList.Value}
+                });
+            }
 
             Context.Fire(new QueryCompleted
             {
