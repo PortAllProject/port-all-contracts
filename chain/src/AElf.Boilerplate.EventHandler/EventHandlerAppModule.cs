@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp.Autofac;
@@ -19,16 +20,20 @@ namespace AElf.Boilerplate.EventHandler
             var configuration = context.Services.GetConfiguration();
             var hostEnvironment = context.Services.GetSingletonInstance<IHostEnvironment>();
 
+            Configure<MessageQueueOptions>(options => { configuration.GetSection("MessageQueue").Bind(options); });
+
+            var messageQueueOptions = context.Services.GetRequiredServiceLazy<MessageQueueOptions>().Value;
+
             Configure<AbpRabbitMqEventBusOptions>(options =>
             {
-                options.ClientName = "AElfEventHandler" + Guid.NewGuid();
-                options.ExchangeName = "AElfExchange";
+                options.ClientName = messageQueueOptions.ClientName;
+                options.ExchangeName = messageQueueOptions.ExchangeName;
             });
 
             Configure<AbpRabbitMqOptions>(options =>
             {
-                options.Connections.Default.HostName = "localhost";
-                options.Connections.Default.Port = 5672;
+                options.Connections.Default.HostName = messageQueueOptions.HostName;
+                options.Connections.Default.Port = messageQueueOptions.Port;
             });
 
             Configure<ContractAddressOptions>(configuration.GetSection("Contracts"));
