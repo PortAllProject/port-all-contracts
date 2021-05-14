@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AElf;
 using AElf.Contracts.Report;
@@ -24,18 +25,8 @@ namespace ReportGenerator
             //await TestSetContractInteraction();
             //await TestGetContractInteraction();
             //await TestTransmit();
-            var reportDictionary = new Dictionary<string, Dictionary<long, string>>();
-            reportDictionary.TryGetValue("sad", out var re);
-            if (re == null)
-            {
-                Console.WriteLine("defalut is null");
-            }
-            else
-            {
-                Console.WriteLine("defalut is not null");
-            }
         }
-        
+
         static async Task TestTransmit()
         {
             var file = "./contractBuild/Test.json";
