@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -147,7 +148,7 @@ namespace AElf.Contracts.Oracle
                 {
                     "data/priceUsd", "timestamp"
                 });
-            
+
             result.ShouldBe("\"59207.0439511409731526\";1620463326939");
         }
 
@@ -187,6 +188,7 @@ namespace AElf.Contracts.Oracle
                             return attr;
                         }
                     }
+
                     if (data == string.Empty)
                     {
                         data = targetElement.GetRawText();
@@ -200,5 +202,26 @@ namespace AElf.Contracts.Oracle
 
             return data;
         }
+
+        [Fact]
+        public void ParseMultipleQueryInfoTest()
+        {
+            const string coinCapUrl = "https://api.coincap.io/v2/asset/ethereum";
+            const string coinGeckoUrl = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
+            const string coinGecko2Url = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd";
+            var url = $"{coinCapUrl}|{coinGeckoUrl}|{coinGecko2Url}";
+            var attributes = new List<string>
+            {
+                "data/price|ethereum/usd|ethereum/usd"
+            };
+            var urls = url.Split('|').ToList();
+            var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
+
+            urls.Count.ShouldBe(3);
+            urls[0].ShouldBe(coinCapUrl);
+
+            urlAttributes.Select(a => a[0]).ToList()[0].ShouldBe("data/price");
+        }
+
     }
 }

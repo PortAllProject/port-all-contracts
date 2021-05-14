@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -27,6 +28,28 @@ namespace AElf.Boilerplate.EventHandler
         }
 
         public async Task<string> GetDataAsync(Hash queryId, string url = null, List<string> attributes = null)
+        {
+            if (!url.Contains('|')) return await GetSingleUrlDataAsync(queryId, url, attributes);
+            var urls = url.Split('|');
+            var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
+            var dataList = new List<string>();
+            for (var i = 0; i < urls.Length; i++)
+            {
+                var singleData =
+                    await GetSingleUrlDataAsync(queryId, urls[i], urlAttributes.Select(a => a[i]).ToList());
+                dataList.Add(singleData);
+            }
+
+            return Aggregate(dataList);
+        }
+
+        private string Aggregate(List<string> dataList)
+        {
+            var prices = dataList.Select(decimal.Parse).ToList();
+            return prices.OrderBy(p => p).ToList()[prices.Count / 2].ToString(CultureInfo.InvariantCulture);
+        }
+
+        public async Task<string> GetSingleUrlDataAsync(Hash queryId, string url = null, List<string> attributes = null)
         {
             if (_dictionary.TryGetValue(queryId, out var data))
             {
