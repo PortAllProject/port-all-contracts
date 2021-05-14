@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
@@ -132,6 +133,7 @@ namespace AElf.Contracts.Report
             {
                 Assert(int.TryParse(observation.Key, out var order), $"invalid observation key : {observation.Key}");
                 observerOrder[i] = (byte) order;
+                observation.Data = TransferToAsciiString(observation.Data);
                 observationsLength[i] = (byte) observation.Data.Length;
                 observations.AddRange(FillObservationBytes(observation.Data));
                 i++;
@@ -263,6 +265,13 @@ namespace AElf.Contracts.Report
             var list = new List<byte>();
             list.AddRange(Enumerable.Repeat((byte) 0, count));
             return list;
+        }
+
+        private ByteString TransferToAsciiString(ByteString rawStringValue)
+        {
+            var rawStringInfo = StringValue.Parser.ParseFrom(rawStringValue);
+            var stringBytes = rawStringInfo.Value.Select(c => (byte) c).ToArray();
+            return ByteString.CopyFrom(stringBytes);
         }
 
         private long GetAmercementAmount(Address associationAddress = null)
