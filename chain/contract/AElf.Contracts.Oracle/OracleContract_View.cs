@@ -22,7 +22,7 @@ namespace AElf.Contracts.Oracle
         public override CommitmentMap GetCommitmentMap(Hash input)
         {
             var dict = new Dictionary<string, Hash>();
-            foreach (var address in GetDesignatedNodeList(input).Value)
+            foreach (var address in GetActualDesignatedNodeList(input).Value)
             {
                 var commitment = State.CommitmentMap[input][address];
                 if (commitment != null)
@@ -45,6 +45,11 @@ namespace AElf.Contracts.Oracle
             {
                 Value = State.OracleNodesLockedTokenAmountMap[input]
             };
+        }
+
+        public override AddressList GetHelpfulNodeList(Hash input)
+        {
+            return State.HelpfulNodeListMap[input];
         }
     }
 }
