@@ -295,7 +295,7 @@ namespace AElf.Contracts.Report
             var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
-            Assert(!reportQueryRecord.IsAllConfirmed, "This report is already confirmed by all nodes");
+            Assert(!reportQueryRecord.IsAllNodeConfirmed, "This report is already confirmed by all nodes");
             IEnumerable<Address> memberList;
             if (State.ParliamentContract.Value == offChainAggregationInfo.ObserverAssociationAddress)
             {
@@ -319,7 +319,7 @@ namespace AElf.Contracts.Report
             reportQueryRecord.NodeConfirmCount = reportQueryRecord.NodeConfirmCount.Add(1);
             if (reportQueryRecord.NodeConfirmCount == memberList.Count())
             {
-                reportQueryRecord.IsAllConfirmed = true;
+                reportQueryRecord.IsAllNodeConfirmed = true;
             }
 
             State.ReportQueryRecordMap[report.QueryId] = reportQueryRecord;
@@ -329,7 +329,7 @@ namespace AElf.Contracts.Report
                 RoundId = input.RoundId,
                 Signature = input.Signature,
                 ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
-                IsAllNodeConfirm = reportQueryRecord.IsAllConfirmed
+                IsAllNodeConfirmed = reportQueryRecord.IsAllNodeConfirmed
             });
             return new Empty();
         }

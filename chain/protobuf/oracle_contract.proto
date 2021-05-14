@@ -71,6 +71,10 @@ service OracleContract {
     rpc GetDefaultExpirationSeconds (google.protobuf.Empty) returns (google.protobuf.Int32Value) {
         option (aelf.is_view) = true;
     }
+    
+    rpc GetHelpfulNodeList (aelf.Hash) returns (AddressList) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput{

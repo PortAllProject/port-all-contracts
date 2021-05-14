@@ -20,7 +20,7 @@ namespace AElf.Boilerplate.Ethereum
 #endif
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Async(c => c.File("Logs/logs.txt"))
+                .WriteTo.Async(c => c.File($"Logs/EthereumHandler{DateTime.UtcNow:yyyy-MM-dd}.logs"))
                 .WriteTo.Async(c => c.Console())
                 .CreateLogger();
 

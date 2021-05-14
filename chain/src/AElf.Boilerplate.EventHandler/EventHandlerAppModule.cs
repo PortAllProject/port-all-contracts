@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Volo.Abp.Autofac;
@@ -17,18 +18,27 @@ namespace AElf.Boilerplate.EventHandler
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
             var configuration = context.Services.GetConfiguration();
-            var hostEnvironment = context.Services.GetSingletonInstance<IHostEnvironment>();
+
+            // Just for logging.
+            Configure<MessageQueueOptions>(options =>
+            {
+                configuration.GetSection("MessageQueue").Bind(options);
+            });
 
             Configure<AbpRabbitMqEventBusOptions>(options =>
             {
-                options.ClientName = "AElfEventHandler" + Guid.NewGuid();
-                options.ExchangeName = "AElfExchange";
+                var messageQueueConfig = configuration.GetSection("MessageQueue");
+                options.ClientName = messageQueueConfig.GetSection("ClientName").Value;
+                options.ExchangeName = messageQueueConfig.GetSection("ExchangeName").Value;
             });
 
             Configure<AbpRabbitMqOptions>(options =>
             {
-                options.Connections.Default.HostName = "localhost";
-                options.Connections.Default.Port = 5672;
+                var messageQueueConfig = configuration.GetSection("MessageQueue");
+                options.Connections.Default.HostName = messageQueueConfig.GetSection("HostName").Value;
+                options.Connections.Default.Port = int.Parse(messageQueueConfig.GetSection("Port").Value);
+                options.Connections.Default.UserName = messageQueueConfig.GetSection("UserName").Value;
+                options.Connections.Default.Password = messageQueueConfig.GetSection("Password").Value;
             });
 
             Configure<ContractAddressOptions>(configuration.GetSection("Contracts"));

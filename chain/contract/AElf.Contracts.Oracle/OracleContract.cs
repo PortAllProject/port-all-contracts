@@ -83,6 +83,11 @@ namespace AElf.Contracts.Oracle
             Assert(designatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value,
                 $"Invalid designated nodes count, should at least be {State.MinimumOracleNodesCount.Value}.");
 
+            var callbackInfo = input.CallbackInfo ?? new CallbackInfo
+            {
+                ContractAddress = Context.Self,
+                MethodName = "NotSetCallbackInfo"
+            };
             var queryRecord = new QueryRecord
             {
                 QueryId = queryId,
@@ -90,7 +95,7 @@ namespace AElf.Contracts.Oracle
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 DesignatedNodeList = input.DesignatedNodeList,
                 ExpirationTimestamp = expirationTimestamp,
-                CallbackInfo = input.CallbackInfo,
+                CallbackInfo = callbackInfo,
                 Payment = input.Payment,
                 AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
                     input.AggregateThreshold),
@@ -133,7 +138,7 @@ namespace AElf.Contracts.Oracle
 
             var organization =
                 State.AssociationContract.GetOrganization.Call(designatedNodeList.Value.First());
-            if (organization == null)
+            if (organization.OrganizationAddress == null)
             {
                 throw new AssertionException("Designated association not exists.");
             }
@@ -145,7 +150,7 @@ namespace AElf.Contracts.Oracle
             return designatedNodeList;
         }
 
-        private AddressList GetDesignatedNodeList(Hash queryId)
+        private AddressList GetActualDesignatedNodeList(Hash queryId)
         {
             var queryRecord = State.QueryRecords[queryId];
             return queryRecord == null
@@ -164,30 +169,15 @@ namespace AElf.Contracts.Oracle
             Assert(!queryRecord.IsCommitStageFinished, "Commit stage of this query is already finished.");
 
             // Permission check.
-            var designatedNodeListCount = queryRecord.DesignatedNodeList.Value.Count;
-            bool isSenderInDesignatedNodeList;
-            int actualNodeListCount; // Will use this variable later.
-            if (designatedNodeListCount != 1)
-            {
-                isSenderInDesignatedNodeList = queryRecord.DesignatedNodeList.Value.Contains(Context.Sender);
-                actualNodeListCount = queryRecord.DesignatedNodeList.Value.Count;
-            }
-            else
-            {
-                var organization =
-                    State.AssociationContract.GetOrganization.Call(queryRecord.DesignatedNodeList.Value.First());
-                isSenderInDesignatedNodeList =
-                    organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender);
-                actualNodeListCount = organization.OrganizationMemberList.OrganizationMembers.Count;
-            }
+            var actualDesignatedNodeList = GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
+            Assert(actualDesignatedNodeList.Value.Contains(Context.Sender), "Sender is not in designated node list.");
 
-            Assert(isSenderInDesignatedNodeList, "No permission to commit for this query.");
-            Assert(actualNodeListCount >= State.MinimumOracleNodesCount.Value, "Invalid designated nodes count.");
+            Assert(actualDesignatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value, "Invalid designated nodes count.");
 
             var updatedResponseCount = State.ResponseCount[input.QueryId].Add(1);
             State.CommitmentMap[input.QueryId][Context.Sender] = input.Commitment;
 
-            if (updatedResponseCount >= GetRevealThreshold(actualNodeListCount, queryRecord.AggregateThreshold))
+            if (updatedResponseCount >= GetRevealThreshold(actualDesignatedNodeList.Value.Count, queryRecord.AggregateThreshold))
             {
                 // Move to next stage: Reveal
                 queryRecord.IsSufficientCommitmentsCollected = true;
@@ -228,17 +218,19 @@ namespace AElf.Contracts.Oracle
             Assert(queryRecord.ExpirationTimestamp > Context.CurrentBlockTime, "Query expired.");
             Assert(!queryRecord.IsCancelled, "Query already cancelled.");
 
-            // Confirm this query is in stage Commit.
+            // Stage check.
             Assert(queryRecord.IsSufficientCommitmentsCollected, "This query hasn't collected sufficient commitments.");
             Assert(!queryRecord.IsSufficientDataCollected, "Query already finished.");
-
-            // Permission check.
             var commitment = State.CommitmentMap[input.QueryId][Context.Sender];
             if (commitment == null)
             {
                 throw new AssertionException(
                     "No permission to reveal for this query. Sender hasn't submit commitment.");
             }
+
+            // Permission check.
+            var actualDesignatedNodeList = GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
+            Assert(actualDesignatedNodeList.Value.Contains(Context.Sender), "Sender was removed from designated node list.");
 
             var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
 
@@ -283,6 +275,12 @@ namespace AElf.Contracts.Oracle
             Assert(!helpfulNodeList.Value.Contains(Context.Sender), "Sender already revealed commitment.");
             helpfulNodeList.Value.Add(Context.Sender);
             State.HelpfulNodeListMap[input.QueryId] = helpfulNodeList;
+            
+            // Reorg helpful nodes list.
+            helpfulNodeList = new AddressList
+            {
+                Value = {helpfulNodeList.Value.Where(a => actualDesignatedNodeList.Value.Contains(a))}
+            };
 
             if (queryRecord.AggregatorContractAddress != null)
             {
@@ -367,12 +365,15 @@ namespace AElf.Contracts.Oracle
 
             // Callback User Contract
             var callbackInfo = queryRecord.CallbackInfo;
-            Context.SendInline(callbackInfo.ContractAddress, callbackInfo.MethodName, new CallbackInput
+            if (queryRecord.CallbackInfo.ContractAddress != Context.Self)
             {
-                QueryId = queryRecord.QueryId,
-                Result = finalResult.Value,
-                OracleNodes = {queryRecord.DesignatedNodeList.Value}
-            });
+                Context.SendInline(callbackInfo.ContractAddress, callbackInfo.MethodName, new CallbackInput
+                {
+                    QueryId = queryRecord.QueryId,
+                    Result = finalResult.Value,
+                    OracleNodes = {queryRecord.DesignatedNodeList.Value}
+                });
+            }
 
             Context.Fire(new QueryCompleted
             {
