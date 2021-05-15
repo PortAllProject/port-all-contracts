@@ -170,6 +170,7 @@ message OffChainAggregationInfo {
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
     repeated int32 round_ids = 7;
+    string chain_type = 8;
 }
 
 message RegisterOffChainAggregationInput {
@@ -179,6 +180,7 @@ message RegisterOffChainAggregationInput {
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
+    string chain_type = 7;
 }
 
 message OffChainQueryInfo {
@@ -239,6 +241,7 @@ message OffChainAggregationRegistered {
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
+    string chain_type = 7;
 }
 
 message MerkleReportNodeAdded {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core.Exceptions;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -45,7 +46,20 @@ namespace AElf.Boilerplate.EventHandler
 
         private string Aggregate(List<string> dataList)
         {
-            var prices = dataList.Select(decimal.Parse).ToList();
+            var prices = dataList.Select(d =>
+            {
+                if (d.Contains("\""))
+                {
+                    d = d.Replace("\"", "");
+                }
+
+                if (decimal.TryParse(d, out var data))
+                {
+                    return data;
+                }
+
+                throw new Exception($"Error during paring {d} to decimal");
+            }).ToList();
             return prices.OrderBy(p => p).ToList()[prices.Count / 2].ToString(CultureInfo.InvariantCulture);
         }
 
@@ -61,7 +75,7 @@ namespace AElf.Boilerplate.EventHandler
                 return string.Empty;
             }
 
-            _logger.LogCritical($"Querying {url} for attribute {attributes.First()} etc..");
+            _logger.LogInformation($"Querying {url} for attribute {attributes.First()} etc..");
 
             var response = string.Empty;
             try
@@ -69,7 +83,6 @@ namespace AElf.Boilerplate.EventHandler
                 var client = new HttpClient();
                 var responseMessage = await client.GetAsync(url);
                 response = await responseMessage.Content.ReadAsStringAsync();
-
             }
             catch (Exception e)
             {
@@ -78,6 +91,8 @@ namespace AElf.Boilerplate.EventHandler
 
             try
             {
+                _logger.LogInformation($"Trying to parse response to json: {response}");
+
                 if (response != string.Empty)
                 {
                     data = ParseJson(response, attributes);

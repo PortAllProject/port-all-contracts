@@ -53,7 +53,8 @@ namespace AElf.Contracts.Report
                 ConfigDigest = input.ConfigDigest,
                 ObserverAssociationAddress = organizationAddress,
                 AggregateThreshold = input.AggregateThreshold,
-                AggregatorContractAddress = input.AggregatorContractAddress
+                AggregatorContractAddress = input.AggregatorContractAddress,
+                ChainType = input.ChainType
             };
             for (var i = 0; i < input.OffChainQueryInfoList.Value.Count; i++)
             {
@@ -70,7 +71,8 @@ namespace AElf.Contracts.Report
                 ConfigDigest = offChainAggregationInfo.ConfigDigest,
                 ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
-                AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress
+                AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress,
+                ChainType = offChainAggregationInfo.ChainType
             });
 
             return offChainAggregationInfo;
