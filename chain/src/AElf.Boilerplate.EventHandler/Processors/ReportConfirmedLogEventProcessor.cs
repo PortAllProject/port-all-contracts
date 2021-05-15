@@ -54,7 +54,7 @@ namespace AElf.Boilerplate.EventHandler
                     var (reportBytes, rs, ss, vs) = TransferToEthereumParameter(report, signatureRecoverableInfos);
                     var web3Manager = new Web3Manager(_ethereumConfigOptions.Url, _ethereumConfigOptions.Address,
                         _ethereumConfigOptions.PrivateKey,
-                        _ethereumConfigOptions.ContractAbiFilePath);
+                        _abi);
                     await web3Manager.TransmitDataOnEthereum(ethereumContractAddress, reportBytes, rs, ss, vs);
                 }
                 _signaturesRecoverableInfoProvider.RemoveSignature(ethereumContractAddress, roundId);
