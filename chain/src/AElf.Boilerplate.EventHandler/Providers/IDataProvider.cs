@@ -30,6 +30,7 @@ namespace AElf.Boilerplate.EventHandler
 
         public async Task<string> GetDataAsync(Hash queryId, string url = null, List<string> attributes = null)
         {
+            if (url == null) return await GetSingleUrlDataAsync(queryId);
             if (!url.Contains('|')) return await GetSingleUrlDataAsync(queryId, url, attributes);
             var urls = url.Split('|');
             var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
