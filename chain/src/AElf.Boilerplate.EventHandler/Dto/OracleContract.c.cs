@@ -75,6 +75,26 @@ namespace AElf.Contracts.Oracle {
     }
   }
 
+  public partial class Committed : aelf::IEvent<Committed>
+  {
+    public global::System.Collections.Generic.IEnumerable<Committed> GetIndexed()
+    {
+      return new List<Committed>
+      {
+      };
+    }
+
+    public Committed GetNonIndexed()
+    {
+      return new Committed
+      {
+        QueryId = QueryId,
+        OracleNodeAddress = OracleNodeAddress,
+        Commitment = Commitment,
+      };
+    }
+  }
+
   public partial class CommitmentRevealed : aelf::IEvent<CommitmentRevealed>
   {
     public global::System.Collections.Generic.IEnumerable<CommitmentRevealed> GetIndexed()
@@ -87,6 +107,28 @@ namespace AElf.Contracts.Oracle {
     public CommitmentRevealed GetNonIndexed()
     {
       return new CommitmentRevealed
+      {
+        QueryId = QueryId,
+        OracleNodeAddress = OracleNodeAddress,
+        Commitment = Commitment,
+        Data = Data,
+        Salt = Salt,
+      };
+    }
+  }
+
+  public partial class CommitmentRevealFailed : aelf::IEvent<CommitmentRevealFailed>
+  {
+    public global::System.Collections.Generic.IEnumerable<CommitmentRevealFailed> GetIndexed()
+    {
+      return new List<CommitmentRevealFailed>
+      {
+      };
+    }
+
+    public CommitmentRevealFailed GetNonIndexed()
+    {
+      return new CommitmentRevealFailed
       {
         QueryId = QueryId,
         OracleNodeAddress = OracleNodeAddress,
@@ -152,10 +194,12 @@ namespace AElf.Contracts.Oracle {
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.LockTokensInput> __Marshaller_LockTokensInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.LockTokensInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.UnlockTokensInput> __Marshaller_UnlockTokensInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.UnlockTokensInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.OracleNodeThreshold> __Marshaller_OracleNodeThreshold = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.OracleNodeThreshold.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int32Value> __Marshaller_google_protobuf_Int32Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int32Value.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.QueryRecord> __Marshaller_QueryRecord = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.QueryRecord.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CommitmentMap> __Marshaller_CommitmentMap = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CommitmentMap.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.StringValue> __Marshaller_google_protobuf_StringValue = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.StringValue.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int64Value> __Marshaller_google_protobuf_Int64Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int64Value.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.AddressList> __Marshaller_AddressList = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.AddressList.Parser.ParseFrom);
     #endregion
 
     #region Methods
@@ -163,6 +207,13 @@ namespace AElf.Contracts.Oracle {
         aelf::MethodType.Action,
         __ServiceName,
         "Initialize",
+        __Marshaller_InitializeInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.InitializeInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_InitializeAndCreateToken = new aelf::Method<global::AElf.Contracts.Oracle.InitializeInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "InitializeAndCreateToken",
         __Marshaller_InitializeInput,
         __Marshaller_google_protobuf_Empty);
 
@@ -222,6 +273,20 @@ namespace AElf.Contracts.Oracle {
         __Marshaller_OracleNodeThreshold,
         __Marshaller_google_protobuf_Empty);
 
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::Google.Protobuf.WellKnownTypes.Empty> __Method_ChangeDefaultExpirationSeconds = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Int32Value, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "ChangeDefaultExpirationSeconds",
+        __Marshaller_google_protobuf_Int32Value,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Empty> __Method_EnableChargeFee = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "EnableChargeFee",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_google_protobuf_Empty);
+
     static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address> __Method_GetController = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address>(
         aelf::MethodType.View,
         __ServiceName,
@@ -263,6 +328,20 @@ namespace AElf.Contracts.Oracle {
         "GetThreshold",
         __Marshaller_google_protobuf_Empty,
         __Marshaller_OracleNodeThreshold);
+
+    static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Int32Value> __Method_GetDefaultExpirationSeconds = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Int32Value>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetDefaultExpirationSeconds",
+        __Marshaller_google_protobuf_Empty,
+        __Marshaller_google_protobuf_Int32Value);
+
+    static readonly aelf::Method<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.AddressList> __Method_GetHelpfulNodeList = new aelf::Method<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.AddressList>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetHelpfulNodeList",
+        __Marshaller_aelf_Hash,
+        __Marshaller_AddressList);
 
     #endregion
 

@@ -44,7 +44,7 @@ namespace AElf.Boilerplate.EventHandler
             var ethereumContractAddress = reportConfirmed.EthereumContractAddress;
             var roundId = reportConfirmed.RoundId;
             _signaturesRecoverableInfoProvider.SetSignature(ethereumContractAddress, roundId, reportConfirmed.Signature);
-            if (reportConfirmed.IsAllNodeConfirm)
+            if (reportConfirmed.IsAllNodeConfirmed)
             {
                 if (_ethereumConfigOptions.IsEnable)
                 {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Linq.Dynamic.Core.Exceptions;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -30,7 +29,17 @@ namespace AElf.Boilerplate.EventHandler
 
         public async Task<string> GetDataAsync(Hash queryId, string url = null, List<string> attributes = null)
         {
-            if (url == null) return await GetSingleUrlDataAsync(queryId);
+            if (_dictionary.TryGetValue(queryId, out var data))
+            {
+                return data;
+            }
+
+            if (url == null)
+            {
+                _logger.LogError($"No data of {queryId} for revealing.");
+                return string.Empty;
+            }
+
             if (!url.Contains('|')) return await GetSingleUrlDataAsync(queryId, url, attributes);
             var urls = url.Split('|');
             var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
@@ -39,6 +48,7 @@ namespace AElf.Boilerplate.EventHandler
             {
                 var singleData =
                     await GetSingleUrlDataAsync(queryId, urls[i], urlAttributes.Select(a => a[i]).ToList());
+                _logger.LogInformation($"Add {singleData} to data list.");
                 dataList.Add(singleData);
             }
 
@@ -66,18 +76,9 @@ namespace AElf.Boilerplate.EventHandler
 
         public async Task<string> GetSingleUrlDataAsync(Hash queryId, string url = null, List<string> attributes = null)
         {
-            if (_dictionary.TryGetValue(queryId, out var data))
-            {
-                return data;
-            }
+            _logger.LogInformation($"Querying {url} for attributes {attributes.First()} etc..");
 
-            if (url == null || attributes == null)
-            {
-                return string.Empty;
-            }
-
-            _logger.LogInformation($"Querying {url} for attribute {attributes.First()} etc..");
-
+            var data = string.Empty;
             var response = string.Empty;
             try
             {
