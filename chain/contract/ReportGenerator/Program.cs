@@ -24,7 +24,7 @@ namespace ReportGenerator
             //TestSignWithEthereumPrivateKey();
             //await TestSetContractInteraction();
             //await TestGetContractInteraction();
-            //await TestTransmit();
+            await TestTransmit();
         }
 
         static async Task TestTransmit()
