@@ -40,41 +40,46 @@ namespace AElf.Boilerplate.EventHandler
                 return string.Empty;
             }
 
-            if (!url.Contains('|')) return await GetSingleUrlDataAsync(queryId, url, attributes);
+            if (!url.Contains('|')) return await GetSingleUrlDataAsync(url, attributes);
             var urls = url.Split('|');
             var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
-            var dataList = new List<string>();
+            var dataList = new List<decimal>();
             for (var i = 0; i < urls.Length; i++)
             {
                 var singleData =
-                    await GetSingleUrlDataAsync(queryId, urls[i], urlAttributes.Select(a => a[i]).ToList());
-                _logger.LogInformation($"Add {singleData} to data list.");
-                dataList.Add(singleData);
+                    await GetSingleUrlDataAsync(urls[i], urlAttributes.Select(a => a[i]).ToList());
+                if (singleData.Contains("\""))
+                {
+                    singleData = singleData.Replace("\"", "");
+                }
+
+                if (decimal.TryParse(singleData, out var decimalData))
+                {
+                    _logger.LogInformation($"Add {singleData} to data list.");
+                    dataList.Add(decimalData);
+                }
+                else
+                {
+                    throw new Exception($"Error during paring {singleData} to decimal");
+                }
+
             }
 
-            return Aggregate(dataList);
+            return Aggregate(dataList, queryId);
         }
 
-        private string Aggregate(List<string> dataList)
+        private string Aggregate(List<decimal> dataList, Hash queryId)
         {
-            var prices = dataList.Select(d =>
-            {
-                if (d.Contains("\""))
-                {
-                    d = d.Replace("\"", "");
-                }
+            var finalPrice = dataList.OrderBy(p => p).ToList()[dataList.Count / 2]
+                .ToString(CultureInfo.InvariantCulture);
 
-                if (decimal.TryParse(d, out var data))
-                {
-                    return data;
-                }
+            _dictionary[queryId] = finalPrice;
+            _logger.LogInformation($"Final price: {finalPrice}");
 
-                throw new Exception($"Error during paring {d} to decimal");
-            }).ToList();
-            return prices.OrderBy(p => p).ToList()[prices.Count / 2].ToString(CultureInfo.InvariantCulture);
+            return finalPrice;
         }
 
-        public async Task<string> GetSingleUrlDataAsync(Hash queryId, string url = null, List<string> attributes = null)
+        public async Task<string> GetSingleUrlDataAsync(string url, List<string> attributes)
         {
             _logger.LogInformation($"Querying {url} for attributes {attributes.First()} etc..");
 
@@ -98,7 +103,6 @@ namespace AElf.Boilerplate.EventHandler
                 if (response != string.Empty)
                 {
                     data = ParseJson(response, attributes);
-                    _dictionary[queryId] = data;
                 }
             }
             catch (Exception e)
