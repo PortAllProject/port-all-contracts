@@ -46,6 +46,7 @@ namespace AElf.Boilerplate.EventHandler
                 _serviceProvider.GetRequiredService<IOptionsSnapshot<MessageQueueOptions>>().Value;
             _logger.LogInformation($"Message Queue Configs:\n" +
                                    $"HostName: {messageQueueOptions.HostName}\n" +
+                                   $"Uri: {messageQueueOptions.Uri}\n" +
                                    $"Port:{messageQueueOptions.Port}\n" +
                                    $"ClientName: {messageQueueOptions.ClientName}\n" +
                                    $"ExchangeName: {messageQueueOptions.ExchangeName}");
