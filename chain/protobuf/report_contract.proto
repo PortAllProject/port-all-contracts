@@ -85,6 +85,9 @@ service ReportContract {
     rpc IsInRegisterWhiteList (aelf.Address) returns (google.protobuf.BoolValue) {
         option (aelf.is_view) = true;
     }
+    rpc IsObserver (aelf.Address) returns (google.protobuf.BoolValue) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput {

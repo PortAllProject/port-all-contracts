@@ -103,5 +103,13 @@ namespace AElf.Contracts.Report
                 Value = State.RegisterWhiteListMap[input]
             };
         }
+
+        public override BoolValue IsObserver(Address input)
+        {
+            return new BoolValue
+            {
+                Value = State.ObserverMap[input]
+            };
+        }
     }
 }
