@@ -30,7 +30,7 @@ namespace AElf.Boilerplate.EventHandler
         public async Task HandleEventAsync(TransactionResultListEto eventData)
         {
             _logger.LogInformation(
-                $"Start handling {eventData.TransactionResults.Values.Sum(r => r.Logs.Length)} new event logs of height {eventData.TransactionResults.First().Value.BlockNumber}.\n{GetAllLogEvents(eventData)}");
+                $"Start handling {eventData.TransactionResults.Values.Sum(r => r.Logs.Length)} new event logs from height {eventData.StartBlockNumber} to {eventData.EndBlockNumber}.\n{GetAllLogEvents(eventData)}");
 
             var usefulLogEventProcessors = _logEventProcessors.Where(p =>
                 _contractAddressOptions.ContractAddressMap.ContainsKey(p.ContractName)).ToList();
