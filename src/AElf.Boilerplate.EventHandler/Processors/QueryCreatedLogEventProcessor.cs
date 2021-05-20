@@ -41,7 +41,8 @@ namespace AElf.Boilerplate.EventHandler
                 .Token; // Query token means the ethereum contract address oracle node should cares in report case.
             if (queryCreated.DesignatedNodeList.Value.Contains(nodeAddress) ||
                 _configOptions.ObserverAssociationAddressList.Contains(firstDesignatedNodeAddress.ToBase58()) ||
-                _configOptions.EthereumContractAddress == queryToken)
+                _configOptions.EthereumContractAddress == queryToken ||
+                _configOptions.Token == queryToken)
             {
                 var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
                     queryCreated.QueryInfo.AttributesToFetch.ToList());

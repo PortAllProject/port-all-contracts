@@ -43,7 +43,7 @@ namespace AElf.Boilerplate.EventHandler
             var txId = node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "ConfirmReport", new ConfirmReportInput
                 {
-                    EthereumContractAddress = _configOptions.EthereumContractAddress,
+                    Token = _configOptions.EthereumContractAddress,
                     RoundId = reportProposed.RoundId,
                     Signature = SignHelper
                         .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo

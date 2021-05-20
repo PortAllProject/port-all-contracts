@@ -8,6 +8,7 @@ namespace AElf.Boilerplate.EventHandler
         public string AccountAddress { get; set; }
         public string AccountPassword { get; set; }
         public string EthereumContractAddress { get; set; }
+        public string Token { get; set; }
         public List<string> ObserverAssociationAddressList { get; set; }
     }
 }

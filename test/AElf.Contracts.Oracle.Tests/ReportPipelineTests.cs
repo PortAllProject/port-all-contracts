@@ -59,7 +59,7 @@ namespace AElf.Contracts.Oracle
                         }
                     }
                 },
-                EthereumContractAddress = EthereumContractAddress,
+                Token = Token,
                 ConfigDigest = ByteStringHelper.FromHexString(digestStr),
                 AggregateThreshold = 5,
                 AggregatorContractAddress = IntegerAggregatorContractAddress
@@ -74,8 +74,7 @@ namespace AElf.Contracts.Oracle
             offChainAggregationInfo.OffChainQueryInfoList.Value[0].AttributesToFetch[0].ShouldBe(
                 registerOffChainAggregationInput
                     .OffChainQueryInfoList.Value[0].AttributesToFetch[0]);
-            offChainAggregationInfo.EthereumContractAddress.ShouldBe(registerOffChainAggregationInput
-                .EthereumContractAddress);
+            offChainAggregationInfo.Token.ShouldBe(registerOffChainAggregationInput.Token);
             offChainAggregationInfo.ConfigDigest.ToHex()
                 .ShouldBe(registerOffChainAggregationInput.ConfigDigest.ToHex());
             offChainAggregationInfo.AggregateThreshold.ShouldBe(registerOffChainAggregationInput.AggregateThreshold);
@@ -109,7 +108,7 @@ namespace AElf.Contracts.Oracle
             var queryOracleInput = new QueryOracleInput
             {
                 Payment = 10_00000000,
-                EthereumContractAddress = EthereumContractAddress
+                Token = Token
             };
             var executionResult = await ReportContractStub.QueryOracle.SendAsync(queryOracleInput);
             var queryId = executionResult.Output;
@@ -136,7 +135,7 @@ namespace AElf.Contracts.Oracle
             await RevealAsync(queryRecord.QueryId);
             var report = await ReportContractStub.GetReport.CallAsync(new GetReportInput
             {
-                EthereumContractAddress = EthereumContractAddress,
+                Token = Token,
                 RoundId = 1
             });
             for (var i = 0; i < report.Observations.Value.Count; i++)
@@ -183,7 +182,7 @@ namespace AElf.Contracts.Oracle
                         },
                     }
                 },
-                EthereumContractAddress = EthereumContractAddress,
+                Token = Token,
                 ConfigDigest = ByteStringHelper.FromHexString(digestStr),
                 AggregateThreshold = 5,
                 AggregatorContractAddress = IntegerAggregatorContractAddress
@@ -213,7 +212,7 @@ namespace AElf.Contracts.Oracle
             var queryId1 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
             {
                 Payment = 10_00000000,
-                EthereumContractAddress = EthereumContractAddress
+                Token = Token
             })).Output;
             await CommitAsync(queryId1);
             await RevealAsync(queryId1);
@@ -221,7 +220,7 @@ namespace AElf.Contracts.Oracle
             var queryId2 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
             {
                 Payment = 10_00000000,
-                EthereumContractAddress = EthereumContractAddress,
+                Token = Token,
                 NodeIndex = 1
             })).Output;
             await CommitAsync(queryId2);
@@ -230,7 +229,7 @@ namespace AElf.Contracts.Oracle
             var queryId3 = (await ReportContractStub.QueryOracle.SendAsync(new QueryOracleInput
             {
                 Payment = 10_00000000,
-                EthereumContractAddress = EthereumContractAddress,
+                Token = Token,
                 NodeIndex = 2
             })).Output;
             await CommitAsync(queryId3);
@@ -238,7 +237,7 @@ namespace AElf.Contracts.Oracle
 
             var report = await ReportContractStub.GetReport.CallAsync(new GetReportInput
             {
-                EthereumContractAddress = offChainAggregationInfo.EthereumContractAddress,
+                Token = offChainAggregationInfo.Token,
                 RoundId = 1
             });
             foreach (var observation in report.Observations.Value)

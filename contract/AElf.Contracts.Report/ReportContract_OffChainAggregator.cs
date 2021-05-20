@@ -13,8 +13,8 @@ namespace AElf.Contracts.Report
             RegisterOffChainAggregationInput input)
         {
             Assert(State.RegisterWhiteListMap[Context.Sender], "Sender not in register white list.");
-            Assert(State.OffChainAggregationInfoMap[input.EthereumContractAddress] == null,
-                $"Off chain aggregation info of {input.EthereumContractAddress} already registered.");
+            Assert(State.OffChainAggregationInfoMap[input.Token] == null,
+                $"Off chain aggregation info of {input.Token} already registered.");
             Assert(input.OffChainQueryInfoList.Value.Count >= 1, "At least 1 off-chain info.");
             if (input.OffChainQueryInfoList.Value.Count > 1)
             {
@@ -48,34 +48,59 @@ namespace AElf.Contracts.Report
 
             var offChainAggregationInfo = new OffChainAggregationInfo
             {
-                EthereumContractAddress = input.EthereumContractAddress,
+                Token = input.Token,
                 OffChainQueryInfoList = input.OffChainQueryInfoList,
                 ConfigDigest = input.ConfigDigest,
                 ObserverAssociationAddress = organizationAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress,
-                ChainType = input.ChainType
+                ChainType = input.ChainType,
+                Register = Context.Sender
             };
             for (var i = 0; i < input.OffChainQueryInfoList.Value.Count; i++)
             {
                 offChainAggregationInfo.RoundIds.Add(0);
             }
 
-            State.OffChainAggregationInfoMap[input.EthereumContractAddress] = offChainAggregationInfo;
-            State.CurrentRoundIdMap[input.EthereumContractAddress] = 1;
+            State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
+            State.CurrentRoundIdMap[input.Token] = 1;
 
             Context.Fire(new OffChainAggregationRegistered
             {
-                EthereumContractAddress = offChainAggregationInfo.EthereumContractAddress,
+                Token = offChainAggregationInfo.Token,
                 OffChainQueryInfoList = offChainAggregationInfo.OffChainQueryInfoList,
                 ConfigDigest = offChainAggregationInfo.ConfigDigest,
                 ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
                 AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress,
-                ChainType = offChainAggregationInfo.ChainType
+                ChainType = offChainAggregationInfo.ChainType,
+                Register = offChainAggregationInfo.Register
             });
 
             return offChainAggregationInfo;
+        }
+
+        public override Empty AddOffChainQueryInfo(AddOffChainQueryInfoInput input)
+        {
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
+            Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
+            offChainAggregationInfo.OffChainQueryInfoList.Value.Add(input.OffChainQueryInfo);
+            State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
+            return new Empty();
+        }
+
+        public override Empty RemoveOffChainQueryInfo(RemoveOffChainQueryInfoInput input)
+        {
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
+            Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
+            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > input.RemoveNodeIndex, "Invalid index.");
+            offChainAggregationInfo.OffChainQueryInfoList.Value[input.RemoveNodeIndex] =
+                new OffChainQueryInfo
+                {
+                    UrlToQuery = "invalid"
+                };
+            State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
+            return new Empty();
         }
 
         public override Empty AddRegisterWhiteList(Address input)

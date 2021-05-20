@@ -19,7 +19,7 @@ namespace AElf.Contracts.Report
         public const int SlotByteSize = 32;
         public const int DigestFixedLength = 16;
 
-        private string GenerateEthereumReport(ByteString configDigest, Address organization, Report report)
+        private string GenerateRawReport(ByteString configDigest, Address organization, Report report)
         {
             var data = new List<object>();
             Assert(configDigest.Length == DigestFixedLength, "invalid config digest");

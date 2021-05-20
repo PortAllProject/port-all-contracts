@@ -41,7 +41,7 @@ namespace AElf.Boilerplate.EventHandler
             var reportConfirmed = new ReportConfirmed();
             reportConfirmed.MergeFrom(logEvent);
             _logger.LogInformation(reportConfirmed.ToString());
-            var ethereumContractAddress = reportConfirmed.EthereumContractAddress;
+            var ethereumContractAddress = reportConfirmed.Token;
             var roundId = reportConfirmed.RoundId;
             _signaturesRecoverableInfoProvider.SetSignature(ethereumContractAddress, roundId, reportConfirmed.Signature);
             if (reportConfirmed.IsAllNodeConfirmed)

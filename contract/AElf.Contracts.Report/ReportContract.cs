@@ -47,7 +47,7 @@ namespace AElf.Contracts.Report
         public override Hash QueryOracle(QueryOracleInput input)
         {
             // Assert Observer Association is already registered.
-            var offChainAggregatorContract = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            var offChainAggregatorContract = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregatorContract == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -94,7 +94,7 @@ namespace AElf.Contracts.Report
                     ContractAddress = Context.Self,
                     MethodName = nameof(ProposeReport)
                 },
-                Token = input.EthereumContractAddress
+                Token = input.Token
             };
             if (offChainAggregatorContract.ObserverAssociationAddress != State.ParliamentContract.Value)
             {
@@ -187,9 +187,9 @@ namespace AElf.Contracts.Report
                 Context.Fire(new ReportProposed
                 {
                     ObserverAssociationAddress = plainResult.ObserverAssociationAddress,
-                    EthereumContractAddress = plainResult.Token,
+                    Token = plainResult.Token,
                     RoundId = currentRoundId,
-                    RawReport = GenerateEthereumReport(configDigest, plainResult.ObserverAssociationAddress, report)
+                    RawReport = GenerateRawReport(configDigest, plainResult.ObserverAssociationAddress, report)
                 });
             }
             else
@@ -222,7 +222,7 @@ namespace AElf.Contracts.Report
                 };
                 Context.Fire(new MerkleReportNodeAdded
                 {
-                    EthereumContractAddress = plainResult.Token,
+                    Token = plainResult.Token,
                     NodeIndex = nodeIndex,
                     NodeRoundId = nodeRoundId,
                     AggregatedData = aggregatedData
@@ -245,9 +245,9 @@ namespace AElf.Contracts.Report
                     Context.Fire(new ReportProposed
                     {
                         ObserverAssociationAddress = plainResult.ObserverAssociationAddress,
-                        EthereumContractAddress = plainResult.Token,
+                        Token = plainResult.Token,
                         RoundId = currentRoundId,
-                        RawReport = GenerateEthereumReport(configDigest, plainResult.ObserverAssociationAddress,
+                        RawReport = GenerateRawReport(configDigest, plainResult.ObserverAssociationAddress,
                             report)
                     });
                     State.CurrentRoundIdMap[plainResult.Token] = currentRoundId.Add(1);
@@ -283,16 +283,16 @@ namespace AElf.Contracts.Report
         public override Empty ConfirmReport(ConfirmReportInput input)
         {
             // Assert Sender is from certain Observer Association.
-            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
                 throw new AssertionException("Observer Association not exists.");
             }
 
-            Assert(State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] == null,
+            Assert(State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] == null,
                 "Sender already confirmed this report.");
 
-            var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
+            var report = State.ReportMap[input.Token][input.RoundId];
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
             Assert(!reportQueryRecord.IsAllNodeConfirmed, "This report is already confirmed by all nodes");
@@ -312,9 +312,9 @@ namespace AElf.Contracts.Report
                     "Sender isn't a member of certain Observer Association.");
             Assert(
                     string.IsNullOrEmpty(
-                        State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender]),
+                        State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender]),
                     $"Sender: {Context.Sender} has confirmed");
-            State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] =
+            State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] =
                 input.Signature;
             reportQueryRecord.NodeConfirmCount = reportQueryRecord.NodeConfirmCount.Add(1);
             if (reportQueryRecord.NodeConfirmCount == memberList.Count())
@@ -325,7 +325,7 @@ namespace AElf.Contracts.Report
             State.ReportQueryRecordMap[report.QueryId] = reportQueryRecord;
             Context.Fire(new ReportConfirmed
             {
-                EthereumContractAddress = input.EthereumContractAddress,
+                Token = input.Token,
                 RoundId = input.RoundId,
                 Signature = input.Signature,
                 ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
@@ -336,7 +336,7 @@ namespace AElf.Contracts.Report
 
         public override Empty RejectReport(RejectReportInput input)
         {
-            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
                 throw new AssertionException("Observer Association not exists.");
@@ -345,7 +345,7 @@ namespace AElf.Contracts.Report
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1,
                 "Merkle tree style aggregation doesn't support rejection.");
 
-            Assert(State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][Context.Sender] == null,
+            Assert(State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] == null,
                 "Sender already confirmed this report.");
             var organization =
                 State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
@@ -357,7 +357,7 @@ namespace AElf.Contracts.Report
                     "Accusing node isn't a member of certain Observer Association.");
             }
 
-            var report = State.ReportMap[input.EthereumContractAddress][input.RoundId];
+            var report = State.ReportMap[input.Token][input.RoundId];
             var senderData = report.Observations.Value.First(o => o.Key == Context.Sender.ToByteArray().ToHex()).Data;
             foreach (var accusingNode in input.AccusingNodes)
             {

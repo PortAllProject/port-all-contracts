@@ -65,23 +65,6 @@ namespace AElf.Contracts.Report
             return new Empty();
         }
 
-        public override Empty ProposeAdjustApplyObserverFee(Int64Value input)
-        {
-            // Sender mortgaged enough tokens.
-            Assert(
-                GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value) >=
-                State.ApplyObserverFee.Value.Mul(10), "No permission.");
-            State.ParliamentContract.CreateProposal.Send(new CreateProposalInput
-            {
-                ToAddress = Context.Self,
-                ContractMethodName = nameof(AdjustApplyObserverFee),
-                Params = input.ToByteString(),
-                ExpiredTime = Context.CurrentBlockTime.AddDays(1),
-                OrganizationAddress = State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty())
-            });
-            return new Empty();
-        }
-
         public override Empty AdjustApplyObserverFee(Int64Value input)
         {
             Assert(Context.Sender == State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),

@@ -37,15 +37,18 @@ service ReportContract {
 
     rpc QuitObserver (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
-    rpc ProposeAdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
-
     rpc AdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+
     rpc AdjustReportFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
     
     // Offchain Aggregator Contract management.
     
     rpc RegisterOffChainAggregation (RegisterOffChainAggregationInput) returns (OffChainAggregationInfo) {}
-    
+
+    rpc AddOffChainQueryInfo (AddOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
+
+    rpc RemoveOffChainQueryInfo (RemoveOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
+
     rpc AddRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
 
     rpc RemoveFromRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
@@ -73,10 +76,10 @@ service ReportContract {
     rpc GetCurrentRoundId (google.protobuf.StringValue) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
-    rpc GetEthererumReport (GetEthererumReportInput) returns (google.protobuf.StringValue) {
+    rpc GetRawReport (GetRawReportInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
-    rpc GenerateEthererumReport (GenerateEthererumReportInput) returns (google.protobuf.StringValue) {
+    rpc GenerateRawReport (GenerateRawReportInput) returns (google.protobuf.StringValue) {
         option (aelf.is_view) = true;
     }
     rpc GetSignatureMap (GetSignatureMapInput) returns (SignatureMap) {
@@ -99,20 +102,20 @@ message InitializeInput {
 
 message QueryOracleInput {
     int64 payment = 1;
-    string ethereum_contract_address = 2;
+    string token = 2;
     int32 aggregate_threshold = 3;
     aelf.Address aggregator_contract_address = 4;
     int32 node_index = 5;
 }
 
 message ConfirmReportInput {
-    string ethereum_contract_address = 1;
+    string token = 1;
     int64 round_id = 2;
     string signature = 3;
 }
 
 message RejectReportInput {
-    string ethereum_contract_address = 1;
+    string token = 1;
     int64 round_id = 2;
     repeated aelf.Address accusing_nodes = 3;
 }
@@ -151,13 +154,13 @@ message Observation {
 }
 
 message GetSignatureInput {
-    string ethereum_contract_address = 1;
+    string token = 1;
     int64 round_id = 2;
     aelf.Address address = 3;
 }
 
 message GetSignatureMapInput {
-    string ethereum_contract_address = 1;
+    string token = 1;
     int64 round_id = 2;
 }
 
@@ -166,7 +169,7 @@ message SignatureMap {
 }
 
 message OffChainAggregationInfo {
-    string ethereum_contract_address = 1;
+    string token = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
     aelf.Address observer_association_address = 3;
     bytes config_digest = 4;
@@ -174,16 +177,18 @@ message OffChainAggregationInfo {
     aelf.Address aggregator_contract_address = 6;
     repeated int32 round_ids = 7;
     string chain_type = 8;
+    aelf.Address register = 9;
 }
 
 message RegisterOffChainAggregationInput {
     ObserverList observer_list = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
-    string ethereum_contract_address = 3;
+    string token = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
     string chain_type = 7;
+    aelf.Address register = 8;
 }
 
 message OffChainQueryInfo {
@@ -192,22 +197,22 @@ message OffChainQueryInfo {
 }
 
 message GetReportInput {
-    string ethereum_contract_address = 1;
+    string token = 1;
     int64 round_id = 2;
 }
 
 message GetMerklePathInput {
-    string ethereum_contract_address = 1;
+    string token = 1;
     int64 round_id = 2;
     int32 node_index = 3;
 }
 
-message GetEthererumReportInput{
-    string ethereum_contract_address = 1;
+message GetRawReportInput{
+    string token = 1;
     int64 round_id = 2;
 }
 
-message GenerateEthererumReportInput{
+message GenerateRawReportInput{
     Report report = 1;
     bytes config_digest = 2;
     aelf.Address organization = 3;
@@ -217,13 +222,23 @@ message OffChainQueryInfoList {
     repeated OffChainQueryInfo value = 1;
 }
 
+message AddOffChainQueryInfoInput {
+    string token = 1;
+    OffChainQueryInfo off_chain_query_info = 2;
+}
+
+message RemoveOffChainQueryInfoInput {
+    string token = 1;
+    int32 remove_node_index = 2;
+}
+
 // Events
 
 message ReportProposed {
     option (aelf.is_event) = true;
     string raw_report = 1;
     aelf.Address observer_association_address = 2;
-    string ethereum_contract_address = 3;
+    string token = 3;
     int64 round_id = 4;
 }
 
@@ -232,24 +247,25 @@ message ReportConfirmed {
     int64 round_id = 1;
     string signature = 2;
     aelf.Address observer_association_address = 3;
-    string ethereum_contract_address = 4;
+    string token = 4;
     bool is_all_node_confirmed = 5;
 }
 
 message OffChainAggregationRegistered {
     option (aelf.is_event) = true;
-    string ethereum_contract_address = 1;
+    string token = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
     aelf.Address observer_association_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
     string chain_type = 7;
+    aelf.Address register = 8;
 }
 
 message MerkleReportNodeAdded {
     option (aelf.is_event) = true;
-    string ethereum_contract_address = 1;
+    string token = 1;
     int32 node_index = 2;
     int64 node_round_id = 3;
     string aggregated_data = 4;

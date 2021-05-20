@@ -8,14 +8,14 @@ namespace AElf.Contracts.Report
     {
         public override Report GetReport(GetReportInput input)
         {
-            return State.ReportMap[input.EthereumContractAddress][input.RoundId];
+            return State.ReportMap[input.Token][input.RoundId];
         }
 
         public override StringValue GetSignature(GetSignatureInput input)
         {
             return new StringValue
             {
-                Value = State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][input.Address]
+                Value = State.ObserverSignatureMap[input.Token][input.RoundId][input.Address]
             };
         }
 
@@ -31,7 +31,7 @@ namespace AElf.Contracts.Report
 
         public override MerklePath GetMerklePath(GetMerklePathInput input)
         {
-            return State.BinaryMerkleTreeMap[input.EthereumContractAddress][input.RoundId]
+            return State.BinaryMerkleTreeMap[input.Token][input.RoundId]
                 .GenerateMerklePath(input.NodeIndex);
         }
 
@@ -44,29 +44,29 @@ namespace AElf.Contracts.Report
             };
         }
 
-        public override StringValue GenerateEthererumReport(GenerateEthererumReportInput input)
+        public override StringValue GenerateRawReport(GenerateRawReportInput input)
         {
-            var report = GenerateEthereumReport(input.ConfigDigest, input.Organization, input.Report);
+            var report = GenerateRawReport(input.ConfigDigest, input.Organization, input.Report);
             return new StringValue
             {
                 Value = report
             };
         }
 
-        public override StringValue GetEthererumReport(GetEthererumReportInput input)
+        public override StringValue GetRawReport(GetRawReportInput input)
         {
-            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
-                throw new AssertionException($"contract: [{input.EthereumContractAddress}] info does not exist");
+                throw new AssertionException($"token: [{input.Token}] info does not exist");
             }
 
-            var roundReport = State.ReportMap[input.EthereumContractAddress][input.RoundId];
+            var roundReport = State.ReportMap[input.Token][input.RoundId];
             Assert(roundReport != null,
-                $"contract: [{input.EthereumContractAddress}]: round: [{input.RoundId}] info does not exist");
+                $"contract: [{input.Token}]: round: [{input.RoundId}] info does not exist");
             var configDigest = offChainAggregationInfo.ConfigDigest;
             var organization = offChainAggregationInfo.ObserverAssociationAddress;
-            var report = GenerateEthereumReport(configDigest, organization, roundReport);
+            var report = GenerateRawReport(configDigest, organization, roundReport);
             return new StringValue
             {
                 Value = report
@@ -75,7 +75,7 @@ namespace AElf.Contracts.Report
 
         public override SignatureMap GetSignatureMap(GetSignatureMapInput input)
         {
-            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.EthereumContractAddress];
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
                 throw new AssertionException("Report not exists.");
@@ -86,7 +86,7 @@ namespace AElf.Contracts.Report
             var signatureMap = new SignatureMap();
             foreach (var observer in organization.OrganizationMemberList.OrganizationMembers)
             {
-                var signature = State.ObserverSignatureMap[input.EthereumContractAddress][input.RoundId][observer];
+                var signature = State.ObserverSignatureMap[input.Token][input.RoundId][observer];
                 if (signature != null)
                 {
                     signatureMap.Value[observer.ToBase58()] = signature;
