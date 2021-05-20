@@ -106,7 +106,8 @@ namespace AElf.Contracts.Report
 
         private void AssertObserverQualified(Address address)
         {
-            Assert(State.ObserverMortgagedTokensMap[address] >= State.ApplyObserverFee.Value,
+            Assert(
+                State.ObserverMortgagedTokensMap[address] >= State.ApplyObserverFee.Value && State.ObserverMap[address],
                 $"{address} is not an observer candidate or mortgaged token not enough.");
         }
 
