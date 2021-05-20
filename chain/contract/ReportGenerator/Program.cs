@@ -115,31 +115,22 @@ namespace ReportGenerator
             var merkelTreeRoot = HashHelper.ComputeFrom("test");
             var report = new Report
             {
-                RoundId = 11, AggregatedData = merkelTreeRoot.Value, Observations = new Observations()
+                RoundId = 11, AggregatedData = merkelTreeRoot.Value.ToHex(), Observations = new Observations()
             };
             report.Observations.Value.Add(new Observation
             {
                 Key = "0",
-                Data = new StringValue
-                {
-                    Value = "1 :4"
-                }.ToByteString()
+                Data = "1 :4"
             });
             report.Observations.Value.Add(new Observation
             {
                 Key = "1",
-                Data = new StringValue
-                {
-                    Value = "1 :5"
-                }.ToByteString()
+                Data = "1 :5"
             });
             report.Observations.Value.Add(new Observation
             {
                 Key = "2",
-                Data = new StringValue
-                {
-                    Value = "1 :6"
-                }.ToByteString()
+                Data = "1 :6"
             });
             var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
             Console.WriteLine("0x" + bytesInEthereum);
@@ -152,13 +143,10 @@ namespace ReportGenerator
             var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
             //Console.WriteLine("digest length :" + digestBytes.Length);
             var digest = ByteString.CopyFrom(digestBytes);
-            var data = new StringValue()
-            {
-                Value = "asdas"
-            };
+            var data = "asdas";
             var report = new Report
             {
-                RoundId = 10, AggregatedData = data.ToByteString(), Observations = new Observations()
+                RoundId = 10, AggregatedData = data, Observations = new Observations()
             };
             var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
             Console.WriteLine("0x" + bytesInEthereum);
@@ -198,7 +186,7 @@ namespace ReportGenerator
             GenerateObserverIndex(32, out var observerIndex, out var observationsCount);
             data.Add(observerIndex);
             data.Add(observationsCount);
-            data.Add(FillObservationBytes(report.AggregatedData));
+            data.Add(FillObservationBytes(report.AggregatedData.GetBytes()));
             GenerateMultipleObservation(report, out var observerOrder, out var observationLength, out var observations);
             data.Add(observerOrder);
             data.Add(observationLength);
@@ -217,7 +205,7 @@ namespace ReportGenerator
             foreach (var observation in report.Observations.Value)
             {
                 observerOrder[i] = (byte) int.Parse(observation.Key);
-                var observationArray = observation.Data.ToByteArray();
+                var observationArray = observation.Data.GetBytes();
                 observationLength[i] = (byte)observationArray.Length;
                 BytesCopy(observationArray, 0, observations, offset, observationArray.Length);
                 i++;
@@ -229,7 +217,7 @@ namespace ReportGenerator
         {
             long round = report.RoundId;
             byte observerCount = (byte) report.Observations.Value.Count;
-            byte validBytesCount = (byte) report.AggregatedData.ToByteArray().Length;
+            byte validBytesCount = (byte) report.AggregatedData.GetBytes().Length;
             if (round < 0)
             {
                 throw new AssertionException("invalid round");
@@ -245,13 +233,12 @@ namespace ReportGenerator
             return configText;
         }
 
-        public byte[] FillObservationBytes(ByteString result)
+        public byte[] FillObservationBytes(byte[] result)
         {
-            var observation = result.ToByteArray();
-            if (observation.Length == SlotByteSize)
-                return observation;
+            if (result.Length == SlotByteSize)
+                return result;
             var ret = new byte[SlotByteSize];
-            BytesCopy(observation, 0, ret, 0, observation.Length);
+            BytesCopy(result, 0, ret, 0, result.Length);
             return ret;
         }
 

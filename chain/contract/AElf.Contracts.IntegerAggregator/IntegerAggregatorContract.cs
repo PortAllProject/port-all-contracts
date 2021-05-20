@@ -9,11 +9,10 @@ namespace AElf.Contracts.IntegerAggregator
 {
     public class IntegerAggregatorContract : IntegerAggregatorContractContainer.IntegerAggregatorContractBase
     {
-        public override BytesValue Aggregate(AggregateInput input)
+        public override StringValue Aggregate(AggregateInput input)
         {
-            var actualResults = input.Results.Select(r =>
+            var actualResults = input.Results.Select(str =>
             {
-                var str = StringValue.Parser.ParseFrom(r).Value;
                 if (str.Contains("\""))
                 {
                     str = str.Replace("\"", "");
@@ -33,7 +32,7 @@ namespace AElf.Contracts.IntegerAggregator
             return new StringValue
             {
                 Value = result
-            }.ToBytesValue();
+            };
         }
     }
 }

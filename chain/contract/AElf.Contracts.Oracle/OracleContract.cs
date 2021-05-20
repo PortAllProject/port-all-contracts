@@ -232,18 +232,18 @@ namespace AElf.Contracts.Oracle
             var actualDesignatedNodeList = GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
             Assert(actualDesignatedNodeList.Value.Contains(Context.Sender), "Sender was removed from designated node list.");
 
-            var dataHash = HashHelper.ComputeFrom(input.Data.ToByteArray());
+            var dataHash = HashHelper.ComputeFrom(input.Data);
 
             // Check commitment.
-            if (HashHelper.ConcatAndCompute(dataHash,
-                    HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58()))) !=
-                commitment)
+            var supposedCommitment = HashHelper.ConcatAndCompute(dataHash,
+                HashHelper.ConcatAndCompute(input.Salt, HashHelper.ComputeFrom(Context.Sender.ToBase58())));
+            if (supposedCommitment != commitment)
             {
                 Context.Fire(new CommitmentRevealFailed
                 {
                     QueryId = input.QueryId,
                     Commitment = commitment,
-                    Data = input.Data,
+                    RevealData = input.Data,
                     Salt = input.Salt,
                     OracleNodeAddress = Context.Sender
                 });
@@ -254,7 +254,7 @@ namespace AElf.Contracts.Oracle
             {
                 QueryId = input.QueryId,
                 Commitment = commitment,
-                Data = input.Data,
+                RevealData = input.Data,
                 Salt = input.Salt,
                 OracleNodeAddress = Context.Sender
             });
@@ -302,14 +302,15 @@ namespace AElf.Contracts.Oracle
             else
             {
                 // Record data to node data list.
-                var nodeDataList = State.NodeDataListMap[input.QueryId] ?? new NodeDataList
+                var nodeDataList = State.PlainResultMap[input.QueryId] ?? new PlainResult
                 {
                     ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First(),
                     QueryInfo = queryRecord.QueryInfo,
-                    Token = queryRecord.Token
+                    Token = queryRecord.Token,
+                    DataRecords = new DataRecords()
                 };
-                nodeDataList.Value.Add(new NodeData {Address = Context.Sender, Data = input.Data});
-                State.NodeDataListMap[input.QueryId] = nodeDataList;
+                nodeDataList.DataRecords.Value.Add(new DataRecord {Address = Context.Sender, Data = input.Data});
+                State.PlainResultMap[input.QueryId] = nodeDataList;
             }
 
             if (helpfulNodeList.Value.Count >= queryRecord.AggregateThreshold)
@@ -347,17 +348,30 @@ namespace AElf.Contracts.Oracle
                 // Call Aggregator plugin contract.
                 State.OracleAggregatorContract.Value = queryRecord.AggregatorContractAddress;
                 var resultList = State.ResultListMap[queryRecord.QueryId];
-                finalResult = State.OracleAggregatorContract.Aggregate.Call(new AggregateInput
+                var finalResultStr = State.OracleAggregatorContract.Aggregate.Call(new AggregateInput
                 {
                     Results = {resultList.Results},
                     Frequencies = {resultList.Frequencies}
+                }).Value;
+                finalResult = new StringValue {Value = finalResultStr}.ToBytesValue();
+                queryRecord.FinalResult = finalResultStr;
+
+                Context.Fire(new QueryCompletedWithAggregation
+                {
+                    QueryId = queryRecord.QueryId,
+                    Result = finalResultStr
                 });
-                queryRecord.FinalResult = finalResult.Value;
             }
             else
             {
                 // Give all the origin data provided by oracle nodes.
-                finalResult = State.NodeDataListMap[queryRecord.QueryId].ToBytesValue();
+                var plainResult = State.PlainResultMap[queryRecord.QueryId];
+                finalResult = plainResult.ToBytesValue();
+                Context.Fire(new QueryCompletedWithoutAggregation
+                {
+                    QueryId = queryRecord.QueryId,
+                    Result = plainResult
+                });
             }
 
             // Update FinalResult field.
@@ -374,12 +388,6 @@ namespace AElf.Contracts.Oracle
                     OracleNodes = {queryRecord.DesignatedNodeList.Value}
                 });
             }
-
-            Context.Fire(new QueryCompleted
-            {
-                QueryId = queryRecord.QueryId,
-                Result = finalResult.Value
-            });
         }
 
         public override Empty CancelQuery(Hash input)
@@ -392,7 +400,9 @@ namespace AElf.Contracts.Oracle
 
             Assert(queryRecord.QuerySender == Context.Sender, "No permission to cancel this query.");
             Assert(queryRecord.ExpirationTimestamp <= Context.CurrentBlockTime, "Query not expired.");
-            Assert(!queryRecord.IsSufficientDataCollected && queryRecord.FinalResult.IsNullOrEmpty(),
+            Assert(
+                !queryRecord.IsSufficientDataCollected && string.IsNullOrEmpty(queryRecord.FinalResult) &&
+                (queryRecord.DataRecords == null || queryRecord.DataRecords.Value.Count == 0),
                 "Query already finished.");
             Assert(!queryRecord.IsCancelled, "Query already cancelled.");
 
@@ -422,6 +432,10 @@ namespace AElf.Contracts.Oracle
                 }
             }
 
+            Context.Fire(new QueryCancelled
+            {
+                QueryId = input
+            });
             return new Empty();
         }
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AElf.Boilerplate.EventHandler.Http;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
@@ -88,6 +89,7 @@ namespace AElf.Boilerplate.EventHandler
             try
             {
                 var client = new HttpClient();
+                client.Timeout = TimeSpan.FromMinutes(2);
                 var responseMessage = await client.GetAsync(url);
                 response = await responseMessage.Content.ReadAsStringAsync();
             }

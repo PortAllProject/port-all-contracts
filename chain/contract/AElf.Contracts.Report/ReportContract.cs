@@ -151,13 +151,13 @@ namespace AElf.Contracts.Report
                 "Only Oracle Contract can propose report.");
             Assert(State.ReportQueryRecordMap[input.QueryId] != null, "This query is not initialed by Report Contract.");
 
-            var nodeDataList = new NodeDataList();
-            nodeDataList.MergeFrom(input.Result);
+            var plainResult = new PlainResult();
+            plainResult.MergeFrom(input.Result);
 
-            var currentRoundId = State.CurrentRoundIdMap[nodeDataList.Token];
+            var currentRoundId = State.CurrentRoundIdMap[plainResult.Token];
 
             var offChainAggregationInfo =
-                State.OffChainAggregationInfoMap[nodeDataList.Token];
+                State.OffChainAggregationInfoMap[plainResult.Token];
 
             Report report;
             var configDigest = offChainAggregationInfo.ConfigDigest;
@@ -167,7 +167,7 @@ namespace AElf.Contracts.Report
                 {
                     Value =
                     {
-                        nodeDataList.Value.Select(d => new Observation
+                        plainResult.DataRecords.Value.Select(d => new Observation
                         {
                             Key = d.Address.ToByteArray().ToHex(),
                             Data = d.Data
@@ -179,33 +179,33 @@ namespace AElf.Contracts.Report
                     QueryId = input.QueryId,
                     RoundId = currentRoundId,
                     Observations = originObservations,
-                    AggregatedData = GetAggregatedData(offChainAggregationInfo, nodeDataList).Value
+                    AggregatedData = GetAggregatedData(offChainAggregationInfo, plainResult)
                 };
-                State.ReportMap[nodeDataList.Token][currentRoundId] = report;
-                State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
-                report.Observers.Add(new ObserverList {Value = {nodeDataList.Value.Select(d => d.Address)}});
+                State.ReportMap[plainResult.Token][currentRoundId] = report;
+                State.CurrentRoundIdMap[plainResult.Token] = currentRoundId.Add(1);
+                report.Observers.Add(new ObserverList {Value = {plainResult.DataRecords.Value.Select(d => d.Address)}});
                 Context.Fire(new ReportProposed
                 {
-                    ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
-                    EthereumContractAddress = nodeDataList.Token,
+                    ObserverAssociationAddress = plainResult.ObserverAssociationAddress,
+                    EthereumContractAddress = plainResult.Token,
                     RoundId = currentRoundId,
-                    RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress, report)
+                    RawReport = GenerateEthereumReport(configDigest, plainResult.ObserverAssociationAddress, report)
                 });
             }
             else
             {
                 var offChainQueryInfo = new OffChainQueryInfo
                 {
-                    UrlToQuery = nodeDataList.QueryInfo.UrlToQuery,
-                    AttributesToFetch = {nodeDataList.QueryInfo.AttributesToFetch}
+                    UrlToQuery = plainResult.QueryInfo.UrlToQuery,
+                    AttributesToFetch = {plainResult.QueryInfo.AttributesToFetch}
                 };
                 var nodeIndex = offChainAggregationInfo.OffChainQueryInfoList.Value.IndexOf(offChainQueryInfo);
                 var nodeRoundId = offChainAggregationInfo.RoundIds[nodeIndex];
                 Assert(nodeRoundId.Add(1) == currentRoundId,
                     $"Data of {offChainQueryInfo} already revealed.{nodeIndex}\n{offChainAggregationInfo}");
                 offChainAggregationInfo.RoundIds[nodeIndex] = nodeRoundId.Add(1);
-                var aggregatedData = GetAggregatedData(offChainAggregationInfo, nodeDataList);
-                report = State.ReportMap[nodeDataList.Token][currentRoundId] ?? new Report
+                var aggregatedData = GetAggregatedData(offChainAggregationInfo, plainResult);
+                report = State.ReportMap[plainResult.Token][currentRoundId] ?? new Report
                 {
                     QueryId = input.QueryId,
                     RoundId = currentRoundId,
@@ -214,70 +214,70 @@ namespace AElf.Contracts.Report
                 report.Observations.Value.Add(new Observation
                 {
                     Key = nodeIndex.ToString(),
-                    Data = aggregatedData.Value
+                    Data = aggregatedData
                 });
-                State.NodeObserverListMap[nodeDataList.Token][currentRoundId][nodeIndex] = new ObserverList
+                State.NodeObserverListMap[plainResult.Token][currentRoundId][nodeIndex] = new ObserverList
                 {
-                    Value = {nodeDataList.Value.Select(d => d.Address)}
+                    Value = {plainResult.DataRecords.Value.Select(d => d.Address)}
                 };
                 Context.Fire(new MerkleReportNodeAdded
                 {
-                    EthereumContractAddress = nodeDataList.Token,
+                    EthereumContractAddress = plainResult.Token,
                     NodeIndex = nodeIndex,
                     NodeRoundId = nodeRoundId,
-                    AggregatedData = aggregatedData.Value
+                    AggregatedData = aggregatedData
                 });
                 if (offChainAggregationInfo.RoundIds.All(i => i >= currentRoundId))
                 {
                     // Time to generate merkle tree.
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(report.Observations.Value
                         .OrderBy(o => int.Parse(o.Key))
-                        .Select(o => HashHelper.ComputeFrom(o.Data.ToByteArray())));
-                    State.BinaryMerkleTreeMap[nodeDataList.Token][currentRoundId] = merkleTree;
-                    report.AggregatedData = merkleTree.Root.Value;
+                        .Select(o => HashHelper.ComputeFrom(o.Data)));
+                    State.BinaryMerkleTreeMap[plainResult.Token][currentRoundId] = merkleTree;
+                    report.AggregatedData = merkleTree.Root.Value.ToHex();
 
                     for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfoList.Value.Count; i++)
                     {
-                        report.Observers.Add(State.NodeObserverListMap[nodeDataList.Token][currentRoundId][i]);
-                        State.NodeObserverListMap[nodeDataList.Token][currentRoundId].Remove(i);
+                        report.Observers.Add(State.NodeObserverListMap[plainResult.Token][currentRoundId][i]);
+                        State.NodeObserverListMap[plainResult.Token][currentRoundId].Remove(i);
                     }
 
                     Context.Fire(new ReportProposed
                     {
-                        ObserverAssociationAddress = nodeDataList.ObserverAssociationAddress,
-                        EthereumContractAddress = nodeDataList.Token,
+                        ObserverAssociationAddress = plainResult.ObserverAssociationAddress,
+                        EthereumContractAddress = plainResult.Token,
                         RoundId = currentRoundId,
-                        RawReport = GenerateEthereumReport(configDigest, nodeDataList.ObserverAssociationAddress,
+                        RawReport = GenerateEthereumReport(configDigest, plainResult.ObserverAssociationAddress,
                             report)
                     });
-                    State.CurrentRoundIdMap[nodeDataList.Token] = currentRoundId.Add(1);
+                    State.CurrentRoundIdMap[plainResult.Token] = currentRoundId.Add(1);
                 }
 
-                State.ReportMap[nodeDataList.Token][currentRoundId] = report;
+                State.ReportMap[plainResult.Token][currentRoundId] = report;
             }
 
             return report;
         }
 
-        private BytesValue GetAggregatedData(OffChainAggregationInfo offChainAggregationInfo,
-            NodeDataList nodeDataList)
+        private string GetAggregatedData(OffChainAggregationInfo offChainAggregationInfo,
+            PlainResult plainResult)
         {
             var aggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress;
             if (aggregatorContractAddress == null)
             {
-                return new BytesValue();
+                return string.Empty;
             }
 
             State.AggregatorContract.Value = aggregatorContractAddress;
             var aggregateInput = new AggregateInput();
-            foreach (var nodeData in nodeDataList.Value)
+            foreach (var nodeData in plainResult.DataRecords.Value)
             {
                 aggregateInput.Results.Add(nodeData.Data);
                 aggregateInput.Frequencies.Add(1);
             }
 
             // Use an ACS13 Contract to aggregate a data.
-            return State.AggregatorContract.Aggregate.Call(aggregateInput);
+            return State.AggregatorContract.Aggregate.Call(aggregateInput).Value;
         }
 
         public override Empty ConfirmReport(ConfirmReportInput input)

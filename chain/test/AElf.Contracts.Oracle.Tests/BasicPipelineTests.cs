@@ -92,14 +92,12 @@ namespace AElf.Contracts.Oracle
 
             newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             newQueryRecord.IsSufficientDataCollected.ShouldBeTrue();
-            var result = new StringValue();
-            result.MergeFrom(newQueryRecord.FinalResult);
-            result.Value.ShouldBe("10.2");
+            newQueryRecord.FinalResult.ShouldBe("10.2");
 
             await OracleNodeList[3].Reveal.SendWithExceptionAsync(new RevealInput
             {
                 QueryId = queryRecord.QueryId,
-                Data = new StringValue {Value = "10.4"}.ToByteString(),
+                Data = "10.4",
                 Salt = HashHelper.ComputeFrom("Salt3")
             });
         }
@@ -115,7 +113,7 @@ namespace AElf.Contracts.Oracle
                 {
                     QueryId = queryId,
                     Commitment = HashHelper.ConcatAndCompute(
-                        HashHelper.ComputeFrom(new StringValue {Value = temperature}),
+                        HashHelper.ComputeFrom(temperature),
                         HashHelper.ConcatAndCompute(HashHelper.ComputeFrom($"Salt{i}"),
                             HashHelper.ComputeFrom(address.ToBase58())))
                 });
@@ -134,7 +132,7 @@ namespace AElf.Contracts.Oracle
                 await OracleNodeList[i].Reveal.SendAsync(new RevealInput
                 {
                     QueryId = queryId,
-                    Data = new StringValue {Value = temperature}.ToByteString(),
+                    Data = temperature,
                     Salt = HashHelper.ComputeFrom($"Salt{i}")
                 });
             }

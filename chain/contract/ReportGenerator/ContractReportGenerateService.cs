@@ -39,14 +39,14 @@ namespace ReportGenerator
             var data = new object[3];
             data[0] = GenerateConfigText(configDigest, report);
             data[1] = GenerateObserverIndex(report);
-            data[2] = GenerateObservation(report.AggregatedData);
+            data[2] = GenerateObservation(report.AggregatedData.GetBytes());
             return SerializeReport(data, Bytes32, Bytes32, Bytes32).ToArray().ToHex();
         }
         private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
         {
             long round = report.RoundId;
             byte observerCount = (byte)report.Observations.Value.Count;
-            byte validBytesCount = (byte) report.AggregatedData.ToByteArray().Length;
+            byte validBytesCount = (byte) report.AggregatedData.GetBytes().Length;
             if (round < 0)
             {
                 throw new AssertionException("invalid round");
@@ -61,13 +61,12 @@ namespace ReportGenerator
             return configText;
         }
 
-        private IList<byte> GenerateObservation(ByteString result)
+        private IList<byte> GenerateObservation(byte[] result)
         {
-            var observation = result.ToByteArray();
-            if (observation.Length == SlotByteSize)
-                return observation;
+            if (result.Length == SlotByteSize)
+                return result;
             var ret = GetByteListWithCount(SlotByteSize);
-            BytesCopy(observation, 0, ret, 0, observation.Length);
+            BytesCopy(result, 0, ret, 0, result.Length);
             return ret;
         }
         

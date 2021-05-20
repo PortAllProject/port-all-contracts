@@ -121,7 +121,7 @@ message Report {
     aelf.Hash query_id = 1;
     int64 round_id = 2;
     Observations observations  = 3;
-    bytes aggregated_data = 4;
+    string aggregated_data = 4;
     repeated ObserverList observers = 5;
 }
 
@@ -147,7 +147,7 @@ message Observations {
 
 message Observation {
     string key = 1;
-    bytes data = 2;
+    string data = 2;
 }
 
 message GetSignatureInput {
@@ -252,5 +252,5 @@ message MerkleReportNodeAdded {
     string ethereum_contract_address = 1;
     int32 node_index = 2;
     int64 node_round_id = 3;
-    bytes aggregated_data = 4;
+    string aggregated_data = 4;
 }

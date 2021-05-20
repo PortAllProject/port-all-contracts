@@ -33,7 +33,7 @@ namespace AElf.Contracts.Oracle
         /// <summary>
         /// For queries no need to aggregate.
         /// </summary>
-        public MappedState<Hash, NodeDataList> NodeDataListMap { get; set; }
+        public MappedState<Hash, PlainResult> PlainResultMap { get; set; }
 
         public MappedState<Address, long> OracleNodesLockedTokenAmountMap { get; set; }
 

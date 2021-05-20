@@ -35,6 +35,7 @@ namespace AElf.Boilerplate.EventHandler
             if (!nodeManager.TransactionManager.IsKeyReady())
             {
                 _logger.LogError("Something wrong with key store.");
+                return Task.CompletedTask;
             }
 
             var contractAddressOptions =

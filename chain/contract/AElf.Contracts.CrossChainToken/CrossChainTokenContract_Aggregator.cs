@@ -6,10 +6,10 @@ namespace AElf.Contracts.CrossChainToken
 {
     public partial class CrossChainTokenContract
     {
-        public override BytesValue Aggregate(AggregateInput input)
+        public override StringValue Aggregate(AggregateInput input)
         {
             var indexOfMax = input.Frequencies.IndexOf(input.Frequencies.Max());
-            return new BytesValue {Value = input.Results[indexOfMax]};
+            return new StringValue {Value = input.Results[indexOfMax]};
         }
     }
 }

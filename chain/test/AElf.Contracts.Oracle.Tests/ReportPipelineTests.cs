@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AElf.Contracts.IntegerAggregator;
 using AElf.Contracts.MultiToken;
@@ -140,15 +141,11 @@ namespace AElf.Contracts.Oracle
             });
             for (var i = 0; i < report.Observations.Value.Count; i++)
             {
-                report.Observations.Value[i].Data.ShouldBe(new StringValue
-                {
-                    Value = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)
-                }.ToByteString());
+                report.Observations.Value[i].Data
+                    .ShouldBe(((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture));
             }
 
-            var aggregatedValue = new StringValue();
-            aggregatedValue.MergeFrom(report.AggregatedData);
-            aggregatedValue.Value.ShouldBe("2.222");
+            report.AggregatedData.ShouldBe("2.222");
         }
 
         [Fact]
@@ -244,15 +241,14 @@ namespace AElf.Contracts.Oracle
                 EthereumContractAddress = offChainAggregationInfo.EthereumContractAddress,
                 RoundId = 1
             });
-            var string2 = new StringValue {Value = "2.222"};
             foreach (var observation in report.Observations.Value)
             {
-                observation.Data.ShouldBe(string2.ToByteString());
+                observation.Data.ShouldBe("2.222");
             }
 
-            var string2Hash = HashHelper.ComputeFrom(string2.ToByteArray());
+            var string2Hash = HashHelper.ComputeFrom("2.222");
             var supposedMerkleTree = BinaryMerkleTree.FromLeafNodes(new[] {string2Hash, string2Hash, string2Hash});
-            report.AggregatedData.ShouldBe(supposedMerkleTree.Root.Value);
+            report.AggregatedData.ShouldBe(supposedMerkleTree.Root.Value.ToHex());
         }
 
         private async Task CommitAsync(Hash queryId)
@@ -264,8 +260,7 @@ namespace AElf.Contracts.Oracle
                 {
                     QueryId = queryId,
                     Commitment = HashHelper.ConcatAndCompute(
-                        HashHelper.ComputeFrom(new StringValue
-                            {Value = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)}),
+                        HashHelper.ComputeFrom(((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)),
                         HashHelper.ConcatAndCompute(HashHelper.ComputeFrom($"Salt{i}"),
                             HashHelper.ComputeFrom(address.ToBase58())))
                 });
@@ -282,8 +277,7 @@ namespace AElf.Contracts.Oracle
                 await ObserverOracleStubs[i].Reveal.SendAsync(new RevealInput
                 {
                     QueryId = queryId,
-                    Data = new StringValue {Value = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture)}
-                        .ToByteString(),
+                    Data = ((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture),
                     Salt = HashHelper.ComputeFrom($"Salt{i}")
                 });
             }

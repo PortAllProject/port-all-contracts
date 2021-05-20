@@ -110,7 +110,7 @@ message QueryRecord {
     google.protobuf.Timestamp expiration_timestamp = 3;
     bool is_sufficient_commitments_collected = 4;
     bool is_sufficient_data_collected = 5;
-    bytes final_result = 6;
+    string final_result = 6;
     int64 payment = 7;
     CallbackInfo callback_info = 8;
     aelf.Hash query_id = 9;
@@ -121,6 +121,7 @@ message QueryRecord {
     bool is_cancelled = 14;
     QueryInfo query_info = 15;
     string token = 16;
+    DataRecords data_records = 17;
 }
 
 message CommitInput {
@@ -130,7 +131,7 @@ message CommitInput {
 
 message RevealInput {
     aelf.Hash query_id = 1;
-    bytes data = 2;
+    string data = 2;
     aelf.Hash salt = 3;
 }
 
@@ -145,17 +146,21 @@ message OracleNodeThreshold {
 }
 
 message ResultList {
-    repeated bytes results = 1;
+    repeated string results = 1;
     repeated int32 frequencies = 2;
 }
 
-message NodeData {
+message DataRecord {
     aelf.Address address = 1;
-    bytes data = 2;
+    string data = 2;
 }
 
-message NodeDataList {
-    repeated NodeData value = 1;
+message DataRecords {
+    repeated DataRecord value = 1;
+}
+
+message PlainResult {
+    DataRecords data_records = 1;
     aelf.Address observer_association_address = 2;
     QueryInfo query_info = 3;
     string token = 4;
@@ -193,8 +198,7 @@ message QueryCreated {
 
 message QueryCancelled {
     option (aelf.is_event) = true;
-    bytes query_id = 1;
-    google.protobuf.Timestamp cancel_time = 2;
+    aelf.Hash query_id = 1;
 }
 
 message SufficientCommitmentsCollected {
@@ -214,7 +218,7 @@ message CommitmentRevealed {
     aelf.Hash query_id = 1;
     aelf.Address oracle_node_address = 2;
     aelf.Hash commitment = 3;
-    bytes data = 4;
+    string reveal_data = 4;
     aelf.Hash salt = 5;
 }
 
@@ -223,14 +227,20 @@ message CommitmentRevealFailed {
     aelf.Hash query_id = 1;
     aelf.Address oracle_node_address = 2;
     aelf.Hash commitment = 3;
-    bytes data = 4;
+    string reveal_data = 4;
     aelf.Hash salt = 5;
 }
 
-message QueryCompleted {
+message QueryCompletedWithAggregation {
     option (aelf.is_event) = true;
     aelf.Hash query_id = 1;
-    bytes result = 2;
+    string result = 2;
+}
+
+message QueryCompletedWithoutAggregation {
+    option (aelf.is_event) = true;
+    aelf.Hash query_id = 1;
+    PlainResult result = 2;
 }
 
 message TokenLocked {

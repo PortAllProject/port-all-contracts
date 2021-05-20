@@ -30,9 +30,9 @@ namespace AElf.Contracts.Report
             data.Add(config);
             data.Add(observerIndex);
             data.Add(observationsCount);
-            var aggregatedData = report.AggregatedData;
+            var aggregatedData = report.AggregatedData.GetBytes();
             Assert(aggregatedData.Length <= SlotByteSize, "aggregated data is oversize(32 bytes)");
-            data.Add(FillObservationBytes(report.AggregatedData));
+            data.Add(FillObservationBytes(report.AggregatedData.GetBytes()));
             GenerateMultipleObservation(report, out var observerOrder, out var observationsLength,
                 out var observations);
             data.Add(observerOrder);
@@ -52,7 +52,7 @@ namespace AElf.Contracts.Report
         private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
         {
             long round = report.RoundId;
-            byte validBytesCount = (byte) report.AggregatedData.ToByteArray().Length;
+            byte validBytesCount = (byte) report.AggregatedData.GetBytes().Length;
             if (round < 0)
             {
                 throw new AssertionException("invalid round");
@@ -73,13 +73,12 @@ namespace AElf.Contracts.Report
             return configText;
         }
 
-        private IList<byte> FillObservationBytes(ByteString result)
+        private IList<byte> FillObservationBytes(byte[] result)
         {
-            var observation = result.ToByteArray();
-            if (observation.Length == SlotByteSize)
-                return observation;
+            if (result.Length == SlotByteSize)
+                return result;
             var ret = GetByteListWithCapacity(SlotByteSize);
-            BytesCopy(observation, 0, ret, 0, observation.Length);
+            BytesCopy(result, 0, ret, 0, result.Length);
             return ret;
         }
 
@@ -133,9 +132,9 @@ namespace AElf.Contracts.Report
             {
                 Assert(int.TryParse(observation.Key, out var order), $"invalid observation key : {observation.Key}");
                 observerOrder[i] = (byte) order;
-                observation.Data = TransferToAsciiString(observation.Data);
+                observation.Data = observation.Data;
                 observationsLength[i] = (byte) observation.Data.Length;
-                observations.AddRange(FillObservationBytes(observation.Data));
+                observations.AddRange(FillObservationBytes(observation.Data.GetBytes()));
                 i++;
             }
         }
