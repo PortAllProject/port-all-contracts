@@ -85,6 +85,7 @@ namespace AElf.Contracts.Report
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
             offChainAggregationInfo.OffChainQueryInfoList.Value.Add(input.OffChainQueryInfo);
+            offChainAggregationInfo.RoundIds.Add(State.CurrentRoundIdMap[input.Token]);
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             return new Empty();
         }
@@ -99,6 +100,7 @@ namespace AElf.Contracts.Report
                 {
                     UrlToQuery = "invalid"
                 };
+            offChainAggregationInfo.RoundIds[input.RemoveNodeIndex] = -1;
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             return new Empty();
         }

@@ -29,6 +29,11 @@ namespace AElf.Boilerplate.EventHandler
 
         public async Task<string> GetDataAsync(Hash queryId, string url = null, List<string> attributes = null)
         {
+            if (url == "invalid")
+            {
+                return "0";
+            }
+
             if (_dictionary.TryGetValue(queryId, out var data))
             {
                 return data;

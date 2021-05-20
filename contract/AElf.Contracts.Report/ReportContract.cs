@@ -47,8 +47,8 @@ namespace AElf.Contracts.Report
         public override Hash QueryOracle(QueryOracleInput input)
         {
             // Assert Observer Association is already registered.
-            var offChainAggregatorContract = State.OffChainAggregationInfoMap[input.Token];
-            if (offChainAggregatorContract == null)
+            var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
+            if (offChainAggregationInfo == null)
             {
                 throw new AssertionException("Observer Association not exists.");
             }
@@ -66,27 +66,29 @@ namespace AElf.Contracts.Report
                 });
             }
 
-            Assert(offChainAggregatorContract.OffChainQueryInfoList.Value.Count > input.NodeIndex,
+            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > input.NodeIndex,
                 "Invalid node index.");
+            Assert(offChainAggregationInfo.RoundIds[input.NodeIndex] != -1,
+                $"Query info of index {input.NodeIndex} already removed.");
             var queryInput = new QueryInput
             {
                 Payment = input.Payment,
-                AggregateThreshold = Math.Max(offChainAggregatorContract.AggregateThreshold, input.AggregateThreshold),
+                AggregateThreshold = Math.Max(offChainAggregationInfo.AggregateThreshold, input.AggregateThreshold),
                 // DO NOT FILL THIS FILED.
                 // AggregatorContractAddress = null,
                 QueryInfo = new QueryInfo
                 {
-                    UrlToQuery = offChainAggregatorContract.OffChainQueryInfoList.Value[input.NodeIndex].UrlToQuery,
+                    UrlToQuery = offChainAggregationInfo.OffChainQueryInfoList.Value[input.NodeIndex].UrlToQuery,
                     AttributesToFetch =
                     {
-                        offChainAggregatorContract.OffChainQueryInfoList.Value[input.NodeIndex].AttributesToFetch
+                        offChainAggregationInfo.OffChainQueryInfoList.Value[input.NodeIndex].AttributesToFetch
                     }
                 },
                 DesignatedNodeList = new AddressList
                 {
                     Value =
                     {
-                        offChainAggregatorContract.ObserverAssociationAddress
+                        offChainAggregationInfo.ObserverAssociationAddress
                     }
                 },
                 CallbackInfo = new CallbackInfo
@@ -96,11 +98,11 @@ namespace AElf.Contracts.Report
                 },
                 Token = input.Token
             };
-            if (offChainAggregatorContract.ObserverAssociationAddress != State.ParliamentContract.Value)
+            if (offChainAggregationInfo.ObserverAssociationAddress != State.ParliamentContract.Value)
             {
                 // Check oracle node ability again.
                 var oracleNodeList = State.AssociationContract.GetOrganization
-                    .Call(offChainAggregatorContract.ObserverAssociationAddress).OrganizationMemberList
+                    .Call(offChainAggregationInfo.ObserverAssociationAddress).OrganizationMemberList
                     .OrganizationMembers.ToList();
                 foreach (var nodeAddress in oracleNodeList)
                 {
@@ -201,6 +203,7 @@ namespace AElf.Contracts.Report
                 };
                 var nodeIndex = offChainAggregationInfo.OffChainQueryInfoList.Value.IndexOf(offChainQueryInfo);
                 var nodeRoundId = offChainAggregationInfo.RoundIds[nodeIndex];
+                Assert(nodeRoundId != -1, $"Query info of index {nodeIndex} already removed.");
                 Assert(nodeRoundId.Add(1) == currentRoundId,
                     $"Data of {offChainQueryInfo} already revealed.{nodeIndex}\n{offChainAggregationInfo}");
                 offChainAggregationInfo.RoundIds[nodeIndex] = nodeRoundId.Add(1);
@@ -227,7 +230,7 @@ namespace AElf.Contracts.Report
                     NodeRoundId = nodeRoundId,
                     AggregatedData = aggregatedData
                 });
-                if (offChainAggregationInfo.RoundIds.All(i => i >= currentRoundId))
+                if (offChainAggregationInfo.RoundIds.All(i => i >= currentRoundId || i == -1))
                 {
                     // Time to generate merkle tree.
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(report.Observations.Value
