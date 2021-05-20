@@ -11,7 +11,7 @@ using aelf = global::AElf.CSharp.Core;
 namespace AElf.Contracts.Oracle {
 
   #region Events
-  public partial class QueryCreated : aelf::IEvent<QueryCreated>
+  internal partial class QueryCreated : aelf::IEvent<QueryCreated>
   {
     public global::System.Collections.Generic.IEnumerable<QueryCreated> GetIndexed()
     {
@@ -38,7 +38,7 @@ namespace AElf.Contracts.Oracle {
     }
   }
 
-  public partial class QueryCancelled : aelf::IEvent<QueryCancelled>
+  internal partial class QueryCancelled : aelf::IEvent<QueryCancelled>
   {
     public global::System.Collections.Generic.IEnumerable<QueryCancelled> GetIndexed()
     {
@@ -52,12 +52,11 @@ namespace AElf.Contracts.Oracle {
       return new QueryCancelled
       {
         QueryId = QueryId,
-        CancelTime = CancelTime,
       };
     }
   }
 
-  public partial class SufficientCommitmentsCollected : aelf::IEvent<SufficientCommitmentsCollected>
+  internal partial class SufficientCommitmentsCollected : aelf::IEvent<SufficientCommitmentsCollected>
   {
     public global::System.Collections.Generic.IEnumerable<SufficientCommitmentsCollected> GetIndexed()
     {
@@ -75,7 +74,7 @@ namespace AElf.Contracts.Oracle {
     }
   }
 
-  public partial class Committed : aelf::IEvent<Committed>
+  internal partial class Committed : aelf::IEvent<Committed>
   {
     public global::System.Collections.Generic.IEnumerable<Committed> GetIndexed()
     {
@@ -95,7 +94,7 @@ namespace AElf.Contracts.Oracle {
     }
   }
 
-  public partial class CommitmentRevealed : aelf::IEvent<CommitmentRevealed>
+  internal partial class CommitmentRevealed : aelf::IEvent<CommitmentRevealed>
   {
     public global::System.Collections.Generic.IEnumerable<CommitmentRevealed> GetIndexed()
     {
@@ -111,13 +110,13 @@ namespace AElf.Contracts.Oracle {
         QueryId = QueryId,
         OracleNodeAddress = OracleNodeAddress,
         Commitment = Commitment,
-        Data = Data,
+        RevealData = RevealData,
         Salt = Salt,
       };
     }
   }
 
-  public partial class CommitmentRevealFailed : aelf::IEvent<CommitmentRevealFailed>
+  internal partial class CommitmentRevealFailed : aelf::IEvent<CommitmentRevealFailed>
   {
     public global::System.Collections.Generic.IEnumerable<CommitmentRevealFailed> GetIndexed()
     {
@@ -133,24 +132,24 @@ namespace AElf.Contracts.Oracle {
         QueryId = QueryId,
         OracleNodeAddress = OracleNodeAddress,
         Commitment = Commitment,
-        Data = Data,
+        RevealData = RevealData,
         Salt = Salt,
       };
     }
   }
 
-  public partial class QueryCompleted : aelf::IEvent<QueryCompleted>
+  internal partial class QueryCompletedWithAggregation : aelf::IEvent<QueryCompletedWithAggregation>
   {
-    public global::System.Collections.Generic.IEnumerable<QueryCompleted> GetIndexed()
+    public global::System.Collections.Generic.IEnumerable<QueryCompletedWithAggregation> GetIndexed()
     {
-      return new List<QueryCompleted>
+      return new List<QueryCompletedWithAggregation>
       {
       };
     }
 
-    public QueryCompleted GetNonIndexed()
+    public QueryCompletedWithAggregation GetNonIndexed()
     {
-      return new QueryCompleted
+      return new QueryCompletedWithAggregation
       {
         QueryId = QueryId,
         Result = Result,
@@ -158,7 +157,26 @@ namespace AElf.Contracts.Oracle {
     }
   }
 
-  public partial class TokenLocked : aelf::IEvent<TokenLocked>
+  internal partial class QueryCompletedWithoutAggregation : aelf::IEvent<QueryCompletedWithoutAggregation>
+  {
+    public global::System.Collections.Generic.IEnumerable<QueryCompletedWithoutAggregation> GetIndexed()
+    {
+      return new List<QueryCompletedWithoutAggregation>
+      {
+      };
+    }
+
+    public QueryCompletedWithoutAggregation GetNonIndexed()
+    {
+      return new QueryCompletedWithoutAggregation
+      {
+        QueryId = QueryId,
+        Result = Result,
+      };
+    }
+  }
+
+  internal partial class TokenLocked : aelf::IEvent<TokenLocked>
   {
     public global::System.Collections.Generic.IEnumerable<TokenLocked> GetIndexed()
     {
@@ -179,7 +197,7 @@ namespace AElf.Contracts.Oracle {
   }
 
   #endregion
-  public static partial class OracleContractContainer
+  internal static partial class OracleContractContainer
   {
     static readonly string __ServiceName = "OracleContract";
 

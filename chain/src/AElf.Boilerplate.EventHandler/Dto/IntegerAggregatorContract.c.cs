@@ -40,16 +40,16 @@ namespace AElf.Contracts.IntegerAggregator {
 
     #region Marshallers
     static readonly aelf::Marshaller<global::AElf.Standards.ACS13.AggregateInput> __Marshaller_acs13_AggregateInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Standards.ACS13.AggregateInput.Parser.ParseFrom);
-    static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.BytesValue> __Marshaller_google_protobuf_BytesValue = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.BytesValue.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.StringValue> __Marshaller_google_protobuf_StringValue = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.StringValue.Parser.ParseFrom);
     #endregion
 
     #region Methods
-    static readonly aelf::Method<global::AElf.Standards.ACS13.AggregateInput, global::Google.Protobuf.WellKnownTypes.BytesValue> __Method_Aggregate = new aelf::Method<global::AElf.Standards.ACS13.AggregateInput, global::Google.Protobuf.WellKnownTypes.BytesValue>(
+    static readonly aelf::Method<global::AElf.Standards.ACS13.AggregateInput, global::Google.Protobuf.WellKnownTypes.StringValue> __Method_Aggregate = new aelf::Method<global::AElf.Standards.ACS13.AggregateInput, global::Google.Protobuf.WellKnownTypes.StringValue>(
         aelf::MethodType.Action,
         __ServiceName,
         "Aggregate",
         __Marshaller_acs13_AggregateInput,
-        __Marshaller_google_protobuf_BytesValue);
+        __Marshaller_google_protobuf_StringValue);
 
     #endregion
 

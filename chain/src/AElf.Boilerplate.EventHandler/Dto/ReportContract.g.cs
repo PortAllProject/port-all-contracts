@@ -42,7 +42,7 @@ namespace AElf.Contracts.Report {
             "bmRfaWQYAiABKAMSJQoOYWNjdXNpbmdfbm9kZXMYAyADKAsyDS5hZWxmLkFk",
             "ZHJlc3MimAEKBlJlcG9ydBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFz",
             "aBIQCghyb3VuZF9pZBgCIAEoAxIjCgxvYnNlcnZhdGlvbnMYAyABKAsyDS5P",
-            "YnNlcnZhdGlvbnMSFwoPYWdncmVnYXRlZF9kYXRhGAQgASgMEiAKCW9ic2Vy",
+            "YnNlcnZhdGlvbnMSFwoPYWdncmVnYXRlZF9kYXRhGAQgASgJEiAKCW9ic2Vy",
             "dmVycxgFIAMoCzINLk9ic2VydmVyTGlzdCKoAQoRUmVwb3J0UXVlcnlSZWNv",
             "cmQSKgoTb3JpZ2luX3F1ZXJ5X3NlbmRlchgBIAEoCzINLmFlbGYuQWRkcmVz",
             "cxIXCg9wYWlkX3JlcG9ydF9mZWUYAiABKAMSEwoLaXNfcmVqZWN0ZWQYAyAB",
@@ -51,7 +51,7 @@ namespace AElf.Contracts.Report {
             "KAsyDS5hZWxmLkFkZHJlc3MiNwoSUHJvcG9zZVJlcG9ydElucHV0EiEKDXF1",
             "ZXJ5X2lkX2xpc3QYASADKAsyCi5hZWxmLkhhc2giKwoMT2JzZXJ2YXRpb25z",
             "EhsKBXZhbHVlGAEgAygLMgwuT2JzZXJ2YXRpb24iKAoLT2JzZXJ2YXRpb24S",
-            "CwoDa2V5GAEgASgJEgwKBGRhdGEYAiABKAwiaAoRR2V0U2lnbmF0dXJlSW5w",
+            "CwoDa2V5GAEgASgJEgwKBGRhdGEYAiABKAkiaAoRR2V0U2lnbmF0dXJlSW5w",
             "dXQSIQoZZXRoZXJldW1fY29udHJhY3RfYWRkcmVzcxgBIAEoCRIQCghyb3Vu",
             "ZF9pZBgCIAEoAxIeCgdhZGRyZXNzGAMgASgLMg0uYWVsZi5BZGRyZXNzIksK",
             "FEdldFNpZ25hdHVyZU1hcElucHV0EiEKGWV0aGVyZXVtX2NvbnRyYWN0X2Fk",
@@ -99,7 +99,7 @@ namespace AElf.Contracts.Report {
             "ZWxmLkFkZHJlc3MSEgoKY2hhaW5fdHlwZRgHIAEoCToEoLsYASKEAQoVTWVy",
             "a2xlUmVwb3J0Tm9kZUFkZGVkEiEKGWV0aGVyZXVtX2NvbnRyYWN0X2FkZHJl",
             "c3MYASABKAkSEgoKbm9kZV9pbmRleBgCIAEoBRIVCg1ub2RlX3JvdW5kX2lk",
-            "GAMgASgDEhcKD2FnZ3JlZ2F0ZWRfZGF0YRgEIAEoDDoEoLsYATK5DwoOUmVw",
+            "GAMgASgDEhcKD2FnZ3JlZ2F0ZWRfZGF0YRgEIAEoCToEoLsYATL5DwoOUmVw",
             "b3J0Q29udHJhY3QSOAoKSW5pdGlhbGl6ZRIQLkluaXRpYWxpemVJbnB1dBoW",
             "Lmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEi4KC1F1ZXJ5T3JhY2xlEhEuUXVl",
             "cnlPcmFjbGVJbnB1dBoKLmFlbGYuSGFzaCIAEjkKEUNhbmNlbFF1ZXJ5T3Jh",
@@ -142,9 +142,10 @@ namespace AElf.Contracts.Report {
             "bGUucHJvdG9idWYuU3RyaW5nVmFsdWUiBYiJ9wEBEj4KD0dldFNpZ25hdHVy",
             "ZU1hcBIVLkdldFNpZ25hdHVyZU1hcElucHV0Gg0uU2lnbmF0dXJlTWFwIgWI",
             "ifcBARJJChVJc0luUmVnaXN0ZXJXaGl0ZUxpc3QSDS5hZWxmLkFkZHJlc3Ma",
-            "Gi5nb29nbGUucHJvdG9idWYuQm9vbFZhbHVlIgWIifcBARoussz2ASlBRWxm",
-            "LkNvbnRyYWN0cy5SZXBvcnQuUmVwb3J0Q29udHJhY3RTdGF0ZUIYqgIVQUVs",
-            "Zi5Db250cmFjdHMuUmVwb3J0YgZwcm90bzM="));
+            "Gi5nb29nbGUucHJvdG9idWYuQm9vbFZhbHVlIgWIifcBARI+CgpJc09ic2Vy",
+            "dmVyEg0uYWVsZi5BZGRyZXNzGhouZ29vZ2xlLnByb3RvYnVmLkJvb2xWYWx1",
+            "ZSIFiIn3AQEaLrLM9gEpQUVsZi5Db250cmFjdHMuUmVwb3J0LlJlcG9ydENv",
+            "bnRyYWN0U3RhdGVCGKoCFUFFbGYuQ29udHJhY3RzLlJlcG9ydGIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::AElf.Types.CoreReflection.Descriptor, global::AElf.OptionsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, global::CallbackInputReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -1336,9 +1337,9 @@ namespace AElf.Contracts.Report {
 
     /// <summary>Field number for the "aggregated_data" field.</summary>
     public const int AggregatedDataFieldNumber = 4;
-    private pb::ByteString aggregatedData_ = pb::ByteString.Empty;
+    private string aggregatedData_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString AggregatedData {
+    public string AggregatedData {
       get { return aggregatedData_; }
       set {
         aggregatedData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -1414,7 +1415,7 @@ namespace AElf.Contracts.Report {
       }
       if (AggregatedData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(AggregatedData);
+        output.WriteString(AggregatedData);
       }
       observers_.WriteTo(output, _repeated_observers_codec);
       if (_unknownFields != null) {
@@ -1440,7 +1441,7 @@ namespace AElf.Contracts.Report {
       }
       if (AggregatedData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(AggregatedData);
+        output.WriteString(AggregatedData);
       }
       observers_.WriteTo(ref output, _repeated_observers_codec);
       if (_unknownFields != null) {
@@ -1462,7 +1463,7 @@ namespace AElf.Contracts.Report {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Observations);
       }
       if (AggregatedData.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(AggregatedData);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AggregatedData);
       }
       size += observers_.CalculateSize(_repeated_observers_codec);
       if (_unknownFields != null) {
@@ -1528,7 +1529,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 34: {
-            AggregatedData = input.ReadBytes();
+            AggregatedData = input.ReadString();
             break;
           }
           case 42: {
@@ -1568,7 +1569,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 34: {
-            AggregatedData = input.ReadBytes();
+            AggregatedData = input.ReadString();
             break;
           }
           case 42: {
@@ -2442,9 +2443,9 @@ namespace AElf.Contracts.Report {
 
     /// <summary>Field number for the "data" field.</summary>
     public const int DataFieldNumber = 2;
-    private pb::ByteString data_ = pb::ByteString.Empty;
+    private string data_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Data {
+    public string Data {
       get { return data_; }
       set {
         data_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -2496,7 +2497,7 @@ namespace AElf.Contracts.Report {
       }
       if (Data.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Data);
+        output.WriteString(Data);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -2513,7 +2514,7 @@ namespace AElf.Contracts.Report {
       }
       if (Data.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Data);
+        output.WriteString(Data);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -2528,7 +2529,7 @@ namespace AElf.Contracts.Report {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Key);
       }
       if (Data.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Data);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -2566,7 +2567,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 18: {
-            Data = input.ReadBytes();
+            Data = input.ReadString();
             break;
           }
         }
@@ -2588,7 +2589,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 18: {
-            Data = input.ReadBytes();
+            Data = input.ReadString();
             break;
           }
         }
@@ -6462,9 +6463,9 @@ namespace AElf.Contracts.Report {
 
     /// <summary>Field number for the "aggregated_data" field.</summary>
     public const int AggregatedDataFieldNumber = 4;
-    private pb::ByteString aggregatedData_ = pb::ByteString.Empty;
+    private string aggregatedData_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString AggregatedData {
+    public string AggregatedData {
       get { return aggregatedData_; }
       set {
         aggregatedData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -6528,7 +6529,7 @@ namespace AElf.Contracts.Report {
       }
       if (AggregatedData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(AggregatedData);
+        output.WriteString(AggregatedData);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -6553,7 +6554,7 @@ namespace AElf.Contracts.Report {
       }
       if (AggregatedData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(AggregatedData);
+        output.WriteString(AggregatedData);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -6574,7 +6575,7 @@ namespace AElf.Contracts.Report {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(NodeRoundId);
       }
       if (AggregatedData.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(AggregatedData);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(AggregatedData);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6626,7 +6627,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 34: {
-            AggregatedData = input.ReadBytes();
+            AggregatedData = input.ReadString();
             break;
           }
         }
@@ -6656,7 +6657,7 @@ namespace AElf.Contracts.Report {
             break;
           }
           case 34: {
-            AggregatedData = input.ReadBytes();
+            AggregatedData = input.ReadString();
             break;
           }
         }

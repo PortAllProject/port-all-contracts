@@ -59,10 +59,7 @@ namespace AElf.Boilerplate.EventHandler
                 {
                     QueryId = queryCreated.QueryId,
                     Commitment = HashHelper.ConcatAndCompute(
-                        HashHelper.ComputeFrom(new StringValue
-                        {
-                            Value = data
-                        }),
+                        HashHelper.ComputeFrom(data),
                         HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_configOptions.AccountAddress)))
                 };
                 _logger.LogInformation($"Sending Commit tx with input: {commitInput}");

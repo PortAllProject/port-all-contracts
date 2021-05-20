@@ -49,7 +49,7 @@ namespace AElf.Boilerplate.EventHandler
             var revealInput = new RevealInput
             {
                 QueryId = collected.QueryId,
-                Data = new StringValue {Value = data}.ToByteString(),
+                Data = data,
                 Salt = _saltProvider.GetSalt(collected.QueryId)
             };
             _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");

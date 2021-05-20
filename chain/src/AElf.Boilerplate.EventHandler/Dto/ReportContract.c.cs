@@ -323,6 +323,13 @@ namespace AElf.Contracts.Report {
         __Marshaller_aelf_Address,
         __Marshaller_google_protobuf_BoolValue);
 
+    static readonly aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.BoolValue> __Method_IsObserver = new aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.BoolValue>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "IsObserver",
+        __Marshaller_aelf_Address,
+        __Marshaller_google_protobuf_BoolValue);
+
     #endregion
 
     #region Descriptors

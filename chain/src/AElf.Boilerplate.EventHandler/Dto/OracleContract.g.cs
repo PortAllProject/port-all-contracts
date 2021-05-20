@@ -12,7 +12,7 @@ using scg = global::System.Collections.Generic;
 namespace AElf.Contracts.Oracle {
 
   /// <summary>Holder for reflection information generated from oracle_contract.proto</summary>
-  public static partial class OracleContractReflection {
+  internal static partial class OracleContractReflection {
 
     #region Descriptor
     /// <summary>File descriptor for oracle_contract.proto</summary>
@@ -39,32 +39,34 @@ namespace AElf.Contracts.Oracle {
             "ChNhZ2dyZWdhdGVfdGhyZXNob2xkGAYgASgFEg0KBXRva2VuGAcgASgJIkwK",
             "DENhbGxiYWNrSW5mbxInChBjb250cmFjdF9hZGRyZXNzGAEgASgLMg0uYWVs",
             "Zi5BZGRyZXNzEhMKC21ldGhvZF9uYW1lGAIgASgJIisKC0FkZHJlc3NMaXN0",
-            "EhwKBXZhbHVlGAEgAygLMg0uYWVsZi5BZGRyZXNzIqkECgtRdWVyeVJlY29y",
+            "EhwKBXZhbHVlGAEgAygLMg0uYWVsZi5BZGRyZXNzIs0ECgtRdWVyeVJlY29y",
             "ZBIqChRkZXNpZ25hdGVkX25vZGVfbGlzdBgBIAEoCzIMLkFkZHJlc3NMaXN0",
             "EjIKG2FnZ3JlZ2F0b3JfY29udHJhY3RfYWRkcmVzcxgCIAEoCzINLmFlbGYu",
             "QWRkcmVzcxI4ChRleHBpcmF0aW9uX3RpbWVzdGFtcBgDIAEoCzIaLmdvb2ds",
             "ZS5wcm90b2J1Zi5UaW1lc3RhbXASKwojaXNfc3VmZmljaWVudF9jb21taXRt",
             "ZW50c19jb2xsZWN0ZWQYBCABKAgSJAocaXNfc3VmZmljaWVudF9kYXRhX2Nv",
-            "bGxlY3RlZBgFIAEoCBIUCgxmaW5hbF9yZXN1bHQYBiABKAwSDwoHcGF5bWVu",
+            "bGxlY3RlZBgFIAEoCBIUCgxmaW5hbF9yZXN1bHQYBiABKAkSDwoHcGF5bWVu",
             "dBgHIAEoAxIkCg1jYWxsYmFja19pbmZvGAggASgLMg0uQ2FsbGJhY2tJbmZv",
             "EhwKCHF1ZXJ5X2lkGAkgASgLMgouYWVsZi5IYXNoEhsKE2FnZ3JlZ2F0ZV90",
             "aHJlc2hvbGQYCiABKAUSIwoMcXVlcnlfc2VuZGVyGAsgASgLMg0uYWVsZi5B",
             "ZGRyZXNzEiAKGGlzX2NvbW1pdF9zdGFnZV9maW5pc2hlZBgMIAEoCBIZChFj",
             "b21taXRtZW50c19jb3VudBgNIAEoBRIUCgxpc19jYW5jZWxsZWQYDiABKAgS",
             "HgoKcXVlcnlfaW5mbxgPIAEoCzIKLlF1ZXJ5SW5mbxINCgV0b2tlbhgQIAEo",
-            "CSJLCgtDb21taXRJbnB1dBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFz",
-            "aBIeCgpjb21taXRtZW50GAIgASgLMgouYWVsZi5IYXNoIlMKC1JldmVhbElu",
-            "cHV0EhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoEgwKBGRhdGEYAiAB",
-            "KAwSGAoEc2FsdBgDIAEoCzIKLmFlbGYuSGFzaCJzCg1Db21taXRtZW50TWFw",
-            "EigKBXZhbHVlGAEgAygLMhkuQ29tbWl0bWVudE1hcC5WYWx1ZUVudHJ5GjgK",
-            "ClZhbHVlRW50cnkSCwoDa2V5GAEgASgJEhkKBXZhbHVlGAIgASgLMgouYWVs",
-            "Zi5IYXNoOgI4ASKAAQoTT3JhY2xlTm9kZVRocmVzaG9sZBIiChptaW5pbXVt",
-            "X29yYWNsZV9ub2Rlc19jb3VudBgBIAEoBRIgChhkZWZhdWx0X3JldmVhbF90",
-            "aHJlc2hvbGQYAiABKAUSIwobZGVmYXVsdF9hZ2dyZWdhdGVfdGhyZXNob2xk",
-            "GAMgASgFIjIKClJlc3VsdExpc3QSDwoHcmVzdWx0cxgBIAMoDBITCgtmcmVx",
-            "dWVuY2llcxgCIAMoBSI4CghOb2RlRGF0YRIeCgdhZGRyZXNzGAEgASgLMg0u",
-            "YWVsZi5BZGRyZXNzEgwKBGRhdGEYAiABKAwijAEKDE5vZGVEYXRhTGlzdBIY",
-            "CgV2YWx1ZRgBIAMoCzIJLk5vZGVEYXRhEjMKHG9ic2VydmVyX2Fzc29jaWF0",
+            "CRIiCgxkYXRhX3JlY29yZHMYESABKAsyDC5EYXRhUmVjb3JkcyJLCgtDb21t",
+            "aXRJbnB1dBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFzaBIeCgpjb21t",
+            "aXRtZW50GAIgASgLMgouYWVsZi5IYXNoIlMKC1JldmVhbElucHV0EhwKCHF1",
+            "ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoEgwKBGRhdGEYAiABKAkSGAoEc2Fs",
+            "dBgDIAEoCzIKLmFlbGYuSGFzaCJzCg1Db21taXRtZW50TWFwEigKBXZhbHVl",
+            "GAEgAygLMhkuQ29tbWl0bWVudE1hcC5WYWx1ZUVudHJ5GjgKClZhbHVlRW50",
+            "cnkSCwoDa2V5GAEgASgJEhkKBXZhbHVlGAIgASgLMgouYWVsZi5IYXNoOgI4",
+            "ASKAAQoTT3JhY2xlTm9kZVRocmVzaG9sZBIiChptaW5pbXVtX29yYWNsZV9u",
+            "b2Rlc19jb3VudBgBIAEoBRIgChhkZWZhdWx0X3JldmVhbF90aHJlc2hvbGQY",
+            "AiABKAUSIwobZGVmYXVsdF9hZ2dyZWdhdGVfdGhyZXNob2xkGAMgASgFIjIK",
+            "ClJlc3VsdExpc3QSDwoHcmVzdWx0cxgBIAMoCRITCgtmcmVxdWVuY2llcxgC",
+            "IAMoBSI6CgpEYXRhUmVjb3JkEh4KB2FkZHJlc3MYASABKAsyDS5hZWxmLkFk",
+            "ZHJlc3MSDAoEZGF0YRgCIAEoCSIpCgtEYXRhUmVjb3JkcxIaCgV2YWx1ZRgB",
+            "IAMoCzILLkRhdGFSZWNvcmQilQEKC1BsYWluUmVzdWx0EiIKDGRhdGFfcmVj",
+            "b3JkcxgBIAEoCzIMLkRhdGFSZWNvcmRzEjMKHG9ic2VydmVyX2Fzc29jaWF0",
             "aW9uX2FkZHJlc3MYAiABKAsyDS5hZWxmLkFkZHJlc3MSHgoKcXVlcnlfaW5m",
             "bxgDIAEoCzIKLlF1ZXJ5SW5mbxINCgV0b2tlbhgEIAEoCSJSCg9Mb2NrVG9r",
             "ZW5zSW5wdXQSKgoTb3JhY2xlX25vZGVfYWRkcmVzcxgBIAEoCzINLmFlbGYu",
@@ -79,56 +81,58 @@ namespace AElf.Contracts.Oracle {
             "aW5mbxgFIAEoCzIKLlF1ZXJ5SW5mbxIbChNhZ2dyZWdhdGVfdGhyZXNob2xk",
             "GAYgASgFEiMKDHF1ZXJ5X3NlbmRlchgHIAEoCzINLmFlbGYuQWRkcmVzcxIc",
             "CghxdWVyeV9pZBgIIAEoCzIKLmFlbGYuSGFzaBINCgV0b2tlbhgJIAEoCRIl",
-            "Ch1tYXhpbXVtX3Blcm1pc3NpYmxlX2RldmlhdGlvbhgKIAEoBToEoLsYASJZ",
-            "Cg5RdWVyeUNhbmNlbGxlZBIQCghxdWVyeV9pZBgBIAEoDBIvCgtjYW5jZWxf",
-            "dGltZRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXA6BKC7GAEi",
-            "RAoeU3VmZmljaWVudENvbW1pdG1lbnRzQ29sbGVjdGVkEhwKCHF1ZXJ5X2lk",
-            "GAEgASgLMgouYWVsZi5IYXNoOgSguxgBInsKCUNvbW1pdHRlZBIcCghxdWVy",
-            "eV9pZBgBIAEoCzIKLmFlbGYuSGFzaBIqChNvcmFjbGVfbm9kZV9hZGRyZXNz",
-            "GAIgASgLMg0uYWVsZi5BZGRyZXNzEh4KCmNvbW1pdG1lbnQYAyABKAsyCi5h",
-            "ZWxmLkhhc2g6BKC7GAEirAEKEkNvbW1pdG1lbnRSZXZlYWxlZBIcCghxdWVy",
-            "eV9pZBgBIAEoCzIKLmFlbGYuSGFzaBIqChNvcmFjbGVfbm9kZV9hZGRyZXNz",
-            "GAIgASgLMg0uYWVsZi5BZGRyZXNzEh4KCmNvbW1pdG1lbnQYAyABKAsyCi5h",
-            "ZWxmLkhhc2gSDAoEZGF0YRgEIAEoDBIYCgRzYWx0GAUgASgLMgouYWVsZi5I",
-            "YXNoOgSguxgBIrABChZDb21taXRtZW50UmV2ZWFsRmFpbGVkEhwKCHF1ZXJ5",
-            "X2lkGAEgASgLMgouYWVsZi5IYXNoEioKE29yYWNsZV9ub2RlX2FkZHJlc3MY",
-            "AiABKAsyDS5hZWxmLkFkZHJlc3MSHgoKY29tbWl0bWVudBgDIAEoCzIKLmFl",
-            "bGYuSGFzaBIMCgRkYXRhGAQgASgMEhgKBHNhbHQYBSABKAsyCi5hZWxmLkhh",
-            "c2g6BKC7GAEiRAoOUXVlcnlDb21wbGV0ZWQSHAoIcXVlcnlfaWQYASABKAsy",
-            "Ci5hZWxmLkhhc2gSDgoGcmVzdWx0GAIgASgMOgSguxgBInsKC1Rva2VuTG9j",
-            "a2VkEioKE29yYWNsZV9ub2RlX2FkZHJlc3MYASABKAsyDS5hZWxmLkFkZHJl",
-            "c3MSIwoMZnJvbV9hZGRyZXNzGAIgASgLMg0uYWVsZi5BZGRyZXNzEhUKDWxv",
-            "Y2tlZF9hbW91bnQYAyABKAM6BKC7GAEyswoKDk9yYWNsZUNvbnRyYWN0EjgK",
-            "CkluaXRpYWxpemUSEC5Jbml0aWFsaXplSW5wdXQaFi5nb29nbGUucHJvdG9i",
-            "dWYuRW1wdHkiABJGChhJbml0aWFsaXplQW5kQ3JlYXRlVG9rZW4SEC5Jbml0",
-            "aWFsaXplSW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABIiCgVRdWVy",
-            "eRILLlF1ZXJ5SW5wdXQaCi5hZWxmLkhhc2giABIwCgZDb21taXQSDC5Db21t",
-            "aXRJbnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEjAKBlJldmVhbBIM",
-            "LlJldmVhbElucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASMwoLQ2Fu",
-            "Y2VsUXVlcnkSCi5hZWxmLkhhc2gaFi5nb29nbGUucHJvdG9idWYuRW1wdHki",
-            "ABI7ChBDaGFuZ2VDb250cm9sbGVyEg0uYWVsZi5BZGRyZXNzGhYuZ29vZ2xl",
-            "LnByb3RvYnVmLkVtcHR5IgASOAoKTG9ja1Rva2VucxIQLkxvY2tUb2tlbnNJ",
-            "bnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEjwKDFVubG9ja1Rva2Vu",
-            "cxISLlVubG9ja1Rva2Vuc0lucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5",
-            "IgASPgoMU2V0VGhyZXNob2xkEhQuT3JhY2xlTm9kZVRocmVzaG9sZBoWLmdv",
-            "b2dsZS5wcm90b2J1Zi5FbXB0eSIAElcKHkNoYW5nZURlZmF1bHRFeHBpcmF0",
-            "aW9uU2Vjb25kcxIbLmdvb2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlGhYuZ29v",
-            "Z2xlLnByb3RvYnVmLkVtcHR5IgASQwoPRW5hYmxlQ2hhcmdlRmVlEhYuZ29v",
-            "Z2xlLnByb3RvYnVmLkVtcHR5GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgAS",
-            "PQoNR2V0Q29udHJvbGxlchIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoNLmFl",
-            "bGYuQWRkcmVzcyIFiIn3AQESMQoOR2V0UXVlcnlSZWNvcmQSCi5hZWxmLkhh",
-            "c2gaDC5RdWVyeVJlY29yZCIFiIn3AQESNQoQR2V0Q29tbWl0bWVudE1hcBIK",
-            "LmFlbGYuSGFzaBoOLkNvbW1pdG1lbnRNYXAiBYiJ9wEBElMKFEdldE9yYWNs",
-            "ZVRva2VuU3ltYm9sEhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5GhwuZ29vZ2xl",
-            "LnByb3RvYnVmLlN0cmluZ1ZhbHVlIgWIifcBARJKChVHZXRMb2NrZWRUb2tl",
-            "bnNBbW91bnQSDS5hZWxmLkFkZHJlc3MaGy5nb29nbGUucHJvdG9idWYuSW50",
-            "NjRWYWx1ZSIFiIn3AQESQwoMR2V0VGhyZXNob2xkEhYuZ29vZ2xlLnByb3Rv",
-            "YnVmLkVtcHR5GhQuT3JhY2xlTm9kZVRocmVzaG9sZCIFiIn3AQESWQobR2V0",
-            "RGVmYXVsdEV4cGlyYXRpb25TZWNvbmRzEhYuZ29vZ2xlLnByb3RvYnVmLkVt",
-            "cHR5GhsuZ29vZ2xlLnByb3RvYnVmLkludDMyVmFsdWUiBYiJ9wEBEjUKEkdl",
-            "dEhlbHBmdWxOb2RlTGlzdBIKLmFlbGYuSGFzaBoMLkFkZHJlc3NMaXN0IgWI",
-            "ifcBARoussz2ASlBRWxmLkNvbnRyYWN0cy5PcmFjbGUuT3JhY2xlQ29udHJh",
-            "Y3RTdGF0ZUIYqgIVQUVsZi5Db250cmFjdHMuT3JhY2xlYgZwcm90bzM="));
+            "Ch1tYXhpbXVtX3Blcm1pc3NpYmxlX2RldmlhdGlvbhgKIAEoBToEoLsYASI0",
+            "Cg5RdWVyeUNhbmNlbGxlZBIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFz",
+            "aDoEoLsYASJECh5TdWZmaWNpZW50Q29tbWl0bWVudHNDb2xsZWN0ZWQSHAoI",
+            "cXVlcnlfaWQYASABKAsyCi5hZWxmLkhhc2g6BKC7GAEiewoJQ29tbWl0dGVk",
+            "EhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoEioKE29yYWNsZV9ub2Rl",
+            "X2FkZHJlc3MYAiABKAsyDS5hZWxmLkFkZHJlc3MSHgoKY29tbWl0bWVudBgD",
+            "IAEoCzIKLmFlbGYuSGFzaDoEoLsYASKzAQoSQ29tbWl0bWVudFJldmVhbGVk",
+            "EhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoEioKE29yYWNsZV9ub2Rl",
+            "X2FkZHJlc3MYAiABKAsyDS5hZWxmLkFkZHJlc3MSHgoKY29tbWl0bWVudBgD",
+            "IAEoCzIKLmFlbGYuSGFzaBITCgtyZXZlYWxfZGF0YRgEIAEoCRIYCgRzYWx0",
+            "GAUgASgLMgouYWVsZi5IYXNoOgSguxgBIrcBChZDb21taXRtZW50UmV2ZWFs",
+            "RmFpbGVkEhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5IYXNoEioKE29yYWNs",
+            "ZV9ub2RlX2FkZHJlc3MYAiABKAsyDS5hZWxmLkFkZHJlc3MSHgoKY29tbWl0",
+            "bWVudBgDIAEoCzIKLmFlbGYuSGFzaBITCgtyZXZlYWxfZGF0YRgEIAEoCRIY",
+            "CgRzYWx0GAUgASgLMgouYWVsZi5IYXNoOgSguxgBIlMKHVF1ZXJ5Q29tcGxl",
+            "dGVkV2l0aEFnZ3JlZ2F0aW9uEhwKCHF1ZXJ5X2lkGAEgASgLMgouYWVsZi5I",
+            "YXNoEg4KBnJlc3VsdBgCIAEoCToEoLsYASJkCiBRdWVyeUNvbXBsZXRlZFdp",
+            "dGhvdXRBZ2dyZWdhdGlvbhIcCghxdWVyeV9pZBgBIAEoCzIKLmFlbGYuSGFz",
+            "aBIcCgZyZXN1bHQYAiABKAsyDC5QbGFpblJlc3VsdDoEoLsYASJ7CgtUb2tl",
+            "bkxvY2tlZBIqChNvcmFjbGVfbm9kZV9hZGRyZXNzGAEgASgLMg0uYWVsZi5B",
+            "ZGRyZXNzEiMKDGZyb21fYWRkcmVzcxgCIAEoCzINLmFlbGYuQWRkcmVzcxIV",
+            "Cg1sb2NrZWRfYW1vdW50GAMgASgDOgSguxgBMrMKCg5PcmFjbGVDb250cmFj",
+            "dBI4CgpJbml0aWFsaXplEhAuSW5pdGlhbGl6ZUlucHV0GhYuZ29vZ2xlLnBy",
+            "b3RvYnVmLkVtcHR5IgASRgoYSW5pdGlhbGl6ZUFuZENyZWF0ZVRva2VuEhAu",
+            "SW5pdGlhbGl6ZUlucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASIgoF",
+            "UXVlcnkSCy5RdWVyeUlucHV0GgouYWVsZi5IYXNoIgASMAoGQ29tbWl0Egwu",
+            "Q29tbWl0SW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABIwCgZSZXZl",
+            "YWwSDC5SZXZlYWxJbnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEjMK",
+            "C0NhbmNlbFF1ZXJ5EgouYWVsZi5IYXNoGhYuZ29vZ2xlLnByb3RvYnVmLkVt",
+            "cHR5IgASOwoQQ2hhbmdlQ29udHJvbGxlchINLmFlbGYuQWRkcmVzcxoWLmdv",
+            "b2dsZS5wcm90b2J1Zi5FbXB0eSIAEjgKCkxvY2tUb2tlbnMSEC5Mb2NrVG9r",
+            "ZW5zSW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABI8CgxVbmxvY2tU",
+            "b2tlbnMSEi5VbmxvY2tUb2tlbnNJbnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5F",
+            "bXB0eSIAEj4KDFNldFRocmVzaG9sZBIULk9yYWNsZU5vZGVUaHJlc2hvbGQa",
+            "Fi5nb29nbGUucHJvdG9idWYuRW1wdHkiABJXCh5DaGFuZ2VEZWZhdWx0RXhw",
+            "aXJhdGlvblNlY29uZHMSGy5nb29nbGUucHJvdG9idWYuSW50MzJWYWx1ZRoW",
+            "Lmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEkMKD0VuYWJsZUNoYXJnZUZlZRIW",
+            "Lmdvb2dsZS5wcm90b2J1Zi5FbXB0eRoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0",
+            "eSIAEj0KDUdldENvbnRyb2xsZXISFi5nb29nbGUucHJvdG9idWYuRW1wdHka",
+            "DS5hZWxmLkFkZHJlc3MiBYiJ9wEBEjEKDkdldFF1ZXJ5UmVjb3JkEgouYWVs",
+            "Zi5IYXNoGgwuUXVlcnlSZWNvcmQiBYiJ9wEBEjUKEEdldENvbW1pdG1lbnRN",
+            "YXASCi5hZWxmLkhhc2gaDi5Db21taXRtZW50TWFwIgWIifcBARJTChRHZXRP",
+            "cmFjbGVUb2tlblN5bWJvbBIWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eRocLmdv",
+            "b2dsZS5wcm90b2J1Zi5TdHJpbmdWYWx1ZSIFiIn3AQESSgoVR2V0TG9ja2Vk",
+            "VG9rZW5zQW1vdW50Eg0uYWVsZi5BZGRyZXNzGhsuZ29vZ2xlLnByb3RvYnVm",
+            "LkludDY0VmFsdWUiBYiJ9wEBEkMKDEdldFRocmVzaG9sZBIWLmdvb2dsZS5w",
+            "cm90b2J1Zi5FbXB0eRoULk9yYWNsZU5vZGVUaHJlc2hvbGQiBYiJ9wEBElkK",
+            "G0dldERlZmF1bHRFeHBpcmF0aW9uU2Vjb25kcxIWLmdvb2dsZS5wcm90b2J1",
+            "Zi5FbXB0eRobLmdvb2dsZS5wcm90b2J1Zi5JbnQzMlZhbHVlIgWIifcBARI1",
+            "ChJHZXRIZWxwZnVsTm9kZUxpc3QSCi5hZWxmLkhhc2gaDC5BZGRyZXNzTGlz",
+            "dCIFiIn3AQEaLrLM9gEpQUVsZi5Db250cmFjdHMuT3JhY2xlLk9yYWNsZUNv",
+            "bnRyYWN0U3RhdGVCGKoCFUFFbGYuQ29udHJhY3RzLk9yYWNsZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::AElf.Types.CoreReflection.Descriptor, global::AElf.OptionsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -136,24 +140,26 @@ namespace AElf.Contracts.Oracle {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInput), global::AElf.Contracts.Oracle.QueryInput.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "QueryInfo", "AggregateThreshold", "Token" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CallbackInfo), global::AElf.Contracts.Oracle.CallbackInfo.Parser, new[]{ "ContractAddress", "MethodName" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.AddressList), global::AElf.Contracts.Oracle.AddressList.Parser, new[]{ "Value" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryRecord), global::AElf.Contracts.Oracle.QueryRecord.Parser, new[]{ "DesignatedNodeList", "AggregatorContractAddress", "ExpirationTimestamp", "IsSufficientCommitmentsCollected", "IsSufficientDataCollected", "FinalResult", "Payment", "CallbackInfo", "QueryId", "AggregateThreshold", "QuerySender", "IsCommitStageFinished", "CommitmentsCount", "IsCancelled", "QueryInfo", "Token" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryRecord), global::AElf.Contracts.Oracle.QueryRecord.Parser, new[]{ "DesignatedNodeList", "AggregatorContractAddress", "ExpirationTimestamp", "IsSufficientCommitmentsCollected", "IsSufficientDataCollected", "FinalResult", "Payment", "CallbackInfo", "QueryId", "AggregateThreshold", "QuerySender", "IsCommitStageFinished", "CommitmentsCount", "IsCancelled", "QueryInfo", "Token", "DataRecords" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitInput), global::AElf.Contracts.Oracle.CommitInput.Parser, new[]{ "QueryId", "Commitment" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.RevealInput), global::AElf.Contracts.Oracle.RevealInput.Parser, new[]{ "QueryId", "Data", "Salt" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentMap), global::AElf.Contracts.Oracle.CommitmentMap.Parser, new[]{ "Value" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.OracleNodeThreshold), global::AElf.Contracts.Oracle.OracleNodeThreshold.Parser, new[]{ "MinimumOracleNodesCount", "DefaultRevealThreshold", "DefaultAggregateThreshold" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.ResultList), global::AElf.Contracts.Oracle.ResultList.Parser, new[]{ "Results", "Frequencies" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.NodeData), global::AElf.Contracts.Oracle.NodeData.Parser, new[]{ "Address", "Data" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.NodeDataList), global::AElf.Contracts.Oracle.NodeDataList.Parser, new[]{ "Value", "ObserverAssociationAddress", "QueryInfo", "Token" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.DataRecord), global::AElf.Contracts.Oracle.DataRecord.Parser, new[]{ "Address", "Data" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.DataRecords), global::AElf.Contracts.Oracle.DataRecords.Parser, new[]{ "Value" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.PlainResult), global::AElf.Contracts.Oracle.PlainResult.Parser, new[]{ "DataRecords", "ObserverAssociationAddress", "QueryInfo", "Token" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.LockTokensInput), global::AElf.Contracts.Oracle.LockTokensInput.Parser, new[]{ "OracleNodeAddress", "LockAmount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.UnlockTokensInput), global::AElf.Contracts.Oracle.UnlockTokensInput.Parser, new[]{ "OracleNodeAddress", "WithdrawAmount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInfo), global::AElf.Contracts.Oracle.QueryInfo.Parser, new[]{ "UrlToQuery", "AttributesToFetch" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCreated), global::AElf.Contracts.Oracle.QueryCreated.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "QueryInfo", "AggregateThreshold", "QuerySender", "QueryId", "Token", "MaximumPermissibleDeviation" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCancelled), global::AElf.Contracts.Oracle.QueryCancelled.Parser, new[]{ "QueryId", "CancelTime" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCancelled), global::AElf.Contracts.Oracle.QueryCancelled.Parser, new[]{ "QueryId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.SufficientCommitmentsCollected), global::AElf.Contracts.Oracle.SufficientCommitmentsCollected.Parser, new[]{ "QueryId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.Committed), global::AElf.Contracts.Oracle.Committed.Parser, new[]{ "QueryId", "OracleNodeAddress", "Commitment" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentRevealed), global::AElf.Contracts.Oracle.CommitmentRevealed.Parser, new[]{ "QueryId", "OracleNodeAddress", "Commitment", "Data", "Salt" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentRevealFailed), global::AElf.Contracts.Oracle.CommitmentRevealFailed.Parser, new[]{ "QueryId", "OracleNodeAddress", "Commitment", "Data", "Salt" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCompleted), global::AElf.Contracts.Oracle.QueryCompleted.Parser, new[]{ "QueryId", "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentRevealed), global::AElf.Contracts.Oracle.CommitmentRevealed.Parser, new[]{ "QueryId", "OracleNodeAddress", "Commitment", "RevealData", "Salt" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.CommitmentRevealFailed), global::AElf.Contracts.Oracle.CommitmentRevealFailed.Parser, new[]{ "QueryId", "OracleNodeAddress", "Commitment", "RevealData", "Salt" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCompletedWithAggregation), global::AElf.Contracts.Oracle.QueryCompletedWithAggregation.Parser, new[]{ "QueryId", "Result" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCompletedWithoutAggregation), global::AElf.Contracts.Oracle.QueryCompletedWithoutAggregation.Parser, new[]{ "QueryId", "Result" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.TokenLocked), global::AElf.Contracts.Oracle.TokenLocked.Parser, new[]{ "OracleNodeAddress", "FromAddress", "LockedAmount" }, null, null, null, null)
           }));
     }
@@ -161,7 +167,7 @@ namespace AElf.Contracts.Oracle {
 
   }
   #region Messages
-  public sealed partial class InitializeInput : pb::IMessage<InitializeInput>
+  internal sealed partial class InitializeInput : pb::IMessage<InitializeInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -477,7 +483,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class QueryInput : pb::IMessage<QueryInput>
+  internal sealed partial class QueryInput : pb::IMessage<QueryInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -907,7 +913,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class CallbackInfo : pb::IMessage<CallbackInfo>
+  internal sealed partial class CallbackInfo : pb::IMessage<CallbackInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -1124,7 +1130,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class AddressList : pb::IMessage<AddressList>
+  internal sealed partial class AddressList : pb::IMessage<AddressList>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -1285,7 +1291,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class QueryRecord : pb::IMessage<QueryRecord>
+  internal sealed partial class QueryRecord : pb::IMessage<QueryRecord>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -1330,6 +1336,7 @@ namespace AElf.Contracts.Oracle {
       isCancelled_ = other.isCancelled_;
       queryInfo_ = other.queryInfo_ != null ? other.queryInfo_.Clone() : null;
       token_ = other.token_;
+      dataRecords_ = other.dataRecords_ != null ? other.dataRecords_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -1395,9 +1402,9 @@ namespace AElf.Contracts.Oracle {
 
     /// <summary>Field number for the "final_result" field.</summary>
     public const int FinalResultFieldNumber = 6;
-    private pb::ByteString finalResult_ = pb::ByteString.Empty;
+    private string finalResult_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString FinalResult {
+    public string FinalResult {
       get { return finalResult_; }
       set {
         finalResult_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -1514,6 +1521,17 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
+    /// <summary>Field number for the "data_records" field.</summary>
+    public const int DataRecordsFieldNumber = 17;
+    private global::AElf.Contracts.Oracle.DataRecords dataRecords_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Contracts.Oracle.DataRecords DataRecords {
+      get { return dataRecords_; }
+      set {
+        dataRecords_ = value;
+      }
+    }
+
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
       return Equals(other as QueryRecord);
@@ -1543,6 +1561,7 @@ namespace AElf.Contracts.Oracle {
       if (IsCancelled != other.IsCancelled) return false;
       if (!object.Equals(QueryInfo, other.QueryInfo)) return false;
       if (Token != other.Token) return false;
+      if (!object.Equals(DataRecords, other.DataRecords)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -1565,6 +1584,7 @@ namespace AElf.Contracts.Oracle {
       if (IsCancelled != false) hash ^= IsCancelled.GetHashCode();
       if (queryInfo_ != null) hash ^= QueryInfo.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
+      if (dataRecords_ != null) hash ^= DataRecords.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1603,7 +1623,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (FinalResult.Length != 0) {
         output.WriteRawTag(50);
-        output.WriteBytes(FinalResult);
+        output.WriteString(FinalResult);
       }
       if (Payment != 0L) {
         output.WriteRawTag(56);
@@ -1644,6 +1664,10 @@ namespace AElf.Contracts.Oracle {
       if (Token.Length != 0) {
         output.WriteRawTag(130, 1);
         output.WriteString(Token);
+      }
+      if (dataRecords_ != null) {
+        output.WriteRawTag(138, 1);
+        output.WriteMessage(DataRecords);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1676,7 +1700,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (FinalResult.Length != 0) {
         output.WriteRawTag(50);
-        output.WriteBytes(FinalResult);
+        output.WriteString(FinalResult);
       }
       if (Payment != 0L) {
         output.WriteRawTag(56);
@@ -1718,6 +1742,10 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(130, 1);
         output.WriteString(Token);
       }
+      if (dataRecords_ != null) {
+        output.WriteRawTag(138, 1);
+        output.WriteMessage(DataRecords);
+      }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -1743,7 +1771,7 @@ namespace AElf.Contracts.Oracle {
         size += 1 + 1;
       }
       if (FinalResult.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(FinalResult);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(FinalResult);
       }
       if (Payment != 0L) {
         size += 1 + pb::CodedOutputStream.ComputeInt64Size(Payment);
@@ -1774,6 +1802,9 @@ namespace AElf.Contracts.Oracle {
       }
       if (Token.Length != 0) {
         size += 2 + pb::CodedOutputStream.ComputeStringSize(Token);
+      }
+      if (dataRecords_ != null) {
+        size += 2 + pb::CodedOutputStream.ComputeMessageSize(DataRecords);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1855,6 +1886,12 @@ namespace AElf.Contracts.Oracle {
       if (other.Token.Length != 0) {
         Token = other.Token;
       }
+      if (other.dataRecords_ != null) {
+        if (dataRecords_ == null) {
+          DataRecords = new global::AElf.Contracts.Oracle.DataRecords();
+        }
+        DataRecords.MergeFrom(other.DataRecords);
+      }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -1899,7 +1936,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 50: {
-            FinalResult = input.ReadBytes();
+            FinalResult = input.ReadString();
             break;
           }
           case 56: {
@@ -1952,6 +1989,13 @@ namespace AElf.Contracts.Oracle {
           }
           case 130: {
             Token = input.ReadString();
+            break;
+          }
+          case 138: {
+            if (dataRecords_ == null) {
+              DataRecords = new global::AElf.Contracts.Oracle.DataRecords();
+            }
+            input.ReadMessage(DataRecords);
             break;
           }
         }
@@ -1998,7 +2042,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 50: {
-            FinalResult = input.ReadBytes();
+            FinalResult = input.ReadString();
             break;
           }
           case 56: {
@@ -2053,6 +2097,13 @@ namespace AElf.Contracts.Oracle {
             Token = input.ReadString();
             break;
           }
+          case 138: {
+            if (dataRecords_ == null) {
+              DataRecords = new global::AElf.Contracts.Oracle.DataRecords();
+            }
+            input.ReadMessage(DataRecords);
+            break;
+          }
         }
       }
     }
@@ -2060,7 +2111,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class CommitInput : pb::IMessage<CommitInput>
+  internal sealed partial class CommitInput : pb::IMessage<CommitInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -2286,7 +2337,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class RevealInput : pb::IMessage<RevealInput>
+  internal sealed partial class RevealInput : pb::IMessage<RevealInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -2339,9 +2390,9 @@ namespace AElf.Contracts.Oracle {
 
     /// <summary>Field number for the "data" field.</summary>
     public const int DataFieldNumber = 2;
-    private pb::ByteString data_ = pb::ByteString.Empty;
+    private string data_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Data {
+    public string Data {
       get { return data_; }
       set {
         data_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -2406,7 +2457,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (Data.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Data);
+        output.WriteString(Data);
       }
       if (salt_ != null) {
         output.WriteRawTag(26);
@@ -2427,7 +2478,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (Data.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Data);
+        output.WriteString(Data);
       }
       if (salt_ != null) {
         output.WriteRawTag(26);
@@ -2446,7 +2497,7 @@ namespace AElf.Contracts.Oracle {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryId);
       }
       if (Data.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Data);
       }
       if (salt_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Salt);
@@ -2499,7 +2550,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 18: {
-            Data = input.ReadBytes();
+            Data = input.ReadString();
             break;
           }
           case 26: {
@@ -2531,7 +2582,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 18: {
-            Data = input.ReadBytes();
+            Data = input.ReadString();
             break;
           }
           case 26: {
@@ -2548,7 +2599,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class CommitmentMap : pb::IMessage<CommitmentMap>
+  internal sealed partial class CommitmentMap : pb::IMessage<CommitmentMap>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -2709,7 +2760,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class OracleNodeThreshold : pb::IMessage<OracleNodeThreshold>
+  internal sealed partial class OracleNodeThreshold : pb::IMessage<OracleNodeThreshold>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -2953,7 +3004,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class ResultList : pb::IMessage<ResultList>
+  internal sealed partial class ResultList : pb::IMessage<ResultList>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -2994,11 +3045,11 @@ namespace AElf.Contracts.Oracle {
 
     /// <summary>Field number for the "results" field.</summary>
     public const int ResultsFieldNumber = 1;
-    private static readonly pb::FieldCodec<pb::ByteString> _repeated_results_codec
-        = pb::FieldCodec.ForBytes(10);
-    private readonly pbc::RepeatedField<pb::ByteString> results_ = new pbc::RepeatedField<pb::ByteString>();
+    private static readonly pb::FieldCodec<string> _repeated_results_codec
+        = pb::FieldCodec.ForString(10);
+    private readonly pbc::RepeatedField<string> results_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<pb::ByteString> Results {
+    public pbc::RepeatedField<string> Results {
       get { return results_; }
     }
 
@@ -3141,15 +3192,15 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class NodeData : pb::IMessage<NodeData>
+  internal sealed partial class DataRecord : pb::IMessage<DataRecord>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<NodeData> _parser = new pb::MessageParser<NodeData>(() => new NodeData());
+    private static readonly pb::MessageParser<DataRecord> _parser = new pb::MessageParser<DataRecord>(() => new DataRecord());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<NodeData> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataRecord> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -3162,22 +3213,22 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NodeData() {
+    public DataRecord() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NodeData(NodeData other) : this() {
+    public DataRecord(DataRecord other) : this() {
       address_ = other.address_ != null ? other.address_.Clone() : null;
       data_ = other.data_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NodeData Clone() {
-      return new NodeData(this);
+    public DataRecord Clone() {
+      return new DataRecord(this);
     }
 
     /// <summary>Field number for the "address" field.</summary>
@@ -3193,9 +3244,9 @@ namespace AElf.Contracts.Oracle {
 
     /// <summary>Field number for the "data" field.</summary>
     public const int DataFieldNumber = 2;
-    private pb::ByteString data_ = pb::ByteString.Empty;
+    private string data_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Data {
+    public string Data {
       get { return data_; }
       set {
         data_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -3204,11 +3255,11 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as NodeData);
+      return Equals(other as DataRecord);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(NodeData other) {
+    public bool Equals(DataRecord other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -3247,7 +3298,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (Data.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Data);
+        output.WriteString(Data);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -3264,7 +3315,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (Data.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Data);
+        output.WriteString(Data);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -3279,7 +3330,7 @@ namespace AElf.Contracts.Oracle {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Address);
       }
       if (Data.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Data);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -3288,7 +3339,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(NodeData other) {
+    public void MergeFrom(DataRecord other) {
       if (other == null) {
         return;
       }
@@ -3323,7 +3374,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 18: {
-            Data = input.ReadBytes();
+            Data = input.ReadString();
             break;
           }
         }
@@ -3348,7 +3399,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 18: {
-            Data = input.ReadBytes();
+            Data = input.ReadString();
             break;
           }
         }
@@ -3358,15 +3409,15 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class NodeDataList : pb::IMessage<NodeDataList>
+  internal sealed partial class DataRecords : pb::IMessage<DataRecords>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<NodeDataList> _parser = new pb::MessageParser<NodeDataList>(() => new NodeDataList());
+    private static readonly pb::MessageParser<DataRecords> _parser = new pb::MessageParser<DataRecords>(() => new DataRecords());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<NodeDataList> Parser { get { return _parser; } }
+    public static pb::MessageParser<DataRecords> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
@@ -3379,15 +3430,176 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NodeDataList() {
+    public DataRecords() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NodeDataList(NodeDataList other) : this() {
+    public DataRecords(DataRecords other) : this() {
       value_ = other.value_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public DataRecords Clone() {
+      return new DataRecords(this);
+    }
+
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 1;
+    private static readonly pb::FieldCodec<global::AElf.Contracts.Oracle.DataRecord> _repeated_value_codec
+        = pb::FieldCodec.ForMessage(10, global::AElf.Contracts.Oracle.DataRecord.Parser);
+    private readonly pbc::RepeatedField<global::AElf.Contracts.Oracle.DataRecord> value_ = new pbc::RepeatedField<global::AElf.Contracts.Oracle.DataRecord>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::AElf.Contracts.Oracle.DataRecord> Value {
+      get { return value_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as DataRecords);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(DataRecords other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if(!value_.Equals(other.value_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      hash ^= value_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      value_.WriteTo(output, _repeated_value_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      value_.WriteTo(ref output, _repeated_value_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      size += value_.CalculateSize(_repeated_value_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(DataRecords other) {
+      if (other == null) {
+        return;
+      }
+      value_.Add(other.value_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            value_.AddEntriesFrom(input, _repeated_value_codec);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            value_.AddEntriesFrom(ref input, _repeated_value_codec);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  internal sealed partial class PlainResult : pb::IMessage<PlainResult>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<PlainResult> _parser = new pb::MessageParser<PlainResult>(() => new PlainResult());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<PlainResult> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[12]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PlainResult() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public PlainResult(PlainResult other) : this() {
+      dataRecords_ = other.dataRecords_ != null ? other.dataRecords_.Clone() : null;
       observerAssociationAddress_ = other.observerAssociationAddress_ != null ? other.observerAssociationAddress_.Clone() : null;
       queryInfo_ = other.queryInfo_ != null ? other.queryInfo_.Clone() : null;
       token_ = other.token_;
@@ -3395,18 +3607,19 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public NodeDataList Clone() {
-      return new NodeDataList(this);
+    public PlainResult Clone() {
+      return new PlainResult(this);
     }
 
-    /// <summary>Field number for the "value" field.</summary>
-    public const int ValueFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::AElf.Contracts.Oracle.NodeData> _repeated_value_codec
-        = pb::FieldCodec.ForMessage(10, global::AElf.Contracts.Oracle.NodeData.Parser);
-    private readonly pbc::RepeatedField<global::AElf.Contracts.Oracle.NodeData> value_ = new pbc::RepeatedField<global::AElf.Contracts.Oracle.NodeData>();
+    /// <summary>Field number for the "data_records" field.</summary>
+    public const int DataRecordsFieldNumber = 1;
+    private global::AElf.Contracts.Oracle.DataRecords dataRecords_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<global::AElf.Contracts.Oracle.NodeData> Value {
-      get { return value_; }
+    public global::AElf.Contracts.Oracle.DataRecords DataRecords {
+      get { return dataRecords_; }
+      set {
+        dataRecords_ = value;
+      }
     }
 
     /// <summary>Field number for the "observer_association_address" field.</summary>
@@ -3444,18 +3657,18 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as NodeDataList);
+      return Equals(other as PlainResult);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(NodeDataList other) {
+    public bool Equals(PlainResult other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if(!value_.Equals(other.value_)) return false;
+      if (!object.Equals(DataRecords, other.DataRecords)) return false;
       if (!object.Equals(ObserverAssociationAddress, other.ObserverAssociationAddress)) return false;
       if (!object.Equals(QueryInfo, other.QueryInfo)) return false;
       if (Token != other.Token) return false;
@@ -3465,7 +3678,7 @@ namespace AElf.Contracts.Oracle {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      hash ^= value_.GetHashCode();
+      if (dataRecords_ != null) hash ^= DataRecords.GetHashCode();
       if (observerAssociationAddress_ != null) hash ^= ObserverAssociationAddress.GetHashCode();
       if (queryInfo_ != null) hash ^= QueryInfo.GetHashCode();
       if (Token.Length != 0) hash ^= Token.GetHashCode();
@@ -3485,7 +3698,10 @@ namespace AElf.Contracts.Oracle {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      value_.WriteTo(output, _repeated_value_codec);
+      if (dataRecords_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(DataRecords);
+      }
       if (observerAssociationAddress_ != null) {
         output.WriteRawTag(18);
         output.WriteMessage(ObserverAssociationAddress);
@@ -3507,7 +3723,10 @@ namespace AElf.Contracts.Oracle {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      value_.WriteTo(ref output, _repeated_value_codec);
+      if (dataRecords_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(DataRecords);
+      }
       if (observerAssociationAddress_ != null) {
         output.WriteRawTag(18);
         output.WriteMessage(ObserverAssociationAddress);
@@ -3529,7 +3748,9 @@ namespace AElf.Contracts.Oracle {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      size += value_.CalculateSize(_repeated_value_codec);
+      if (dataRecords_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(DataRecords);
+      }
       if (observerAssociationAddress_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(ObserverAssociationAddress);
       }
@@ -3546,11 +3767,16 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(NodeDataList other) {
+    public void MergeFrom(PlainResult other) {
       if (other == null) {
         return;
       }
-      value_.Add(other.value_);
+      if (other.dataRecords_ != null) {
+        if (dataRecords_ == null) {
+          DataRecords = new global::AElf.Contracts.Oracle.DataRecords();
+        }
+        DataRecords.MergeFrom(other.DataRecords);
+      }
       if (other.observerAssociationAddress_ != null) {
         if (observerAssociationAddress_ == null) {
           ObserverAssociationAddress = new global::AElf.Types.Address();
@@ -3581,7 +3807,10 @@ namespace AElf.Contracts.Oracle {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            value_.AddEntriesFrom(input, _repeated_value_codec);
+            if (dataRecords_ == null) {
+              DataRecords = new global::AElf.Contracts.Oracle.DataRecords();
+            }
+            input.ReadMessage(DataRecords);
             break;
           }
           case 18: {
@@ -3617,7 +3846,10 @@ namespace AElf.Contracts.Oracle {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            value_.AddEntriesFrom(ref input, _repeated_value_codec);
+            if (dataRecords_ == null) {
+              DataRecords = new global::AElf.Contracts.Oracle.DataRecords();
+            }
+            input.ReadMessage(DataRecords);
             break;
           }
           case 18: {
@@ -3645,7 +3877,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class LockTokensInput : pb::IMessage<LockTokensInput>
+  internal sealed partial class LockTokensInput : pb::IMessage<LockTokensInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -3657,7 +3889,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[12]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3862,7 +4094,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class UnlockTokensInput : pb::IMessage<UnlockTokensInput>
+  internal sealed partial class UnlockTokensInput : pb::IMessage<UnlockTokensInput>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -3874,7 +4106,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[13]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[14]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4079,7 +4311,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class QueryInfo : pb::IMessage<QueryInfo>
+  internal sealed partial class QueryInfo : pb::IMessage<QueryInfo>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -4091,7 +4323,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[14]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[15]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4279,7 +4511,7 @@ namespace AElf.Contracts.Oracle {
   /// <summary>
   /// Events
   /// </summary>
-  public sealed partial class QueryCreated : pb::IMessage<QueryCreated>
+  internal sealed partial class QueryCreated : pb::IMessage<QueryCreated>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -4291,7 +4523,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[15]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[16]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4835,7 +5067,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class QueryCancelled : pb::IMessage<QueryCancelled>
+  internal sealed partial class QueryCancelled : pb::IMessage<QueryCancelled>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -4847,7 +5079,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[16]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[17]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4864,8 +5096,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public QueryCancelled(QueryCancelled other) : this() {
-      queryId_ = other.queryId_;
-      cancelTime_ = other.cancelTime_ != null ? other.cancelTime_.Clone() : null;
+      queryId_ = other.queryId_ != null ? other.queryId_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4876,23 +5107,12 @@ namespace AElf.Contracts.Oracle {
 
     /// <summary>Field number for the "query_id" field.</summary>
     public const int QueryIdFieldNumber = 1;
-    private pb::ByteString queryId_ = pb::ByteString.Empty;
+    private global::AElf.Types.Hash queryId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString QueryId {
+    public global::AElf.Types.Hash QueryId {
       get { return queryId_; }
       set {
-        queryId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "cancel_time" field.</summary>
-    public const int CancelTimeFieldNumber = 2;
-    private global::Google.Protobuf.WellKnownTypes.Timestamp cancelTime_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Google.Protobuf.WellKnownTypes.Timestamp CancelTime {
-      get { return cancelTime_; }
-      set {
-        cancelTime_ = value;
+        queryId_ = value;
       }
     }
 
@@ -4909,16 +5129,14 @@ namespace AElf.Contracts.Oracle {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (QueryId != other.QueryId) return false;
-      if (!object.Equals(CancelTime, other.CancelTime)) return false;
+      if (!object.Equals(QueryId, other.QueryId)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (QueryId.Length != 0) hash ^= QueryId.GetHashCode();
-      if (cancelTime_ != null) hash ^= CancelTime.GetHashCode();
+      if (queryId_ != null) hash ^= QueryId.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4935,13 +5153,9 @@ namespace AElf.Contracts.Oracle {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (QueryId.Length != 0) {
+      if (queryId_ != null) {
         output.WriteRawTag(10);
-        output.WriteBytes(QueryId);
-      }
-      if (cancelTime_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(CancelTime);
+        output.WriteMessage(QueryId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -4952,13 +5166,9 @@ namespace AElf.Contracts.Oracle {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (QueryId.Length != 0) {
+      if (queryId_ != null) {
         output.WriteRawTag(10);
-        output.WriteBytes(QueryId);
-      }
-      if (cancelTime_ != null) {
-        output.WriteRawTag(18);
-        output.WriteMessage(CancelTime);
+        output.WriteMessage(QueryId);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -4969,11 +5179,8 @@ namespace AElf.Contracts.Oracle {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (QueryId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(QueryId);
-      }
-      if (cancelTime_ != null) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(CancelTime);
+      if (queryId_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryId);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -4986,14 +5193,11 @@ namespace AElf.Contracts.Oracle {
       if (other == null) {
         return;
       }
-      if (other.QueryId.Length != 0) {
-        QueryId = other.QueryId;
-      }
-      if (other.cancelTime_ != null) {
-        if (cancelTime_ == null) {
-          CancelTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+      if (other.queryId_ != null) {
+        if (queryId_ == null) {
+          QueryId = new global::AElf.Types.Hash();
         }
-        CancelTime.MergeFrom(other.CancelTime);
+        QueryId.MergeFrom(other.QueryId);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -5010,14 +5214,10 @@ namespace AElf.Contracts.Oracle {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            QueryId = input.ReadBytes();
-            break;
-          }
-          case 18: {
-            if (cancelTime_ == null) {
-              CancelTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            if (queryId_ == null) {
+              QueryId = new global::AElf.Types.Hash();
             }
-            input.ReadMessage(CancelTime);
+            input.ReadMessage(QueryId);
             break;
           }
         }
@@ -5035,14 +5235,10 @@ namespace AElf.Contracts.Oracle {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            QueryId = input.ReadBytes();
-            break;
-          }
-          case 18: {
-            if (cancelTime_ == null) {
-              CancelTime = new global::Google.Protobuf.WellKnownTypes.Timestamp();
+            if (queryId_ == null) {
+              QueryId = new global::AElf.Types.Hash();
             }
-            input.ReadMessage(CancelTime);
+            input.ReadMessage(QueryId);
             break;
           }
         }
@@ -5052,7 +5248,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class SufficientCommitmentsCollected : pb::IMessage<SufficientCommitmentsCollected>
+  internal sealed partial class SufficientCommitmentsCollected : pb::IMessage<SufficientCommitmentsCollected>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -5064,7 +5260,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[17]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[18]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5233,7 +5429,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class Committed : pb::IMessage<Committed>
+  internal sealed partial class Committed : pb::IMessage<Committed>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -5245,7 +5441,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[18]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[19]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5504,7 +5700,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class CommitmentRevealed : pb::IMessage<CommitmentRevealed>
+  internal sealed partial class CommitmentRevealed : pb::IMessage<CommitmentRevealed>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -5516,7 +5712,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[19]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[20]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5536,7 +5732,7 @@ namespace AElf.Contracts.Oracle {
       queryId_ = other.queryId_ != null ? other.queryId_.Clone() : null;
       oracleNodeAddress_ = other.oracleNodeAddress_ != null ? other.oracleNodeAddress_.Clone() : null;
       commitment_ = other.commitment_ != null ? other.commitment_.Clone() : null;
-      data_ = other.data_;
+      revealData_ = other.revealData_;
       salt_ = other.salt_ != null ? other.salt_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -5579,14 +5775,14 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "data" field.</summary>
-    public const int DataFieldNumber = 4;
-    private pb::ByteString data_ = pb::ByteString.Empty;
+    /// <summary>Field number for the "reveal_data" field.</summary>
+    public const int RevealDataFieldNumber = 4;
+    private string revealData_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Data {
-      get { return data_; }
+    public string RevealData {
+      get { return revealData_; }
       set {
-        data_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        revealData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -5617,7 +5813,7 @@ namespace AElf.Contracts.Oracle {
       if (!object.Equals(QueryId, other.QueryId)) return false;
       if (!object.Equals(OracleNodeAddress, other.OracleNodeAddress)) return false;
       if (!object.Equals(Commitment, other.Commitment)) return false;
-      if (Data != other.Data) return false;
+      if (RevealData != other.RevealData) return false;
       if (!object.Equals(Salt, other.Salt)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -5628,7 +5824,7 @@ namespace AElf.Contracts.Oracle {
       if (queryId_ != null) hash ^= QueryId.GetHashCode();
       if (oracleNodeAddress_ != null) hash ^= OracleNodeAddress.GetHashCode();
       if (commitment_ != null) hash ^= Commitment.GetHashCode();
-      if (Data.Length != 0) hash ^= Data.GetHashCode();
+      if (RevealData.Length != 0) hash ^= RevealData.GetHashCode();
       if (salt_ != null) hash ^= Salt.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -5658,9 +5854,9 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(26);
         output.WriteMessage(Commitment);
       }
-      if (Data.Length != 0) {
+      if (RevealData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(Data);
+        output.WriteString(RevealData);
       }
       if (salt_ != null) {
         output.WriteRawTag(42);
@@ -5687,9 +5883,9 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(26);
         output.WriteMessage(Commitment);
       }
-      if (Data.Length != 0) {
+      if (RevealData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(Data);
+        output.WriteString(RevealData);
       }
       if (salt_ != null) {
         output.WriteRawTag(42);
@@ -5713,8 +5909,8 @@ namespace AElf.Contracts.Oracle {
       if (commitment_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Commitment);
       }
-      if (Data.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
+      if (RevealData.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(RevealData);
       }
       if (salt_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Salt);
@@ -5748,8 +5944,8 @@ namespace AElf.Contracts.Oracle {
         }
         Commitment.MergeFrom(other.Commitment);
       }
-      if (other.Data.Length != 0) {
-        Data = other.Data;
+      if (other.RevealData.Length != 0) {
+        RevealData = other.RevealData;
       }
       if (other.salt_ != null) {
         if (salt_ == null) {
@@ -5793,7 +5989,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 34: {
-            Data = input.ReadBytes();
+            RevealData = input.ReadString();
             break;
           }
           case 42: {
@@ -5839,7 +6035,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 34: {
-            Data = input.ReadBytes();
+            RevealData = input.ReadString();
             break;
           }
           case 42: {
@@ -5856,7 +6052,7 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class CommitmentRevealFailed : pb::IMessage<CommitmentRevealFailed>
+  internal sealed partial class CommitmentRevealFailed : pb::IMessage<CommitmentRevealFailed>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -5868,7 +6064,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[20]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[21]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -5888,7 +6084,7 @@ namespace AElf.Contracts.Oracle {
       queryId_ = other.queryId_ != null ? other.queryId_.Clone() : null;
       oracleNodeAddress_ = other.oracleNodeAddress_ != null ? other.oracleNodeAddress_.Clone() : null;
       commitment_ = other.commitment_ != null ? other.commitment_.Clone() : null;
-      data_ = other.data_;
+      revealData_ = other.revealData_;
       salt_ = other.salt_ != null ? other.salt_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -5931,14 +6127,14 @@ namespace AElf.Contracts.Oracle {
       }
     }
 
-    /// <summary>Field number for the "data" field.</summary>
-    public const int DataFieldNumber = 4;
-    private pb::ByteString data_ = pb::ByteString.Empty;
+    /// <summary>Field number for the "reveal_data" field.</summary>
+    public const int RevealDataFieldNumber = 4;
+    private string revealData_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Data {
-      get { return data_; }
+    public string RevealData {
+      get { return revealData_; }
       set {
-        data_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        revealData_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
@@ -5969,7 +6165,7 @@ namespace AElf.Contracts.Oracle {
       if (!object.Equals(QueryId, other.QueryId)) return false;
       if (!object.Equals(OracleNodeAddress, other.OracleNodeAddress)) return false;
       if (!object.Equals(Commitment, other.Commitment)) return false;
-      if (Data != other.Data) return false;
+      if (RevealData != other.RevealData) return false;
       if (!object.Equals(Salt, other.Salt)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -5980,7 +6176,7 @@ namespace AElf.Contracts.Oracle {
       if (queryId_ != null) hash ^= QueryId.GetHashCode();
       if (oracleNodeAddress_ != null) hash ^= OracleNodeAddress.GetHashCode();
       if (commitment_ != null) hash ^= Commitment.GetHashCode();
-      if (Data.Length != 0) hash ^= Data.GetHashCode();
+      if (RevealData.Length != 0) hash ^= RevealData.GetHashCode();
       if (salt_ != null) hash ^= Salt.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -6010,9 +6206,9 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(26);
         output.WriteMessage(Commitment);
       }
-      if (Data.Length != 0) {
+      if (RevealData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(Data);
+        output.WriteString(RevealData);
       }
       if (salt_ != null) {
         output.WriteRawTag(42);
@@ -6039,9 +6235,9 @@ namespace AElf.Contracts.Oracle {
         output.WriteRawTag(26);
         output.WriteMessage(Commitment);
       }
-      if (Data.Length != 0) {
+      if (RevealData.Length != 0) {
         output.WriteRawTag(34);
-        output.WriteBytes(Data);
+        output.WriteString(RevealData);
       }
       if (salt_ != null) {
         output.WriteRawTag(42);
@@ -6065,8 +6261,8 @@ namespace AElf.Contracts.Oracle {
       if (commitment_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Commitment);
       }
-      if (Data.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Data);
+      if (RevealData.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(RevealData);
       }
       if (salt_ != null) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Salt);
@@ -6100,8 +6296,8 @@ namespace AElf.Contracts.Oracle {
         }
         Commitment.MergeFrom(other.Commitment);
       }
-      if (other.Data.Length != 0) {
-        Data = other.Data;
+      if (other.RevealData.Length != 0) {
+        RevealData = other.RevealData;
       }
       if (other.salt_ != null) {
         if (salt_ == null) {
@@ -6145,7 +6341,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 34: {
-            Data = input.ReadBytes();
+            RevealData = input.ReadString();
             break;
           }
           case 42: {
@@ -6191,7 +6387,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 34: {
-            Data = input.ReadBytes();
+            RevealData = input.ReadString();
             break;
           }
           case 42: {
@@ -6208,19 +6404,19 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class QueryCompleted : pb::IMessage<QueryCompleted>
+  internal sealed partial class QueryCompletedWithAggregation : pb::IMessage<QueryCompletedWithAggregation>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<QueryCompleted> _parser = new pb::MessageParser<QueryCompleted>(() => new QueryCompleted());
+    private static readonly pb::MessageParser<QueryCompletedWithAggregation> _parser = new pb::MessageParser<QueryCompletedWithAggregation>(() => new QueryCompletedWithAggregation());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<QueryCompleted> Parser { get { return _parser; } }
+    public static pb::MessageParser<QueryCompletedWithAggregation> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[21]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[22]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -6229,22 +6425,22 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public QueryCompleted() {
+    public QueryCompletedWithAggregation() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public QueryCompleted(QueryCompleted other) : this() {
+    public QueryCompletedWithAggregation(QueryCompletedWithAggregation other) : this() {
       queryId_ = other.queryId_ != null ? other.queryId_.Clone() : null;
       result_ = other.result_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public QueryCompleted Clone() {
-      return new QueryCompleted(this);
+    public QueryCompletedWithAggregation Clone() {
+      return new QueryCompletedWithAggregation(this);
     }
 
     /// <summary>Field number for the "query_id" field.</summary>
@@ -6260,9 +6456,9 @@ namespace AElf.Contracts.Oracle {
 
     /// <summary>Field number for the "result" field.</summary>
     public const int ResultFieldNumber = 2;
-    private pb::ByteString result_ = pb::ByteString.Empty;
+    private string result_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pb::ByteString Result {
+    public string Result {
       get { return result_; }
       set {
         result_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
@@ -6271,11 +6467,11 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as QueryCompleted);
+      return Equals(other as QueryCompletedWithAggregation);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(QueryCompleted other) {
+    public bool Equals(QueryCompletedWithAggregation other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -6314,7 +6510,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (Result.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Result);
+        output.WriteString(Result);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -6331,7 +6527,7 @@ namespace AElf.Contracts.Oracle {
       }
       if (Result.Length != 0) {
         output.WriteRawTag(18);
-        output.WriteBytes(Result);
+        output.WriteString(Result);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -6346,7 +6542,7 @@ namespace AElf.Contracts.Oracle {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryId);
       }
       if (Result.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeBytesSize(Result);
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Result);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -6355,7 +6551,7 @@ namespace AElf.Contracts.Oracle {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(QueryCompleted other) {
+    public void MergeFrom(QueryCompletedWithAggregation other) {
       if (other == null) {
         return;
       }
@@ -6390,7 +6586,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 18: {
-            Result = input.ReadBytes();
+            Result = input.ReadString();
             break;
           }
         }
@@ -6415,7 +6611,7 @@ namespace AElf.Contracts.Oracle {
             break;
           }
           case 18: {
-            Result = input.ReadBytes();
+            Result = input.ReadString();
             break;
           }
         }
@@ -6425,7 +6621,233 @@ namespace AElf.Contracts.Oracle {
 
   }
 
-  public sealed partial class TokenLocked : pb::IMessage<TokenLocked>
+  internal sealed partial class QueryCompletedWithoutAggregation : pb::IMessage<QueryCompletedWithoutAggregation>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<QueryCompletedWithoutAggregation> _parser = new pb::MessageParser<QueryCompletedWithoutAggregation>(() => new QueryCompletedWithoutAggregation());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<QueryCompletedWithoutAggregation> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[23]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QueryCompletedWithoutAggregation() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QueryCompletedWithoutAggregation(QueryCompletedWithoutAggregation other) : this() {
+      queryId_ = other.queryId_ != null ? other.queryId_.Clone() : null;
+      result_ = other.result_ != null ? other.result_.Clone() : null;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public QueryCompletedWithoutAggregation Clone() {
+      return new QueryCompletedWithoutAggregation(this);
+    }
+
+    /// <summary>Field number for the "query_id" field.</summary>
+    public const int QueryIdFieldNumber = 1;
+    private global::AElf.Types.Hash queryId_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Types.Hash QueryId {
+      get { return queryId_; }
+      set {
+        queryId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "result" field.</summary>
+    public const int ResultFieldNumber = 2;
+    private global::AElf.Contracts.Oracle.PlainResult result_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public global::AElf.Contracts.Oracle.PlainResult Result {
+      get { return result_; }
+      set {
+        result_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as QueryCompletedWithoutAggregation);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(QueryCompletedWithoutAggregation other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (!object.Equals(QueryId, other.QueryId)) return false;
+      if (!object.Equals(Result, other.Result)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (queryId_ != null) hash ^= QueryId.GetHashCode();
+      if (result_ != null) hash ^= Result.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (queryId_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(QueryId);
+      }
+      if (result_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (queryId_ != null) {
+        output.WriteRawTag(10);
+        output.WriteMessage(QueryId);
+      }
+      if (result_ != null) {
+        output.WriteRawTag(18);
+        output.WriteMessage(Result);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (queryId_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(QueryId);
+      }
+      if (result_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Result);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(QueryCompletedWithoutAggregation other) {
+      if (other == null) {
+        return;
+      }
+      if (other.queryId_ != null) {
+        if (queryId_ == null) {
+          QueryId = new global::AElf.Types.Hash();
+        }
+        QueryId.MergeFrom(other.QueryId);
+      }
+      if (other.result_ != null) {
+        if (result_ == null) {
+          Result = new global::AElf.Contracts.Oracle.PlainResult();
+        }
+        Result.MergeFrom(other.Result);
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            if (queryId_ == null) {
+              QueryId = new global::AElf.Types.Hash();
+            }
+            input.ReadMessage(QueryId);
+            break;
+          }
+          case 18: {
+            if (result_ == null) {
+              Result = new global::AElf.Contracts.Oracle.PlainResult();
+            }
+            input.ReadMessage(Result);
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 10: {
+            if (queryId_ == null) {
+              QueryId = new global::AElf.Types.Hash();
+            }
+            input.ReadMessage(QueryId);
+            break;
+          }
+          case 18: {
+            if (result_ == null) {
+              Result = new global::AElf.Contracts.Oracle.PlainResult();
+            }
+            input.ReadMessage(Result);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  internal sealed partial class TokenLocked : pb::IMessage<TokenLocked>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
@@ -6437,7 +6859,7 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[22]; }
+      get { return global::AElf.Contracts.Oracle.OracleContractReflection.Descriptor.MessageTypes[24]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

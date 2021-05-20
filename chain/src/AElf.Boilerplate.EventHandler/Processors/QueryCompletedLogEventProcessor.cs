@@ -10,7 +10,7 @@ namespace AElf.Boilerplate.EventHandler
     public class QueryCompletedLogEventProcessor : LogEventProcessorBase, ITransientDependency
     {
         public override string ContractName => "Oracle";
-        public override string LogEventName => nameof(QueryCompleted);
+        public override string LogEventName => nameof(QueryCompletedWithAggregation);
         private readonly ILogger<QueryCompletedLogEventProcessor> _logger;
 
         public QueryCompletedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger,
@@ -21,8 +21,8 @@ namespace AElf.Boilerplate.EventHandler
 
         public override Task ProcessAsync(LogEvent logEvent)
         {
-            var collected = new QueryCompleted();
-            collected.MergeFrom(logEvent);
+            var completed = new QueryCompletedWithAggregation();
+            completed.MergeFrom(logEvent);
             _logger.LogInformation(logEvent.ToString());
 
             return Task.CompletedTask;
