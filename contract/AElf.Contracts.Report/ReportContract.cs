@@ -241,7 +241,8 @@ namespace AElf.Contracts.Report
 
                     for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfoList.Value.Count; i++)
                     {
-                        report.Observers.Add(State.NodeObserverListMap[plainResult.Token][currentRoundId][i]);
+                        report.Observers.Add(State.NodeObserverListMap[plainResult.Token][currentRoundId][i] ??
+                                             new ObserverList());
                         State.NodeObserverListMap[plainResult.Token][currentRoundId].Remove(i);
                     }
 
