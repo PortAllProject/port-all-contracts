@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using AElf.Boilerplate.EventHandler.Http;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
@@ -35,7 +34,7 @@ namespace AElf.Boilerplate.EventHandler
                 return data;
             }
 
-            if (url == null)
+            if (url == null || attributes == null)
             {
                 _logger.LogError($"No data of {queryId} for revealing.");
                 return string.Empty;
@@ -88,9 +87,8 @@ namespace AElf.Boilerplate.EventHandler
             var response = string.Empty;
             try
             {
-                var client = new HttpClient();
-                client.Timeout = TimeSpan.FromMinutes(2);
-                var responseMessage = await client.GetAsync(url);
+                var client = new HttpClient {Timeout = TimeSpan.FromMinutes(2)};
+                using var responseMessage = await client.GetHttpResponseMessageWithRetryAsync(url, _logger);
                 response = await responseMessage.Content.ReadAsStringAsync();
             }
             catch (Exception e)
@@ -111,6 +109,13 @@ namespace AElf.Boilerplate.EventHandler
             {
                 _logger.LogError($"Error during parsing json: {response}\n{e.Message}");
                 throw;
+            }
+
+            if (string.IsNullOrEmpty(data))
+            {
+                data = "0";
+                _logger.LogError($"Failed to get {attributes.First()} from {response}, will just return 0.");
+
             }
 
             return data;
