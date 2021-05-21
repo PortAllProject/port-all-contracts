@@ -41,32 +41,42 @@ namespace AElf.Boilerplate.EventHandler
                 return string.Empty;
             }
 
-            if (!url.Contains('|')) return await GetSingleUrlDataAsync(url, attributes);
-            var urls = url.Split('|');
-            var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
-            var dataList = new List<decimal>();
-            for (var i = 0; i < urls.Length; i++)
+            string result;
+
+            if (!url.Contains('|'))
             {
-                var singleData =
-                    await GetSingleUrlDataAsync(urls[i], urlAttributes.Select(a => a[i]).ToList());
-                if (singleData.Contains("\""))
+                result = await GetSingleUrlDataAsync(url, attributes);
+            }
+            else
+            {
+                var urls = url.Split('|');
+                var urlAttributes = attributes.Select(a => a.Split('|')).ToList();
+                var dataList = new List<decimal>();
+                for (var i = 0; i < urls.Length; i++)
                 {
-                    singleData = singleData.Replace("\"", "");
+                    var singleData =
+                        await GetSingleUrlDataAsync(urls[i], urlAttributes.Select(a => a[i]).ToList());
+                    if (singleData.Contains("\""))
+                    {
+                        singleData = singleData.Replace("\"", "");
+                    }
+
+                    if (decimal.TryParse(singleData, out var decimalData))
+                    {
+                        _logger.LogInformation($"Add {singleData} to data list.");
+                        dataList.Add(decimalData);
+                    }
+                    else
+                    {
+                        throw new Exception($"Error during paring {singleData} to decimal");
+                    }
                 }
 
-                if (decimal.TryParse(singleData, out var decimalData))
-                {
-                    _logger.LogInformation($"Add {singleData} to data list.");
-                    dataList.Add(decimalData);
-                }
-                else
-                {
-                    throw new Exception($"Error during paring {singleData} to decimal");
-                }
-
+                result = Aggregate(dataList, queryId);
             }
 
-            return Aggregate(dataList, queryId);
+            _dictionary[queryId] = result;
+            return result;
         }
 
         private string Aggregate(List<decimal> dataList, Hash queryId)
@@ -74,7 +84,6 @@ namespace AElf.Boilerplate.EventHandler
             var finalPrice = dataList.OrderBy(p => p).ToList()[dataList.Count / 2]
                 .ToString(CultureInfo.InvariantCulture);
 
-            _dictionary[queryId] = finalPrice;
             _logger.LogInformation($"Final price: {finalPrice}");
 
             return finalPrice;
