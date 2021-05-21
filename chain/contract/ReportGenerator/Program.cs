@@ -8,6 +8,7 @@ using AElf.Contracts.Report;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using Nethereum.Hex.HexConvertors.Extensions;
 using ReportGenerator;
@@ -24,7 +25,59 @@ namespace ReportGenerator
             //TestSignWithEthereumPrivateKey();
             //await TestSetContractInteraction();
             //await TestGetContractInteraction();
-            await TestTransmit();
+            //await TestTransmit();
+            
+            // test single answer and its length is less than 32
+            //TestSingleAnswerWithin32Byte();
+            
+            // test multiple answer and their length are less than 32
+            // var report = TestMultipleObservationsWithin32Byte();
+            // var privateKey1 = "7f6965ae260469425ae839f5abc85b504883022140d5f6fc9664a96d480c068d";
+            // var privateKey2 = "996e00ecd273f49a96b1af85ee24b6724d8ba3d9957c5bdc5fc16fd1067d542a";
+            // SignReport(privateKey1, report);
+            // SignReport(privateKey2, report);
+            
+            // var ob1 = ByteStringHelper
+            //     .FromHexString("0x7177656f6c657763776a00000000000000000000000000000000000000000000").Take(10).ToArray();
+            // Console.WriteLine(Encoding.ASCII.GetString(ob1));
+            // var ob2 = ByteStringHelper
+            //     .FromHexString("0x6a756e61656c696f766561000000000000000000000000000000000000000000").Take(11).ToArray();
+            // Console.WriteLine(Encoding.ASCII.GetString(ob2));
+            // var ob3 = ByteStringHelper
+            //     .FromHexString("0x31323332313433322e3132333132330000000000000000000000000000000000").Take(15).ToArray();
+            // Console.WriteLine(Encoding.ASCII.GetString(ob3));
+            
+            //test multiple answer with long answer
+            // var report = TestMultipleObservationsWithOut32Byte();
+            // var privateKey1 = "7f6965ae260469425ae839f5abc85b504883022140d5f6fc9664a96d480c068d";
+            // var privateKey2 = "996e00ecd273f49a96b1af85ee24b6724d8ba3d9957c5bdc5fc16fd1067d542a";
+            // SignReport(privateKey1, report);
+            // SignReport(privateKey2, report);
+            
+            var ob1 = ByteStringHelper
+                .FromHexString("0x7177656f6c657763776a00000000000000000000000000000000000000000000").Take(10).ToArray();
+            Console.WriteLine(Encoding.ASCII.GetString(ob1));
+            var ob2 = ByteStringHelper
+                .FromHexString("0x63343265646566633735383731653463653231343666636461363764303364646130356363323666646639336231376235356634326331656164666463333232").Take(64).ToArray();
+            Console.WriteLine(Encoding.ASCII.GetString(ob2));
+            var ob3 = ByteStringHelper
+                .FromHexString("0x633432656465666337353837316534636532313436666364613637643033646461303563633236666466393362313762353566343263316561646664633332326334326564656663373538373165346365323134366663646136376430336464").Take(108).ToArray();
+            Console.WriteLine(Encoding.ASCII.GetString(ob3));
+            var ob4 = ByteStringHelper
+                .FromHexString("0x6130356363323666646639336231376235356634326331656164666463333232633432656465666337353837316534636532313436666364613637643033646461303563633236666466393362313762353566343263316561646664633332326164736461646164640000000000000000000000000000000000000000000000").Take(117).ToArray();
+            Console.WriteLine(Encoding.ASCII.GetString(ob4));
+        }
+
+        static string TransferEthereumHexToBytesArray(string str)
+        {
+            var bytesArray = new List<byte>();
+            for (var i = 0; i < str.Length; i += 2)
+            {
+                var subChar = str.Substring(i, 2);
+                var b = (byte)(int.Parse(subChar.Substring(0,1)) * 16 + int.Parse(subChar.Substring(1,1)));
+                bytesArray.Add(b);
+            }
+            return Encoding.ASCII.GetString(bytesArray.ToArray());
         }
 
         static async Task TestTransmit()
@@ -92,17 +145,153 @@ namespace ReportGenerator
         }
         static void TestSignWithEthereumPrivateKey()
         {
-            var privateKey = "996e00ecd273f49a96b1af85ee24b6724d8ba3d9957c5bdc5fc16fd1067d542a";
+            var privateKey = "7f6965ae260469425ae839f5abc85b504883022140d5f6fc9664a96d480c068d";
             var signService = new SignService();
             var privateKeyBytes = ByteStringHelper.FromHexString(privateKey).ToByteArray();
             var report =
-                "0x00000000000022d6f8928689ea183a3eb24df3919a94000000000000000b0320000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a080001020000000000000000000000000000000000000000000000000000000000060606000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000000000000000000000000000000000000000000000000000000000000000030a0431203a3400000000000000000000000000000000000000000000000000000a0431203a3500000000000000000000000000000000000000000000000000000a0431203a360000000000000000000000000000000000000000000000000000";
+                "0x000000000000f6f3ed664fd0e7be332f035ec351acf1000000000000000a02400001020000000000000000000000000000000000000000000000000000000000000102000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000010200000000000000000000000000000000000000000000000000000000000a0b0f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000014000000000000000000000000000000000000000000000000000000000000000026334326564656663373538373165346365323134366663646136376430336464613035636332366664663933623137623535663432633165616466646333323200000000000000000000000000000000000000000000000000000000000000037177656f6c657763776a000000000000000000000000000000000000000000006a756e61656c696f76656100000000000000000000000000000000000000000031323332313433322e3132333132330000000000000000000000000000000000";
             var hashMsg = SignService.GetKeccak256(report);
             Console.WriteLine(hashMsg);
             var signature = signService.Sign(report, privateKeyBytes);
             Console.WriteLine("r is : " + signature.R);
             Console.WriteLine("s is : " + signature.S);
             Console.WriteLine("v is : " + signature.V);
+        }
+        
+        static void SignReport(string privateKey, string report)
+        {
+            var signService = new SignService();
+            var privateKeyBytes = ByteStringHelper.FromHexString(privateKey).ToByteArray();
+            var hashMsg = SignService.GetKeccak256(report);
+            Console.WriteLine(hashMsg);
+            var signature = signService.Sign(report, privateKeyBytes);
+            Console.WriteLine("r is : " + signature.R);
+            Console.WriteLine("s is : " + signature.S);
+            Console.WriteLine("v is : " + signature.V);
+        }
+
+        static void TestSingleAnswerWithin32Byte()
+        {
+            var rs = new ReportContract();
+            var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
+            var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
+            //Console.WriteLine("digest length :" + digestBytes.Length);
+            var digest = ByteString.CopyFrom(digestBytes);
+            var data = "asdas";
+            var report = new Report
+            {
+                RoundId = 10, AggregatedData = data, Observations = new Observations(),
+                Observers =
+                {
+                    new ObserverList(),
+                    new ObserverList()
+                }
+            };
+            var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
+            Console.WriteLine("0x" + bytesInEthereum);
+        }
+        
+        static string TestMultipleObservationsWithin32Byte()
+        {
+            var rs = new ReportContract();
+            var digestStr = "0x22d6f8928689ea183a3eb24df3919a94";
+            var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
+            //Console.WriteLine("digest length :" + digestBytes.Length);
+            var digest = ByteString.CopyFrom(digestBytes);
+            var data = "asdas";
+            var merkleTreeRoot = HashHelper.ComputeFrom(data).ToHex();
+            if (merkleTreeRoot.StartsWith("0x"))
+                merkleTreeRoot = merkleTreeRoot.Substring(2);
+            //Console.WriteLine($"merkle tree root is {merkleTreeRoot}  and its length is {merkleTreeRoot.Length}");
+            var report = new Report
+            {
+                RoundId = 11, AggregatedData = merkleTreeRoot, Observations = new Observations
+                {
+                    Value =
+                    {
+                        new Observation
+                        {
+                            Key = "0",
+                            Data = "qweolewcwj"
+                        },
+                        new Observation
+                        {
+                            Key = "1",
+                            Data = "junaeliovea"
+                        },
+                        new Observation
+                        {
+                            Key = "2",
+                            Data = "12321432.123123"
+                        }
+                    }
+                },
+                Observers =
+                {
+                    new ObserverList(),
+                    new ObserverList()
+                }
+            };
+            var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
+            var hexReport = "0x" + bytesInEthereum;
+            Console.WriteLine(hexReport);
+            return hexReport;
+        }
+        
+        static string TestMultipleObservationsWithOut32Byte()
+        {
+            var rs = new ReportContract();
+            var digestStr = "0x22d6f8928689ea183a3eb24df3919a94";
+            var digestBytes = ByteStringHelper.FromHexString(digestStr).ToByteArray();
+            //Console.WriteLine("digest length :" + digestBytes.Length);
+            var digest = ByteString.CopyFrom(digestBytes);
+            var data = "asdas";
+            var merkleTreeRoot = HashHelper.ComputeFrom(data).ToHex();
+            if (merkleTreeRoot.StartsWith("0x"))
+                merkleTreeRoot = merkleTreeRoot.Substring(2);
+            var longAnswer = merkleTreeRoot + merkleTreeRoot;
+            Console.WriteLine("long answer : " + longAnswer);
+            var longestAnswer = longAnswer + "adsdadadd";
+            Console.WriteLine("longest answer : " + longestAnswer);
+            //Console.WriteLine($"merkle tree root is {merkleTreeRoot}  and its length is {merkleTreeRoot.Length}");
+            var report = new Report
+            {
+                RoundId = 12, AggregatedData = merkleTreeRoot, Observations = new Observations
+                {
+                    Value =
+                    {
+                        new Observation
+                        {
+                            Key = "0",
+                            Data = "qweolewcwj"
+                        },
+                        new Observation
+                        {
+                            Key = "1",
+                            Data = merkleTreeRoot
+                        },
+                        new Observation
+                        {
+                            Key = "2",
+                            Data = longAnswer
+                        },
+                        new Observation
+                        {
+                            Key = "3",
+                            Data = longestAnswer
+                        }
+                    }
+                },
+                Observers =
+                {
+                    new ObserverList(),
+                    new ObserverList()
+                }
+            };
+            var bytesInEthereum = rs.GenerateEthereumReport(digest, report);
+            var hexReport = "0x" + bytesInEthereum;
+            Console.WriteLine(hexReport);
+            return hexReport;
         }
 
         static void TestWithMultipleObservations()
@@ -168,6 +357,7 @@ namespace ReportGenerator
         public const string Bytes32 = "bytes32";
         public const string Bytes32Array = Bytes32 + ArraySuffix;
         public const string Uint256 = "uint256";
+        public const string Bytes = "bytes";
         public const int SlotByteSize = 32;
 
         private readonly Dictionary<string, Func<object, IList<byte>>> _serialization;

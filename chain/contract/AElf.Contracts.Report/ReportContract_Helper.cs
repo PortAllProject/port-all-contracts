@@ -45,7 +45,7 @@ namespace AElf.Contracts.Report
             // bytes32: the index of chainInfo
             // bytes32: the answer's length of each chainInfo
             // bytes32[]: the concrete answer
-            return SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32, Bytes32Array).ToArray()
+            return SerializeReport(data, Bytes32, Bytes32, Bytes32, Bytes32Array, Bytes32, Bytes32, Bytes32Array).ToArray()
                 .ToHex();
         }
 
@@ -75,9 +75,10 @@ namespace AElf.Contracts.Report
 
         private IList<byte> FillObservationBytes(byte[] result)
         {
-            if (result.Length == SlotByteSize)
-                return result;
-            var ret = GetByteListWithCapacity(SlotByteSize);
+            if (result.Length == 0)
+                return GetByteListWithCapacity(SlotByteSize);
+            var totalBytesLength = result.Length.Sub(1).Div(SlotByteSize).Add(1);
+            var ret = GetByteListWithCapacity(totalBytesLength.Mul(SlotByteSize));
             BytesCopy(result, 0, ret, 0, result.Length);
             return ret;
         }
