@@ -19,11 +19,11 @@ namespace ReportGenerator
     {
         static async Task Main(string[] args)
         {
-            TestSignWithAelfKey();
-            TestSignWithEthereumPrivateKey();
-            await TestSetContractInteraction();
-            await TestGetContractInteraction();
-            await TestTransmit();
+            // TestSignWithAelfKey();
+            // TestSignWithEthereumPrivateKey();
+            // await TestSetContractInteraction();
+            // await TestGetContractInteraction();
+            // await TestTransmit();
             
             // test single answer and its length is less than 32
             //TestSingleAnswerWithin32Byte();

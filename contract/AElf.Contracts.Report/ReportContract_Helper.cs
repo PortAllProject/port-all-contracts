@@ -267,13 +267,6 @@ namespace AElf.Contracts.Report
             return list;
         }
 
-        private ByteString TransferToAsciiString(ByteString rawStringValue)
-        {
-            var rawStringInfo = StringValue.Parser.ParseFrom(rawStringValue);
-            var stringBytes = rawStringInfo.Value.Select(c => (byte) c).ToArray();
-            return ByteString.CopyFrom(stringBytes);
-        }
-
         private long GetAmercementAmount(Address associationAddress = null)
         {
             return associationAddress == null
