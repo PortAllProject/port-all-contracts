@@ -293,9 +293,6 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Observer Association not exists.");
             }
 
-            Assert(State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] == null,
-                "Sender already confirmed this report.");
-
             var report = State.ReportMap[input.Token][input.RoundId];
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
@@ -314,10 +311,7 @@ namespace AElf.Contracts.Report
             }
             Assert(memberList.Contains(Context.Sender),
                     "Sender isn't a member of certain Observer Association.");
-            Assert(
-                    string.IsNullOrEmpty(
-                        State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender]),
-                    $"Sender: {Context.Sender} has confirmed");
+
             State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] =
                 input.Signature;
             reportQueryRecord.NodeConfirmCount = reportQueryRecord.NodeConfirmCount.Add(1);
