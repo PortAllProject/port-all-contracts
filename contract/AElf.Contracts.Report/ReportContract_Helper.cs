@@ -30,8 +30,6 @@ namespace AElf.Contracts.Report
             data.Add(config);
             data.Add(observerIndex);
             data.Add(observationsCount);
-            var aggregatedData = report.AggregatedData.GetBytes();
-            Assert(aggregatedData.Length <= SlotByteSize, "aggregated data is oversize(32 bytes)");
             data.Add(FillObservationBytes(report.AggregatedData.GetBytes()));
             GenerateMultipleObservation(report, out var observerOrder, out var observationsLength,
                 out var observations);
