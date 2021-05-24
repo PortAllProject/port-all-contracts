@@ -237,7 +237,7 @@ namespace AElf.Contracts.Report
                     for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfoList.Value.Count; i++)
                     {
                         var node = report.Observations.Value.FirstOrDefault(o => o.Key == i.ToString());
-                        var nodeHash = node == null ? Hash.Empty : HashHelper.ComputeFrom(node);
+                        var nodeHash = node == null ? Hash.Empty : HashHelper.ComputeFrom(node.Data);
                         merkleNodes.Add(nodeHash);
                     }
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(merkleNodes);

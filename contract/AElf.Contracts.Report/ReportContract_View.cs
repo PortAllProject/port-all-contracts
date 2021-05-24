@@ -31,8 +31,9 @@ namespace AElf.Contracts.Report
 
         public override MerklePath GetMerklePath(GetMerklePathInput input)
         {
-            return State.BinaryMerkleTreeMap[input.Token][input.RoundId]
-                .GenerateMerklePath(input.NodeIndex);
+            var merkleTree = State.BinaryMerkleTreeMap[input.Token][input.RoundId];
+            Assert(merkleTree.LeafCount > input.NodeIndex, "Node index exceeded.");
+            return merkleTree.GenerateMerklePath(input.NodeIndex);
         }
 
         public override Int64Value GetCurrentRoundId(StringValue input)
