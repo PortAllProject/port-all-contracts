@@ -44,20 +44,24 @@ namespace AElf.Boilerplate.EventHandler
             _logger.LogInformation(reportConfirmed.ToString());
             var ethereumContractAddress = reportConfirmed.Token;
             var roundId = reportConfirmed.RoundId;
-            _signaturesRecoverableInfoProvider.SetSignature(ethereumContractAddress, roundId, reportConfirmed.Signature);
+            _signaturesRecoverableInfoProvider.SetSignature(ethereumContractAddress, roundId,
+                reportConfirmed.Signature);
             if (reportConfirmed.IsAllNodeConfirmed)
             {
                 if (_ethereumConfigOptions.IsEnable)
                 {
                     var report =
                         _reportProvider.GetReport(ethereumContractAddress, roundId);
-                    var signatureRecoverableInfos = _signaturesRecoverableInfoProvider.GetSignature(ethereumContractAddress, roundId);
+                    var signatureRecoverableInfos =
+                        _signaturesRecoverableInfoProvider.GetSignature(ethereumContractAddress, roundId);
                     var (reportBytes, rs, ss, vs) = TransferToEthereumParameter(report, signatureRecoverableInfos);
                     var web3Manager = new Web3Manager(_ethereumConfigOptions.Url, _ethereumConfigOptions.Address,
                         _ethereumConfigOptions.PrivateKey,
                         _abi);
                     try
                     {
+                        _logger.LogInformation(
+                            $"try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
                         await web3Manager.TransmitDataOnEthereum(ethereumContractAddress, reportBytes, rs, ss, vs);
                     }
                     catch (Exception ex)
@@ -66,6 +70,7 @@ namespace AElf.Boilerplate.EventHandler
                         _logger.LogInformation(ex.Message);
                     }
                 }
+
                 _signaturesRecoverableInfoProvider.RemoveSignature(ethereumContractAddress, roundId);
                 _reportProvider.RemoveReport(ethereumContractAddress, roundId);
             }
@@ -75,7 +80,7 @@ namespace AElf.Boilerplate.EventHandler
         {
             using var file = System.IO.File.OpenText(jsonfile);
             using var reader = new JsonTextReader(file);
-            var o = (JObject)JToken.ReadFrom(reader);
+            var o = (JObject) JToken.ReadFrom(reader);
             var value = o[key]?.ToString();
             return value;
         }
