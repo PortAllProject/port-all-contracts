@@ -61,12 +61,19 @@ namespace AElf.Boilerplate.EventHandler
                     try
                     {
                         _logger.LogInformation(
-                            $"try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
-                        await web3Manager.TransmitDataOnEthereum(ethereumContractAddress, reportBytes, rs, ss, vs);
+                            $"Try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
+                        //await web3Manager.TransmitDataOnEthereum(ethereumContractAddress, reportBytes, rs, ss, vs);
+                        var transactionReceipt =
+                            await web3Manager.TransmitDataOnEthereumWithReceipt(ethereumContractAddress, reportBytes,
+                                rs, ss, vs);
+                        if (transactionReceipt.HasErrors().Value)
+                        {
+                            _logger.LogInformation("Failed to transmit data.");
+                        }
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogInformation("failed to transmit:");
+                        _logger.LogInformation("Failed to transmit data:");
                         _logger.LogInformation(ex.Message);
                     }
                 }
