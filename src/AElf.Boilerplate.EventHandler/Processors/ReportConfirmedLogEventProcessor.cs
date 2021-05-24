@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,13 +16,13 @@ namespace AElf.Boilerplate.EventHandler
     {
         public override string ContractName => "Report";
         public override string LogEventName => nameof(ReportConfirmed);
-        private readonly ILogger<QueryCompletedLogEventProcessor> _logger;
+        private readonly ILogger<ReportConfirmedLogEventProcessor> _logger;
         private readonly ISignatureRecoverableInfoProvider _signaturesRecoverableInfoProvider;
         private readonly IReportProvider _reportProvider;
         private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly string _abi;
 
-        public ReportConfirmedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger,
+        public ReportConfirmedLogEventProcessor(ILogger<ReportConfirmedLogEventProcessor> logger,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
             IReportProvider reportProvider,
             ISignatureRecoverableInfoProvider signaturesRecoverableInfoProvider,
@@ -55,7 +56,15 @@ namespace AElf.Boilerplate.EventHandler
                     var web3Manager = new Web3Manager(_ethereumConfigOptions.Url, _ethereumConfigOptions.Address,
                         _ethereumConfigOptions.PrivateKey,
                         _abi);
-                    await web3Manager.TransmitDataOnEthereum(ethereumContractAddress, reportBytes, rs, ss, vs);
+                    try
+                    {
+                        await web3Manager.TransmitDataOnEthereum(ethereumContractAddress, reportBytes, rs, ss, vs);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogInformation("failed to transmit:");
+                        _logger.LogInformation(ex.Message);
+                    }
                 }
                 _signaturesRecoverableInfoProvider.RemoveSignature(ethereumContractAddress, roundId);
                 _reportProvider.RemoveReport(ethereumContractAddress, roundId);
