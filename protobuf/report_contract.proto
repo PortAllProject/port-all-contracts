@@ -91,6 +91,9 @@ service ReportContract {
     rpc IsObserver (aelf.Address) returns (google.protobuf.BoolValue) {
         option (aelf.is_view) = true;
     }
+    rpc GetMortgagedTokenAmount (aelf.Address) returns (google.protobuf.Int64Value) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput {
