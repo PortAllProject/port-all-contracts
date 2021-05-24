@@ -233,9 +233,14 @@ namespace AElf.Contracts.Report
                 if (offChainAggregationInfo.RoundIds.All(i => i >= currentRoundId || i == -1))
                 {
                     // Time to generate merkle tree.
-                    var merkleTree = BinaryMerkleTree.FromLeafNodes(report.Observations.Value
-                        .OrderBy(o => int.Parse(o.Key))
-                        .Select(o => HashHelper.ComputeFrom(o.Data)));
+                    var merkleNodes = new List<Hash>();
+                    for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfoList.Value.Count; i++)
+                    {
+                        var node = report.Observations.Value.FirstOrDefault(o => o.Key == i.ToString());
+                        var nodeHash = node == null ? Hash.Empty : HashHelper.ComputeFrom(node);
+                        merkleNodes.Add(nodeHash);
+                    }
+                    var merkleTree = BinaryMerkleTree.FromLeafNodes(merkleNodes);
                     State.BinaryMerkleTreeMap[plainResult.Token][currentRoundId] = merkleTree;
                     report.AggregatedData = merkleTree.Root.Value.ToHex();
 
