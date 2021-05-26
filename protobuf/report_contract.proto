@@ -49,6 +49,8 @@ service ReportContract {
 
     rpc RemoveOffChainQueryInfo (RemoveOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
 
+    rpc ChangeOffChainQueryInfo (ChangeOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
+
     rpc AddRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
 
     rpc RemoveFromRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
@@ -89,6 +91,9 @@ service ReportContract {
         option (aelf.is_view) = true;
     }
     rpc IsObserver (aelf.Address) returns (google.protobuf.BoolValue) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetMortgagedTokenAmount (aelf.Address) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
 }
@@ -230,6 +235,11 @@ message AddOffChainQueryInfoInput {
 message RemoveOffChainQueryInfoInput {
     string token = 1;
     int32 remove_node_index = 2;
+}
+
+message ChangeOffChainQueryInfoInput {
+    string token = 1;
+    OffChainQueryInfo new_off_chain_query_info = 2;
 }
 
 // Events

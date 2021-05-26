@@ -2,6 +2,7 @@ using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core;
 using AElf.CSharp.Core.Extension;
 using AElf.Standards.ACS3;
+using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 
@@ -118,6 +119,19 @@ namespace AElf.Contracts.Report
                 "No permission.");
             State.ReportFee.Value = input.Value;
             return new Empty();
+        }
+
+        public override Int64Value GetMortgagedTokenAmount(Address input)
+        {
+            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(input));
+            return new Int64Value
+            {
+                Value = State.TokenContract.GetBalance.Call(new GetBalanceInput
+                {
+                    Owner = virtualAddress,
+                    Symbol = State.ObserverMortgageTokenSymbol.Value
+                }).Balance
+            };
         }
     }
 }
