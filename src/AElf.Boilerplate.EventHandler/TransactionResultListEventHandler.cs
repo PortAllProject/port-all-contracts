@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AElf.CSharp.Core;
 using AElf.Types;
 using AElf.WebApp.MessageQueue;
 using Google.Protobuf;
@@ -11,16 +12,16 @@ using Volo.Abp.EventBus.Distributed;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class TransactionResultListEventHandler : IDistributedEventHandler<TransactionResultListEto>,
-        ISingletonDependency
+    public class TransactionResultListEventHandler<T> : IDistributedEventHandler<TransactionResultListEto>,
+        ISingletonDependency where T : IEvent<T>
     {
-        private readonly IEnumerable<ILogEventProcessor> _logEventProcessors;
+        private readonly IEnumerable<ILogEventProcessor<T>> _logEventProcessors;
         private readonly ContractAddressOptions _contractAddressOptions;
-        private readonly ILogger<TransactionResultListEventHandler> _logger;
+        private readonly ILogger<TransactionResultListEventHandler<T>> _logger;
 
-        public TransactionResultListEventHandler(IEnumerable<ILogEventProcessor> logEventProcessors,
+        public TransactionResultListEventHandler(IEnumerable<ILogEventProcessor<T>> logEventProcessors,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ILogger<TransactionResultListEventHandler> logger)
+            ILogger<TransactionResultListEventHandler<T>> logger)
         {
             _logEventProcessors = logEventProcessors;
             _logger = logger;

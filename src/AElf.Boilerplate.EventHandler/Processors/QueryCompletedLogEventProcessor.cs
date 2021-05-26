@@ -7,10 +7,10 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class QueryCompletedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class QueryCompletedLogEventProcessor : LogEventProcessorBase<QueryCompletedWithAggregation>,
+        ITransientDependency
     {
         public override string ContractName => "Oracle";
-        public override string LogEventName => nameof(QueryCompletedWithAggregation);
         private readonly ILogger<QueryCompletedLogEventProcessor> _logger;
 
         public QueryCompletedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger,

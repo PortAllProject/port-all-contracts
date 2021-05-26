@@ -9,13 +9,12 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class QueryCreatedLogEventProcessor : LogEventProcessorBase, ISingletonDependency
+    internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreated>, ISingletonDependency
     {
         private readonly ISaltProvider _saltProvider;
         private readonly IDataProvider _dataProvider;
         private readonly ConfigOptions _configOptions;
         public override string ContractName => "Oracle";
-        public override string LogEventName => nameof(QueryCreated);
         private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
         public QueryCreatedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,

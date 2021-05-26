@@ -7,10 +7,9 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ContractDeployedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class ContractDeployedLogEventProcessor : LogEventProcessorBase<ContractDeployed>, ITransientDependency
     {
         public override string ContractName => "BasicZero";
-        public override string LogEventName => nameof(ContractDeployed);
         private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
         public ContractDeployedLogEventProcessor(ILogger<QueryCreatedLogEventProcessor> logger,

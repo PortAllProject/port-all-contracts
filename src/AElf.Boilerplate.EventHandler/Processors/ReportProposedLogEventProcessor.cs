@@ -7,7 +7,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ReportProposedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>, ITransientDependency
     {
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
@@ -15,7 +15,6 @@ namespace AElf.Boilerplate.EventHandler
         private readonly IReportProvider _reportProvider;
 
         public override string ContractName => "Report";
-        public override string LogEventName => nameof(ReportProposed);
         private readonly ILogger<ReportProposedLogEventProcessor> _logger;
 
         public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,

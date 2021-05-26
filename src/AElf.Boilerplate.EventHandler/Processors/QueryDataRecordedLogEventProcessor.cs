@@ -7,7 +7,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class QueryDataRecordedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class QueryDataRecordedLogEventProcessor : LogEventProcessorBase<QueryDataRecorded>, ITransientDependency
     {
         private readonly ILogger<QueryDataRecordedLogEventProcessor> _logger;
 
@@ -18,7 +18,6 @@ namespace AElf.Boilerplate.EventHandler
         }
 
         public override string ContractName => "OracleUser";
-        public override string LogEventName => nameof(QueryDataRecorded);
 
         public override Task ProcessAsync(LogEvent logEvent)
         {

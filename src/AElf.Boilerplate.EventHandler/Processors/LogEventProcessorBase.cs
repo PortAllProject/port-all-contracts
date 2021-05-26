@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
+using AElf.CSharp.Core;
 using AElf.Types;
 using Microsoft.Extensions.Options;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public abstract class LogEventProcessorBase : ILogEventProcessor
+    public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T> where T : IEvent<T>
     {
         private readonly ContractAddressOptions _contractAddressOptions;
 
@@ -14,7 +15,6 @@ namespace AElf.Boilerplate.EventHandler
         }
 
         public abstract string ContractName { get; }
-        public abstract string LogEventName { get; }
 
         public abstract Task ProcessAsync(LogEvent logEvent);
 
@@ -33,7 +33,7 @@ namespace AElf.Boilerplate.EventHandler
                 return false;
             }
 
-            return actualContractAddress == contractAddress && logEventName == LogEventName;
+            return actualContractAddress == contractAddress && logEventName == typeof(T).Name;
         }
     }
 }

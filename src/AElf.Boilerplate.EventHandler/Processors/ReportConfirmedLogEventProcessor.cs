@@ -12,10 +12,9 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class ReportConfirmedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportConfirmed>, ITransientDependency
     {
         public override string ContractName => "Report";
-        public override string LogEventName => nameof(ReportConfirmed);
         private readonly ILogger<ReportConfirmedLogEventProcessor> _logger;
         private readonly ISignatureRecoverableInfoProvider _signaturesRecoverableInfoProvider;
         private readonly IReportProvider _reportProvider;

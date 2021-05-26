@@ -7,7 +7,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class AggregateDataReceivedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class AggregateDataReceivedLogEventProcessor : LogEventProcessorBase<AggregateDataReceived>, ITransientDependency
     {
         private readonly ILogger<AggregateDataReceivedLogEventProcessor> _logger;
 
@@ -27,7 +27,5 @@ namespace AElf.Boilerplate.EventHandler
 
             return Task.CompletedTask;
         }
-
-        public override string LogEventName => nameof(AggregateDataReceived);
     }
 }

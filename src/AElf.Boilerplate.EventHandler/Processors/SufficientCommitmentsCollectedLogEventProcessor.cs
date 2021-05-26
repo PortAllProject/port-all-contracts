@@ -9,7 +9,8 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.Boilerplate.EventHandler
 {
-    public class SufficientCommitmentsCollectedLogEventProcessor : LogEventProcessorBase, ITransientDependency
+    internal class SufficientCommitmentsCollectedLogEventProcessor :
+        LogEventProcessorBase<SufficientCommitmentsCollected>, ITransientDependency
     {
         private readonly ISaltProvider _saltProvider;
         private readonly IDataProvider _dataProvider;
@@ -30,7 +31,6 @@ namespace AElf.Boilerplate.EventHandler
         }
 
         public override string ContractName => "Oracle";
-        public override string LogEventName => nameof(SufficientCommitmentsCollected);
 
         public override async Task ProcessAsync(LogEvent logEvent)
         {
