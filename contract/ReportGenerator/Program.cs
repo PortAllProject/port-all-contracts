@@ -178,7 +178,9 @@ namespace ReportGenerator
             var data = "asdas";
             var report = new Report
             {
-                RoundId = 10, AggregatedData = data, Observations = new Observations(),
+                RoundId = 10,
+                AggregatedData = ByteString.CopyFrom(data.GetBytes()),
+                Observations = new Observations(),
                 Observers =
                 {
                     new ObserverList(),
@@ -197,9 +199,7 @@ namespace ReportGenerator
             //Console.WriteLine("digest length :" + digestBytes.Length);
             var digest = ByteString.CopyFrom(digestBytes);
             var data = "asdas";
-            var merkleTreeRoot = HashHelper.ComputeFrom(data).ToHex();
-            if (merkleTreeRoot.StartsWith("0x"))
-                merkleTreeRoot = merkleTreeRoot.Substring(2);
+            var merkleTreeRoot = HashHelper.ComputeFrom(data).Value;
             //Console.WriteLine($"merkle tree root is {merkleTreeRoot}  and its length is {merkleTreeRoot.Length}");
             var report = new Report
             {
@@ -244,17 +244,15 @@ namespace ReportGenerator
             //Console.WriteLine("digest length :" + digestBytes.Length);
             var digest = ByteString.CopyFrom(digestBytes);
             var data = "asdas";
-            var merkleTreeRoot = HashHelper.ComputeFrom(data).ToHex();
-            if (merkleTreeRoot.StartsWith("0x"))
-                merkleTreeRoot = merkleTreeRoot.Substring(2);
-            var longAnswer = merkleTreeRoot + merkleTreeRoot;
+            var merkleTreeRoot = HashHelper.ComputeFrom(data);
+            var longAnswer = merkleTreeRoot.ToHex() + merkleTreeRoot.ToHex();
             Console.WriteLine("long answer : " + longAnswer);
             var longestAnswer = longAnswer + "adsdadadd";
             Console.WriteLine("longest answer : " + longestAnswer);
             //Console.WriteLine($"merkle tree root is {merkleTreeRoot}  and its length is {merkleTreeRoot.Length}");
             var report = new Report
             {
-                RoundId = 12, AggregatedData = merkleTreeRoot, Observations = new Observations
+                RoundId = 12, AggregatedData = merkleTreeRoot.Value, Observations = new Observations
                 {
                     Value =
                     {
@@ -266,7 +264,7 @@ namespace ReportGenerator
                         new Observation
                         {
                             Key = "1",
-                            Data = merkleTreeRoot
+                            Data = merkleTreeRoot.ToHex()
                         },
                         new Observation
                         {

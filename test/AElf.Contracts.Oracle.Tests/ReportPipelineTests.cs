@@ -130,7 +130,7 @@ namespace AElf.Contracts.Oracle
         internal async Task ReportTest()
         {
             var queryRecord = await QueryOracleTest();
-            var query = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
+            await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
             await CommitAsync(queryRecord.QueryId);
             await RevealAsync(queryRecord.QueryId);
             var report = await ReportContractStub.GetReport.CallAsync(new GetReportInput
@@ -144,7 +144,7 @@ namespace AElf.Contracts.Oracle
                     .ShouldBe(((decimal) (i * 1.111)).ToString(CultureInfo.InvariantCulture));
             }
 
-            report.AggregatedData.ShouldBe("2.222");
+            report.AggregatedData.ToStringUtf8().ShouldBe("2.222");
         }
 
         [Fact]
@@ -247,7 +247,7 @@ namespace AElf.Contracts.Oracle
 
             var string2Hash = HashHelper.ComputeFrom("2.222");
             var supposedMerkleTree = BinaryMerkleTree.FromLeafNodes(new[] {string2Hash, string2Hash, string2Hash});
-            report.AggregatedData.ShouldBe(supposedMerkleTree.Root.Value.ToHex());
+            report.AggregatedData.ShouldBe(supposedMerkleTree.Root.Value);
         }
 
         private async Task CommitAsync(Hash queryId)

@@ -181,7 +181,7 @@ namespace AElf.Contracts.Report
                     QueryId = input.QueryId,
                     RoundId = currentRoundId,
                     Observations = originObservations,
-                    AggregatedData = GetAggregatedData(offChainAggregationInfo, plainResult)
+                    AggregatedData = ByteString.CopyFrom(GetAggregatedData(offChainAggregationInfo, plainResult).GetBytes())
                 };
                 State.ReportMap[plainResult.Token][currentRoundId] = report;
                 State.CurrentRoundIdMap[plainResult.Token] = currentRoundId.Add(1);
@@ -237,12 +237,12 @@ namespace AElf.Contracts.Report
                     for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfoList.Value.Count; i++)
                     {
                         var node = report.Observations.Value.FirstOrDefault(o => o.Key == i.ToString());
-                        var nodeHash = node == null ? Hash.Empty : HashHelper.ComputeFrom(node);
+                        var nodeHash = node == null ? Hash.Empty : HashHelper.ComputeFrom(node.Data);
                         merkleNodes.Add(nodeHash);
                     }
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(merkleNodes);
                     State.BinaryMerkleTreeMap[plainResult.Token][currentRoundId] = merkleTree;
-                    report.AggregatedData = merkleTree.Root.Value.ToHex();
+                    report.AggregatedData = merkleTree.Root.Value;
 
                     for (var i = 0; i < offChainAggregationInfo.OffChainQueryInfoList.Value.Count; i++)
                     {

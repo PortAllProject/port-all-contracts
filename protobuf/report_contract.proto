@@ -124,7 +124,7 @@ message Report {
     aelf.Hash query_id = 1;
     int64 round_id = 2;
     Observations observations  = 3;
-    string aggregated_data = 4;
+    bytes aggregated_data = 4;
     repeated ObserverList observers = 5;
 }
 

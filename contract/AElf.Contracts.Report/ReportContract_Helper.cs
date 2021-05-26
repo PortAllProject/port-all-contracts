@@ -30,7 +30,7 @@ namespace AElf.Contracts.Report
             data.Add(config);
             data.Add(observerIndex);
             data.Add(observationsCount);
-            data.Add(FillObservationBytes(report.AggregatedData.GetBytes()));
+            data.Add(FillObservationBytes(report.AggregatedData.ToByteArray()));
             GenerateMultipleObservation(report, out var observerOrder, out var observationsLength,
                 out var observations);
             data.Add(observerOrder);
@@ -50,7 +50,7 @@ namespace AElf.Contracts.Report
         private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
         {
             long round = report.RoundId;
-            byte validBytesCount = (byte) report.AggregatedData.GetBytes().Length;
+            byte validBytesCount = (byte) report.AggregatedData.Length;
             if (round < 0)
             {
                 throw new AssertionException("invalid round");
