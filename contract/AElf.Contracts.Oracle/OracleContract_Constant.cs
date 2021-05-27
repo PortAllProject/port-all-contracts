@@ -13,5 +13,7 @@ namespace AElf.Contracts.Oracle
         private const int DefaultAggregateThreshold = 1;
 
         private const int DefaultMinimumOracleNodesCount = 3;
+
+        private const string NotSetCallbackInfo = "NotSetCallbackInfo";
     }
 }

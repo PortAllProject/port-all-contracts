@@ -43,5 +43,7 @@ namespace AElf.Contracts.Oracle
         public MappedState<Address, Address, long> LockedTokenFromAddressMap { get; set; }
 
         public BoolState IsChargeFee { get; set; }
+
+        public MappedState<string, QueryTask> QueryTaskMap { get; set; }
     }
 }

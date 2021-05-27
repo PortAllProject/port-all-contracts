@@ -23,6 +23,12 @@ service OracleContract {
     rpc Reveal (RevealInput) returns (google.protobuf.Empty) {}
 
     rpc CancelQuery (aelf.Hash) returns (google.protobuf.Empty) {}
+    
+    rpc CreateQueryTask (CreateQueryTaskInput) returns (aelf.Hash) {}
+    
+    rpc TaskQuery (TaskQueryInput) returns (aelf.Hash) {}
+    
+    rpc CompleteQueryTask (CompleteQueryTaskInput) returns (google.protobuf.Empty) {}
 
     // controller
 
@@ -95,6 +101,25 @@ message QueryInput {
     string token = 7;
 }
 
+message CreateQueryTaskInput {
+    int64 each_payment = 1;
+    int32 supposed_query_times = 2;
+    QueryInfo query_info = 3;
+    google.protobuf.Timestamp end_time = 4;
+    CallbackInfo callback_info = 5;
+    aelf.Address aggregator_contract_address = 6;
+}
+
+message TaskQueryInput {
+    aelf.Hash task_id = 1;
+}
+
+message CompleteQueryTaskInput {
+    aelf.Hash task_id = 1;
+    AddressList designated_node_list = 2;
+    int32 aggregate_threshold = 3;
+}
+
 message CallbackInfo {
     aelf.Address contract_address = 1;
     string method_name = 2;
@@ -122,6 +147,19 @@ message QueryRecord {
     QueryInfo query_info = 15;
     string token = 16;
     DataRecords data_records = 17;
+}
+
+message QueryTask {
+    int64 each_payment = 1;
+    int32 supposed_query_times = 2;
+    QueryInfo query_info = 3;
+    google.protobuf.Timestamp end_time = 4;
+    AddressList designated_node_list = 5;
+    aelf.Address aggregator_contract_address = 6;
+    int32 actual_queried_times = 7;
+    CallbackInfo callback_info = 8;
+    aelf.Address creator = 9;
+    int32 aggregate_threshold = 10;
 }
 
 message CommitInput {

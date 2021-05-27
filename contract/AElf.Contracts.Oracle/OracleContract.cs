@@ -86,7 +86,7 @@ namespace AElf.Contracts.Oracle
             var callbackInfo = input.CallbackInfo ?? new CallbackInfo
             {
                 ContractAddress = Context.Self,
-                MethodName = "NotSetCallbackInfo"
+                MethodName = NotSetCallbackInfo
             };
             var queryRecord = new QueryRecord
             {
@@ -118,6 +118,63 @@ namespace AElf.Contracts.Oracle
             });
 
             return queryId;
+        }
+
+        public override Hash CreateQueryTask(CreateQueryTaskInput input)
+        {
+            // TODO: Pay tx fee to contract.
+
+            var taskId = Context.TransactionId;
+            State.QueryTaskMap[taskId.ToHex()] = new QueryTask
+            {
+                Creator = Context.Sender,
+                CallbackInfo = input.CallbackInfo,
+                EachPayment = input.EachPayment,
+                SupposedQueryTimes = input.SupposedQueryTimes,
+                QueryInfo = input.QueryInfo,
+                EndTime = input.EndTime,
+                AggregatorContractAddress = input.AggregatorContractAddress
+            };
+            return taskId;
+        }
+
+        public override Empty CompleteQueryTask(CompleteQueryTaskInput input)
+        {
+            var queryTask = State.QueryTaskMap[input.TaskId.ToHex()];
+            Assert(Context.Sender == queryTask.Creator, "No permission.");
+
+            var designatedNodeList = GetActualDesignatedNodeList(input.DesignatedNodeList);
+            Assert(designatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value,
+                $"Invalid designated nodes count, should at least be {State.MinimumOracleNodesCount.Value}.");
+
+            queryTask.DesignatedNodeList = input.DesignatedNodeList;
+            queryTask.AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
+                input.AggregateThreshold);
+            State.QueryTaskMap[input.TaskId.ToHex()] = queryTask;
+            return new Empty();
+        }
+
+        public override Hash TaskQuery(TaskQueryInput input)
+        {
+            var queryTask = State.QueryTaskMap[input.TaskId.ToHex()];
+            if (queryTask == null)
+            {
+                throw new AssertionException("Query task not found.");
+            }
+
+            Assert(Context.Sender == queryTask.Creator, "No permission.");
+            var queryInput = new QueryInput
+            {
+                Payment = queryTask.EachPayment,
+                AggregateThreshold = queryTask.AggregateThreshold,
+                AggregatorContractAddress = queryTask.AggregatorContractAddress,
+                CallbackInfo = queryTask.CallbackInfo,
+                DesignatedNodeList = queryTask.DesignatedNodeList,
+                QueryInfo = queryTask.QueryInfo,
+                Token = input.TaskId.ToHex()
+            };
+
+            return Query(queryInput);
         }
 
         private AddressList GetActualDesignatedNodeList(AddressList designatedNodeList)
@@ -172,12 +229,14 @@ namespace AElf.Contracts.Oracle
             var actualDesignatedNodeList = GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
             Assert(actualDesignatedNodeList.Value.Contains(Context.Sender), "Sender is not in designated node list.");
 
-            Assert(actualDesignatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value, "Invalid designated nodes count.");
+            Assert(actualDesignatedNodeList.Value.Count >= State.MinimumOracleNodesCount.Value,
+                "Invalid designated nodes count.");
 
             var updatedResponseCount = State.ResponseCount[input.QueryId].Add(1);
             State.CommitmentMap[input.QueryId][Context.Sender] = input.Commitment;
 
-            if (updatedResponseCount >= GetRevealThreshold(actualDesignatedNodeList.Value.Count, queryRecord.AggregateThreshold))
+            if (updatedResponseCount >=
+                GetRevealThreshold(actualDesignatedNodeList.Value.Count, queryRecord.AggregateThreshold))
             {
                 // Move to next stage: Reveal
                 queryRecord.IsSufficientCommitmentsCollected = true;
@@ -230,7 +289,8 @@ namespace AElf.Contracts.Oracle
 
             // Permission check.
             var actualDesignatedNodeList = GetActualDesignatedNodeList(queryRecord.DesignatedNodeList);
-            Assert(actualDesignatedNodeList.Value.Contains(Context.Sender), "Sender was removed from designated node list.");
+            Assert(actualDesignatedNodeList.Value.Contains(Context.Sender),
+                "Sender was removed from designated node list.");
 
             var dataHash = HashHelper.ComputeFrom(input.Data);
 
@@ -275,7 +335,7 @@ namespace AElf.Contracts.Oracle
             Assert(!helpfulNodeList.Value.Contains(Context.Sender), "Sender already revealed commitment.");
             helpfulNodeList.Value.Add(Context.Sender);
             State.HelpfulNodeListMap[input.QueryId] = helpfulNodeList;
-            
+
             // Reorg helpful nodes list.
             helpfulNodeList = new AddressList
             {
@@ -387,6 +447,14 @@ namespace AElf.Contracts.Oracle
                     Result = finalResult.Value,
                     OracleNodes = {queryRecord.DesignatedNodeList.Value}
                 });
+            }
+
+            // If this query is from a query task.
+            var maybeQueryTask = State.QueryTaskMap[queryRecord.Token];
+            if (maybeQueryTask != null)
+            {
+                maybeQueryTask.ActualQueriedTimes = maybeQueryTask.ActualQueriedTimes.Add(1);
+                State.QueryTaskMap[queryRecord.Token] = maybeQueryTask;
             }
         }
 
