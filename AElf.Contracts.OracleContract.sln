@@ -34,8 +34,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.CrossChainTo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Boilerplate.EventHandler.MockService", "test\AElf.Boilerplate.EventHandler.MockService\AElf.Boilerplate.EventHandler.MockService.csproj", "{A4737865-FE32-4A03-913A-5CB12CBDB88F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Boilerplate.Ethereum", "src\AElf.Boilerplate.Ethereum\AElf.Boilerplate.Ethereum.csproj", "{986753DD-03A6-4B8F-B36E-76CD1605714C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -86,10 +84,6 @@ Global
 		{A4737865-FE32-4A03-913A-5CB12CBDB88F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4737865-FE32-4A03-913A-5CB12CBDB88F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4737865-FE32-4A03-913A-5CB12CBDB88F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{986753DD-03A6-4B8F-B36E-76CD1605714C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{986753DD-03A6-4B8F-B36E-76CD1605714C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{986753DD-03A6-4B8F-B36E-76CD1605714C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{986753DD-03A6-4B8F-B36E-76CD1605714C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,7 +100,6 @@ Global
 		{F220F129-E850-438A-8FE6-D35E77995C37} = {21D85A91-5BB8-4912-8107-49435A461AAC}
 		{CE1FE431-FEEF-4F90-99D9-8BA9C42A69E6} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{A4737865-FE32-4A03-913A-5CB12CBDB88F} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
-		{986753DD-03A6-4B8F-B36E-76CD1605714C} = {21D85A91-5BB8-4912-8107-49435A461AAC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}
