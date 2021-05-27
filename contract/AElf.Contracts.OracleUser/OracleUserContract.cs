@@ -49,7 +49,8 @@ namespace AElf.Contracts.OracleUser
                 },
                 DesignatedNodeList = new AddressList {Value = {input.DesignatedNodes}},
                 Payment = payment,
-                AggregateThreshold = input.AggregateThreshold
+                AggregateThreshold = input.AggregateThreshold,
+                AggregateOption = 1
             };
             State.OracleContract.Query.Send(queryInput);
 

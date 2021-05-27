@@ -27,7 +27,7 @@ namespace AElf.Contracts.IntegerAggregator
                 var frequency = input.Frequencies[index];
                 if (frequency > 1)
                 {
-                    var needToDup = input.Results[index];
+                    var needToDup = actualResults[index];
                     for (var i = 0; i < frequency.Sub(1); i++)
                     {
                         actualResults.Add(needToDup);
@@ -58,6 +58,7 @@ namespace AElf.Contracts.IntegerAggregator
                 Results = new Results {Value = {actualResults}},
                 FinalResult = result
             });
+
             return new StringValue
             {
                 Value = result

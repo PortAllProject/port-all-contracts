@@ -59,7 +59,7 @@ namespace AElf.Contracts.Oracle
             {
                 "10.1",
                 "10.2",
-                "10.3",
+                "10.2",
                 "10.4"
             });
 
@@ -87,7 +87,7 @@ namespace AElf.Contracts.Oracle
             {
                 "10.1",
                 "10.2",
-                "10.3"
+                "10.2"
             }, 2);
 
             newQueryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryRecord.QueryId);
