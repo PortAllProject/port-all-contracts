@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using AElf.CSharp.Core;
@@ -20,9 +21,37 @@ namespace AElf.Contracts.IntegerAggregator
 
                 return str.Contains(';') ? str.Split(';').Last() : str;
             }).ToList();
-            var results = actualResults.Select(decimal.Parse).ToList();
-            // Just ignore frequencies, for testing.
-            var result = (results.Sum() / results.Count).ToString(CultureInfo.InvariantCulture);
+
+            for (var index = 0; index < input.Frequencies.Count; index++)
+            {
+                var frequency = input.Frequencies[index];
+                if (frequency > 1)
+                {
+                    var needToDup = input.Results[index];
+                    for (var i = 0; i < frequency.Sub(1); i++)
+                    {
+                        actualResults.Add(needToDup);
+                    }
+                }
+            }
+
+            string result;
+
+            switch (input.AggregateOption)
+            {
+                case 0:
+                    result = GetAverage(actualResults);
+                    break;
+                case 1:
+                    result = GetMajority(actualResults);
+                    break;
+                case 2:
+                    result = GetMiddle(actualResults);
+                    break;
+                default:
+                    result = "Invalid aggregate option.";
+                    break;
+            }
 
             Context.Fire(new AggregateDataReceived
             {
@@ -33,6 +62,36 @@ namespace AElf.Contracts.IntegerAggregator
             {
                 Value = result
             };
+        }
+
+        private string GetAverage(IEnumerable<string> actualResults)
+        {
+            var results = actualResults.Select(decimal.Parse).ToList();
+            return (results.Sum() / results.Count).ToString(CultureInfo.InvariantCulture);
+        }
+
+        private string GetMajority(IEnumerable<string> actualResults)
+        {
+            var countDict = new Dictionary<string, int>();
+            foreach (var result in actualResults)
+            {
+                if (countDict.ContainsKey(result))
+                {
+                    countDict[result] += 1;
+                }
+                else
+                {
+                    countDict.Add(result, 1);
+                }
+            }
+
+            return countDict.OrderByDescending(d => d.Value).Select(d => d.Key).ToList().First();
+        }
+
+        private string GetMiddle(List<string> actualResults)
+        {
+            return actualResults.OrderBy(p => p).ToList()[actualResults.Count / 2]
+                .ToString(CultureInfo.InvariantCulture);
         }
     }
 }
