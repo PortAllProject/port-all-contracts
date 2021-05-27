@@ -107,10 +107,15 @@ namespace AElf.Contracts.Report
 
         public override BoolValue IsObserver(Address input)
         {
-            return new BoolValue
-            {
-                Value = State.ObserverMap[input]
-            };
+            return new BoolValue {Value = IsValidObserver(input, out _)};
+        }
+
+        private bool IsValidObserver(Address address, out long virtualAddressBalance)
+        {
+            var isObserverInMap = State.ObserverMap[address];
+            virtualAddressBalance = GetVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value, address);
+            var isObserverInToken = virtualAddressBalance >= State.ApplyObserverFee.Value;
+            return isObserverInMap & isObserverInToken;
         }
     }
 }

@@ -274,7 +274,7 @@ namespace AElf.Contracts.Report
             var aggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress;
             if (aggregatorContractAddress == null)
             {
-                return string.Empty;
+                return AggregatorContractNotSet;
             }
 
             State.AggregatorContract.Value = aggregatorContractAddress;

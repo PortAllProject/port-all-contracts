@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 
-namespace AElf.Boilerplate.EventHandler.MockService
+namespace AElf.EventHandler.MockService
 {
     public class Program
     {

@@ -9,7 +9,7 @@ using Volo.Abp.AspNetCore;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Http.Modeling;
 
-namespace AElf.Boilerplate.EventHandler.MockService
+namespace AElf.EventHandler.MockService
 {
     public class Startup
     {
