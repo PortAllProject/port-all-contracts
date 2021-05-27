@@ -274,7 +274,9 @@ namespace AElf.Contracts.Report
             var aggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress;
             if (aggregatorContractAddress == null)
             {
-                return AggregatorContractNotSet;
+                // If user didn't fill in aggregator contract address, just return the majority result;
+                // Or return the first plain result if the majority result not exists.
+                return GetMajorityResult(plainResult);
             }
 
             State.AggregatorContract.Value = aggregatorContractAddress;
@@ -287,6 +289,25 @@ namespace AElf.Contracts.Report
 
             // Use an ACS13 Contract to aggregate a data.
             return State.AggregatorContract.Aggregate.Call(aggregateInput).Value;
+        }
+
+        private string GetMajorityResult(PlainResult plainResult)
+        {
+            var results = plainResult.DataRecords.Value.Select(r => r.Data);
+            var countDict = new Dictionary<string, int>();
+            foreach (var result in results)
+            {
+                if (countDict.ContainsKey(result))
+                {
+                    countDict[result] += 1;
+                }
+                else
+                {
+                    countDict.Add(result, 1);
+                }
+            }
+
+            return countDict.OrderByDescending(d => d.Value).Select(d => d.Key).ToList().First();
         }
 
         public override Empty ConfirmReport(ConfirmReportInput input)
