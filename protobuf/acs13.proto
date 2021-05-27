@@ -17,4 +17,5 @@ service OracleAggregatorContract {
 message AggregateInput {
     repeated string results = 1;
     repeated int32 frequencies = 2;
+    int32 aggregate_option = 3;
 }

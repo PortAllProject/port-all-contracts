@@ -280,7 +280,7 @@ namespace AElf.Contracts.Report
             }
 
             State.AggregatorContract.Value = aggregatorContractAddress;
-            var aggregateInput = new AggregateInput();
+            var aggregateInput = new AggregateInput {AggregateOption = offChainAggregationInfo.AggregateOption};
             foreach (var nodeData in plainResult.DataRecords.Value)
             {
                 aggregateInput.Results.Add(nodeData.Data);

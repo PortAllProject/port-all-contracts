@@ -99,6 +99,7 @@ message QueryInput {
     QueryInfo query_info = 5;
     int32 aggregate_threshold = 6;
     string token = 7;
+    int32 aggregate_option = 8;
 }
 
 message CreateQueryTaskInput {
@@ -108,6 +109,7 @@ message CreateQueryTaskInput {
     google.protobuf.Timestamp end_time = 4;
     CallbackInfo callback_info = 5;
     aelf.Address aggregator_contract_address = 6;
+    int32 aggregate_option = 7;
 }
 
 message TaskQueryInput {
@@ -147,6 +149,7 @@ message QueryRecord {
     QueryInfo query_info = 15;
     string token = 16;
     DataRecords data_records = 17;
+    int32 aggregate_option = 18;
 }
 
 message QueryTask {
@@ -160,6 +163,7 @@ message QueryTask {
     CallbackInfo callback_info = 8;
     aelf.Address creator = 9;
     int32 aggregate_threshold = 10;
+    int32 aggregate_option = 11;
 }
 
 message CommitInput {
@@ -232,6 +236,7 @@ message QueryCreated {
     aelf.Hash query_id = 8;
     string token = 9;
     int32 maximum_permissible_deviation = 10;
+    int32 aggregate_option = 11;
 }
 
 message QueryCancelled {

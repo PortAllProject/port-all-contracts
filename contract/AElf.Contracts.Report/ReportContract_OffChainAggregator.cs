@@ -56,7 +56,8 @@ namespace AElf.Contracts.Report
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 ChainType = input.ChainType,
-                Register = Context.Sender
+                Register = Context.Sender,
+                AggregateOption = input.AggregateOption
             };
             for (var i = 0; i < input.OffChainQueryInfoList.Value.Count; i++)
             {
@@ -75,7 +76,8 @@ namespace AElf.Contracts.Report
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
                 AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress,
                 ChainType = offChainAggregationInfo.ChainType,
-                Register = offChainAggregationInfo.Register
+                Register = offChainAggregationInfo.Register,
+                AggregateOption = offChainAggregationInfo.AggregateOption
             });
 
             return offChainAggregationInfo;
@@ -85,7 +87,8 @@ namespace AElf.Contracts.Report
         {
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
-            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > 1, "Only merkle style aggregation can manage off chain query info.");
+            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > 1,
+                "Only merkle style aggregation can manage off chain query info.");
             offChainAggregationInfo.OffChainQueryInfoList.Value.Add(input.OffChainQueryInfo);
             offChainAggregationInfo.RoundIds.Add(State.CurrentRoundIdMap[input.Token].Sub(1));
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
@@ -96,7 +99,8 @@ namespace AElf.Contracts.Report
         {
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
-            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > 1, "Only merkle style aggregation can manage off chain query info.");
+            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > 1,
+                "Only merkle style aggregation can manage off chain query info.");
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > input.RemoveNodeIndex, "Invalid index.");
             offChainAggregationInfo.OffChainQueryInfoList.Value[input.RemoveNodeIndex] =
                 new OffChainQueryInfo
@@ -112,7 +116,8 @@ namespace AElf.Contracts.Report
         {
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
-            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1, "Only single style aggregation can change off chain query info.");
+            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1,
+                "Only single style aggregation can change off chain query info.");
             offChainAggregationInfo.OffChainQueryInfoList.Value[0] = input.NewOffChainQueryInfo;
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             return new Empty();

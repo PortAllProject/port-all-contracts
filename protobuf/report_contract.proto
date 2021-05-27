@@ -109,8 +109,7 @@ message QueryOracleInput {
     int64 payment = 1;
     string token = 2;
     int32 aggregate_threshold = 3;
-    aelf.Address aggregator_contract_address = 4;
-    int32 node_index = 5;
+    int32 node_index = 4;
 }
 
 message ConfirmReportInput {
@@ -183,6 +182,7 @@ message OffChainAggregationInfo {
     repeated int64 round_ids = 7;
     string chain_type = 8;
     aelf.Address register = 9;
+    int32 aggregate_option = 10;
 }
 
 message RegisterOffChainAggregationInput {
@@ -194,6 +194,7 @@ message RegisterOffChainAggregationInput {
     aelf.Address aggregator_contract_address = 6;
     string chain_type = 7;
     aelf.Address register = 8;
+    int32 aggregate_option = 9;
 }
 
 message OffChainQueryInfo {
@@ -271,6 +272,7 @@ message OffChainAggregationRegistered {
     aelf.Address aggregator_contract_address = 6;
     string chain_type = 7;
     aelf.Address register = 8;
+    int32 aggregate_option = 9;
 }
 
 message MerkleReportNodeAdded {

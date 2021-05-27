@@ -101,6 +101,7 @@ namespace AElf.Contracts.Oracle
                     input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
                 Token = input.Token,
+                AggregateOption = input.AggregateOption
             };
             State.QueryRecords[queryId] = queryRecord;
 
@@ -115,6 +116,7 @@ namespace AElf.Contracts.Oracle
                 AggregateThreshold = queryRecord.AggregateThreshold,
                 QueryInfo = queryRecord.QueryInfo,
                 Token = queryRecord.Token,
+                AggregateOption = queryRecord.AggregateOption
             });
 
             return queryId;
@@ -133,7 +135,8 @@ namespace AElf.Contracts.Oracle
                 SupposedQueryTimes = input.SupposedQueryTimes,
                 QueryInfo = input.QueryInfo,
                 EndTime = input.EndTime,
-                AggregatorContractAddress = input.AggregatorContractAddress
+                AggregatorContractAddress = input.AggregatorContractAddress,
+                AggregateOption = input.AggregateOption
             };
             return taskId;
         }
@@ -171,7 +174,8 @@ namespace AElf.Contracts.Oracle
                 CallbackInfo = queryTask.CallbackInfo,
                 DesignatedNodeList = queryTask.DesignatedNodeList,
                 QueryInfo = queryTask.QueryInfo,
-                Token = input.TaskId.ToHex()
+                Token = input.TaskId.ToHex(),
+                AggregateOption = queryTask.AggregateOption
             };
 
             return Query(queryInput);
@@ -411,7 +415,8 @@ namespace AElf.Contracts.Oracle
                 var finalResultStr = State.OracleAggregatorContract.Aggregate.Call(new AggregateInput
                 {
                     Results = {resultList.Results},
-                    Frequencies = {resultList.Frequencies}
+                    Frequencies = {resultList.Frequencies},
+                    AggregateOption = queryRecord.AggregateOption
                 }).Value;
                 finalResult = new StringValue {Value = finalResultStr}.ToBytesValue();
                 queryRecord.FinalResult = finalResultStr;
