@@ -1,7 +1,7 @@
 using System.Threading;
 using AElf.Cryptography.ECDSA;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class Account
     {

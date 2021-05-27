@@ -1,6 +1,6 @@
 using AElf.Client.Service;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public static class AElfClientExtension
     {

@@ -1,4 +1,4 @@
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class MessageQueueOptions
     {

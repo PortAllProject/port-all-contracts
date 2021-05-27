@@ -1,6 +1,7 @@
 using System;
 using System.Net.Security;
 using System.Security.Authentication;
+using Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -9,7 +10,7 @@ using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Modularity;
 using Volo.Abp.RabbitMQ;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     [DependsOn(
         typeof(AbpAutofacModule),
@@ -56,6 +57,7 @@ namespace AElf.Boilerplate.EventHandler
             Configure<ConfigOptions>(configuration.GetSection("Config"));
             Configure<EthereumConfigOptions>(configuration.GetSection("Ethereum"));
             context.Services.AddHostedService<EventHandlerAppHostedService>();
+            context.Services.AddTransient(typeof(ILogEventProcessor<>));
         }
     }
 }

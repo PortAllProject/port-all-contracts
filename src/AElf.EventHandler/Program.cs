@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class Program
     {

@@ -1,4 +1,4 @@
-namespace AElf.Boilerplate.EventHandler.MockService
+namespace AElf.EventHandler.MockService
 {
     public class ConfigOptions
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public static class CommonHelper
     {

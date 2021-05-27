@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using AElf;
 using AElf.Client.Dto;
 using AElf.Client.Service;
 using AElf.Types;
 using Google.Protobuf;
 using Volo.Abp.Threading;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class NodeManager
     {

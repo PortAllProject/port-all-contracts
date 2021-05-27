@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using AElf.CSharp.Core;
 using AElf.Types;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public interface ILogEventProcessor<T> where T : IEvent<T>
     {

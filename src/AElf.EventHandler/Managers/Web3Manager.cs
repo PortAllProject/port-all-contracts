@@ -4,7 +4,7 @@ using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class Web3Manager
     {

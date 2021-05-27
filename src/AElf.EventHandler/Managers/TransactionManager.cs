@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using AElf;
-using AElf.Boilerplate.EventHandler;
 using AElf.Cryptography;
 using AElf.Types;
 using Google.Protobuf;
 using Volo.Abp.Threading;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class TransactionManager
     {

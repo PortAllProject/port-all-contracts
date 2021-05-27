@@ -3,7 +3,7 @@ using System.Linq;
 using AElf.Cryptography;
 using Org.BouncyCastle.Crypto.Digests;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class Signature
     {

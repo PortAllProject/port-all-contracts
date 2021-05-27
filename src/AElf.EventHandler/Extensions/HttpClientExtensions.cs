@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public static class HttpClientExtensions
     {

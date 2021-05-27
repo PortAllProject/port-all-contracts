@@ -1,8 +1,8 @@
 using System;
-using AElf.Boilerplate.EventHandler.MockService.Dto;
+using AElf.EventHandler.MockService.Dto;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AElf.Boilerplate.EventHandler.MockService.Controllers
+namespace AElf.EventHandler.MockService.Controllers
 {
     [ApiController]
     [Route("score")]

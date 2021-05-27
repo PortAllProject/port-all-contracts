@@ -10,7 +10,7 @@ using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EventBus.Distributed;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class TransactionResultListEventHandler<T> : IDistributedEventHandler<TransactionResultListEto>,
         ISingletonDependency where T : IEvent<T>

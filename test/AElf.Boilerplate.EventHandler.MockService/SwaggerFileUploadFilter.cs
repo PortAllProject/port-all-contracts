@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace AElf.Boilerplate.EventHandler.MockService
+namespace AElf.EventHandler.MockService
 {
     public class SwaggerFileUploadFilter : IOperationFilter
     {

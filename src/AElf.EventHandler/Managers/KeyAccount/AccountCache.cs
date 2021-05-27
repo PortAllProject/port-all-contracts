@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AElf;
 using AElf.Cryptography;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class AccountInfo
     {

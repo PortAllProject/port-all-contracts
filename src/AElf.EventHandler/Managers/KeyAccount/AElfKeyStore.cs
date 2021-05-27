@@ -13,7 +13,7 @@ using Nethereum.KeyStore;
 using Nethereum.KeyStore.Crypto;
 using Volo.Abp.Threading;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public enum KeyStoreErrors
     {

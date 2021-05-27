@@ -7,7 +7,7 @@ using AElf.Cryptography.ECDSA;
 using AElf.Types;
 using Volo.Abp.Threading;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class AccountManager
     {

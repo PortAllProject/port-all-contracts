@@ -1,6 +1,6 @@
 using AElf.Cryptography.ECDSA;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public interface IKeyStore
     {

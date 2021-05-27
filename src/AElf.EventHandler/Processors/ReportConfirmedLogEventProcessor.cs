@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Volo.Abp.DependencyInjection;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportConfirmed>, ITransientDependency
     {

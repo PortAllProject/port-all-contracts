@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     internal class SufficientCommitmentsCollectedLogEventProcessor :
         LogEventProcessorBase<SufficientCommitmentsCollected>, ITransientDependency

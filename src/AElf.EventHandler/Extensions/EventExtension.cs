@@ -2,7 +2,7 @@
 using AElf.Types;
 using Google.Protobuf;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public static class EventExtension
     {

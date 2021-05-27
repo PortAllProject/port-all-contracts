@@ -5,7 +5,7 @@ using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public interface ISaltProvider
     {

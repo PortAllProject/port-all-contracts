@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public class ConfigOptions
     {

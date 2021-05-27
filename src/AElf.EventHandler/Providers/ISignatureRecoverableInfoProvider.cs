@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Volo.Abp.DependencyInjection;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public interface ISignatureRecoverableInfoProvider
     {

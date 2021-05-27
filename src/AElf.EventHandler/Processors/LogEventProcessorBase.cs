@@ -3,7 +3,7 @@ using AElf.CSharp.Core;
 using AElf.Types;
 using Microsoft.Extensions.Options;
 
-namespace AElf.Boilerplate.EventHandler
+namespace AElf.EventHandler
 {
     public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T> where T : IEvent<T>
     {

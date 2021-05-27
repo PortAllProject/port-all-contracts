@@ -1,4 +1,4 @@
-namespace AElf.Boilerplate.EventHandler.MockService.Dto
+namespace AElf.EventHandler.MockService.Dto
 {
     public class ScoreDto
     {
