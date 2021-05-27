@@ -1,7 +1,6 @@
+using System;
 using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core;
-using AElf.CSharp.Core.Extension;
-using AElf.Standards.ACS3;
 using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
@@ -12,23 +11,16 @@ namespace AElf.Contracts.Report
     {
         public override Empty ApplyObserver(Empty input)
         {
-            if (State.ApplyObserverFee.Value > 0)
-            {
-                Assert(GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value) == 0,
-                    "Sender already applied.");
-            }
-            else
-            {
-                Assert(!State.ObserverMap[Context.Sender], "Sender is an observer.");
-            }
-
+            Assert(!IsValidObserver(Context.Sender, out var virtualAddressBalance), "Sender is an observer.");
+            var actualApplyFee = Math.Max(0, State.ApplyObserverFee.Value.Sub(virtualAddressBalance));
+            TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, actualApplyFee);
             State.ObserverMap[Context.Sender] = true;
-            TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, State.ApplyObserverFee.Value);
             return new Empty();
         }
 
         public override Empty QuitObserver(Empty input)
         {
+            Assert(State.ObserverMap[Context.Sender], "Sender is not an observer.");
             var currentAmount = GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value);
             if (currentAmount > 0)
             {
@@ -40,11 +32,6 @@ namespace AElf.Contracts.Report
                         Amount = currentAmount
                     }.ToByteString());
                 State.ObserverMortgagedTokensMap[Context.Sender] = 0;
-            }
-            else
-            {
-                Assert(State.ApplyObserverFee.Value <= 0 && State.ObserverMap[Context.Sender],
-                    "Sender is not an observer.");
             }
 
             State.ObserverMap[Context.Sender] = false;
@@ -105,7 +92,12 @@ namespace AElf.Contracts.Report
 
         private long GetSenderVirtualAddressBalance(string symbol)
         {
-            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(Context.Sender));
+            return GetVirtualAddressBalance(symbol, Context.Sender);
+        }
+
+        private long GetVirtualAddressBalance(string symbol, Address address)
+        {
+            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(address));
             return State.TokenContract.GetBalance.Call(new GetBalanceInput
             {
                 Owner = virtualAddress,
