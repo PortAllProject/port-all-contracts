@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AElf.Contracts.IntegerAggregator;
 using AElf.Types;
+using Common.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;

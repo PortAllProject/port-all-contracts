@@ -12,16 +12,16 @@ using Volo.Abp.EventBus.Distributed;
 
 namespace AElf.EventHandler
 {
-    public class TransactionResultListEventHandler<T> : IDistributedEventHandler<TransactionResultListEto>,
-        ISingletonDependency where T : IEvent<T>
+    public class TransactionResultListEventHandler : IDistributedEventHandler<TransactionResultListEto>,
+        ISingletonDependency
     {
-        private readonly IEnumerable<ILogEventProcessor<T>> _logEventProcessors;
+        private readonly IEnumerable<ILogEventProcessor> _logEventProcessors;
         private readonly ContractAddressOptions _contractAddressOptions;
-        private readonly ILogger<TransactionResultListEventHandler<T>> _logger;
+        private readonly ILogger<TransactionResultListEventHandler> _logger;
 
-        public TransactionResultListEventHandler(IEnumerable<ILogEventProcessor<T>> logEventProcessors,
+        public TransactionResultListEventHandler(IEnumerable<ILogEventProcessor> logEventProcessors,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ILogger<TransactionResultListEventHandler<T>> logger)
+            ILogger<TransactionResultListEventHandler> logger)
         {
             _logEventProcessors = logEventProcessors;
             _logger = logger;
@@ -41,8 +41,6 @@ namespace AElf.EventHandler
                 _logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
                 foreach (var logEventProcessor in usefulLogEventProcessors)
                 {
-                    if (_contractAddressOptions.ContractAddressMap.TryGetValue("Consensus", out var consensusAddress) &&
-                        eventLog.Address == consensusAddress) break;
                     if (logEventProcessor.IsMatch(eventLog.Address, eventLog.Name))
                     {
                         _logger.LogInformation("Pushing aforementioned event log to processor.");

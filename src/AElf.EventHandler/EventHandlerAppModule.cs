@@ -1,6 +1,7 @@
 using System;
 using System.Net.Security;
 using System.Security.Authentication;
+using AElf.Contracts.Consensus.AEDPoS;
 using Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,7 +58,7 @@ namespace AElf.EventHandler
             Configure<ConfigOptions>(configuration.GetSection("Config"));
             Configure<EthereumConfigOptions>(configuration.GetSection("Ethereum"));
             context.Services.AddHostedService<EventHandlerAppHostedService>();
-            context.Services.AddTransient(typeof(ILogEventProcessor<>));
+            context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         }
     }
 }
