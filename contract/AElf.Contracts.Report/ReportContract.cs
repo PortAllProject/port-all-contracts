@@ -8,6 +8,7 @@ using AElf.Sdk.CSharp;
 using AElf.Standards.ACS13;
 using AElf.Types;
 using Google.Protobuf;
+using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Report
@@ -342,8 +343,11 @@ namespace AElf.Contracts.Report
 
             State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] =
                 input.Signature;
-            reportQueryRecord.NodeConfirmCount = reportQueryRecord.NodeConfirmCount.Add(1);
-            if (reportQueryRecord.NodeConfirmCount == memberList.Count())
+            if (!reportQueryRecord.ConfirmedNodeList.Contains(Context.Sender))
+            {
+                reportQueryRecord.ConfirmedNodeList.Add(Context.Sender);
+            }
+            if (reportQueryRecord.ConfirmedNodeList.Count == memberList.Count())
             {
                 reportQueryRecord.IsAllNodeConfirmed = true;
             }

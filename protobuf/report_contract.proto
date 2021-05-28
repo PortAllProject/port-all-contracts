@@ -139,7 +139,7 @@ message ReportQueryRecord {
     int64 paid_report_fee = 2;
     bool is_rejected = 3;
     bool is_all_node_confirmed = 4;
-    int64 node_confirm_count = 5;
+    repeated aelf.Address confirmed_node_list = 5;
     int64 payment = 6;
 }
 
