@@ -81,6 +81,10 @@ service OracleContract {
     rpc GetHelpfulNodeList (aelf.Hash) returns (AddressList) {
         option (aelf.is_view) = true;
     }
+
+    rpc GetQueryTask (aelf.Hash) returns (QueryTask) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput{
@@ -100,6 +104,7 @@ message QueryInput {
     int32 aggregate_threshold = 6;
     string token = 7;
     int32 aggregate_option = 8;
+    aelf.Hash task_id = 9;
 }
 
 message CreateQueryTaskInput {
@@ -150,6 +155,7 @@ message QueryRecord {
     string token = 16;
     DataRecords data_records = 17;
     int32 aggregate_option = 18;
+    aelf.Hash task_id = 19;
 }
 
 message QueryTask {
@@ -237,6 +243,21 @@ message QueryCreated {
     string token = 9;
     int32 maximum_permissible_deviation = 10;
     int32 aggregate_option = 11;
+    aelf.Hash task_id = 12;
+}
+
+message QueryTaskCreated {
+    option (aelf.is_event) = true;
+    int64 each_payment = 1;
+    int32 supposed_query_times = 2;
+    QueryInfo query_info = 3;
+    google.protobuf.Timestamp end_time = 4;
+    AddressList designated_node_list = 5;
+    aelf.Address aggregator_contract_address = 6;
+    CallbackInfo callback_info = 7;
+    aelf.Address creator = 8;
+    int32 aggregate_threshold = 9;
+    int32 aggregate_option = 10;
 }
 
 message QueryCancelled {

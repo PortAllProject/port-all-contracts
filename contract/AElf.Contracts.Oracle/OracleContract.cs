@@ -101,7 +101,8 @@ namespace AElf.Contracts.Oracle
                     input.AggregateThreshold),
                 QueryInfo = input.QueryInfo,
                 Token = input.Token,
-                AggregateOption = input.AggregateOption
+                AggregateOption = input.AggregateOption,
+                TaskId = input.TaskId
             };
             State.QueryRecords[queryId] = queryRecord;
 
@@ -116,7 +117,8 @@ namespace AElf.Contracts.Oracle
                 AggregateThreshold = queryRecord.AggregateThreshold,
                 QueryInfo = queryRecord.QueryInfo,
                 Token = queryRecord.Token,
-                AggregateOption = queryRecord.AggregateOption
+                AggregateOption = queryRecord.AggregateOption,
+                TaskId = queryRecord.TaskId
             });
 
             return queryId;
@@ -127,7 +129,7 @@ namespace AElf.Contracts.Oracle
             // TODO: Pay tx fee to contract.
 
             var taskId = Context.TransactionId;
-            State.QueryTaskMap[taskId.ToHex()] = new QueryTask
+            var queryTask = new QueryTask
             {
                 Creator = Context.Sender,
                 CallbackInfo = input.CallbackInfo,
@@ -138,12 +140,26 @@ namespace AElf.Contracts.Oracle
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 AggregateOption = input.AggregateOption
             };
+            State.QueryTaskMap[taskId] = queryTask;
+            
+            Context.Fire(new QueryTaskCreated
+            {
+                Creator = queryTask.Creator,
+                CallbackInfo = queryTask.CallbackInfo,
+                EachPayment = queryTask.EachPayment,
+                SupposedQueryTimes = queryTask.SupposedQueryTimes,
+                QueryInfo = queryTask.QueryInfo,
+                EndTime = queryTask.EndTime,
+                AggregatorContractAddress = queryTask.AggregatorContractAddress,
+                AggregateOption = queryTask.AggregateOption,
+                AggregateThreshold = queryTask.AggregateThreshold
+            });
             return taskId;
         }
 
         public override Empty CompleteQueryTask(CompleteQueryTaskInput input)
         {
-            var queryTask = State.QueryTaskMap[input.TaskId.ToHex()];
+            var queryTask = State.QueryTaskMap[input.TaskId];
             Assert(Context.Sender == queryTask.Creator, "No permission.");
 
             var designatedNodeList = GetActualDesignatedNodeList(input.DesignatedNodeList);
@@ -153,13 +169,13 @@ namespace AElf.Contracts.Oracle
             queryTask.DesignatedNodeList = input.DesignatedNodeList;
             queryTask.AggregateThreshold = Math.Max(GetAggregateThreshold(designatedNodeList.Value.Count),
                 input.AggregateThreshold);
-            State.QueryTaskMap[input.TaskId.ToHex()] = queryTask;
+            State.QueryTaskMap[input.TaskId] = queryTask;
             return new Empty();
         }
 
         public override Hash TaskQuery(TaskQueryInput input)
         {
-            var queryTask = State.QueryTaskMap[input.TaskId.ToHex()];
+            var queryTask = State.QueryTaskMap[input.TaskId];
             if (queryTask == null)
             {
                 throw new AssertionException("Query task not found.");
@@ -174,8 +190,8 @@ namespace AElf.Contracts.Oracle
                 CallbackInfo = queryTask.CallbackInfo,
                 DesignatedNodeList = queryTask.DesignatedNodeList,
                 QueryInfo = queryTask.QueryInfo,
-                Token = input.TaskId.ToHex(),
-                AggregateOption = queryTask.AggregateOption
+                AggregateOption = queryTask.AggregateOption,
+                TaskId = input.TaskId
             };
 
             return Query(queryInput);
@@ -455,11 +471,11 @@ namespace AElf.Contracts.Oracle
             }
 
             // If this query is from a query task.
-            var maybeQueryTask = State.QueryTaskMap[queryRecord.Token];
-            if (maybeQueryTask != null)
+            if (queryRecord.TaskId != null)
             {
-                maybeQueryTask.ActualQueriedTimes = maybeQueryTask.ActualQueriedTimes.Add(1);
-                State.QueryTaskMap[queryRecord.Token] = maybeQueryTask;
+                var queryTask = State.QueryTaskMap[queryRecord.TaskId];
+                queryTask.ActualQueriedTimes = queryTask.ActualQueriedTimes.Add(1);
+                State.QueryTaskMap[queryRecord.TaskId] = queryTask;
             }
         }
 

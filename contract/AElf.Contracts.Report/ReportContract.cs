@@ -117,7 +117,8 @@ namespace AElf.Contracts.Report
             {
                 OriginQuerySender = Context.Sender,
                 // Record current report fee in case it changes before cancelling this query.
-                PaidReportFee = State.ReportFee.Value
+                PaidReportFee = State.ReportFee.Value,
+                Payment = input.Payment
             };
             return queryId;
         }
@@ -132,14 +133,15 @@ namespace AElf.Contracts.Report
 
             Assert(reportQueryRecord.OriginQuerySender == Context.Sender, "No permission.");
 
-            // Return report fee.
-            if (reportQueryRecord.PaidReportFee > 0)
+            // Return report fee and payment
+            var needToReturn = reportQueryRecord.PaidReportFee.Add(reportQueryRecord.Payment);
+            if (needToReturn > 0)
             {
                 State.TokenContract.Transfer.Send(new TransferInput
                 {
                     To = reportQueryRecord.OriginQuerySender,
                     Symbol = State.OracleTokenSymbol.Value,
-                    Amount = reportQueryRecord.PaidReportFee
+                    Amount = needToReturn
                 });
             }
 

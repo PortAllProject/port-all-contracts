@@ -44,6 +44,9 @@ namespace AElf.Contracts.Oracle
 
         public BoolState IsChargeFee { get; set; }
 
-        public MappedState<string, QueryTask> QueryTaskMap { get; set; }
+        /// <summary>
+        /// Task Id -> Query Task
+        /// </summary>
+        public MappedState<Hash, QueryTask> QueryTaskMap { get; set; }
     }
 }

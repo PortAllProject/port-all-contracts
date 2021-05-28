@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using AElf.Contracts.Association;
 using AElf.CSharp.Core;
@@ -81,6 +83,55 @@ namespace AElf.Contracts.Report
             });
 
             return offChainAggregationInfo;
+        }
+
+        public override OffChainAggregationInfo BindOffChainAggregation(BindOffChainAggregationInput input)
+        {
+            Address observerAssociationAddress = null;
+            Address aggregatorContractAddress = null;
+            var queryInfoList = new OffChainQueryInfoList();
+            var aggregatedThreshold = 0;
+            var aggregateOptions = new List<int>();
+            foreach (var taskId in input.TaskIdList)
+            {
+                var queryTask = State.OracleContract.GetQueryTask.Call(taskId);
+                Assert(
+                    observerAssociationAddress == null ||
+                    queryTask.DesignatedNodeList.Value.First() == observerAssociationAddress,
+                    "Designated node is not same.");
+                Assert(
+                    aggregatorContractAddress == null ||
+                    queryTask.AggregatorContractAddress == aggregatorContractAddress,
+                    "AggregatorContractAddress is not same.");
+                observerAssociationAddress = queryTask.DesignatedNodeList.Value.First();
+                aggregatorContractAddress = queryTask.AggregatorContractAddress;
+                queryInfoList.Value.Add(new OffChainQueryInfo
+                {
+                    UrlToQuery = queryTask.QueryInfo.UrlToQuery,
+                    AttributesToFetch = {queryTask.QueryInfo.AttributesToFetch}
+                });
+                aggregatedThreshold = Math.Max(aggregatedThreshold, queryTask.AggregateThreshold);
+                aggregateOptions.Add(queryTask.AggregateOption);
+                if (aggregateOptions.Count > 0)
+                {
+                    Assert(aggregateOptions.Contains(queryTask.AggregateOption), "AggregateOption is not same.");
+                }
+            }
+
+            var registerOffChainAggregationInput = new RegisterOffChainAggregationInput
+            {
+                Token = input.Token,
+                OffChainQueryInfoList = queryInfoList,
+                ConfigDigest = input.ConfigDigest,
+                ObserverList = new ObserverList {Value = {observerAssociationAddress}},
+                AggregateThreshold = aggregatedThreshold,
+                AggregatorContractAddress = aggregatorContractAddress,
+                ChainType = input.ChainType,
+                Register = Context.Sender,
+                AggregateOption = aggregateOptions.First()
+            };
+
+            return RegisterOffChainAggregation(registerOffChainAggregationInput);
         }
 
         public override Empty AddOffChainQueryInfo(AddOffChainQueryInfoInput input)

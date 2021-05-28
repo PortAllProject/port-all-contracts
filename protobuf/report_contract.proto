@@ -44,6 +44,8 @@ service ReportContract {
     // Offchain Aggregator Contract management.
     
     rpc RegisterOffChainAggregation (RegisterOffChainAggregationInput) returns (OffChainAggregationInfo) {}
+    
+    rpc BindOffChainAggregation (BindOffChainAggregationInput) returns (OffChainAggregationInfo) {}
 
     rpc AddOffChainQueryInfo (AddOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
 
@@ -138,6 +140,7 @@ message ReportQueryRecord {
     bool is_rejected = 3;
     bool is_all_node_confirmed = 4;
     int64 node_confirm_count = 5;
+    int64 payment = 6;
 }
 
 message ObserverList {
@@ -195,6 +198,13 @@ message RegisterOffChainAggregationInput {
     string chain_type = 7;
     aelf.Address register = 8;
     int32 aggregate_option = 9;
+}
+
+message BindOffChainAggregationInput {
+    repeated aelf.Hash task_id_list = 1;
+    string chain_type = 2;
+    string token = 3;
+    bytes config_digest = 4;
 }
 
 message OffChainQueryInfo {

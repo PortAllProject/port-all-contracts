@@ -51,5 +51,10 @@ namespace AElf.Contracts.Oracle
         {
             return State.HelpfulNodeListMap[input];
         }
+
+        public override QueryTask GetQueryTask(Hash input)
+        {
+            return State.QueryTaskMap[input];
+        }
     }
 }
