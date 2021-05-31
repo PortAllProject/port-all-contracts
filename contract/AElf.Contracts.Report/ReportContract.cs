@@ -8,7 +8,6 @@ using AElf.Sdk.CSharp;
 using AElf.Standards.ACS13;
 using AElf.Types;
 using Google.Protobuf;
-using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Report
@@ -51,7 +50,7 @@ namespace AElf.Contracts.Report
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
-                throw new AssertionException("Observer Association not exists.");
+                throw new AssertionException("Off chain aggregation info not exists.");
             }
 
             // Pay oracle tokens to this contract, amount: report fee + oracle nodes payment.
@@ -319,10 +318,14 @@ namespace AElf.Contracts.Report
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
-                throw new AssertionException("Observer Association not exists.");
+                throw new AssertionException("Off chain aggregation info not exists.");
             }
 
             var report = State.ReportMap[input.Token][input.RoundId];
+            if (report == null)
+            {
+                throw new AssertionException($"Report of round {input.RoundId} not proposed.");
+            }
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
             Assert(!reportQueryRecord.IsAllNodeConfirmed, "This report is already confirmed by all nodes");
@@ -369,7 +372,7 @@ namespace AElf.Contracts.Report
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
             if (offChainAggregationInfo == null)
             {
-                throw new AssertionException("Observer Association not exists.");
+                throw new AssertionException("Off chain aggregation info not exists.");
             }
 
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1,
@@ -388,12 +391,13 @@ namespace AElf.Contracts.Report
             }
 
             var report = State.ReportMap[input.Token][input.RoundId];
-            var senderData = report.Observations.Value.First(o => o.Key == Context.Sender.ToByteArray().ToHex()).Data;
+            var senderData = report.Observations.Value
+                .FirstOrDefault(o => o.Key == Context.Sender.ToByteArray().ToHex())?.Data;
             foreach (var accusingNode in input.AccusingNodes)
             {
                 var accusedNodeData = report.Observations.Value.First(o => o.Key == accusingNode.ToByteArray().ToHex())
                     .Data;
-                Assert(!senderData.Equals(accusedNodeData), "Invalid accuse.");
+                Assert(senderData == null || !senderData.Equals(accusedNodeData), "Invalid accuse.");
                 // Fine.
                 State.ObserverMortgagedTokensMap[accusingNode] = State.ObserverMortgagedTokensMap[accusingNode]
                     .Sub(GetAmercementAmount(offChainAggregationInfo.ObserverAssociationAddress));

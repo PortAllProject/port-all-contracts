@@ -460,7 +460,7 @@ namespace AElf.Contracts.Oracle
 
             // Callback User Contract
             var callbackInfo = queryRecord.CallbackInfo;
-            if (queryRecord.CallbackInfo.ContractAddress != Context.Self)
+            if (callbackInfo.ContractAddress != Context.Self)
             {
                 Context.SendInline(callbackInfo.ContractAddress, callbackInfo.MethodName, new CallbackInput
                 {

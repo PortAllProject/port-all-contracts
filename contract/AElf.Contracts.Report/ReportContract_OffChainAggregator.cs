@@ -25,6 +25,9 @@ namespace AElf.Contracts.Report
                     "Merkle tree style aggregator must set aggregator contract address.");
             }
 
+            Assert(input.OffChainQueryInfoList.Value.Count <= MaximumOffChainQueryInfoCount,
+                $"Maximum off chain query info count: {MaximumOffChainQueryInfoCount}");
+
             Address organizationAddress;
             if (input.ObserverList.Value.Count == 1)
             {
@@ -137,11 +140,17 @@ namespace AElf.Contracts.Report
         public override Empty AddOffChainQueryInfo(AddOffChainQueryInfoInput input)
         {
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
+            if (offChainAggregationInfo == null)
+            {
+                throw new AssertionException($"Token {input.Token} not registered.");
+            }
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > 1,
                 "Only merkle style aggregation can manage off chain query info.");
             offChainAggregationInfo.OffChainQueryInfoList.Value.Add(input.OffChainQueryInfo);
             offChainAggregationInfo.RoundIds.Add(State.CurrentRoundIdMap[input.Token].Sub(1));
+            Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count <= MaximumOffChainQueryInfoCount,
+                $"Maximum off chain query info count: {MaximumOffChainQueryInfoCount}");
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             return new Empty();
         }
@@ -149,6 +158,10 @@ namespace AElf.Contracts.Report
         public override Empty RemoveOffChainQueryInfo(RemoveOffChainQueryInfoInput input)
         {
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
+            if (offChainAggregationInfo == null)
+            {
+                throw new AssertionException($"Token {input.Token} not registered.");
+            }
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count > 1,
                 "Only merkle style aggregation can manage off chain query info.");
@@ -166,6 +179,10 @@ namespace AElf.Contracts.Report
         public override Empty ChangeOffChainQueryInfo(ChangeOffChainQueryInfoInput input)
         {
             var offChainAggregationInfo = State.OffChainAggregationInfoMap[input.Token];
+            if (offChainAggregationInfo == null)
+            {
+                throw new AssertionException($"Token {input.Token} not registered.");
+            }
             Assert(offChainAggregationInfo.Register == Context.Sender, "No permission.");
             Assert(offChainAggregationInfo.OffChainQueryInfoList.Value.Count == 1,
                 "Only single style aggregation can change off chain query info.");

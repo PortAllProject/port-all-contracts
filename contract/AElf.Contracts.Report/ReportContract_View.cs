@@ -13,9 +13,10 @@ namespace AElf.Contracts.Report
 
         public override StringValue GetSignature(GetSignatureInput input)
         {
+            var signature = State.ObserverSignatureMap[input.Token][input.RoundId][input.Address];
             return new StringValue
             {
-                Value = State.ObserverSignatureMap[input.Token][input.RoundId][input.Address]
+                Value = signature ?? string.Empty
             };
         }
 
