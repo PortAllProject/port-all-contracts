@@ -102,7 +102,7 @@ namespace AElf.Contracts.Oracle
                 QueryInfo = input.QueryInfo,
                 Token = input.Token,
                 AggregateOption = input.AggregateOption,
-                TaskId = input.TaskId
+                TaskId = input.TaskId ?? Hash.Empty
             };
             State.QueryRecords[queryId] = queryRecord;
 
@@ -471,7 +471,7 @@ namespace AElf.Contracts.Oracle
             }
 
             // If this query is from a query task.
-            if (queryRecord.TaskId != null)
+            if (queryRecord.TaskId != null || queryRecord.TaskId != Hash.Empty)
             {
                 var queryTask = State.QueryTaskMap[queryRecord.TaskId];
                 queryTask.ActualQueriedTimes = queryTask.ActualQueriedTimes.Add(1);
