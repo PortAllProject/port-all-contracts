@@ -57,7 +57,7 @@ namespace AElf.Contracts.Oracle
             return new Empty();
         }
 
-        public override Empty AddToPostPayAddress(Address input)
+        public override Empty AddPostPayAddress(Address input)
         {
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             Assert(!State.PostPayAddressMap[input], "Already added.");
@@ -65,7 +65,7 @@ namespace AElf.Contracts.Oracle
             return new Empty();
         }
 
-        public override Empty RemoveFromPostPayAddress(Address input)
+        public override Empty RemovePostPayAddress(Address input)
         {
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             Assert(State.PostPayAddressMap[input], "Not a post pay address.");

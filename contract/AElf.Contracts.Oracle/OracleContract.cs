@@ -93,11 +93,11 @@ namespace AElf.Contracts.Oracle
             };
             
             // Transfer tokens to virtual address for this query.
-            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
             if (!State.PostPayAddressMap[Context.Sender])
             {
                 if (input.Payment > 0)
                 {
+                    var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
                     State.TokenContract.TransferFrom.Send(new TransferFromInput
                     {
                         From = Context.Sender,
@@ -114,9 +114,12 @@ namespace AElf.Contracts.Oracle
                 Assert(
                     State.TokenContract.GetBalance.Call(new GetBalanceInput
                     {
-                        Owner = virtualAddress, Symbol = TokenSymbol
-                    }).Balance >= input.Payment,
-                    "Insufficient balance for payment.");
+                        Owner = Context.Sender, Symbol = TokenSymbol
+                    }).Balance >= input.Payment, "Insufficient balance for payment.");
+                Assert(State.TokenContract.GetAllowance.Call(new GetAllowanceInput
+                {
+                    Owner = Context.Sender, Spender = Context.Self, Symbol = TokenSymbol
+                }).Allowance >= input.Payment, "Insufficient allowance for payment.");
             }
 
             State.QueryRecords[queryId] = queryRecord;
@@ -420,7 +423,7 @@ namespace AElf.Contracts.Oracle
         private void PayToNodesAndAggregateResults(QueryRecord queryRecord, AddressList helpfulNodeList)
         {
             // Post pay.
-            if (queryRecord.IsPaidToOracleContract)
+            if (!queryRecord.IsPaidToOracleContract)
             {
                 var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryRecord.QueryId);
                 State.TokenContract.TransferFrom.Send(new TransferFromInput

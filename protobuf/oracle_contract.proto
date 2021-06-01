@@ -50,9 +50,9 @@ service OracleContract {
     
     rpc EnableChargeFee (google.protobuf.Empty) returns (google.protobuf.Empty) {}
 
-    rpc AddToPostPayAddress (aelf.Address) returns (google.protobuf.Empty) {}
+    rpc AddPostPayAddress (aelf.Address) returns (google.protobuf.Empty) {}
 
-    rpc RemoveFromPostPayAddress (aelf.Address) returns (google.protobuf.Empty) {}
+    rpc RemovePostPayAddress (aelf.Address) returns (google.protobuf.Empty) {}
 
     // view methods
     
