@@ -57,6 +57,8 @@ service ReportContract {
 
     rpc RemoveFromRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
 
+    rpc ChangeOracleContractAddress (aelf.Address) returns (google.protobuf.Empty) {}
+
     // Merkle tree style aggregator.
     
     rpc GetMerklePath (GetMerklePathInput) returns (aelf.MerklePath) {

@@ -5,12 +5,15 @@ import "aelf/options.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
+import "callback_input.proto";
+import "acs13.proto";
 
 option csharp_namespace = "AElf.Contracts.Bridge";
 
 service BridgeContract {
     option (aelf.csharp_state) = "AElf.Contracts.Bridge.BridgeContractState";
-    
+    option (aelf.base) = "acs13.proto";
+
     rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
 
     // view methods
@@ -21,11 +24,7 @@ service BridgeContract {
 }
 
 message InitializeInput{
-    int32 minimum_oracle_nodes_count = 1;
-    int32 default_reveal_threshold = 2;
-    int32 default_aggregate_threshold = 3;
-    int32 default_expiration_seconds = 4;
-    bool is_charge_fee = 5;
+
 }
 
 // Events

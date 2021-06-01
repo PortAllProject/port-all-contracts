@@ -40,6 +40,7 @@ namespace AElf.Contracts.Report
             {
                 State.RegisterWhiteListMap[address] = true;
             }
+
             State.IsInitialized.Value = true;
             return new Empty();
         }
@@ -153,7 +154,8 @@ namespace AElf.Contracts.Report
         {
             Assert(Context.Sender == State.OracleContract.Value,
                 "Only Oracle Contract can propose report.");
-            Assert(State.ReportQueryRecordMap[input.QueryId] != null, "This query is not initialed by Report Contract.");
+            Assert(State.ReportQueryRecordMap[input.QueryId] != null,
+                "This query is not initialed by Report Contract.");
 
             var plainResult = new PlainResult();
             plainResult.MergeFrom(input.Result);
@@ -183,7 +185,8 @@ namespace AElf.Contracts.Report
                     QueryId = input.QueryId,
                     RoundId = currentRoundId,
                     Observations = originObservations,
-                    AggregatedData = ByteString.CopyFrom(GetAggregatedData(offChainAggregationInfo, plainResult).GetBytes())
+                    AggregatedData =
+                        ByteString.CopyFrom(GetAggregatedData(offChainAggregationInfo, plainResult).GetBytes())
                 };
                 State.ReportMap[plainResult.Token][currentRoundId] = report;
                 State.CurrentRoundIdMap[plainResult.Token] = currentRoundId.Add(1);
@@ -242,6 +245,7 @@ namespace AElf.Contracts.Report
                         var nodeHash = node == null ? Hash.Empty : HashHelper.ComputeFrom(node.Data);
                         merkleNodes.Add(nodeHash);
                     }
+
                     var merkleTree = BinaryMerkleTree.FromLeafNodes(merkleNodes);
                     State.BinaryMerkleTreeMap[plainResult.Token][currentRoundId] = merkleTree;
                     report.AggregatedData = merkleTree.Root.Value;
@@ -326,6 +330,7 @@ namespace AElf.Contracts.Report
             {
                 throw new AssertionException($"Report of round {input.RoundId} not proposed.");
             }
+
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
             Assert(!reportQueryRecord.IsAllNodeConfirmed, "This report is already confirmed by all nodes");
@@ -341,8 +346,9 @@ namespace AElf.Contracts.Report
                     State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
                 memberList = organization.OrganizationMemberList.OrganizationMembers.ToList();
             }
+
             Assert(memberList.Contains(Context.Sender),
-                    "Sender isn't a member of certain Observer Association.");
+                "Sender isn't a member of certain Observer Association.");
 
             State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] =
                 input.Signature;
@@ -350,6 +356,7 @@ namespace AElf.Contracts.Report
             {
                 reportQueryRecord.ConfirmedNodeList.Add(Context.Sender);
             }
+
             if (reportQueryRecord.ConfirmedNodeList.Count == memberList.Count())
             {
                 reportQueryRecord.IsAllNodeConfirmed = true;
@@ -412,6 +419,14 @@ namespace AElf.Contracts.Report
         public override Empty AdjustAmercementAmount(Int64Value input)
         {
             State.AmercementAmountMap[Context.Sender] = input.Value;
+            return new Empty();
+        }
+
+        public override Empty ChangeOracleContractAddress(Address input)
+        {
+            Assert(Context.Sender == State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
+                "No permission.");
+            State.OracleContract.Value = input;
             return new Empty();
         }
     }

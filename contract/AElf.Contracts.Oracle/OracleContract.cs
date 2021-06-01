@@ -502,7 +502,7 @@ namespace AElf.Contracts.Oracle
             }
 
             // If this query is from a query task.
-            if (queryRecord.TaskId != null)
+            if (queryRecord.TaskId != Hash.Empty)
             {
                 var queryTask = State.QueryTaskMap[queryRecord.TaskId];
                 queryTask.ActualQueriedTimes = queryTask.ActualQueriedTimes.Add(1);
