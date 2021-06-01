@@ -428,7 +428,7 @@ namespace AElf.Contracts.Oracle
                 var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryRecord.QueryId);
                 State.TokenContract.TransferFrom.Send(new TransferFromInput
                 {
-                    From = Context.Sender,
+                    From = queryRecord.QuerySender,
                     To = virtualAddress,
                     Amount = queryRecord.Payment,
                     Symbol = TokenSymbol
