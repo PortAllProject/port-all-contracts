@@ -48,5 +48,7 @@ namespace AElf.Contracts.Oracle
         /// Task Id -> Query Task
         /// </summary>
         public MappedState<Hash, QueryTask> QueryTaskMap { get; set; }
+
+        public MappedState<Address, bool> PostPayAddressMap { get; set; }
     }
 }

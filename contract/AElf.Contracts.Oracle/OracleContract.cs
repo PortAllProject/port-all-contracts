@@ -64,19 +64,6 @@ namespace AElf.Contracts.Oracle
             var queryId = Context.GenerateId(HashHelper.ComputeFrom(input));
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
-            // Transfer tokens to virtual address for this query.
-            if (input.Payment > 0)
-            {
-                var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
-                State.TokenContract.TransferFrom.Send(new TransferFromInput
-                {
-                    From = Context.Sender,
-                    To = virtualAddress,
-                    Amount = input.Payment,
-                    Symbol = TokenSymbol
-                });
-            }
-
             Assert(State.QueryRecords[queryId] == null, "Query already exists.");
 
             var designatedNodeList = GetActualDesignatedNodeList(input.DesignatedNodeList);
@@ -104,6 +91,34 @@ namespace AElf.Contracts.Oracle
                 AggregateOption = input.AggregateOption,
                 TaskId = input.TaskId
             };
+            
+            // Transfer tokens to virtual address for this query.
+            var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryId);
+            if (!State.PostPayAddressMap[Context.Sender])
+            {
+                if (input.Payment > 0)
+                {
+                    State.TokenContract.TransferFrom.Send(new TransferFromInput
+                    {
+                        From = Context.Sender,
+                        To = virtualAddress,
+                        Amount = input.Payment,
+                        Symbol = TokenSymbol
+                    });
+                }
+
+                queryRecord.IsPaidToOracleContract = true;
+            }
+            else
+            {
+                Assert(
+                    State.TokenContract.GetBalance.Call(new GetBalanceInput
+                    {
+                        Owner = virtualAddress, Symbol = TokenSymbol
+                    }).Balance >= input.Payment,
+                    "Insufficient balance for payment.");
+            }
+
             State.QueryRecords[queryId] = queryRecord;
 
             Context.Fire(new QueryCreated
@@ -404,6 +419,19 @@ namespace AElf.Contracts.Oracle
 
         private void PayToNodesAndAggregateResults(QueryRecord queryRecord, AddressList helpfulNodeList)
         {
+            // Post pay.
+            if (queryRecord.IsPaidToOracleContract)
+            {
+                var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryRecord.QueryId);
+                State.TokenContract.TransferFrom.Send(new TransferFromInput
+                {
+                    From = Context.Sender,
+                    To = virtualAddress,
+                    Amount = queryRecord.Payment,
+                    Symbol = TokenSymbol
+                });
+            }
+
             queryRecord.IsSufficientDataCollected = true;
             // Distributed rewards to oracle nodes.
             foreach (var helpfulNode in helpfulNodeList.Value)

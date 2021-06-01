@@ -56,5 +56,21 @@ namespace AElf.Contracts.Oracle
             State.IsChargeFee.Value = true;
             return new Empty();
         }
+
+        public override Empty AddToPostPayAddress(Address input)
+        {
+            Assert(Context.Sender == State.Controller.Value, "Not authorized");
+            Assert(!State.PostPayAddressMap[input], "Already added.");
+            State.PostPayAddressMap[input] = true;
+            return new Empty();
+        }
+
+        public override Empty RemoveFromPostPayAddress(Address input)
+        {
+            Assert(Context.Sender == State.Controller.Value, "Not authorized");
+            Assert(State.PostPayAddressMap[input], "Not a post pay address.");
+            State.PostPayAddressMap.Remove(input);
+            return new Empty();
+        }
     }
 }
