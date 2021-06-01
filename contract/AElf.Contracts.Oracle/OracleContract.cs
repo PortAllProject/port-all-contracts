@@ -89,7 +89,7 @@ namespace AElf.Contracts.Oracle
                 QueryInfo = input.QueryInfo,
                 Token = input.Token,
                 AggregateOption = input.AggregateOption,
-                TaskId = input.TaskId
+                TaskId = input.TaskId ?? Hash.Empty
             };
             
             // Transfer tokens to virtual address for this query.
@@ -428,7 +428,7 @@ namespace AElf.Contracts.Oracle
                 var virtualAddress = Context.ConvertVirtualAddressToContractAddress(queryRecord.QueryId);
                 State.TokenContract.TransferFrom.Send(new TransferFromInput
                 {
-                    From = Context.Sender,
+                    From = queryRecord.QuerySender,
                     To = virtualAddress,
                     Amount = queryRecord.Payment,
                     Symbol = TokenSymbol
