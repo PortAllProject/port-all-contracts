@@ -35,7 +35,9 @@ service OracleContract {
     rpc ChangeController (aelf.Address) returns (google.protobuf.Empty) {}
   
     // oracle nodes management
-    
+
+    rpc CreateOracleOrganization (CreateOracleOrganizationInput) returns (google.protobuf.Empty) {}
+
     rpc LockTokens (LockTokensInput) returns (google.protobuf.Empty) {}
 
     rpc UnlockTokens (UnlockTokensInput) returns (google.protobuf.Empty) {}
@@ -47,7 +49,11 @@ service OracleContract {
     rpc ChangeDefaultExpirationSeconds (google.protobuf.Int32Value) returns (google.protobuf.Empty) {}
     
     rpc EnableChargeFee (google.protobuf.Empty) returns (google.protobuf.Empty) {}
-    
+
+    rpc AddPostPayAddress (aelf.Address) returns (google.protobuf.Empty) {}
+
+    rpc RemovePostPayAddress (aelf.Address) returns (google.protobuf.Empty) {}
+
     // view methods
     
     rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
@@ -156,6 +162,11 @@ message QueryRecord {
     DataRecords data_records = 17;
     int32 aggregate_option = 18;
     aelf.Hash task_id = 19;
+    bool is_paid_to_oracle_contract = 20;
+}
+
+message CreateOracleOrganizationInput {
+    
 }
 
 message QueryTask {
