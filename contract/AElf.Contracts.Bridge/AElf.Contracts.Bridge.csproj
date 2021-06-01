@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- The root namespace -->
+        <!-- Mark this project as a contract -->
+        <IsContract>true</IsContract>
+        <RootNamespace>AElf.Contracts.Bridge</RootNamespace>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <CommonMessage Include="..\..\protobuf\callback_input.proto">
+            <Link>Protobuf\Proto\callback_input.proto</Link>
+        </CommonMessage>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContractReference Include="..\..\protobuf\acs13.proto">
+            <Link>Protobuf\Proto\acs13.proto</Link>
+        </ContractReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ContractCode Include="..\..\protobuf\bridge_contract.proto">
+            <Link>Protobuf\Proto\bridge_contract.proto</Link>
+        </ContractCode>
+    </ItemGroup>
+</Project>

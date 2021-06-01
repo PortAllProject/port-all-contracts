@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "AElf.Contracts.Bridge";
+
+service BridgeContract {
+    option (aelf.csharp_state) = "AElf.Contracts.Bridge.BridgeContractState";
+    
+    rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
+
+    // view methods
+    
+    rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
+        option (aelf.is_view) = true;
+    }
+}
+
+message InitializeInput{
+    int32 minimum_oracle_nodes_count = 1;
+    int32 default_reveal_threshold = 2;
+    int32 default_aggregate_threshold = 3;
+    int32 default_expiration_seconds = 4;
+    bool is_charge_fee = 5;
+}
+
+// Events
+message WrappedTokenCreated {
+    option (aelf.is_event) = true;
+}
