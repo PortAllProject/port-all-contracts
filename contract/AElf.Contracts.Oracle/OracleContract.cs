@@ -44,6 +44,14 @@ namespace AElf.Contracts.Oracle
             State.AggregateThreshold.Value = input.DefaultAggregateThreshold;
             State.MinimumOracleNodesCount.Value = input.MinimumOracleNodesCount;
             State.Initialized.Value = true;
+
+            // Stands for the Parliament.
+            State.OracleOrganizationInfoMap[State.ParliamentContract.Value] = new OracleOrganizationInfo
+            {
+                Creator = Context.GetZeroSmartContractAddress(),
+                CreateTime = Context.CurrentBlockTime
+            };
+
             return new Empty();
         }
 

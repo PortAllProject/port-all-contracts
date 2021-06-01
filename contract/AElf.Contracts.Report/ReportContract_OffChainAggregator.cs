@@ -60,7 +60,7 @@ namespace AElf.Contracts.Report
                 ObserverAssociationAddress = organizationAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress,
-                ChainType = input.ChainType,
+                ChainName = input.ChainName,
                 Register = Context.Sender,
                 AggregateOption = input.AggregateOption
             };
@@ -80,7 +80,7 @@ namespace AElf.Contracts.Report
                 ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
                 AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress,
-                ChainType = offChainAggregationInfo.ChainType,
+                ChainName = offChainAggregationInfo.ChainName,
                 Register = offChainAggregationInfo.Register,
                 AggregateOption = offChainAggregationInfo.AggregateOption
             });
@@ -129,7 +129,7 @@ namespace AElf.Contracts.Report
                 ObserverList = new ObserverList {Value = {observerAssociationAddress}},
                 AggregateThreshold = aggregatedThreshold,
                 AggregatorContractAddress = aggregatorContractAddress,
-                ChainType = input.ChainType,
+                ChainName = input.ChainName,
                 Register = Context.Sender,
                 AggregateOption = aggregateOptions.First()
             };

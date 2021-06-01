@@ -50,5 +50,7 @@ namespace AElf.Contracts.Oracle
         public MappedState<Hash, QueryTask> QueryTaskMap { get; set; }
 
         public MappedState<Address, bool> PostPayAddressMap { get; set; }
+
+        public MappedState<Address, OracleOrganizationInfo> OracleOrganizationInfoMap { get; set; }
     }
 }

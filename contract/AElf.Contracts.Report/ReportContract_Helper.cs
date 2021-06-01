@@ -88,7 +88,7 @@ namespace AElf.Contracts.Report
                 ? report.Observers.SelectMany(x => x.Value)
                 : report.Observations.Value.Select(x => Address.FromBytes(ByteArrayHelper.HexStringToByteArray(x.Key)));
 
-            var groupObservation = observations.GroupBy(x => x);
+            var groupObservation = observations.GroupBy(x => x).ToList();
             observerIndex = GetByteListWithCapacity(SlotByteSize);
             observationsCount = GetByteListWithCapacity(SlotByteSize);
             IList<Address> memberList;
@@ -103,7 +103,7 @@ namespace AElf.Contracts.Report
                     .OrganizationMembers.ToList();
             }
 
-            int i = 0;
+            var i = 0;
             foreach (var gp in groupObservation)
             {
                 observerIndex[i] = (byte) memberList.IndexOf(gp.Key);

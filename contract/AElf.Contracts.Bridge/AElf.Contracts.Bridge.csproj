@@ -14,14 +14,26 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ContractMessage Include="..\..\protobuf\acs3.proto">
+            <Link>Protobuf\Proto\acs3.proto</Link>
+        </ContractMessage>
+        <CommonMessage Include="..\..\protobuf\acs13.proto">
+            <Link>Protobuf\Proto\acs13.proto</Link>
+        </CommonMessage>
         <CommonMessage Include="..\..\protobuf\callback_input.proto">
             <Link>Protobuf\Proto\callback_input.proto</Link>
         </CommonMessage>
     </ItemGroup>
 
     <ItemGroup>
-        <ContractReference Include="..\..\protobuf\acs13.proto">
-            <Link>Protobuf\Proto\acs13.proto</Link>
+        <ContractReference Include="..\..\protobuf\token_contract.proto">
+            <Link>Protobuf\Proto\token_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\parliament_contract.proto">
+            <Link>Protobuf\Proto\parliament_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\oracle_contract.proto">
+            <Link>Protobuf\Proto\oracle_contract.proto</Link>
         </ContractReference>
     </ItemGroup>
 

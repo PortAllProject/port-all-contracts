@@ -16,6 +16,8 @@ service BridgeContract {
 
     rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
 
+    rpc CreateBridge (CreateBridgeInput) returns (google.protobuf.Empty) {}
+
     // view methods
     
     rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
@@ -23,11 +25,26 @@ service BridgeContract {
     }
 }
 
-message InitializeInput{
+message InitializeInput {
+    aelf.Address oracle_contract_address = 1;
+}
 
+message CreateBridgeInput {
+    BridgeTokenInfo origin_token_info = 1;
+    string wrapped_token_symbol = 2;
+}
+
+message BridgeTokenInfo {
+    string symbol = 1;
+    string chain_name = 2;
+    string bridge_type = 3;// ERC20, ERC721, ...
+    string contract_address = 4;
+    bool is_native_token = 5;
 }
 
 // Events
-message WrappedTokenCreated {
+message BridgeCreated {
     option (aelf.is_event) = true;
+    BridgeTokenInfo origin_token_info = 1;
+    string wrapped_token_symbol = 2;
 }

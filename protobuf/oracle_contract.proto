@@ -240,6 +240,11 @@ message QueryInfo {
     repeated string attributes_to_fetch = 2;
 }
 
+message OracleOrganizationInfo {
+    google.protobuf.Timestamp create_time = 1;
+    aelf.Address creator = 2;
+}
+
 // Events
 message QueryCreated {
     option (aelf.is_event) = true;
