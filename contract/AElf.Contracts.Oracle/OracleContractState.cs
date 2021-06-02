@@ -51,6 +51,9 @@ namespace AElf.Contracts.Oracle
 
         public MappedState<Address, bool> PostPayAddressMap { get; set; }
 
-        public MappedState<Address, OracleOrganizationInfo> OracleOrganizationInfoMap { get; set; }
+        /// <summary>
+        /// Regiment Association Address -> RegimentInfo
+        /// </summary>
+        public MappedState<Address, RegimentInfo> RegimentInfoMap { get; set; }
     }
 }

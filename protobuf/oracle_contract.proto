@@ -36,7 +36,7 @@ service OracleContract {
   
     // oracle nodes management
 
-    rpc CreateOracleOrganization (CreateOracleOrganizationInput) returns (google.protobuf.Empty) {}
+    rpc CreateRegiment (CreateRegimentInput) returns (google.protobuf.Empty) {}
 
     rpc LockTokens (LockTokensInput) returns (google.protobuf.Empty) {}
 
@@ -89,6 +89,18 @@ service OracleContract {
     }
 
     rpc GetQueryTask (aelf.Hash) returns (QueryTask) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetRegimentInfo (aelf.Address) returns (RegimentInfo) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc IsInRegiment (IsInRegimentInput) returns (google.protobuf.BoolValue) {
+        option (aelf.is_view) = true;
+    }
+    
+    rpc GetRegimentMemberList (aelf.Address) returns (AddressList) {
         option (aelf.is_view) = true;
     }
 }
@@ -165,8 +177,9 @@ message QueryRecord {
     bool is_paid_to_oracle_contract = 20;
 }
 
-message CreateOracleOrganizationInput {
-    
+message CreateRegimentInput {
+    repeated aelf.Address initial_member_list = 1;
+    int64 lock_token_amount = 2;
 }
 
 message QueryTask {
@@ -240,9 +253,15 @@ message QueryInfo {
     repeated string attributes_to_fetch = 2;
 }
 
-message OracleOrganizationInfo {
+message RegimentInfo {
     google.protobuf.Timestamp create_time = 1;
-    aelf.Address creator = 2;
+    aelf.Address manager = 2;
+    int64 locking_amount = 3;
+}
+
+message IsInRegimentInput {
+    aelf.Address address = 1;
+    aelf.Address regiment_association_address = 2;
 }
 
 // Events

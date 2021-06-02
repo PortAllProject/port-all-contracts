@@ -301,7 +301,7 @@ namespace AElf.Contracts.Oracle
                 await TokenContractStub.Issue.SendAsync(new IssueInput
                 {
                     Symbol = TokenSymbol,
-                    Amount = DefaultApplyObserverFee * 2,
+                    Amount = DefaultApplyObserverFee * 10,
                     To = address
                 });
             }
@@ -321,7 +321,5 @@ namespace AElf.Contracts.Oracle
                 await observerStub.ApplyObserver.SendAsync(new Empty());
             }
         }
-
-
     }
 }

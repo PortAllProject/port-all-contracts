@@ -24,6 +24,9 @@ namespace AElf.Contracts.Report
 
         public MappedState<string, long, BinaryMerkleTree> BinaryMerkleTreeMap { get; set; }
 
+        /// <summary>
+        /// Off Chain Aggregation Token -> Round Id -> Node Index -> Observer List
+        /// </summary>
         public MappedState<string, long, int, ObserverList> NodeObserverListMap { get; set; }
 
         public MappedState<Address, long> AmercementAmountMap { get; set; }
@@ -32,6 +35,14 @@ namespace AElf.Contracts.Report
 
         public MappedState<Address, bool> RegisterWhiteListMap { get; set; }
 
+        /// <summary>
+        /// Observer Address -> Is Observer Or Not
+        /// </summary>
         public MappedState<Address, bool> ObserverMap { get; set; }
+
+        /// <summary>
+        /// Regiment Association Address -> Observer List
+        /// </summary>
+        public MappedState<Address, ObserverList> ObserverListMap { get; set; }
     }
 }

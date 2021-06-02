@@ -81,7 +81,7 @@ namespace AElf.Contracts.Report
             return ret;
         }
 
-        private int GenerateObserverIndex(Address organizationAddress, Report report, out List<byte> observerIndex,
+        private int GenerateObserverIndex(Address regimentAssociationAddress, Report report, out List<byte> observerIndex,
             out List<byte> observationsCount)
         {
             var observations = report.Observers.Any()
@@ -91,17 +91,7 @@ namespace AElf.Contracts.Report
             var groupObservation = observations.GroupBy(x => x).ToList();
             observerIndex = GetByteListWithCapacity(SlotByteSize);
             observationsCount = GetByteListWithCapacity(SlotByteSize);
-            IList<Address> memberList;
-            if (organizationAddress == State.ParliamentContract.Value)
-            {
-                memberList = State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
-                    .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
-            }
-            else
-            {
-                memberList = State.AssociationContract.GetOrganization.Call(organizationAddress).OrganizationMemberList
-                    .OrganizationMembers.ToList();
-            }
+            IList<Address> memberList = State.ObserverListMap[regimentAssociationAddress].Value;
 
             var i = 0;
             foreach (var gp in groupObservation)

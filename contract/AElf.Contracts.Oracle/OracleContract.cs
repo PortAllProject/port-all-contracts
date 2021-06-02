@@ -46,9 +46,9 @@ namespace AElf.Contracts.Oracle
             State.Initialized.Value = true;
 
             // Stands for the Parliament.
-            State.OracleOrganizationInfoMap[State.ParliamentContract.Value] = new OracleOrganizationInfo
+            State.RegimentInfoMap[State.ParliamentContract.Value] = new RegimentInfo
             {
-                Creator = Context.GetZeroSmartContractAddress(),
+                Manager = State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
                 CreateTime = Context.CurrentBlockTime
             };
 

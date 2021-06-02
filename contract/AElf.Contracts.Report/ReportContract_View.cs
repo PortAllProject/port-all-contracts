@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -67,7 +69,7 @@ namespace AElf.Contracts.Report
             Assert(roundReport != null,
                 $"contract: [{input.Token}]: round: [{input.RoundId}] info does not exist");
             var configDigest = offChainAggregationInfo.ConfigDigest;
-            var organization = offChainAggregationInfo.ObserverAssociationAddress;
+            var organization = offChainAggregationInfo.RegimentAssociationAddress;
             var report = GenerateRawReport(configDigest, organization, roundReport);
             return new StringValue
             {
@@ -84,7 +86,7 @@ namespace AElf.Contracts.Report
             }
 
             var organization =
-                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
+                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.RegimentAssociationAddress);
             var signatureMap = new SignatureMap();
             foreach (var observer in organization.OrganizationMemberList.OrganizationMembers)
             {
@@ -117,6 +119,18 @@ namespace AElf.Contracts.Report
             virtualAddressBalance = GetVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value, address);
             var isObserverInToken = virtualAddressBalance >= State.ApplyObserverFee.Value;
             return isObserverInMap & isObserverInToken;
+        }
+
+        private List<Address> GetRegimentObserverMemberList(Address regimentAssociationAddress)
+        {
+            if (regimentAssociationAddress == State.ParliamentContract.Value)
+            {
+                return State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
+                    .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
+            }
+
+            return State.OracleContract.GetRegimentMemberList.Call(regimentAssociationAddress).Value
+                .Where(a => State.ObserverMap[a]).ToList();
         }
     }
 }

@@ -36,6 +36,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Boilerplate.EventHandl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.Bridge", "contract\AElf.Contracts.Bridge\AElf.Contracts.Bridge.csproj", "{AA587511-4264-4D95-9E04-03382CB80EF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.NumericAggregator", "contract\AElf.Contracts.NumericAggregator\AElf.Contracts.NumericAggregator.csproj", "{2DE64377-F1F7-4787-8C19-56F074A826DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{AA587511-4264-4D95-9E04-03382CB80EF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA587511-4264-4D95-9E04-03382CB80EF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA587511-4264-4D95-9E04-03382CB80EF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DE64377-F1F7-4787-8C19-56F074A826DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DE64377-F1F7-4787-8C19-56F074A826DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DE64377-F1F7-4787-8C19-56F074A826DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DE64377-F1F7-4787-8C19-56F074A826DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{CE1FE431-FEEF-4F90-99D9-8BA9C42A69E6} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{A4737865-FE32-4A03-913A-5CB12CBDB88F} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
 		{AA587511-4264-4D95-9E04-03382CB80EF5} = {5C980166-C987-470D-AEE0-3858A170A903}
+		{2DE64377-F1F7-4787-8C19-56F074A826DA} = {5C980166-C987-470D-AEE0-3858A170A903}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}

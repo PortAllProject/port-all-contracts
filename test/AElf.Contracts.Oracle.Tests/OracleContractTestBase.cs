@@ -35,7 +35,7 @@ namespace AElf.Contracts.Oracle
             SystemContractAddresses[ReportSmartContractAddressNameProvider.Name];
 
         protected Address IntegerAggregatorContractAddress =>
-            SystemContractAddresses[IntegerAggregatorSmartContractAddressNameProvider.Name];
+            SystemContractAddresses[NumericAggregatorSmartContractAddressNameProvider.Name];
 
         protected OracleContractTestBase()
         {

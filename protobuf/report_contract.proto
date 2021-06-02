@@ -33,9 +33,9 @@ service ReportContract {
 
     // Observer management.
 
-    rpc ApplyObserver (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc ApplyObserver (ApplyObserverInput) returns (google.protobuf.Empty) {}
 
-    rpc QuitObserver (google.protobuf.Empty) returns (google.protobuf.Empty) {}
+    rpc QuitObserver (QuitObserverInput) returns (google.protobuf.Empty) {}
 
     rpc AdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
 
@@ -180,7 +180,7 @@ message SignatureMap {
 message OffChainAggregationInfo {
     string token = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
-    aelf.Address observer_association_address = 3;
+    aelf.Address regiment_association_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
@@ -191,7 +191,7 @@ message OffChainAggregationInfo {
 }
 
 message RegisterOffChainAggregationInput {
-    ObserverList observer_list = 1;
+    aelf.Address regiment_association_address = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
     string token = 3;
     bytes config_digest = 4;
@@ -255,6 +255,14 @@ message ChangeOffChainQueryInfoInput {
     OffChainQueryInfo new_off_chain_query_info = 2;
 }
 
+message ApplyObserverInput {
+    repeated aelf.Address regiment_association_address_list = 1;
+}
+
+message QuitObserverInput {
+    repeated aelf.Address regiment_association_address_list = 1;
+}
+
 // Events
 
 message ReportProposed {
@@ -278,7 +286,7 @@ message OffChainAggregationRegistered {
     option (aelf.is_event) = true;
     string token = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
-    aelf.Address observer_association_address = 3;
+    aelf.Address regiment_association_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;

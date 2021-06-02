@@ -1,4 +1,5 @@
 using AElf.Contracts.Association;
+using AElf.Contracts.MultiToken;
 using AElf.Standards.ACS3;
 using Google.Protobuf.WellKnownTypes;
 
@@ -6,7 +7,7 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContract
     {
-        public override Empty CreateOracleOrganization(CreateOracleOrganizationInput input)
+        public override Empty CreateRegiment(CreateRegimentInput input)
         {
             // Need to pay.
 
@@ -27,13 +28,21 @@ namespace AElf.Contracts.Oracle
                 }
             };
             State.AssociationContract.CreateOrganization.Send(createOrganizationInput);
-            var organizationAddress =
+            var regimentAssociationAddress =
                 State.AssociationContract.CalculateOrganizationAddress.Call(createOrganizationInput);
-            State.OracleOrganizationInfoMap[organizationAddress] = new OracleOrganizationInfo
+            State.RegimentInfoMap[regimentAssociationAddress] = new RegimentInfo
             {
-                Creator = Context.Sender,
+                Manager = Context.Sender,
                 CreateTime = Context.CurrentBlockTime
             };
+
+            var lockTokenVirtualAddress = GetRegimentLockTokenVirtualAddress(regimentAssociationAddress);
+            State.TokenContract.TransferFrom.Send(new TransferFromInput
+            {
+                From = Context.Sender,
+                To = lockTokenVirtualAddress,
+                Symbol = TokenSymbol
+            });
             return new Empty();
         }
     }

@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using AElf.Boilerplate.TestBase;
-using AElf.Contracts.IntegerAggregator;
+using AElf.Contracts.Bridge;
+using AElf.Contracts.NumericAggregator;
 using AElf.Contracts.OracleUser;
 using AElf.Contracts.Report;
 using AElf.ContractTestBase;
@@ -20,7 +21,7 @@ namespace AElf.Contracts.Oracle
             context.Services.AddSingleton<IContractInitializationProvider, OracleContractInitializationProvider>();
             context.Services.AddSingleton<IContractInitializationProvider, OracleUserContractInitializationProvider>();
             context.Services
-                .AddSingleton<IContractInitializationProvider, IntegerAggregatorContractInitializationProvider>();
+                .AddSingleton<IContractInitializationProvider, NumericAggregatorContractInitializationProvider>();
             context.Services.AddSingleton<IContractInitializationProvider, ReportContractInitializationProvider>();
         }
 
@@ -38,13 +39,17 @@ namespace AElf.Contracts.Oracle
                     File.ReadAllBytes(typeof(OracleUserContract).Assembly.Location)
                 },
                 {
-                    new IntegerAggregatorContractInitializationProvider().ContractCodeName,
-                    File.ReadAllBytes(typeof(IntegerAggregatorContract).Assembly.Location)
+                    new NumericAggregatorContractInitializationProvider().ContractCodeName,
+                    File.ReadAllBytes(typeof(NumericAggregatorContract).Assembly.Location)
                 },
                 {
                     new ReportContractInitializationProvider().ContractCodeName,
                     File.ReadAllBytes(typeof(ReportContract).Assembly.Location)
                 },
+                {
+                    new BridgeContractInitializationProvider().ContractCodeName,
+                    File.ReadAllBytes(typeof(BridgeContract).Assembly.Location)
+                }
             };
             contractCodeProvider.Codes = contractCodes;
         }

@@ -5,14 +5,14 @@ using AElf.Types;
 
 namespace AElf.Contracts.Oracle
 {
-    public class IntegerAggregatorContractInitializationProvider : IContractInitializationProvider
+    public class BridgeContractInitializationProvider : IContractInitializationProvider
     {
         public List<ContractInitializationMethodCall> GetInitializeMethodList(byte[] contractCode)
         {
             return new List<ContractInitializationMethodCall>();
         }
 
-        public Hash SystemSmartContractName { get; } = IntegerAggregatorSmartContractAddressNameProvider.Name;
-        public string ContractCodeName { get; } = "AElf.Contracts.IntegerAggregator";
+        public Hash SystemSmartContractName { get; } = BridgeSmartContractAddressNameProvider.Name;
+        public string ContractCodeName { get; } = "AElf.Contracts.Bridge";
     }
 }

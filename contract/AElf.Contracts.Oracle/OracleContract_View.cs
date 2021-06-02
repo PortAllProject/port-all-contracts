@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core;
 using AElf.Standards.ACS13;
 using AElf.Types;
@@ -55,6 +56,22 @@ namespace AElf.Contracts.Oracle
         public override QueryTask GetQueryTask(Hash input)
         {
             return State.QueryTaskMap[input];
+        }
+
+        public override RegimentInfo GetRegimentInfo(Address input)
+        {
+            var regimentInfo = State.RegimentInfoMap[input];
+            regimentInfo.LockingAmount = State.TokenContract.GetBalance
+                .Call(new GetBalanceInput
+                {
+                    Owner = GetRegimentLockTokenVirtualAddress(input), Symbol = TokenSymbol
+                }).Balance;
+            return regimentInfo;
+        }
+
+        private Address GetRegimentLockTokenVirtualAddress(Address regimentAssociationAddress)
+        {
+            return Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(regimentAssociationAddress));
         }
     }
 }

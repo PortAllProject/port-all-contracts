@@ -6,9 +6,9 @@ using AElf.Sdk.CSharp;
 using AElf.Standards.ACS13;
 using Google.Protobuf.WellKnownTypes;
 
-namespace AElf.Contracts.IntegerAggregator
+namespace AElf.Contracts.NumericAggregator
 {
-    public class IntegerAggregatorContract : IntegerAggregatorContractContainer.IntegerAggregatorContractBase
+    public class NumericAggregatorContract : NumericAggregatorContractContainer.NumericAggregatorContractBase
     {
         public override StringValue Aggregate(AggregateInput input)
         {

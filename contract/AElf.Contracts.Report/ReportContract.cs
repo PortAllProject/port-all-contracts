@@ -89,7 +89,7 @@ namespace AElf.Contracts.Report
                 {
                     Value =
                     {
-                        offChainAggregationInfo.ObserverAssociationAddress
+                        offChainAggregationInfo.RegimentAssociationAddress
                     }
                 },
                 CallbackInfo = new CallbackInfo
@@ -99,17 +99,19 @@ namespace AElf.Contracts.Report
                 },
                 Token = input.Token
             };
-            if (offChainAggregationInfo.ObserverAssociationAddress != State.ParliamentContract.Value)
-            {
-                // Check oracle node ability again.
-                var oracleNodeList = State.AssociationContract.GetOrganization
-                    .Call(offChainAggregationInfo.ObserverAssociationAddress).OrganizationMemberList
-                    .OrganizationMembers.ToList();
-                foreach (var nodeAddress in oracleNodeList)
-                {
-                    AssertObserverQualified(nodeAddress);
-                }
-            }
+
+            // TODO: Maybe no need to assert qualification.
+//            if (offChainAggregationInfo.RegimentAssociationAddress != State.ParliamentContract.Value)
+//            {
+//                // Check oracle node ability again.
+//                var oracleNodeList = State.AssociationContract.GetOrganization
+//                    .Call(offChainAggregationInfo.RegimentAssociationAddress).OrganizationMemberList
+//                    .OrganizationMembers.ToList();
+//                foreach (var nodeAddress in oracleNodeList)
+//                {
+//                    AssertObserverQualified(nodeAddress);
+//                }
+//            }
 
             State.OracleContract.Query.Send(queryInput);
 
@@ -335,7 +337,7 @@ namespace AElf.Contracts.Report
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
             Assert(!reportQueryRecord.IsAllNodeConfirmed, "This report is already confirmed by all nodes");
             IEnumerable<Address> memberList;
-            if (State.ParliamentContract.Value == offChainAggregationInfo.ObserverAssociationAddress)
+            if (State.ParliamentContract.Value == offChainAggregationInfo.RegimentAssociationAddress)
             {
                 memberList = State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
                     .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
@@ -343,11 +345,11 @@ namespace AElf.Contracts.Report
             else
             {
                 var organization =
-                    State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
+                    State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.RegimentAssociationAddress);
                 memberList = organization.OrganizationMemberList.OrganizationMembers.ToList();
             }
 
-            Assert(memberList.Contains(Context.Sender),
+            Assert(State.OracleContract.IsInRegiment.Call(new IsInRegimentInput{Address = Context.Sender, RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress}).Value,
                 "Sender isn't a member of certain Observer Association.");
 
             State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] =
@@ -368,7 +370,7 @@ namespace AElf.Contracts.Report
                 Token = input.Token,
                 RoundId = input.RoundId,
                 Signature = input.Signature,
-                ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
+                ObserverAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress,
                 IsAllNodeConfirmed = reportQueryRecord.IsAllNodeConfirmed
             });
             return new Empty();
@@ -387,13 +389,21 @@ namespace AElf.Contracts.Report
 
             Assert(State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] == null,
                 "Sender already confirmed this report.");
-            var organization =
-                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.ObserverAssociationAddress);
-            Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(Context.Sender),
+            Assert(
+                State.OracleContract.IsInRegiment.Call(new IsInRegimentInput
+                {
+                    Address = Context.Sender,
+                    RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress
+                }).Value,
                 "Sender isn't a member of certain Observer Association.");
             foreach (var accusingNode in input.AccusingNodes)
             {
-                Assert(organization.OrganizationMemberList.OrganizationMembers.Contains(accusingNode),
+                Assert(
+                    State.OracleContract.IsInRegiment.Call(new IsInRegimentInput
+                    {
+                        Address = accusingNode,
+                        RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress
+                    }).Value,
                     "Accusing node isn't a member of certain Observer Association.");
             }
 
@@ -407,7 +417,7 @@ namespace AElf.Contracts.Report
                 Assert(senderData == null || !senderData.Equals(accusedNodeData), "Invalid accuse.");
                 // Fine.
                 State.ObserverMortgagedTokensMap[accusingNode] = State.ObserverMortgagedTokensMap[accusingNode]
-                    .Sub(GetAmercementAmount(offChainAggregationInfo.ObserverAssociationAddress));
+                    .Sub(GetAmercementAmount(offChainAggregationInfo.RegimentAssociationAddress));
             }
 
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];

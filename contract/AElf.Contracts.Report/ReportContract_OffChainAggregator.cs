@@ -28,36 +28,15 @@ namespace AElf.Contracts.Report
             Assert(input.OffChainQueryInfoList.Value.Count <= MaximumOffChainQueryInfoCount,
                 $"Maximum off chain query info count: {MaximumOffChainQueryInfoCount}");
 
-            Address organizationAddress;
-            if (input.ObserverList.Value.Count == 1)
-            {
-                // Using an already-exist organization.
-
-                organizationAddress = input.ObserverList.Value.First();
-                if (organizationAddress != State.ParliamentContract.Value)
-                {
-                    var maybeOrganization = State.AssociationContract.GetOrganization.Call(organizationAddress);
-                    if (maybeOrganization == null)
-                    {
-                        throw new AssertionException("Association not exists.");
-                    }
-
-                    AssertObserversQualified(new ObserverList
-                        {Value = {maybeOrganization.OrganizationMemberList.OrganizationMembers}});
-                }
-            }
-            else
-            {
-                AssertObserversQualified(input.ObserverList);
-                organizationAddress = CreateObserverAssociation(input.ObserverList);
-            }
+            var regimentInfo = State.OracleContract.GetRegimentInfo.Call(input.RegimentAssociationAddress);
+            Assert(regimentInfo.Manager != null, "Regiment not exists.");
 
             var offChainAggregationInfo = new OffChainAggregationInfo
             {
                 Token = input.Token,
                 OffChainQueryInfoList = input.OffChainQueryInfoList,
                 ConfigDigest = input.ConfigDigest,
-                ObserverAssociationAddress = organizationAddress,
+                RegimentAssociationAddress = input.RegimentAssociationAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 ChainName = input.ChainName,
@@ -72,12 +51,18 @@ namespace AElf.Contracts.Report
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             State.CurrentRoundIdMap[input.Token] = 1;
 
+            State.ObserverListMap[offChainAggregationInfo.RegimentAssociationAddress] =
+                new ObserverList
+                {
+                    Value = {GetRegimentObserverMemberList(offChainAggregationInfo.RegimentAssociationAddress)}
+                };
+
             Context.Fire(new OffChainAggregationRegistered
             {
                 Token = offChainAggregationInfo.Token,
                 OffChainQueryInfoList = offChainAggregationInfo.OffChainQueryInfoList,
                 ConfigDigest = offChainAggregationInfo.ConfigDigest,
-                ObserverAssociationAddress = offChainAggregationInfo.ObserverAssociationAddress,
+                RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress,
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
                 AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress,
                 ChainName = offChainAggregationInfo.ChainName,
@@ -90,7 +75,7 @@ namespace AElf.Contracts.Report
 
         public override OffChainAggregationInfo BindOffChainAggregation(BindOffChainAggregationInput input)
         {
-            Address observerAssociationAddress = null;
+            Address regimentAssociationAddress = null;
             Address aggregatorContractAddress = null;
             var queryInfoList = new OffChainQueryInfoList();
             var aggregatedThreshold = 0;
@@ -99,14 +84,14 @@ namespace AElf.Contracts.Report
             {
                 var queryTask = State.OracleContract.GetQueryTask.Call(taskId);
                 Assert(
-                    observerAssociationAddress == null ||
-                    queryTask.DesignatedNodeList.Value.First() == observerAssociationAddress,
+                    regimentAssociationAddress == null ||
+                    queryTask.DesignatedNodeList.Value.First() == regimentAssociationAddress,
                     "Designated node is not same.");
                 Assert(
                     aggregatorContractAddress == null ||
                     queryTask.AggregatorContractAddress == aggregatorContractAddress,
                     "AggregatorContractAddress is not same.");
-                observerAssociationAddress = queryTask.DesignatedNodeList.Value.First();
+                regimentAssociationAddress = queryTask.DesignatedNodeList.Value.First();
                 aggregatorContractAddress = queryTask.AggregatorContractAddress;
                 queryInfoList.Value.Add(new OffChainQueryInfo
                 {
@@ -126,7 +111,7 @@ namespace AElf.Contracts.Report
                 Token = input.Token,
                 OffChainQueryInfoList = queryInfoList,
                 ConfigDigest = input.ConfigDigest,
-                ObserverList = new ObserverList {Value = {observerAssociationAddress}},
+                RegimentAssociationAddress = regimentAssociationAddress,
                 AggregateThreshold = aggregatedThreshold,
                 AggregatorContractAddress = aggregatorContractAddress,
                 ChainName = input.ChainName,
