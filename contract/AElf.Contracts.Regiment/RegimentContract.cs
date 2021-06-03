@@ -1,0 +1,248 @@
+using AElf.Contracts.Association;
+using AElf.Sdk.CSharp;
+using AElf.Standards.ACS3;
+using AElf.Types;
+using Google.Protobuf.WellKnownTypes;
+
+namespace AElf.Contracts.Regiment
+{
+    public partial class RegimentContract : RegimentContractContainer.RegimentContractBase
+    {
+        public override Empty Initialize(InitializeInput input)
+        {
+            Assert(!State.IsInitialized.Value, "Already initialized.");
+            State.IsInitialized.Value = true;
+
+            State.Controller.Value = input.Controller;
+            State.MemberJoinLimit.Value = input.MemberJoinLimit == 0 ? DefaultMemberJoinLimit : input.MemberJoinLimit;
+            State.RegimentLimit.Value = input.RegimentLimit == 0 ? DefaultRegimentLimit : input.RegimentLimit;
+            State.MaximumAdminsCount.Value =
+                input.MaximumAdminsCount == 0 ? DefaultMaximumAdminsCount : input.MaximumAdminsCount;
+
+            State.AssociationContract.Value =
+                Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
+            return new Empty();
+        }
+
+        public override Empty CreateRegiment(CreateRegimentInput input)
+        {
+            AssertSenderIsController();
+
+            var memberList = input.InitialMemberList;
+            if (!memberList.Contains(input.Manager))
+            {
+                memberList.Add(input.Manager);
+            }
+
+            Assert(memberList.Count <= State.RegimentLimit.Value, "Too many initial members.");
+
+            var createOrganizationInput = new CreateOrganizationInput
+            {
+                OrganizationMemberList = new OrganizationMemberList
+                {
+                    OrganizationMembers = {Context.Self}
+                },
+                ProposerWhiteList = new ProposerWhiteList {Proposers = {Context.Self}},
+                CreationToken = HashHelper.ComputeFrom(input),
+                ProposalReleaseThreshold = new ProposalReleaseThreshold
+                {
+                    MinimalApprovalThreshold = 1,
+                    MinimalVoteThreshold = 1,
+                    MaximalRejectionThreshold = 0,
+                    MaximalAbstentionThreshold = 0
+                }
+            };
+            State.AssociationContract.CreateOrganization.Send(createOrganizationInput);
+            var regimentAssociationAddress =
+                State.AssociationContract.CalculateOrganizationAddress.Call(createOrganizationInput);
+
+            var regimentInfo = new RegimentInfo
+            {
+                Manager = Context.Sender,
+                CreateTime = Context.CurrentBlockTime,
+                IsApproveToJoin = input.IsApproveToJoin
+            };
+            State.RegimentInfoMap[regimentAssociationAddress] = regimentInfo;
+
+            State.RegimentMemberListMap[regimentAssociationAddress] = new RegimentMemberList {Value = {memberList}};
+
+            Context.Fire(new RegimentCreated
+            {
+                CreateTime = regimentInfo.CreateTime,
+                Manager = regimentInfo.Manager,
+                InitialMemberList = new RegimentMemberList {Value = {memberList}},
+                RegimentAddress = regimentAssociationAddress
+            });
+
+            return new Empty();
+        }
+
+        public override Empty JoinRegiment(JoinRegimentInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
+            var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
+            Assert(regimentMemberList.Value.Count <= State.RegimentLimit.Value,
+                $"Regiment member reached ths limit {State.RegimentLimit.Value}.");
+            if (regimentInfo.IsApproveToJoin || regimentMemberList.Value.Count > State.MemberJoinLimit.Value)
+            {
+                Context.Fire(new NewMemberApplied
+                {
+                    RegimentAddress = input.RegimentAddress,
+                    ApplyMemberAddress = input.NewMemberAddress
+                });
+            }
+            else
+            {
+                AddMember(input.RegimentAddress, input.NewMemberAddress, regimentMemberList);
+            }
+
+            return new Empty();
+        }
+
+        public override Empty LeaveRegiment(LeaveRegimentInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
+            Assert(regimentMemberList.Value.Contains(input.LeaveMemberAddress),
+                $"{input.LeaveMemberAddress} is not a member of this regiment.");
+            DeleteMember(input.RegimentAddress, input.LeaveMemberAddress, regimentMemberList);
+            return new Empty();
+        }
+
+        public override Empty AddRegimentMember(AddRegimentMemberInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
+            var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
+            Assert(regimentMemberList.Value.Count <= State.RegimentLimit.Value,
+                $"Regiment member reached ths limit {State.RegimentLimit.Value}.");
+            Assert(
+                regimentInfo.Admins.Contains(input.OriginSenderAddress) ||
+                regimentInfo.Manager == input.OriginSenderAddress,
+                "Origin sender is not manager or admin of this regiment.");
+            AddMember(input.RegimentAddress, input.NewMemberAddress, regimentMemberList);
+
+            return new Empty();
+        }
+
+        public override Empty DeleteRegimentMember(DeleteRegimentMemberInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
+            var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
+
+            Assert(
+                regimentInfo.Admins.Contains(input.OriginSenderAddress) ||
+                regimentInfo.Manager == input.OriginSenderAddress,
+                "Origin sender is not manager or admin of this regiment.");
+            DeleteMember(input.RegimentAddress, input.DeleteMemberAddress, regimentMemberList);
+
+            return new Empty();
+        }
+
+        public override Empty ChangeController(Address input)
+        {
+            AssertSenderIsController();
+
+            State.Controller.Value = input;
+            return new Empty();
+        }
+
+        public override Empty ResetConfig(RegimentContractConfig input)
+        {
+            AssertSenderIsController();
+
+            State.MemberJoinLimit.Value =
+                input.MemberJoinLimit == 0 ? State.MemberJoinLimit.Value : input.MemberJoinLimit;
+            State.RegimentLimit.Value = input.RegimentLimit == 0 ? State.RegimentLimit.Value : input.RegimentLimit;
+            State.MaximumAdminsCount.Value =
+                input.MaximumAdminsCount == 0 ? State.MaximumAdminsCount.Value : input.MaximumAdminsCount;
+            return new Empty();
+        }
+
+        public override Empty TransferRegimentOwnership(TransferRegimentOwnershipInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
+            Assert(regimentInfo.Manager == input.OriginSenderAddress, "No permission.");
+
+            regimentInfo.Manager = input.NewManagerAddress;
+            State.RegimentInfoMap[input.RegimentAddress] = regimentInfo;
+            return new Empty();
+        }
+
+        public override Empty AddAdmins(AddAdminsInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
+            Assert(regimentInfo.Manager == input.OriginSenderAddress, "No permission.");
+            foreach (var admin in input.NewAdmins)
+            {
+                if (!regimentInfo.Admins.Contains(admin))
+                {
+                    regimentInfo.Admins.Add(admin);
+                }
+            }
+
+            Assert(input.NewAdmins.Count <= State.MaximumAdminsCount.Value,
+                $"Admins count cannot greater than {State.MaximumAdminsCount.Value}");
+            State.RegimentInfoMap[input.RegimentAddress] = regimentInfo;
+
+            return new Empty();
+        }
+
+        public override Empty DeleteAdmins(DeleteAdminsInput input)
+        {
+            AssertSenderIsController();
+
+            var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
+            Assert(regimentInfo.Manager == input.OriginSenderAddress, "No permission.");
+            foreach (var admin in input.DeleteAdmins)
+            {
+                if (regimentInfo.Admins.Contains(admin))
+                {
+                    regimentInfo.Admins.Add(admin);
+                }
+            }
+
+            State.RegimentInfoMap[input.RegimentAddress] = regimentInfo;
+            return new Empty();
+        }
+
+        private void AssertSenderIsController()
+        {
+            Assert(Context.Sender == State.Controller.Value, "Sender is not the Controller.");
+        }
+
+        private void AddMember(Address regimentAddress, Address newMemberAddress,
+            RegimentMemberList currentMemberList)
+        {
+            currentMemberList.Value.Add(newMemberAddress);
+            State.RegimentMemberListMap[regimentAddress] = currentMemberList;
+            Context.Fire(new NewMemberAdded
+            {
+                RegimentAddress = regimentAddress,
+                NewMemberAddress = newMemberAddress
+            });
+        }
+
+        private void DeleteMember(Address regimentAddress, Address deleteMemberAddress,
+            RegimentMemberList currentMemberList)
+        {
+            currentMemberList.Value.Remove(deleteMemberAddress);
+            State.RegimentMemberListMap[regimentAddress] = currentMemberList;
+            Context.Fire(new RegimentMemberLeft
+            {
+                RegimentAddress = regimentAddress,
+                LeftMemberAddress = deleteMemberAddress
+            });
+        }
+    }
+}

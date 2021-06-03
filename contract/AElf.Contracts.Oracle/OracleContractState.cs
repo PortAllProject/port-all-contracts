@@ -38,7 +38,7 @@ namespace AElf.Contracts.Oracle
         public MappedState<Address, long> OracleNodesLockedTokenAmountMap { get; set; }
 
         /// <summary>
-        /// From address -> Oracle node address -> Amount
+        /// From address -> Regiment Association Address -> Amount
         /// </summary>
         public MappedState<Address, Address, long> LockedTokenFromAddressMap { get; set; }
 

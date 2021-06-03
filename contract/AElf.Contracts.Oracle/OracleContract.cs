@@ -16,6 +16,11 @@ namespace AElf.Contracts.Oracle
         {
             Assert(!State.Initialized.Value, "Already initialized.");
             InitializeContractReferences();
+            State.RegimentContract.Value = input.RegimentContractAddress;
+            State.RegimentContract.Initialize.Send(new Regiment.InitializeInput
+            {
+                Controller = Context.Self
+            });
 
             // Controller will be the sender by default.
             State.Controller.Value = Context.Sender;
