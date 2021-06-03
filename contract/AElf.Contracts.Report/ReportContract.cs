@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
+using AElf.Contracts.Regiment;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Standards.ACS13;
@@ -18,12 +19,11 @@ namespace AElf.Contracts.Report
         {
             Assert(!State.IsInitialized.Value, "Already initialized.");
             State.OracleContract.Value = input.OracleContractAddress;
+            State.RegimentContract.Value = input.RegimentContractAddress;
             State.OracleTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.ObserverMortgageTokenSymbol.Value = State.OracleContract.GetOracleTokenSymbol.Call(new Empty()).Value;
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
-            State.AssociationContract.Value =
-                Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
             State.ParliamentContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
             State.ConsensusContract.Value =
@@ -89,7 +89,7 @@ namespace AElf.Contracts.Report
                 {
                     Value =
                     {
-                        offChainAggregationInfo.RegimentAssociationAddress
+                        offChainAggregationInfo.RegimentAddress
                     }
                 },
                 CallbackInfo = new CallbackInfo
@@ -195,10 +195,10 @@ namespace AElf.Contracts.Report
                 report.Observers.Add(new ObserverList {Value = {plainResult.DataRecords.Value.Select(d => d.Address)}});
                 Context.Fire(new ReportProposed
                 {
-                    ObserverAssociationAddress = plainResult.ObserverAssociationAddress,
+                    RegimentAddress = plainResult.RegimentAddress,
                     Token = plainResult.Token,
                     RoundId = currentRoundId,
-                    RawReport = GenerateRawReport(configDigest, plainResult.ObserverAssociationAddress, report)
+                    RawReport = GenerateRawReport(configDigest, plainResult.RegimentAddress, report)
                 });
             }
             else
@@ -261,10 +261,10 @@ namespace AElf.Contracts.Report
 
                     Context.Fire(new ReportProposed
                     {
-                        ObserverAssociationAddress = plainResult.ObserverAssociationAddress,
+                        RegimentAddress = plainResult.RegimentAddress,
                         Token = plainResult.Token,
                         RoundId = currentRoundId,
-                        RawReport = GenerateRawReport(configDigest, plainResult.ObserverAssociationAddress,
+                        RawReport = GenerateRawReport(configDigest, plainResult.RegimentAddress,
                             report)
                     });
                     State.CurrentRoundIdMap[plainResult.Token] = currentRoundId.Add(1);
@@ -336,21 +336,12 @@ namespace AElf.Contracts.Report
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             Assert(!reportQueryRecord.IsRejected, "This report is already rejected.");
             Assert(!reportQueryRecord.IsAllNodeConfirmed, "This report is already confirmed by all nodes");
-            IEnumerable<Address> memberList;
-            if (State.ParliamentContract.Value == offChainAggregationInfo.RegimentAssociationAddress)
-            {
-                memberList = State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
-                    .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
-            }
-            else
-            {
-                var organization =
-                    State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.RegimentAssociationAddress);
-                memberList = organization.OrganizationMemberList.OrganizationMembers.ToList();
-            }
+            var memberList = State.OracleContract.GetRegimentMemberList
+                .Call(offChainAggregationInfo.RegimentAddress)
+                .Value;
 
-            Assert(State.OracleContract.IsInRegiment.Call(new IsInRegimentInput{Address = Context.Sender, RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress}).Value,
-                "Sender isn't a member of certain Observer Association.");
+            Assert(IsRegimentMember(Context.Sender, offChainAggregationInfo.RegimentAddress),
+                "Sender isn't a member of certain regiment.");
 
             State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] =
                 input.Signature;
@@ -370,7 +361,7 @@ namespace AElf.Contracts.Report
                 Token = input.Token,
                 RoundId = input.RoundId,
                 Signature = input.Signature,
-                ObserverAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress,
+                RegimentAddress = offChainAggregationInfo.RegimentAddress,
                 IsAllNodeConfirmed = reportQueryRecord.IsAllNodeConfirmed
             });
             return new Empty();
@@ -389,21 +380,11 @@ namespace AElf.Contracts.Report
 
             Assert(State.ObserverSignatureMap[input.Token][input.RoundId][Context.Sender] == null,
                 "Sender already confirmed this report.");
-            Assert(
-                State.OracleContract.IsInRegiment.Call(new IsInRegimentInput
-                {
-                    Address = Context.Sender,
-                    RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress
-                }).Value,
+            Assert(IsRegimentMember(Context.Sender, offChainAggregationInfo.RegimentAddress),
                 "Sender isn't a member of certain Observer Association.");
             foreach (var accusingNode in input.AccusingNodes)
             {
-                Assert(
-                    State.OracleContract.IsInRegiment.Call(new IsInRegimentInput
-                    {
-                        Address = accusingNode,
-                        RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress
-                    }).Value,
+                Assert(IsRegimentMember(accusingNode, offChainAggregationInfo.RegimentAddress),
                     "Accusing node isn't a member of certain Observer Association.");
             }
 
@@ -417,13 +398,22 @@ namespace AElf.Contracts.Report
                 Assert(senderData == null || !senderData.Equals(accusedNodeData), "Invalid accuse.");
                 // Fine.
                 State.ObserverMortgagedTokensMap[accusingNode] = State.ObserverMortgagedTokensMap[accusingNode]
-                    .Sub(GetAmercementAmount(offChainAggregationInfo.RegimentAssociationAddress));
+                    .Sub(GetAmercementAmount(offChainAggregationInfo.RegimentAddress));
             }
 
             var reportQueryRecord = State.ReportQueryRecordMap[report.QueryId];
             reportQueryRecord.IsRejected = true;
             State.ReportQueryRecordMap[report.QueryId] = reportQueryRecord;
             return new Empty();
+        }
+
+        private bool IsRegimentMember(Address address, Address regimentAddress)
+        {
+            return State.RegimentContract.IsRegimentMember.Call(new IsRegimentMemberInput
+            {
+                RegimentAddress = regimentAddress,
+                Address = address
+            }).Value;
         }
 
         public override Empty AdjustAmercementAmount(Int64Value input)

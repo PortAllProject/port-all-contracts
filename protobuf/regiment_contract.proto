@@ -19,13 +19,12 @@ service RegimentContract {
     rpc LeaveRegiment (LeaveRegimentInput) returns (google.protobuf.Empty) {}
     rpc AddRegimentMember (AddRegimentMemberInput) returns (google.protobuf.Empty) {}
     rpc DeleteRegimentMember (DeleteRegimentMemberInput) returns (google.protobuf.Empty) {}
-
-    rpc ChangeController (aelf.Address) returns (google.protobuf.Empty) {}
-    rpc ResetConfig (RegimentContractConfig) returns (google.protobuf.Empty) {}
-
     rpc TransferRegimentOwnership (TransferRegimentOwnershipInput) returns (google.protobuf.Empty) {}
     rpc AddAdmins (AddAdminsInput) returns (google.protobuf.Empty) {}
     rpc DeleteAdmins (DeleteAdminsInput) returns (google.protobuf.Empty) {}
+
+    rpc ChangeController (aelf.Address) returns (google.protobuf.Empty) {}
+    rpc ResetConfig (RegimentContractConfig) returns (google.protobuf.Empty) {}
 
     // Views
     rpc GetController (google.protobuf.Empty) returns (aelf.Address) {

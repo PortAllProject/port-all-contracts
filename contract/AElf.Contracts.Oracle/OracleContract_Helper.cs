@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
 using AElf.CSharp.Core;
+using AElf.Types;
+using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Oracle
 {

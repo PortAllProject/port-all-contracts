@@ -21,6 +21,7 @@ namespace AElf.Contracts.Regiment
 
             State.AssociationContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
+            
             return new Empty();
         }
 

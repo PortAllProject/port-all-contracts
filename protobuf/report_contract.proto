@@ -107,6 +107,7 @@ message InitializeInput {
     int64 report_fee = 2;
     int64 apply_observer_fee = 3;
     repeated aelf.Address initial_register_white_list = 4;
+    aelf.Address regiment_contract_address = 5;
 }
 
 message QueryOracleInput {
@@ -180,7 +181,7 @@ message SignatureMap {
 message OffChainAggregationInfo {
     string token = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
-    aelf.Address regiment_association_address = 3;
+    aelf.Address regiment_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;
@@ -191,7 +192,7 @@ message OffChainAggregationInfo {
 }
 
 message RegisterOffChainAggregationInput {
-    aelf.Address regiment_association_address = 1;
+    aelf.Address regiment_address = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
     string token = 3;
     bytes config_digest = 4;
@@ -256,11 +257,11 @@ message ChangeOffChainQueryInfoInput {
 }
 
 message ApplyObserverInput {
-    repeated aelf.Address regiment_association_address_list = 1;
+    repeated aelf.Address regiment_address_list = 1;
 }
 
 message QuitObserverInput {
-    repeated aelf.Address regiment_association_address_list = 1;
+    repeated aelf.Address regiment_address_list = 1;
 }
 
 // Events
@@ -268,7 +269,7 @@ message QuitObserverInput {
 message ReportProposed {
     option (aelf.is_event) = true;
     string raw_report = 1;
-    aelf.Address observer_association_address = 2;
+    aelf.Address regiment_address = 2;
     string token = 3;
     int64 round_id = 4;
 }
@@ -277,7 +278,7 @@ message ReportConfirmed {
     option (aelf.is_event) = true;
     int64 round_id = 1;
     string signature = 2;
-    aelf.Address observer_association_address = 3;
+    aelf.Address regiment_address = 3;
     string token = 4;
     bool is_all_node_confirmed = 5;
 }
@@ -286,7 +287,7 @@ message OffChainAggregationRegistered {
     option (aelf.is_event) = true;
     string token = 1;
     OffChainQueryInfoList off_chain_query_info_list = 2;
-    aelf.Address regiment_association_address = 3;
+    aelf.Address regiment_address = 3;
     bytes config_digest = 4;
     int32 aggregate_threshold = 5;
     aelf.Address aggregator_contract_address = 6;

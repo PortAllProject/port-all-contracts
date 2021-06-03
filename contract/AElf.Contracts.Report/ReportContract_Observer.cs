@@ -13,24 +13,20 @@ namespace AElf.Contracts.Report
         public override Empty ApplyObserver(ApplyObserverInput input)
         {
             Assert(!IsValidObserver(Context.Sender, out var virtualAddressBalance), "Sender is an observer.");
-            var regimentCount = input.RegimentAssociationAddressList.Count;
+            var regimentCount = input.RegimentAddressList.Count;
             var actualApplyFee =
                 Math.Max(0, State.ApplyObserverFee.Value.Mul(regimentCount).Sub(virtualAddressBalance));
             TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, actualApplyFee);
             State.ObserverMap[Context.Sender] = true;
-            foreach (var regimentAssociationAddress in input.RegimentAssociationAddressList)
+            foreach (var regimentAddress in input.RegimentAddressList)
             {
-                Assert(State.OracleContract.IsInRegiment.Call(new IsInRegimentInput
-                {
-                    Address = Context.Sender,
-                    RegimentAssociationAddress = regimentAssociationAddress
-                }).Value, $"Sender is not a member of regiment {regimentAssociationAddress}");
-
-                var observerList = State.ObserverListMap[regimentAssociationAddress] ?? new ObserverList();
+                Assert(IsRegimentMember(Context.Sender, regimentAddress),
+                    $"Sender is not a member of regiment {regimentAddress}");
+                var observerList = State.ObserverListMap[regimentAddress] ?? new ObserverList();
                 Assert(!observerList.Value.Contains(Context.Sender),
-                    $"Sender is already an observer for regiment {regimentAssociationAddress}");
+                    $"Sender is already an observer for regiment {regimentAddress}");
                 observerList.Value.Add(Context.Sender);
-                State.ObserverListMap[regimentAssociationAddress] = observerList;
+                State.ObserverListMap[regimentAddress] = observerList;
             }
 
             return new Empty();
@@ -40,7 +36,7 @@ namespace AElf.Contracts.Report
         {
             Assert(State.ObserverMap[Context.Sender], "Sender is not an observer.");
             var currentLockingAmount = GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value);
-            var shouldReturnAmount = State.ApplyObserverFee.Value.Mul(input.RegimentAssociationAddressList.Count);
+            var shouldReturnAmount = State.ApplyObserverFee.Value.Mul(input.RegimentAddressList.Count);
             if (currentLockingAmount > 0)
             {
                 Context.SendVirtualInline(HashHelper.ComputeFrom(Context.Sender), State.TokenContract.Value,
@@ -55,7 +51,7 @@ namespace AElf.Contracts.Report
 
             State.ObserverMap[Context.Sender] = false;
             
-            foreach (var regimentAssociationAddress in input.RegimentAssociationAddressList)
+            foreach (var regimentAssociationAddress in input.RegimentAddressList)
             {
                 var observerList = State.ObserverListMap[regimentAssociationAddress] ?? new ObserverList();
                 Assert(observerList.Value.Contains(Context.Sender), $"Sender is not an observer for regiment {regimentAssociationAddress}");

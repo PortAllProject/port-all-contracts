@@ -41,7 +41,7 @@ namespace AElf.Contracts.Report
         public MappedState<Address, bool> ObserverMap { get; set; }
 
         /// <summary>
-        /// Regiment Association Address -> Observer List
+        /// Regiment Address -> Observer List
         /// </summary>
         public MappedState<Address, ObserverList> ObserverListMap { get; set; }
     }

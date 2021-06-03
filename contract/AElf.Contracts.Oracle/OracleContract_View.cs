@@ -58,20 +58,32 @@ namespace AElf.Contracts.Oracle
             return State.QueryTaskMap[input];
         }
 
-        public override RegimentInfo GetRegimentInfo(Address input)
+        public override AddressList GetRegimentMemberList(Address input)
         {
-            var regimentInfo = State.RegimentInfoMap[input];
-            regimentInfo.LockingAmount = State.TokenContract.GetBalance
-                .Call(new GetBalanceInput
+            if (input == State.ParliamentContract.Value)
+            {
+                return new AddressList
                 {
-                    Owner = GetRegimentLockTokenVirtualAddress(input), Symbol = TokenSymbol
-                }).Balance;
-            return regimentInfo;
+                    Value =
+                    {
+                        State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
+                            .Select(p => Address.FromPublicKey(p.ToByteArray()))
+                    }
+                };
+            }
+
+            return new AddressList
+            {
+                Value =
+                {
+                    State.RegimentContract.GetRegimentMemberList.Call(input).Value
+                }
+            };
         }
 
-        private Address GetRegimentLockTokenVirtualAddress(Address regimentAssociationAddress)
+        private Address GetRegimentLockTokenVirtualAddress(Address regimentAddress)
         {
-            return Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(regimentAssociationAddress));
+            return Context.ConvertVirtualAddressToContractAddress(HashHelper.ComputeFrom(regimentAddress));
         }
     }
 }

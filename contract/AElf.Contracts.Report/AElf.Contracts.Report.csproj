@@ -32,9 +32,6 @@
         <ContractReference Include="..\..\protobuf\association_contract.proto">
             <Link>Protobuf\Proto\association_contract.proto</Link>
         </ContractReference>
-        <ContractReference Include="..\..\protobuf\association_contract_impl.proto">
-            <Link>Protobuf\Proto\association_contract_impl.proto</Link>
-        </ContractReference>
         <ContractReference Include="..\..\protobuf\parliament_contract.proto">
             <Link>Protobuf\Proto\parliament_contract.proto</Link>
         </ContractReference>
@@ -46,6 +43,9 @@
         </ContractReference>
         <ContractReference Include="..\..\protobuf\aedpos_contract.proto">
             <Link>Protobuf\Proto\aedpos_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\regiment_contract.proto">
+            <Link>Protobuf\Proto\regiment_contract.proto</Link>
         </ContractReference>
         <CommonMessage Include="..\..\protobuf\callback_input.proto">
             <Link>Protobuf\Proto\callback_input.proto</Link>

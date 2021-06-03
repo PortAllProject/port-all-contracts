@@ -50,13 +50,6 @@ namespace AElf.Contracts.Oracle
             State.MinimumOracleNodesCount.Value = input.MinimumOracleNodesCount;
             State.Initialized.Value = true;
 
-            // Stands for the Parliament.
-            State.RegimentInfoMap[State.ParliamentContract.Value] = new RegimentInfo
-            {
-                Manager = State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()),
-                CreateTime = Context.CurrentBlockTime
-            };
-
             return new Empty();
         }
 
@@ -231,31 +224,8 @@ namespace AElf.Contracts.Oracle
         private AddressList GetActualDesignatedNodeList(AddressList designatedNodeList)
         {
             if (designatedNodeList.Value.Count != 1) return designatedNodeList;
-
-            if (designatedNodeList.Value.First() == State.ParliamentContract.Value)
-            {
-                return new AddressList
-                {
-                    Value =
-                    {
-                        State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
-                            .Select(p => Address.FromPublicKey(p.ToByteArray()))
-                    }
-                };
-            }
-
-            var organization =
-                State.AssociationContract.GetOrganization.Call(designatedNodeList.Value.First());
-            if (organization.OrganizationAddress == null)
-            {
-                throw new AssertionException("Designated association not exists.");
-            }
-
-            designatedNodeList = new AddressList
-            {
-                Value = {organization.OrganizationMemberList.OrganizationMembers}
-            };
-            return designatedNodeList;
+            var regimentAddress = designatedNodeList.Value.First();
+            return GetRegimentMemberList(regimentAddress);
         }
 
         private AddressList GetActualDesignatedNodeList(Hash queryId)
@@ -415,7 +385,7 @@ namespace AElf.Contracts.Oracle
                 // Record data to node data list.
                 var nodeDataList = State.PlainResultMap[input.QueryId] ?? new PlainResult
                 {
-                    ObserverAssociationAddress = queryRecord.DesignatedNodeList.Value.First(),
+                    RegimentAddress = queryRecord.DesignatedNodeList.Value.First(),
                     QueryInfo = queryRecord.QueryInfo,
                     Token = queryRecord.Token,
                     DataRecords = new DataRecords()

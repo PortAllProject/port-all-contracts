@@ -28,7 +28,7 @@ namespace AElf.Contracts.Report
             Assert(input.OffChainQueryInfoList.Value.Count <= MaximumOffChainQueryInfoCount,
                 $"Maximum off chain query info count: {MaximumOffChainQueryInfoCount}");
 
-            var regimentInfo = State.OracleContract.GetRegimentInfo.Call(input.RegimentAssociationAddress);
+            var regimentInfo = State.RegimentContract.GetRegimentInfo.Call(input.RegimentAddress);
             Assert(regimentInfo.Manager != null, "Regiment not exists.");
 
             var offChainAggregationInfo = new OffChainAggregationInfo
@@ -36,7 +36,7 @@ namespace AElf.Contracts.Report
                 Token = input.Token,
                 OffChainQueryInfoList = input.OffChainQueryInfoList,
                 ConfigDigest = input.ConfigDigest,
-                RegimentAssociationAddress = input.RegimentAssociationAddress,
+                RegimentAddress = input.RegimentAddress,
                 AggregateThreshold = input.AggregateThreshold,
                 AggregatorContractAddress = input.AggregatorContractAddress,
                 ChainName = input.ChainName,
@@ -51,10 +51,10 @@ namespace AElf.Contracts.Report
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             State.CurrentRoundIdMap[input.Token] = 1;
 
-            State.ObserverListMap[offChainAggregationInfo.RegimentAssociationAddress] =
+            State.ObserverListMap[offChainAggregationInfo.RegimentAddress] =
                 new ObserverList
                 {
-                    Value = {GetRegimentObserverMemberList(offChainAggregationInfo.RegimentAssociationAddress)}
+                    Value = {GetRegimentObserverMemberList(offChainAggregationInfo.RegimentAddress)}
                 };
 
             Context.Fire(new OffChainAggregationRegistered
@@ -62,7 +62,7 @@ namespace AElf.Contracts.Report
                 Token = offChainAggregationInfo.Token,
                 OffChainQueryInfoList = offChainAggregationInfo.OffChainQueryInfoList,
                 ConfigDigest = offChainAggregationInfo.ConfigDigest,
-                RegimentAssociationAddress = offChainAggregationInfo.RegimentAssociationAddress,
+                RegimentAddress = offChainAggregationInfo.RegimentAddress,
                 AggregateThreshold = offChainAggregationInfo.AggregateThreshold,
                 AggregatorContractAddress = offChainAggregationInfo.AggregatorContractAddress,
                 ChainName = offChainAggregationInfo.ChainName,
@@ -111,7 +111,7 @@ namespace AElf.Contracts.Report
                 Token = input.Token,
                 OffChainQueryInfoList = queryInfoList,
                 ConfigDigest = input.ConfigDigest,
-                RegimentAssociationAddress = regimentAssociationAddress,
+                RegimentAddress = regimentAssociationAddress,
                 AggregateThreshold = aggregatedThreshold,
                 AggregatorContractAddress = aggregatorContractAddress,
                 ChainName = input.ChainName,
@@ -207,23 +207,6 @@ namespace AElf.Contracts.Report
             Assert(
                 State.ObserverMortgagedTokensMap[address] >= State.ApplyObserverFee.Value && State.ObserverMap[address],
                 $"{address} is not an observer candidate or mortgaged token not enough.");
-        }
-
-        private Address CreateObserverAssociation(ObserverList observerList)
-        {
-            var createOrganizationInput = new CreateOrganizationInput
-            {
-                CreationToken = HashHelper.ComputeFrom(Context.Self),
-                OrganizationMemberList = new OrganizationMemberList {OrganizationMembers = {observerList.Value}},
-                ProposalReleaseThreshold = new ProposalReleaseThreshold
-                {
-                    MinimalApprovalThreshold = 1,
-                    MinimalVoteThreshold = 1
-                },
-                ProposerWhiteList = new ProposerWhiteList {Proposers = {Context.Self}}
-            };
-            State.AssociationContract.CreateOrganization.Send(createOrganizationInput);
-            return State.AssociationContract.CalculateOrganizationAddress.Call(createOrganizationInput);
         }
     }
 }

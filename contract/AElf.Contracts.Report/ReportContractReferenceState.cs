@@ -3,6 +3,7 @@ using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.Contracts.Parliament;
+using AElf.Contracts.Regiment;
 using AElf.Standards.ACS13;
 
 namespace AElf.Contracts.Report
@@ -15,7 +16,7 @@ namespace AElf.Contracts.Report
 
         internal TokenContractContainer.TokenContractReferenceState TokenContract { get; set; }
 
-        internal AssociationContractImplContainer.AssociationContractImplReferenceState AssociationContract
+        internal RegimentContractContainer.RegimentContractReferenceState RegimentContract
         {
             get;
             set;

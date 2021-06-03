@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -34,6 +35,13 @@ namespace AElf.Contracts.Oracle
             .Select(a => GetTester<ReportContractContainer.ReportContractStub>(ReportContractAddress, a.KeyPair))
             .ToList();
 
+        private Address CreateRegiment()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Address regimentAddress;
+
         [Fact]
         internal async Task<OffChainAggregationInfo> AddOffChainAggregationInfoTest()
         {
@@ -42,12 +50,10 @@ namespace AElf.Contracts.Oracle
             await InitializeReportContractAsync();
             await ApplyObserversAsync();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
+            regimentAddress = CreateRegiment();
             var registerOffChainAggregationInput = new RegisterOffChainAggregationInput
             {
-                ObserverList = new ObserverList
-                {
-                    Value = {ObserverAddresses}
-                },
+                RegimentAddress = regimentAddress,
                 OffChainQueryInfoList = new OffChainQueryInfoList
                 {
                     Value =
@@ -81,7 +87,7 @@ namespace AElf.Contracts.Oracle
             // Association created.
             var organization =
                 await AssociationContractStub.GetOrganization.CallAsync(offChainAggregationInfo
-                    .ObserverAssociationAddress);
+                    .RegimentAddress);
             organization.OrganizationMemberList.OrganizationMembers.Count.ShouldBe(5);
             organization.ProposerWhiteList.Proposers.First().ShouldBe(ReportContractAddress);
 
@@ -117,7 +123,7 @@ namespace AElf.Contracts.Oracle
             var queryRecord = await OracleContractStub.GetQueryRecord.CallAsync(queryId);
             queryRecord.Payment.ShouldBe(queryOracleInput.Payment);
             queryRecord.DesignatedNodeList.Value.First()
-                .ShouldBe(offChainAggregationInfo.ObserverAssociationAddress);
+                .ShouldBe(offChainAggregationInfo.RegimentAddress);
 
             var reportQueryRecord = await ReportContractStub.GetReportQueryRecord.CallAsync(queryId);
             reportQueryRecord.OriginQuerySender.ShouldBe(DefaultSender);
@@ -157,10 +163,7 @@ namespace AElf.Contracts.Oracle
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var addOffChainAggregatorInput = new RegisterOffChainAggregationInput
             {
-                ObserverList = new ObserverList
-                {
-                    Value = {ObserverAddresses}
-                },
+                RegimentAddress = regimentAddress,
                 OffChainQueryInfoList = new OffChainQueryInfoList
                 {
                     Value =
@@ -318,7 +321,10 @@ namespace AElf.Contracts.Oracle
 
             foreach (var observerStub in ObserverStubs)
             {
-                await observerStub.ApplyObserver.SendAsync(new Empty());
+                await observerStub.ApplyObserver.SendAsync(new ApplyObserverInput
+                {
+                    RegimentAddressList = {regimentAddress}
+                });
             }
         }
     }

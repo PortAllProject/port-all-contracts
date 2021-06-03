@@ -69,7 +69,7 @@ namespace AElf.Contracts.Report
             Assert(roundReport != null,
                 $"contract: [{input.Token}]: round: [{input.RoundId}] info does not exist");
             var configDigest = offChainAggregationInfo.ConfigDigest;
-            var organization = offChainAggregationInfo.RegimentAssociationAddress;
+            var organization = offChainAggregationInfo.RegimentAddress;
             var report = GenerateRawReport(configDigest, organization, roundReport);
             return new StringValue
             {
@@ -85,10 +85,8 @@ namespace AElf.Contracts.Report
                 throw new AssertionException("Report not exists.");
             }
 
-            var organization =
-                State.AssociationContract.GetOrganization.Call(offChainAggregationInfo.RegimentAssociationAddress);
             var signatureMap = new SignatureMap();
-            foreach (var observer in organization.OrganizationMemberList.OrganizationMembers)
+            foreach (var observer in State.ObserverListMap[offChainAggregationInfo.RegimentAddress].Value)
             {
                 var signature = State.ObserverSignatureMap[input.Token][input.RoundId][observer];
                 if (signature != null)
