@@ -25,15 +25,13 @@ namespace AElf.Contracts.Bridge
                 {
                     Symbol = input.WrappedTokenSymbol
                 });
-                if (!string.IsNullOrEmpty(tokenInfo.TokenName))
-                {
-                    Assert(State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()) == Context.Sender,
-                        "No permission.");
-                    bridgeTokenInfo.IsNativeToken = true;
-                }
+                Assert(!string.IsNullOrEmpty(tokenInfo.TokenName), $"Token {input.WrappedTokenSymbol} not found.");
+                Assert(State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty()) == Context.Sender,
+                    "No permission.");
             }
 
-            var tokenId = $"{bridgeTokenInfo.Symbol}.{bridgeTokenInfo.ChainName}";
+            var tokenId =
+                $"{bridgeTokenInfo.FromChainName}/{bridgeTokenInfo.Symbol}/{bridgeTokenInfo.LockContractAddress}";
             State.BridgeTokenInfoMap[tokenId] = bridgeTokenInfo;
 
             Context.Fire(new BridgeCreated
