@@ -18,9 +18,29 @@ service BridgeContract {
 
     rpc CreateBridge (CreateBridgeInput) returns (google.protobuf.Empty) {}
 
+    rpc Transfer (TransferInput) returns (google.protobuf.Empty) {
+    }
+    rpc TransferFrom (TransferFromInput) returns (google.protobuf.Empty) {
+    }
+    rpc Approve (ApproveInput) returns (google.protobuf.Empty) {
+    }
+    rpc UnApprove (UnApproveInput) returns (google.protobuf.Empty) {
+    }
+    rpc Burn (BurnInput) returns (google.protobuf.Empty) {
+    }
+
     // view methods
     
     rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetBridgeTokenInfo (GetBridgeTokenInfoInput) returns (BridgeTokenInfo) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetBalance (GetBalanceInput) returns (Balance) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAllowance (GetAllowanceInput) returns (Allowance) {
         option (aelf.is_view) = true;
     }
 }
@@ -36,13 +56,107 @@ message CreateBridgeInput {
 
 message BridgeTokenInfo {
     string symbol = 1;
-    string chain_name = 2;
+    string from_chain_name = 2;
     string bridge_type = 3;// ERC20, ERC721, ...
-    string contract_address = 4;
+    string lock_contract_address = 4;
     bool is_native_token = 5;
 }
 
+message TransferFromInput {
+    aelf.Address from = 1;
+    aelf.Address to = 2;
+    string symbol = 3;
+    int64 amount = 4;
+    string memo = 5;
+}
+
+message GetBridgeTokenInfoInput {
+
+}
+
+message TransferInput {
+    aelf.Address to = 1;
+    string symbol = 2;
+    int64 amount = 3;
+    string memo = 4;
+}
+
+message ApproveInput {
+    aelf.Address spender = 1;
+    string symbol = 2;
+    int64 amount = 3;
+}
+
+message UnApproveInput {
+    aelf.Address spender = 1;
+    string symbol = 2;
+    int64 amount = 3;
+}
+
+message BurnInput {
+    string symbol = 1;
+    int64 amount = 2;
+}
+
+message GetBalanceInput {
+    string symbol = 1;
+    aelf.Address owner = 2;
+}
+
+message Balance {
+    string symbol = 1;
+    aelf.Address owner = 2;
+    int64 balance = 3;
+}
+
+message GetAllowanceInput {
+    string symbol = 1;
+    aelf.Address owner = 2;
+    aelf.Address spender = 3;
+}
+
+message Allowance {
+    string symbol = 1;
+    aelf.Address owner = 2;
+    aelf.Address spender = 3;
+    int64 allowance = 4;
+}
+
 // Events
+
+message Transferred {
+    option (aelf.is_event) = true;
+    aelf.Address from = 1 [(aelf.is_indexed) = true];
+    aelf.Address to = 2 [(aelf.is_indexed) = true];
+    string symbol = 3 [(aelf.is_indexed) = true];
+    int64 amount = 4;
+    string memo = 5;
+}
+
+message Approved {
+    option (aelf.is_event) = true;
+    aelf.Address owner = 1 [(aelf.is_indexed) = true];
+    aelf.Address spender = 2 [(aelf.is_indexed) = true];
+    string symbol = 3 [(aelf.is_indexed) = true];
+    int64 amount = 4;
+}
+
+message UnApproved {
+    option (aelf.is_event) = true;
+    aelf.Address owner = 1 [(aelf.is_indexed) = true];
+    aelf.Address spender = 2 [(aelf.is_indexed) = true];
+    string symbol = 3 [(aelf.is_indexed) = true];
+    int64 amount = 4;
+}
+
+message Burned
+{
+    option (aelf.is_event) = true;
+    aelf.Address burner = 1 [(aelf.is_indexed) = true];
+    string symbol = 2 [(aelf.is_indexed) = true];
+    int64 amount = 3;
+}
+
 message BridgeCreated {
     option (aelf.is_event) = true;
     BridgeTokenInfo origin_token_info = 1;
