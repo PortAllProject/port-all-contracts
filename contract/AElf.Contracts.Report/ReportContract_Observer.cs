@@ -1,6 +1,4 @@
-using System;
 using AElf.Contracts.MultiToken;
-using AElf.Contracts.Oracle;
 using AElf.CSharp.Core;
 using AElf.Types;
 using Google.Protobuf;
@@ -12,12 +10,9 @@ namespace AElf.Contracts.Report
     {
         public override Empty ApplyObserver(ApplyObserverInput input)
         {
-            Assert(!IsValidObserver(Context.Sender, out var virtualAddressBalance), "Sender is an observer.");
             var regimentCount = input.RegimentAddressList.Count;
-            var actualApplyFee =
-                Math.Max(0, State.ApplyObserverFee.Value.Mul(regimentCount).Sub(virtualAddressBalance));
-            TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, actualApplyFee);
-            State.ObserverMap[Context.Sender] = true;
+            var totalApplyFee = State.ApplyObserverFee.Value.Mul(regimentCount);
+            TransferTokenToSenderVirtualAddress(State.ObserverMortgageTokenSymbol.Value, totalApplyFee);
             foreach (var regimentAddress in input.RegimentAddressList)
             {
                 Assert(IsRegimentMember(Context.Sender, regimentAddress),
@@ -34,7 +29,6 @@ namespace AElf.Contracts.Report
 
         public override Empty QuitObserver(QuitObserverInput input)
         {
-            Assert(State.ObserverMap[Context.Sender], "Sender is not an observer.");
             var currentLockingAmount = GetSenderVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value);
             var shouldReturnAmount = State.ApplyObserverFee.Value.Mul(input.RegimentAddressList.Count);
             if (currentLockingAmount > 0)
@@ -49,8 +43,6 @@ namespace AElf.Contracts.Report
                 State.ObserverMortgagedTokensMap[Context.Sender] = 0;
             }
 
-            State.ObserverMap[Context.Sender] = false;
-            
             foreach (var regimentAssociationAddress in input.RegimentAddressList)
             {
                 var observerList = State.ObserverListMap[regimentAssociationAddress] ?? new ObserverList();

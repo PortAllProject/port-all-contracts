@@ -36,11 +36,6 @@ namespace AElf.Contracts.Report
         public MappedState<Address, bool> RegisterWhiteListMap { get; set; }
 
         /// <summary>
-        /// Observer Address -> Is Observer Or Not
-        /// </summary>
-        public MappedState<Address, bool> ObserverMap { get; set; }
-
-        /// <summary>
         /// Regiment Address -> Observer List
         /// </summary>
         public MappedState<Address, ObserverList> ObserverListMap { get; set; }

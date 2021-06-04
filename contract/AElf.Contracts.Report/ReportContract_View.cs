@@ -106,29 +106,9 @@ namespace AElf.Contracts.Report
             };
         }
 
-        public override BoolValue IsObserver(Address input)
+        public override ObserverList GetObserverList(Address input)
         {
-            return new BoolValue {Value = IsValidObserver(input, out _)};
-        }
-
-        private bool IsValidObserver(Address address, out long virtualAddressBalance)
-        {
-            var isObserverInMap = State.ObserverMap[address];
-            virtualAddressBalance = GetVirtualAddressBalance(State.ObserverMortgageTokenSymbol.Value, address);
-            var isObserverInToken = virtualAddressBalance >= State.ApplyObserverFee.Value;
-            return isObserverInMap & isObserverInToken;
-        }
-
-        private List<Address> GetRegimentObserverMemberList(Address regimentAssociationAddress)
-        {
-            if (regimentAssociationAddress == State.ParliamentContract.Value)
-            {
-                return State.ConsensusContract.GetCurrentMinerList.Call(new Empty()).Pubkeys
-                    .Select(p => Address.FromPublicKey(p.ToByteArray())).ToList();
-            }
-
-            return State.OracleContract.GetRegimentMemberList.Call(regimentAssociationAddress).Value
-                .Where(a => State.ObserverMap[a]).ToList();
+            return State.ObserverListMap[input];
         }
     }
 }

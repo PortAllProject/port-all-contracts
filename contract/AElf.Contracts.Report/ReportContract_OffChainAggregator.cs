@@ -51,12 +51,6 @@ namespace AElf.Contracts.Report
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;
             State.CurrentRoundIdMap[input.Token] = 1;
 
-            State.ObserverListMap[offChainAggregationInfo.RegimentAddress] =
-                new ObserverList
-                {
-                    Value = {GetRegimentObserverMemberList(offChainAggregationInfo.RegimentAddress)}
-                };
-
             Context.Fire(new OffChainAggregationRegistered
             {
                 Token = offChainAggregationInfo.Token,
@@ -192,21 +186,6 @@ namespace AElf.Contracts.Report
             Assert(State.RegisterWhiteListMap[input], $"{input} is not in register white list.");
             State.RegisterWhiteListMap[input] = false;
             return new Empty();
-        }
-
-        private void AssertObserversQualified(ObserverList observerList)
-        {
-            foreach (var address in observerList.Value)
-            {
-                AssertObserverQualified(address);
-            }
-        }
-
-        private void AssertObserverQualified(Address address)
-        {
-            Assert(
-                State.ObserverMortgagedTokensMap[address] >= State.ApplyObserverFee.Value && State.ObserverMap[address],
-                $"{address} is not an observer candidate or mortgaged token not enough.");
         }
     }
 }
