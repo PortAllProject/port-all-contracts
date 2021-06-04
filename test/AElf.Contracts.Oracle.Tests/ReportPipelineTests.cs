@@ -60,8 +60,8 @@ namespace AElf.Contracts.Oracle
                     {
                         new OffChainQueryInfo
                         {
-                            UrlToQuery = "www.whatever.com",
-                            AttributesToFetch = {"foo"}
+                            Title = "www.whatever.com",
+                            Options = {"foo"}
                         }
                     }
                 },
@@ -74,12 +74,12 @@ namespace AElf.Contracts.Oracle
                 await ReportContractStub.RegisterOffChainAggregation.SendAsync(registerOffChainAggregationInput);
 
             var offChainAggregationInfo = executionResult.Output;
-            offChainAggregationInfo.OffChainQueryInfoList.Value[0].UrlToQuery.ShouldBe(registerOffChainAggregationInput
+            offChainAggregationInfo.OffChainQueryInfoList.Value[0].Title.ShouldBe(registerOffChainAggregationInput
                 .OffChainQueryInfoList.Value[0]
-                .UrlToQuery);
-            offChainAggregationInfo.OffChainQueryInfoList.Value[0].AttributesToFetch[0].ShouldBe(
+                .Title);
+            offChainAggregationInfo.OffChainQueryInfoList.Value[0].Options[0].ShouldBe(
                 registerOffChainAggregationInput
-                    .OffChainQueryInfoList.Value[0].AttributesToFetch[0]);
+                    .OffChainQueryInfoList.Value[0].Options[0]);
             offChainAggregationInfo.Token.ShouldBe(registerOffChainAggregationInput.Token);
             offChainAggregationInfo.ConfigDigest.ToHex()
                 .ShouldBe(registerOffChainAggregationInput.ConfigDigest.ToHex());
@@ -170,18 +170,18 @@ namespace AElf.Contracts.Oracle
                     {
                         new OffChainQueryInfo
                         {
-                            UrlToQuery = "www.whatever.com",
-                            AttributesToFetch = {"foo"}
+                            Title = "www.whatever.com",
+                            Options = {"foo"}
                         },
                         new OffChainQueryInfo
                         {
-                            UrlToQuery = "www.youbiteme.com",
-                            AttributesToFetch = {"bar"}
+                            Title = "www.youbiteme.com",
+                            Options = {"bar"}
                         },
                         new OffChainQueryInfo
                         {
-                            UrlToQuery = "www.helloworld.com",
-                            AttributesToFetch = {"yes"}
+                            Title = "www.helloworld.com",
+                            Options = {"yes"}
                         },
                     }
                 },
@@ -192,12 +192,12 @@ namespace AElf.Contracts.Oracle
             };
             var offChainAggregationInfo =
                 (await ReportContractStub.RegisterOffChainAggregation.SendAsync(addOffChainAggregatorInput)).Output;
-            offChainAggregationInfo.OffChainQueryInfoList.Value[2].UrlToQuery.ShouldBe(addOffChainAggregatorInput
+            offChainAggregationInfo.OffChainQueryInfoList.Value[2].Title.ShouldBe(addOffChainAggregatorInput
                 .OffChainQueryInfoList.Value[2]
-                .UrlToQuery);
-            offChainAggregationInfo.OffChainQueryInfoList.Value[2].AttributesToFetch[0].ShouldBe(
+                .Title);
+            offChainAggregationInfo.OffChainQueryInfoList.Value[2].Options[0].ShouldBe(
                 addOffChainAggregatorInput
-                    .OffChainQueryInfoList.Value[2].AttributesToFetch[0]);
+                    .OffChainQueryInfoList.Value[2].Options[0]);
 
             await TokenContractStub.Issue.SendAsync(new IssueInput
             {

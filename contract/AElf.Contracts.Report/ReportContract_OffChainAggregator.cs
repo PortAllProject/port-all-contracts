@@ -89,8 +89,8 @@ namespace AElf.Contracts.Report
                 aggregatorContractAddress = queryTask.AggregatorContractAddress;
                 queryInfoList.Value.Add(new OffChainQueryInfo
                 {
-                    UrlToQuery = queryTask.QueryInfo.UrlToQuery,
-                    AttributesToFetch = {queryTask.QueryInfo.AttributesToFetch}
+                    Title = queryTask.QueryInfo.Title,
+                    Options = {queryTask.QueryInfo.Options}
                 });
                 aggregatedThreshold = Math.Max(aggregatedThreshold, queryTask.AggregateThreshold);
                 aggregateOptions.Add(queryTask.AggregateOption);
@@ -148,7 +148,7 @@ namespace AElf.Contracts.Report
             offChainAggregationInfo.OffChainQueryInfoList.Value[input.RemoveNodeIndex] =
                 new OffChainQueryInfo
                 {
-                    UrlToQuery = "invalid"
+                    Title = "invalid"
                 };
             offChainAggregationInfo.RoundIds[input.RemoveNodeIndex] = -1;
             State.OffChainAggregationInfoMap[input.Token] = offChainAggregationInfo;

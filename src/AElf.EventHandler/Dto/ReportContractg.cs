@@ -165,7 +165,7 @@ namespace AElf.Contracts.Report {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.SignatureMap), global::AElf.Contracts.Report.SignatureMap.Parser, new[]{ "Value" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainAggregationInfo), global::AElf.Contracts.Report.OffChainAggregationInfo.Parser, new[]{ "Token", "OffChainQueryInfoList", "ObserverAssociationAddress", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "RoundIds", "ChainType", "Register" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.RegisterOffChainAggregationInput), global::AElf.Contracts.Report.RegisterOffChainAggregationInput.Parser, new[]{ "ObserverList", "OffChainQueryInfoList", "Token", "ConfigDigest", "AggregateThreshold", "AggregatorContractAddress", "ChainType", "Register" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainQueryInfo), global::AElf.Contracts.Report.OffChainQueryInfo.Parser, new[]{ "UrlToQuery", "AttributesToFetch" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.OffChainQueryInfo), global::AElf.Contracts.Report.OffChainQueryInfo.Parser, new[]{ "Title", "Options" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetReportInput), global::AElf.Contracts.Report.GetReportInput.Parser, new[]{ "Token", "RoundId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetMerklePathInput), global::AElf.Contracts.Report.GetMerklePathInput.Parser, new[]{ "Token", "RoundId", "NodeIndex" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Report.GetRawReportInput), global::AElf.Contracts.Report.GetRawReportInput.Parser, new[]{ "Token", "RoundId" }, null, null, null, null),
@@ -3228,8 +3228,8 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public OffChainQueryInfo(OffChainQueryInfo other) : this() {
-      urlToQuery_ = other.urlToQuery_;
-      attributesToFetch_ = other.attributesToFetch_.Clone();
+      Title_ = other.Title_;
+      Options_ = other.Options_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -3239,24 +3239,24 @@ namespace AElf.Contracts.Report {
     }
 
     /// <summary>Field number for the "url_to_query" field.</summary>
-    public const int UrlToQueryFieldNumber = 1;
-    private string urlToQuery_ = "";
+    public const int TitleFieldNumber = 1;
+    private string Title_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UrlToQuery {
-      get { return urlToQuery_; }
+    public string Title {
+      get { return Title_; }
       set {
-        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        Title_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "attributes_to_fetch" field.</summary>
-    public const int AttributesToFetchFieldNumber = 2;
-    private static readonly pb::FieldCodec<string> _repeated_attributesToFetch_codec
+    public const int OptionsFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_Options_codec
         = pb::FieldCodec.ForString(18);
-    private readonly pbc::RepeatedField<string> attributesToFetch_ = new pbc::RepeatedField<string>();
+    private readonly pbc::RepeatedField<string> Options_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> AttributesToFetch {
-      get { return attributesToFetch_; }
+    public pbc::RepeatedField<string> Options {
+      get { return Options_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3272,16 +3272,16 @@ namespace AElf.Contracts.Report {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (UrlToQuery != other.UrlToQuery) return false;
-      if(!attributesToFetch_.Equals(other.attributesToFetch_)) return false;
+      if (Title != other.Title) return false;
+      if(!Options_.Equals(other.Options_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      hash ^= attributesToFetch_.GetHashCode();
+      if (Title.Length != 0) hash ^= Title.GetHashCode();
+      hash ^= Options_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -3295,11 +3295,11 @@ namespace AElf.Contracts.Report {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (UrlToQuery.Length != 0) {
+      if (Title.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(UrlToQuery);
+        output.WriteString(Title);
       }
-      attributesToFetch_.WriteTo(output, _repeated_attributesToFetch_codec);
+      Options_.WriteTo(output, _repeated_Options_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -3308,10 +3308,10 @@ namespace AElf.Contracts.Report {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (UrlToQuery.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
+      if (Title.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Title);
       }
-      size += attributesToFetch_.CalculateSize(_repeated_attributesToFetch_codec);
+      size += Options_.CalculateSize(_repeated_Options_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -3323,10 +3323,10 @@ namespace AElf.Contracts.Report {
       if (other == null) {
         return;
       }
-      if (other.UrlToQuery.Length != 0) {
-        UrlToQuery = other.UrlToQuery;
+      if (other.Title.Length != 0) {
+        Title = other.Title;
       }
-      attributesToFetch_.Add(other.attributesToFetch_);
+      Options_.Add(other.Options_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -3339,11 +3339,11 @@ namespace AElf.Contracts.Report {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            UrlToQuery = input.ReadString();
+            Title = input.ReadString();
             break;
           }
           case 18: {
-            attributesToFetch_.AddEntriesFrom(input, _repeated_attributesToFetch_codec);
+            Options_.AddEntriesFrom(input, _repeated_Options_codec);
             break;
           }
         }

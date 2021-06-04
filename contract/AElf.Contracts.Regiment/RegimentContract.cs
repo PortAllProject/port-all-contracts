@@ -21,7 +21,7 @@ namespace AElf.Contracts.Regiment
 
             State.AssociationContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
-            
+
             return new Empty();
         }
 
@@ -96,7 +96,7 @@ namespace AElf.Contracts.Regiment
             }
             else
             {
-                AddMember(input.RegimentAddress, input.NewMemberAddress, regimentMemberList);
+                AddMember(input.RegimentAddress, input.NewMemberAddress, null, regimentMemberList);
             }
 
             return new Empty();
@@ -109,7 +109,7 @@ namespace AElf.Contracts.Regiment
             var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
             Assert(regimentMemberList.Value.Contains(input.LeaveMemberAddress),
                 $"{input.LeaveMemberAddress} is not a member of this regiment.");
-            DeleteMember(input.RegimentAddress, input.LeaveMemberAddress, regimentMemberList);
+            DeleteMember(input.RegimentAddress, input.LeaveMemberAddress, null, regimentMemberList);
             return new Empty();
         }
 
@@ -125,7 +125,7 @@ namespace AElf.Contracts.Regiment
                 regimentInfo.Admins.Contains(input.OriginSenderAddress) ||
                 regimentInfo.Manager == input.OriginSenderAddress,
                 "Origin sender is not manager or admin of this regiment.");
-            AddMember(input.RegimentAddress, input.NewMemberAddress, regimentMemberList);
+            AddMember(input.RegimentAddress, input.NewMemberAddress, input.OriginSenderAddress, regimentMemberList);
 
             return new Empty();
         }
@@ -141,7 +141,8 @@ namespace AElf.Contracts.Regiment
                 regimentInfo.Admins.Contains(input.OriginSenderAddress) ||
                 regimentInfo.Manager == input.OriginSenderAddress,
                 "Origin sender is not manager or admin of this regiment.");
-            DeleteMember(input.RegimentAddress, input.DeleteMemberAddress, regimentMemberList);
+            DeleteMember(input.RegimentAddress, input.DeleteMemberAddress, input.OriginSenderAddress,
+                regimentMemberList);
 
             return new Empty();
         }
@@ -222,7 +223,7 @@ namespace AElf.Contracts.Regiment
             Assert(Context.Sender == State.Controller.Value, "Sender is not the Controller.");
         }
 
-        private void AddMember(Address regimentAddress, Address newMemberAddress,
+        private void AddMember(Address regimentAddress, Address newMemberAddress, Address operatorAddress,
             RegimentMemberList currentMemberList)
         {
             currentMemberList.Value.Add(newMemberAddress);
@@ -230,11 +231,12 @@ namespace AElf.Contracts.Regiment
             Context.Fire(new NewMemberAdded
             {
                 RegimentAddress = regimentAddress,
-                NewMemberAddress = newMemberAddress
+                NewMemberAddress = newMemberAddress,
+                OperatorAddress = operatorAddress ?? new Address(),
             });
         }
 
-        private void DeleteMember(Address regimentAddress, Address deleteMemberAddress,
+        private void DeleteMember(Address regimentAddress, Address deleteMemberAddress, Address operatorAddress,
             RegimentMemberList currentMemberList)
         {
             currentMemberList.Value.Remove(deleteMemberAddress);
@@ -242,7 +244,8 @@ namespace AElf.Contracts.Regiment
             Context.Fire(new RegimentMemberLeft
             {
                 RegimentAddress = regimentAddress,
-                LeftMemberAddress = deleteMemberAddress
+                LeftMemberAddress = deleteMemberAddress,
+                OperatorAddress = operatorAddress ?? new Address()
             });
         }
     }

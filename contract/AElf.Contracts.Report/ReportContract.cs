@@ -79,10 +79,10 @@ namespace AElf.Contracts.Report
                 // AggregatorContractAddress = null,
                 QueryInfo = new QueryInfo
                 {
-                    UrlToQuery = offChainAggregationInfo.OffChainQueryInfoList.Value[input.NodeIndex].UrlToQuery,
-                    AttributesToFetch =
+                    Title = offChainAggregationInfo.OffChainQueryInfoList.Value[input.NodeIndex].Title,
+                    Options =
                     {
-                        offChainAggregationInfo.OffChainQueryInfoList.Value[input.NodeIndex].AttributesToFetch
+                        offChainAggregationInfo.OffChainQueryInfoList.Value[input.NodeIndex].Options
                     }
                 },
                 DesignatedNodeList = new AddressList
@@ -205,8 +205,8 @@ namespace AElf.Contracts.Report
             {
                 var offChainQueryInfo = new OffChainQueryInfo
                 {
-                    UrlToQuery = plainResult.QueryInfo.UrlToQuery,
-                    AttributesToFetch = {plainResult.QueryInfo.AttributesToFetch}
+                    Title = plainResult.QueryInfo.Title,
+                    Options = {plainResult.QueryInfo.Options}
                 };
                 var nodeIndex = offChainAggregationInfo.OffChainQueryInfoList.Value.IndexOf(offChainQueryInfo);
                 var nodeRoundId = offChainAggregationInfo.RoundIds[nodeIndex];

@@ -288,8 +288,8 @@ message UnlockTokensInput {
 }
 
 message QueryInfo {
-    string url_to_query = 1;
-    repeated string attributes_to_fetch = 2;
+    string title = 1;
+    repeated string options = 2;
 }
 
 // Events

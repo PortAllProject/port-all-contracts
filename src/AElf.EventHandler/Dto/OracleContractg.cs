@@ -151,7 +151,7 @@ namespace AElf.Contracts.Oracle {
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.PlainResult), global::AElf.Contracts.Oracle.PlainResult.Parser, new[]{ "DataRecords", "ObserverAssociationAddress", "QueryInfo", "Token" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.LockTokensInput), global::AElf.Contracts.Oracle.LockTokensInput.Parser, new[]{ "OracleNodeAddress", "LockAmount" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.UnlockTokensInput), global::AElf.Contracts.Oracle.UnlockTokensInput.Parser, new[]{ "OracleNodeAddress", "WithdrawAmount" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInfo), global::AElf.Contracts.Oracle.QueryInfo.Parser, new[]{ "UrlToQuery", "AttributesToFetch" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryInfo), global::AElf.Contracts.Oracle.QueryInfo.Parser, new[]{ "Title", "Options" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCreated), global::AElf.Contracts.Oracle.QueryCreated.Parser, new[]{ "Payment", "CallbackInfo", "AggregatorContractAddress", "DesignatedNodeList", "QueryInfo", "AggregateThreshold", "QuerySender", "QueryId", "Token", "MaximumPermissibleDeviation" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.QueryCancelled), global::AElf.Contracts.Oracle.QueryCancelled.Parser, new[]{ "QueryId" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::AElf.Contracts.Oracle.SufficientCommitmentsCollected), global::AElf.Contracts.Oracle.SufficientCommitmentsCollected.Parser, new[]{ "QueryId" }, null, null, null, null),
@@ -4340,8 +4340,8 @@ namespace AElf.Contracts.Oracle {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public QueryInfo(QueryInfo other) : this() {
-      urlToQuery_ = other.urlToQuery_;
-      attributesToFetch_ = other.attributesToFetch_.Clone();
+      Title_ = other.Title_;
+      Options_ = other.Options_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
@@ -4351,24 +4351,24 @@ namespace AElf.Contracts.Oracle {
     }
 
     /// <summary>Field number for the "url_to_query" field.</summary>
-    public const int UrlToQueryFieldNumber = 1;
-    private string urlToQuery_ = "";
+    public const int TitleFieldNumber = 1;
+    private string Title_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string UrlToQuery {
-      get { return urlToQuery_; }
+    public string Title {
+      get { return Title_; }
       set {
-        urlToQuery_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        Title_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "attributes_to_fetch" field.</summary>
-    public const int AttributesToFetchFieldNumber = 2;
-    private static readonly pb::FieldCodec<string> _repeated_attributesToFetch_codec
+    public const int OptionsFieldNumber = 2;
+    private static readonly pb::FieldCodec<string> _repeated_Options_codec
         = pb::FieldCodec.ForString(18);
-    private readonly pbc::RepeatedField<string> attributesToFetch_ = new pbc::RepeatedField<string>();
+    private readonly pbc::RepeatedField<string> Options_ = new pbc::RepeatedField<string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::RepeatedField<string> AttributesToFetch {
-      get { return attributesToFetch_; }
+    public pbc::RepeatedField<string> Options {
+      get { return Options_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -4384,16 +4384,16 @@ namespace AElf.Contracts.Oracle {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (UrlToQuery != other.UrlToQuery) return false;
-      if(!attributesToFetch_.Equals(other.attributesToFetch_)) return false;
+      if (Title != other.Title) return false;
+      if(!Options_.Equals(other.Options_)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (UrlToQuery.Length != 0) hash ^= UrlToQuery.GetHashCode();
-      hash ^= attributesToFetch_.GetHashCode();
+      if (Title.Length != 0) hash ^= Title.GetHashCode();
+      hash ^= Options_.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -4410,11 +4410,11 @@ namespace AElf.Contracts.Oracle {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (UrlToQuery.Length != 0) {
+      if (Title.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(UrlToQuery);
+        output.WriteString(Title);
       }
-      attributesToFetch_.WriteTo(output, _repeated_attributesToFetch_codec);
+      Options_.WriteTo(output, _repeated_Options_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
       }
@@ -4424,11 +4424,11 @@ namespace AElf.Contracts.Oracle {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (UrlToQuery.Length != 0) {
+      if (Title.Length != 0) {
         output.WriteRawTag(10);
-        output.WriteString(UrlToQuery);
+        output.WriteString(Title);
       }
-      attributesToFetch_.WriteTo(ref output, _repeated_attributesToFetch_codec);
+      Options_.WriteTo(ref output, _repeated_Options_codec);
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
       }
@@ -4438,10 +4438,10 @@ namespace AElf.Contracts.Oracle {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (UrlToQuery.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(UrlToQuery);
+      if (Title.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Title);
       }
-      size += attributesToFetch_.CalculateSize(_repeated_attributesToFetch_codec);
+      size += Options_.CalculateSize(_repeated_Options_codec);
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -4453,10 +4453,10 @@ namespace AElf.Contracts.Oracle {
       if (other == null) {
         return;
       }
-      if (other.UrlToQuery.Length != 0) {
-        UrlToQuery = other.UrlToQuery;
+      if (other.Title.Length != 0) {
+        Title = other.Title;
       }
-      attributesToFetch_.Add(other.attributesToFetch_);
+      Options_.Add(other.Options_);
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
 
@@ -4472,11 +4472,11 @@ namespace AElf.Contracts.Oracle {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
           case 10: {
-            UrlToQuery = input.ReadString();
+            Title = input.ReadString();
             break;
           }
           case 18: {
-            attributesToFetch_.AddEntriesFrom(input, _repeated_attributesToFetch_codec);
+            Options_.AddEntriesFrom(input, _repeated_Options_codec);
             break;
           }
         }
@@ -4494,11 +4494,11 @@ namespace AElf.Contracts.Oracle {
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
           case 10: {
-            UrlToQuery = input.ReadString();
+            Title = input.ReadString();
             break;
           }
           case 18: {
-            attributesToFetch_.AddEntriesFrom(ref input, _repeated_attributesToFetch_codec);
+            Options_.AddEntriesFrom(ref input, _repeated_Options_codec);
             break;
           }
         }

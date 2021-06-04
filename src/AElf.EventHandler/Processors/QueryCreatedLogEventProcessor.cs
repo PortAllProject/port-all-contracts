@@ -43,8 +43,8 @@ namespace AElf.EventHandler
                 _configOptions.EthereumContractAddress == queryToken ||
                 _configOptions.Token == queryToken)
             {
-                var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.UrlToQuery,
-                    queryCreated.QueryInfo.AttributesToFetch.ToList());
+                var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.Title,
+                    queryCreated.QueryInfo.Options.ToList());
                 if (string.IsNullOrEmpty(data))
                 {
                     _logger.LogError($"Failed to response to query {queryCreated.QueryId}.");

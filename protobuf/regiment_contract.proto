@@ -139,10 +139,12 @@ message NewMemberAdded {
     option (aelf.is_event) = true;
     aelf.Address regiment_address = 1;
     aelf.Address new_member_address = 2;
+    aelf.Address operator_address = 3;
 }
 
 message RegimentMemberLeft {
     option (aelf.is_event) = true;
     aelf.Address regiment_address = 1;
     aelf.Address left_member_address = 2;
+    aelf.Address operator_address = 3;
 }

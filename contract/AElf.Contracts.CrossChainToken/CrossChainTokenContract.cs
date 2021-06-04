@@ -108,9 +108,9 @@ namespace AElf.Contracts.CrossChainToken
                 AggregatorContractAddress = Context.Self,
                 QueryInfo = new QueryInfo
                 {
-                    UrlToQuery = GetQueryUrl(input.EthereumTransactionId, input.FromChainField),
+                    Title = GetQueryUrl(input.EthereumTransactionId, input.FromChainField),
                     // TODO: Fill
-                    AttributesToFetch = { }
+                    Options = { }
                 },
                 CallbackInfo = new CallbackInfo
                 {
