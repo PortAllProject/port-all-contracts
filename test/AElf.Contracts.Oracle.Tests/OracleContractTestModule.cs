@@ -4,6 +4,7 @@ using AElf.Boilerplate.TestBase;
 using AElf.Contracts.Bridge;
 using AElf.Contracts.NumericAggregator;
 using AElf.Contracts.OracleUser;
+using AElf.Contracts.Regiment;
 using AElf.Contracts.Report;
 using AElf.ContractTestBase;
 using AElf.Kernel.SmartContract.Application;
@@ -49,6 +50,10 @@ namespace AElf.Contracts.Oracle
                 {
                     new BridgeContractInitializationProvider().ContractCodeName,
                     File.ReadAllBytes(typeof(BridgeContract).Assembly.Location)
+                },
+                {
+                    new RegimentContractInitializationProvider().ContractCodeName,
+                    File.ReadAllBytes(typeof(RegimentContract).Assembly.Location)
                 }
             };
             contractCodeProvider.Codes = contractCodes;

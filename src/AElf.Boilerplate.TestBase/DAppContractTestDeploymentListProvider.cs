@@ -24,6 +24,7 @@ namespace AElf.Boilerplate.TestBase
             list.Add(OracleUserSmartContractAddressNameProvider.Name);
             list.Add(NumericAggregatorSmartContractAddressNameProvider.Name);
             list.Add(ReportSmartContractAddressNameProvider.Name);
+            list.Add(RegimentSmartContractAddressNameProvider.Name);
             return list;
         }
     }

@@ -61,6 +61,9 @@
     <ContractStub Include="..\..\protobuf\integer_aggregator_contract.proto">
       <Link>Protobuf\Proto\integer_aggregator_contract.proto</Link>
     </ContractStub>
+    <ContractStub Include="..\..\protobuf\regiment_contract.proto">
+      <Link>Protobuf\Proto\regiment_contract.proto</Link>
+    </ContractStub>
     <ContractStub Include="..\..\protobuf\acs13.proto">
       <Link>Protobuf\Proto\acs13.proto</Link>
     </ContractStub>
@@ -71,6 +74,7 @@
     <ProjectReference Include="..\..\contract\AElf.Contracts.NumericAggregator\AElf.Contracts.NumericAggregator.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.OracleUser\AElf.Contracts.OracleUser.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Oracle\AElf.Contracts.Oracle.csproj" />
+    <ProjectReference Include="..\..\contract\AElf.Contracts.Regiment\AElf.Contracts.Regiment.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Report\AElf.Contracts.Report.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Bridge\AElf.Contracts.Bridge.csproj" />
     <ProjectReference Include="..\..\src\AElf.Boilerplate.TestBase\AElf.Boilerplate.TestBase.csproj" />

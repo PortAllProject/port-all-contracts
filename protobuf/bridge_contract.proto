@@ -149,8 +149,7 @@ message UnApproved {
     int64 amount = 4;
 }
 
-message Burned
-{
+message Burned {
     option (aelf.is_event) = true;
     aelf.Address burner = 1 [(aelf.is_indexed) = true];
     string symbol = 2 [(aelf.is_indexed) = true];

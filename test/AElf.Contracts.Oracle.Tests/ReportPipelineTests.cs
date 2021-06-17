@@ -1,17 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AElf.Contracts.IntegerAggregator;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Report;
 using AElf.ContractTestKit;
 using AElf.Types;
-using Google.Protobuf;
-using Google.Protobuf.Collections;
-using Google.Protobuf.WellKnownTypes;
 using Shouldly;
 using Xunit;
 using Account = AElf.ContractTestBase.ContractTestKit.Account;
@@ -35,12 +29,13 @@ namespace AElf.Contracts.Oracle
             .Select(a => GetTester<ReportContractContainer.ReportContractStub>(ReportContractAddress, a.KeyPair))
             .ToList();
 
-        private Address CreateRegiment()
+        private async Task InitializeRegimentContractAsync()
         {
-            throw new NotImplementedException();
+            await RegimentContractStub.Initialize.SendAsync(new Regiment.InitializeInput
+            {
+                Controller = DAppContractAddress
+            });
         }
-
-        private Address regimentAddress;
 
         [Fact]
         internal async Task<OffChainAggregationInfo> AddOffChainAggregationInfoTest()
@@ -48,12 +43,12 @@ namespace AElf.Contracts.Oracle
             await InitializeOracleContractAsync();
             await ChangeTokenIssuerToDefaultSenderAsync();
             await InitializeReportContractAsync();
+            await InitializeRegimentContractAsync();
             await ApplyObserversAsync();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
-            regimentAddress = CreateRegiment();
             var registerOffChainAggregationInput = new RegisterOffChainAggregationInput
             {
-                RegimentAddress = regimentAddress,
+                RegimentAddress = ParliamentContractAddress,
                 OffChainQueryInfoList = new OffChainQueryInfoList
                 {
                     Value =
@@ -163,7 +158,7 @@ namespace AElf.Contracts.Oracle
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var addOffChainAggregatorInput = new RegisterOffChainAggregationInput
             {
-                RegimentAddress = regimentAddress,
+                RegimentAddress = ParliamentContractAddress,
                 OffChainQueryInfoList = new OffChainQueryInfoList
                 {
                     Value =
@@ -323,7 +318,7 @@ namespace AElf.Contracts.Oracle
             {
                 await observerStub.ApplyObserver.SendAsync(new ApplyObserverInput
                 {
-                    RegimentAddressList = {regimentAddress}
+                    RegimentAddressList = {ParliamentContractAddress}
                 });
             }
         }

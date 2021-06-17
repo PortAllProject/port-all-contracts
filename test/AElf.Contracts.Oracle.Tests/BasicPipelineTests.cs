@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -7,8 +6,6 @@ using AElf.Contracts.MultiToken;
 using AElf.Contracts.OracleUser;
 using AElf.ContractTestKit;
 using AElf.Types;
-using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
 using Shouldly;
 using Xunit;
 

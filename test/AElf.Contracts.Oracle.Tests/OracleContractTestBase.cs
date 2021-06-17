@@ -8,6 +8,7 @@ using AElf.Contracts.MultiToken;
 using AElf.Contracts.Parliament;
 using AElf.Contracts.Report;
 using AElf.Contracts.OracleUser;
+using AElf.Contracts.Regiment;
 using AElf.ContractTestKit;
 using AElf.Cryptography.ECDSA;
 using AElf.Standards.ACS3;
@@ -26,7 +27,14 @@ namespace AElf.Contracts.Oracle
         internal AssociationContractContainer.AssociationContractStub AssociationContractStub { get; set; }
         internal OracleUserContractContainer.OracleUserContractStub OracleUserContractStub { get; set; }
         internal ReportContractContainer.ReportContractStub ReportContractStub { get; set; }
-        internal IntegerAggregatorContractContainer.IntegerAggregatorContractStub IntegerAggregatorContractStub { get; set; }
+
+        internal IntegerAggregatorContractContainer.IntegerAggregatorContractStub IntegerAggregatorContractStub
+        {
+            get;
+            set;
+        }
+
+        internal RegimentContractContainer.RegimentContractStub RegimentContractStub { get; set; }
 
         protected Address OracleUserContractAddress =>
             SystemContractAddresses[OracleUserSmartContractAddressNameProvider.Name];
@@ -36,6 +44,9 @@ namespace AElf.Contracts.Oracle
 
         protected Address IntegerAggregatorContractAddress =>
             SystemContractAddresses[NumericAggregatorSmartContractAddressNameProvider.Name];
+
+        protected Address RegimentContractAddress =>
+            SystemContractAddresses[RegimentSmartContractAddressNameProvider.Name];
 
         protected OracleContractTestBase()
         {
@@ -48,6 +59,7 @@ namespace AElf.Contracts.Oracle
             AssociationContractStub = GetAssociationContractStub(keyPair);
             ReportContractStub = GetReportContractStub(keyPair);
             IntegerAggregatorContractStub = GetIntegerAggregatorContractStub(keyPair);
+            RegimentContractStub = GetRegimentContractStub(keyPair);
             OracleNodes = new List<OracleContractContainer.OracleContractStub>();
         }
 
@@ -94,6 +106,13 @@ namespace AElf.Contracts.Oracle
                 senderKeyPair);
         }
 
+        internal RegimentContractContainer.RegimentContractStub GetRegimentContractStub(
+            ECKeyPair senderKeyPair)
+        {
+            return GetTester<RegimentContractContainer.RegimentContractStub>(
+                RegimentContractAddress, senderKeyPair);
+        }
+
         protected IEnumerable<Account> GetNodes(int count)
         {
             return SampleAccount.Accounts.Skip(1).Take(count).ToList();
@@ -104,7 +123,7 @@ namespace AElf.Contracts.Oracle
             return await ParliamentContractStub.GetDefaultOrganizationAddress.CallAsync(new Empty());
         }
 
-        internal async Task DefaultParliamentProposeAndRelease(CreateProposalInput proposal)
+        internal async Task ParliamentProposeAndRelease(CreateProposalInput proposal)
         {
             var ret = await ParliamentContractStub.CreateProposal.SendAsync(proposal);
             var proposalId = Hash.Parser.ParseFrom(ret.TransactionResult.ReturnValue);
