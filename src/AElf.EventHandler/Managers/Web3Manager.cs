@@ -1,6 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
@@ -30,9 +28,8 @@ namespace AElf.EventHandler
             await setValueFunction.SendTransactionAsync(_senderAddress, gas, null, null, report, rs, ss, rawVs);
         }
 
-        public async Task<TransactionReceipt> TransmitDataOnEthereumWithReceipt(string contractAddress, byte[] report, byte[][] rs,
-            byte[][] ss,
-            byte[] rawVs)
+        public async Task<TransactionReceipt> TransmitDataOnEthereumWithReceipt(string contractAddress, byte[] report,
+            byte[][] rs, byte[][] ss, byte[] rawVs)
         {
             var contract = _web3.Eth.GetContract(_abiCode, contractAddress);
             var setValueFunction = contract.GetFunction(MethodName);
@@ -41,6 +38,11 @@ namespace AElf.EventHandler
                 await setValueFunction.SendTransactionAndWaitForReceiptAsync(_senderAddress, gas, null, null, report,
                     rs, ss, rawVs);
             return transactionResult;
+        }
+
+        public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)
+        {
+            return await _web3.Eth.Transactions.GetTransactionReceipt.SendRequestAsync(transactionHash);
         }
     }
 }

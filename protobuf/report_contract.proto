@@ -94,7 +94,7 @@ service ReportContract {
     rpc IsInRegisterWhiteList (aelf.Address) returns (google.protobuf.BoolValue) {
         option (aelf.is_view) = true;
     }
-    rpc IsObserver (aelf.Address) returns (google.protobuf.BoolValue) {
+    rpc IsObserver (IsObserverInput) returns (google.protobuf.BoolValue) {
         option (aelf.is_view) = true;
     }
     rpc GetMortgagedTokenAmount (aelf.Address) returns (google.protobuf.Int64Value) {
@@ -265,6 +265,11 @@ message ApplyObserverInput {
 
 message QuitObserverInput {
     repeated aelf.Address regiment_address_list = 1;
+}
+
+message IsObserverInput {
+    aelf.Address regiment_address = 1;
+    aelf.Address oracle_node_address = 2;
 }
 
 // Events

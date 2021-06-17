@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -109,6 +107,14 @@ namespace AElf.Contracts.Report
         public override ObserverList GetObserverList(Address input)
         {
             return State.ObserverListMap[input];
+        }
+
+        public override BoolValue IsObserver(IsObserverInput input)
+        {
+            return new BoolValue
+            {
+                Value = State.ObserverListMap[input.RegimentAddress].Value.Contains(input.OracleNodeAddress)
+            };
         }
     }
 }

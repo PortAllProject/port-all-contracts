@@ -24,6 +24,7 @@ namespace AElf.Contracts.Oracle
             context.Services
                 .AddSingleton<IContractInitializationProvider, NumericAggregatorContractInitializationProvider>();
             context.Services.AddSingleton<IContractInitializationProvider, ReportContractInitializationProvider>();
+            context.Services.AddSingleton<IContractInitializationProvider, RegimentContractInitializationProvider>();
         }
 
         public override void OnPreApplicationInitialization(ApplicationInitializationContext context)

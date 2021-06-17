@@ -17,7 +17,8 @@ namespace AElf.Contracts.Oracle
                 DefaultRevealThreshold = DefaultRevealThreshold,
                 DefaultAggregateThreshold = DefaultAggregateThreshold,
                 DefaultExpirationSeconds = DefaultExpirationSeconds,
-                IsChargeFee = true
+                IsChargeFee = true,
+                RegimentContractAddress = RegimentContractAddress
             });
         }
 
