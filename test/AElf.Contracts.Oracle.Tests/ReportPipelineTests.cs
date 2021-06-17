@@ -3,8 +3,10 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
+using AElf.Contracts.Regiment;
 using AElf.Contracts.Report;
 using AElf.ContractTestKit;
+using AElf.CSharp.Core.Extension;
 using AElf.Types;
 using Shouldly;
 using Xunit;
@@ -28,13 +30,23 @@ namespace AElf.Contracts.Oracle
         private List<ReportContractContainer.ReportContractStub> ObserverStubs => ObserverAccounts
             .Select(a => GetTester<ReportContractContainer.ReportContractStub>(ReportContractAddress, a.KeyPair))
             .ToList();
+        
+        private List<RegimentContractContainer.RegimentContractStub> ObserverRegimentStubs => ObserverAccounts
+            .Select(a => GetTester<RegimentContractContainer.RegimentContractStub>(RegimentContractAddress, a.KeyPair))
+            .ToList();
 
-        private async Task InitializeRegimentContractAsync()
+        private Address _regimentAddress;
+
+        private async Task CreateRegiment()
         {
-            await RegimentContractStub.Initialize.SendAsync(new Regiment.InitializeInput
+            var executionResult = await ObserverOracleStubs[0].CreateRegiment.SendAsync(new CreateRegimentInput
             {
-                Controller = DAppContractAddress
+                InitialMemberList = {ObserverAddresses}
             });
+            var logEvent = executionResult.TransactionResult.Logs.Single(l => l.Name == nameof(RegimentCreated));
+            var regimentCreated = new RegimentCreated();
+            regimentCreated.MergeFrom(logEvent);
+            _regimentAddress = regimentCreated.RegimentAddress;
         }
 
         [Fact]
@@ -43,12 +55,12 @@ namespace AElf.Contracts.Oracle
             await InitializeOracleContractAsync();
             await ChangeTokenIssuerToDefaultSenderAsync();
             await InitializeReportContractAsync();
-            await InitializeRegimentContractAsync();
+            await CreateRegiment();
             await ApplyObserversAsync();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var registerOffChainAggregationInput = new RegisterOffChainAggregationInput
             {
-                RegimentAddress = ParliamentContractAddress,
+                RegimentAddress = _regimentAddress,
                 OffChainQueryInfoList = new OffChainQueryInfoList
                 {
                     Value =
@@ -79,12 +91,6 @@ namespace AElf.Contracts.Oracle
             offChainAggregationInfo.ConfigDigest.ToHex()
                 .ShouldBe(registerOffChainAggregationInput.ConfigDigest.ToHex());
             offChainAggregationInfo.AggregateThreshold.ShouldBe(registerOffChainAggregationInput.AggregateThreshold);
-            // Association created.
-            var organization =
-                await AssociationContractStub.GetOrganization.CallAsync(offChainAggregationInfo
-                    .RegimentAddress);
-            organization.OrganizationMemberList.OrganizationMembers.Count.ShouldBe(5);
-            organization.ProposerWhiteList.Proposers.First().ShouldBe(ReportContractAddress);
 
             return offChainAggregationInfo;
         }
@@ -154,11 +160,12 @@ namespace AElf.Contracts.Oracle
             await InitializeOracleContractAsync();
             await ChangeTokenIssuerToDefaultSenderAsync();
             await InitializeReportContractAsync();
+            await CreateRegiment();
             await ApplyObserversAsync();
             var digestStr = "0xf6f3ed664fd0e7be332f035ec351acf1";
             var addOffChainAggregatorInput = new RegisterOffChainAggregationInput
             {
-                RegimentAddress = ParliamentContractAddress,
+                RegimentAddress = _regimentAddress,
                 OffChainQueryInfoList = new OffChainQueryInfoList
                 {
                     Value =
@@ -286,7 +293,8 @@ namespace AElf.Contracts.Oracle
             {
                 ApplyObserverFee = DefaultApplyObserverFee,
                 ReportFee = 1_00000000,
-                OracleContractAddress = DAppContractAddress
+                OracleContractAddress = DAppContractAddress,
+                RegimentContractAddress = RegimentContractAddress
             };
             input.InitialRegisterWhiteList.Add(SampleAccount.Accounts.First().Address);
             await ReportContractStub.Initialize.SendAsync(input);
@@ -318,7 +326,7 @@ namespace AElf.Contracts.Oracle
             {
                 await observerStub.ApplyObserver.SendAsync(new ApplyObserverInput
                 {
-                    RegimentAddressList = {ParliamentContractAddress}
+                    RegimentAddressList = {_regimentAddress}
                 });
             }
         }
