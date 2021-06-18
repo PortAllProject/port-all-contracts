@@ -1,8 +1,6 @@
-using AElf.Contracts.Association;
 using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
-using AElf.Standards.ACS3;
 using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Oracle

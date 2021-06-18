@@ -548,8 +548,6 @@ namespace AElf.Contracts.Oracle
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
             State.ParliamentContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
-            State.AssociationContract.Value =
-                Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
             State.ConsensusContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ConsensusContractSystemName);
             State.ProfitContract.Value =

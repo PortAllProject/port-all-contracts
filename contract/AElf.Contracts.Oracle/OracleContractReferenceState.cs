@@ -1,4 +1,3 @@
-using AElf.Contracts.Association;
 using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Parliament;
@@ -10,8 +9,6 @@ namespace AElf.Contracts.Oracle
 {
     public partial class OracleContractState
     {
-        internal AssociationContractContainer.AssociationContractReferenceState AssociationContract { get; set; }
-
         internal TokenContractContainer.TokenContractReferenceState TokenContract { get; set; }
 
         internal ParliamentContractContainer.ParliamentContractReferenceState ParliamentContract { get; set; }
