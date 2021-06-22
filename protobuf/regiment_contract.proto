@@ -67,11 +67,13 @@ message CreateRegimentInput {
 message JoinRegimentInput {
     aelf.Address regiment_address = 1;
     aelf.Address new_member_address = 2;
+    aelf.Address origin_sender_address = 3;
 }
 
 message LeaveRegimentInput {
     aelf.Address regiment_address = 1;
     aelf.Address leave_member_address = 2;
+    aelf.Address origin_sender_address = 3;
 }
 
 message AddRegimentMemberInput {

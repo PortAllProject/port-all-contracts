@@ -25,17 +25,20 @@ namespace AElf.Contracts.Oracle
             State.RegimentContract.JoinRegiment.Send(new Regiment.JoinRegimentInput
             {
                 RegimentAddress = input.RegimentAddress,
-                NewMemberAddress = input.NewMemberAddress
+                NewMemberAddress = input.NewMemberAddress,
+                OriginSenderAddress = Context.Sender
             });
             return new Empty();
         }
 
         public override Empty LeaveRegiment(LeaveRegimentInput input)
         {
+            Assert(input.LeaveMemberAddress == Context.Sender, "No permission.");
             State.RegimentContract.LeaveRegiment.Send(new Regiment.LeaveRegimentInput
             {
                 RegimentAddress = input.RegimentAddress,
-                LeaveMemberAddress = input.LeaveMemberAddress
+                LeaveMemberAddress = input.LeaveMemberAddress,
+                OriginSenderAddress = Context.Sender
             });
             return new Empty();
         }

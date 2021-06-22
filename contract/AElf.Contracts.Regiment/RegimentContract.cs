@@ -13,7 +13,7 @@ namespace AElf.Contracts.Regiment
             Assert(!State.IsInitialized.Value, "Already initialized.");
             State.IsInitialized.Value = true;
 
-            State.Controller.Value = input.Controller;
+            State.Controller.Value = input.Controller ?? Context.Sender;
             State.MemberJoinLimit.Value = input.MemberJoinLimit == 0 ? DefaultMemberJoinLimit : input.MemberJoinLimit;
             State.RegimentLimit.Value = input.RegimentLimit == 0 ? DefaultRegimentLimit : input.RegimentLimit;
             State.MaximumAdminsCount.Value =
@@ -85,7 +85,7 @@ namespace AElf.Contracts.Regiment
             var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
             var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
             Assert(regimentMemberList.Value.Count <= State.RegimentLimit.Value,
-                $"Regiment member reached ths limit {State.RegimentLimit.Value}.");
+                $"Regiment member reached the limit {State.RegimentLimit.Value}.");
             if (regimentInfo.IsApproveToJoin || regimentMemberList.Value.Count > State.MemberJoinLimit.Value)
             {
                 Context.Fire(new NewMemberApplied
@@ -107,6 +107,8 @@ namespace AElf.Contracts.Regiment
             AssertSenderIsController();
 
             var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
+            // Just check again.
+            Assert(input.LeaveMemberAddress == input.OriginSenderAddress, "No permission.");
             Assert(regimentMemberList.Value.Contains(input.LeaveMemberAddress),
                 $"{input.LeaveMemberAddress} is not a member of this regiment.");
             DeleteMember(input.RegimentAddress, input.LeaveMemberAddress, null, regimentMemberList);
@@ -120,7 +122,7 @@ namespace AElf.Contracts.Regiment
             var regimentInfo = State.RegimentInfoMap[input.RegimentAddress];
             var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
             Assert(regimentMemberList.Value.Count <= State.RegimentLimit.Value,
-                $"Regiment member reached ths limit {State.RegimentLimit.Value}.");
+                $"Regiment member reached the limit {State.RegimentLimit.Value}.");
             Assert(
                 regimentInfo.Admins.Contains(input.OriginSenderAddress) ||
                 regimentInfo.Manager == input.OriginSenderAddress,
