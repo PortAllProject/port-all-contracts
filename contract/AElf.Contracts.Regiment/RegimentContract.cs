@@ -228,6 +228,8 @@ namespace AElf.Contracts.Regiment
         private void AddMember(Address regimentAddress, Address newMemberAddress, Address operatorAddress,
             RegimentMemberList currentMemberList)
         {
+            Assert(!currentMemberList.Value.Contains(newMemberAddress),
+                $"Member {newMemberAddress} already exist in regiment {regimentAddress}.");
             currentMemberList.Value.Add(newMemberAddress);
             State.RegimentMemberListMap[regimentAddress] = currentMemberList;
             Context.Fire(new NewMemberAdded
