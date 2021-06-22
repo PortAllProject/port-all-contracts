@@ -86,7 +86,7 @@ namespace AElf.Contracts.Regiment
             var regimentMemberList = State.RegimentMemberListMap[input.RegimentAddress];
             Assert(regimentMemberList.Value.Count <= State.RegimentLimit.Value,
                 $"Regiment member reached the limit {State.RegimentLimit.Value}.");
-            if (regimentInfo.IsApproveToJoin || regimentMemberList.Value.Count > State.MemberJoinLimit.Value)
+            if (regimentInfo.IsApproveToJoin || regimentMemberList.Value.Count >= State.MemberJoinLimit.Value)
             {
                 Context.Fire(new NewMemberApplied
                 {
