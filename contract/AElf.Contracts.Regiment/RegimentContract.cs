@@ -212,7 +212,7 @@ namespace AElf.Contracts.Regiment
             {
                 if (regimentInfo.Admins.Contains(admin))
                 {
-                    regimentInfo.Admins.Add(admin);
+                    regimentInfo.Admins.Remove(admin);
                 }
             }
 
