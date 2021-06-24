@@ -40,6 +40,10 @@ namespace AElf.EventHandler
 
         public Transaction SignTransaction(Transaction tx)
         {
+            if (!IsKeyReady())
+            {
+                throw new InvalidOperationException("Key not ready.");
+            }
             var txData = tx.GetHash().ToByteArray();
             tx.Signature = GetSignature(txData);
             return tx;
