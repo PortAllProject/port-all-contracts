@@ -14,10 +14,11 @@ namespace AElf.Contracts.Regiment
             State.IsInitialized.Value = true;
 
             State.Controller.Value = input.Controller ?? Context.Sender;
-            State.MemberJoinLimit.Value = input.MemberJoinLimit == 0 ? DefaultMemberJoinLimit : input.MemberJoinLimit;
-            State.RegimentLimit.Value = input.RegimentLimit == 0 ? DefaultRegimentLimit : input.RegimentLimit;
+            State.MemberJoinLimit.Value = input.MemberJoinLimit <= 0 ? DefaultMemberJoinLimit : input.MemberJoinLimit;
+            State.RegimentLimit.Value = input.RegimentLimit <= 0 ? DefaultRegimentLimit : input.RegimentLimit;
             State.MaximumAdminsCount.Value =
-                input.MaximumAdminsCount == 0 ? DefaultMaximumAdminsCount : input.MaximumAdminsCount;
+                input.MaximumAdminsCount <= 0 ? DefaultMaximumAdminsCount : input.MaximumAdminsCount;
+            Assert(State.MemberJoinLimit.Value <= State.RegimentLimit.Value, "Incorrect MemberJoinLimit.");
 
             State.AssociationContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.AssociationContractSystemName);
@@ -56,6 +57,7 @@ namespace AElf.Contracts.Regiment
             State.AssociationContract.CreateOrganization.Send(createOrganizationInput);
             var regimentAssociationAddress =
                 State.AssociationContract.CalculateOrganizationAddress.Call(createOrganizationInput);
+            Assert(State.RegimentInfoMap[regimentAssociationAddress] == null, "Regiment already exists.");
 
             var regimentInfo = new RegimentInfo
             {
@@ -162,10 +164,12 @@ namespace AElf.Contracts.Regiment
             AssertSenderIsController();
 
             State.MemberJoinLimit.Value =
-                input.MemberJoinLimit == 0 ? State.MemberJoinLimit.Value : input.MemberJoinLimit;
-            State.RegimentLimit.Value = input.RegimentLimit == 0 ? State.RegimentLimit.Value : input.RegimentLimit;
+                input.MemberJoinLimit <= 0 ? State.MemberJoinLimit.Value : input.MemberJoinLimit;
+            State.RegimentLimit.Value = input.RegimentLimit <= 0 ? State.RegimentLimit.Value : input.RegimentLimit;
             State.MaximumAdminsCount.Value =
-                input.MaximumAdminsCount == 0 ? State.MaximumAdminsCount.Value : input.MaximumAdminsCount;
+                input.MaximumAdminsCount <= 0 ? State.MaximumAdminsCount.Value : input.MaximumAdminsCount;
+            Assert(State.MemberJoinLimit.Value <= State.RegimentLimit.Value, "Incorrect MemberJoinLimit.");
+
             return new Empty();
         }
 
@@ -189,10 +193,8 @@ namespace AElf.Contracts.Regiment
             Assert(regimentInfo.Manager == input.OriginSenderAddress, "No permission.");
             foreach (var admin in input.NewAdmins)
             {
-                if (!regimentInfo.Admins.Contains(admin))
-                {
-                    regimentInfo.Admins.Add(admin);
-                }
+                Assert(!regimentInfo.Admins.Contains(admin), $"{admin} is already an admin.");
+                regimentInfo.Admins.Add(admin);
             }
 
             Assert(input.NewAdmins.Count <= State.MaximumAdminsCount.Value,
@@ -210,10 +212,8 @@ namespace AElf.Contracts.Regiment
             Assert(regimentInfo.Manager == input.OriginSenderAddress, "No permission.");
             foreach (var admin in input.DeleteAdmins)
             {
-                if (regimentInfo.Admins.Contains(admin))
-                {
-                    regimentInfo.Admins.Remove(admin);
-                }
+                Assert(regimentInfo.Admins.Contains(admin), $"{admin} is not an admin.");
+                regimentInfo.Admins.Remove(admin);
             }
 
             State.RegimentInfoMap[input.RegimentAddress] = regimentInfo;
@@ -243,6 +243,8 @@ namespace AElf.Contracts.Regiment
         private void DeleteMember(Address regimentAddress, Address deleteMemberAddress, Address operatorAddress,
             RegimentMemberList currentMemberList)
         {
+            Assert(currentMemberList.Value.Contains(deleteMemberAddress),
+                $"Member {deleteMemberAddress} not in regiment {regimentAddress}");
             currentMemberList.Value.Remove(deleteMemberAddress);
             State.RegimentMemberListMap[regimentAddress] = currentMemberList;
             Context.Fire(new RegimentMemberLeft
