@@ -61,7 +61,7 @@ namespace AElf.Contracts.Regiment
 
             var regimentInfo = new RegimentInfo
             {
-                Manager = Context.Sender,
+                Manager = input.Manager,
                 CreateTime = Context.CurrentBlockTime,
                 IsApproveToJoin = input.IsApproveToJoin
             };
