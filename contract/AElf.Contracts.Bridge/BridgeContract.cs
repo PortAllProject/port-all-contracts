@@ -8,16 +8,16 @@ namespace AElf.Contracts.Bridge
     {
         public override Empty Initialize(InitializeInput input)
         {
+            Assert(State.MerkleTreeRecorderContract.Value == null, "Already initialized.");
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
             State.OracleContract.Value = input.OracleContractAddress;
+            State.MerkleTreeRecorderContract.Value = input.MerkleTreeRecorderAddress;
             return new Empty();
         }
 
         public override Empty CreateBridge(CreateBridgeInput input)
         {
-            // Need to pay.
-
             var bridgeTokenInfo = input.OriginTokenInfo;
             if (bridgeTokenInfo.IsNativeToken)
             {

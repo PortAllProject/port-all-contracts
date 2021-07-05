@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
+        <TargetFramework>netstandard2.1</TargetFramework>
         <!-- The root namespace -->
         <!-- Mark this project as a contract -->
         <IsContract>true</IsContract>
@@ -23,6 +23,9 @@
         <CommonMessage Include="..\..\protobuf\callback_input.proto">
             <Link>Protobuf\Proto\callback_input.proto</Link>
         </CommonMessage>
+        <CommonMessage Include="..\..\protobuf\authority_info.proto">
+            <Link>Protobuf\Proto\authority_info.proto</Link>
+        </CommonMessage>
     </ItemGroup>
 
     <ItemGroup>
@@ -34,6 +37,12 @@
         </ContractReference>
         <ContractReference Include="..\..\protobuf\oracle_contract.proto">
             <Link>Protobuf\Proto\oracle_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\merkle_tree_recorder.proto">
+            <Link>Protobuf\Proto\reference\merkle_tree_recorder.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\acs1.proto">
+            <Link>Protobuf\Proto\reference\acs1.proto</Link>
         </ContractReference>
     </ItemGroup>
 
