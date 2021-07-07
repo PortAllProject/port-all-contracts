@@ -10,5 +10,6 @@ namespace AElf.Contracts.Bridge
         public MappedState<Hash, SwapInfo> SwapInfo { get; set; }
         public MappedState<Hash, SwapPair> SwapPairs { get; set; }
         public MappedState<Hash, Hash, SwapAmounts> Ledger { get; set; }
+        public MappedState<long, Address> RecorderIdToRegimentMap { get; set; }
     }
 }

@@ -132,8 +132,7 @@ message CreateSwapInput {
     int32 origin_token_size_in_byte = 1;
     bool origin_token_numeric_big_endian = 2;
     repeated SwapTargetToken swap_target_token_list = 3;
-    int64 recorder_id = 4;
-    aelf.Address regiment_address = 5;
+    aelf.Address regiment_address = 4;
 }
 
 message SwapTargetToken {

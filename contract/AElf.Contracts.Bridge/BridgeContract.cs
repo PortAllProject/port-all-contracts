@@ -14,6 +14,9 @@ namespace AElf.Contracts.Bridge
             State.OracleContract.Value = input.OracleContractAddress;
             State.MerkleTreeRecorderContract.Value = input.MerkleTreeRecorderContractAddress;
             State.RegimentContract.Value = input.RegimentContractAddress;
+
+            // Initial MTRecorder Contract, then Bridge Contract will be the Owner of MTRecorder Contract.
+            State.MerkleTreeRecorderContract.Initialize.Send(new Empty());
             return new Empty();
         }
 

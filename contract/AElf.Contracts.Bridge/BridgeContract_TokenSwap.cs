@@ -1,3 +1,4 @@
+using System.Linq;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
@@ -17,13 +18,19 @@ namespace AElf.Contracts.Bridge
             var regimentManager = State.RegimentContract.GetRegimentInfo.Call(input.RegimentAddress).Manager;
             Assert(Context.Sender == regimentManager, "Only regiment manager can create swap.");
 
+            State.MerkleTreeRecorderContract.CreateRecorder.Send(new Recorder
+            {
+                Admin = Context.Self,
+                MaximalLeafCount = MaximalLeafCount
+            });
+
             var swapInfo = new SwapInfo
             {
                 SwapId = swapId,
                 OriginTokenNumericBigEndian = input.OriginTokenNumericBigEndian,
                 OriginTokenSizeInByte = input.OriginTokenSizeInByte,
                 RegimentAddress = input.RegimentAddress,
-                RecorderId = input.RecorderId
+                RecorderId = State.MerkleTreeRecorderContract.GetRecorderCount.Call(new Empty()).Value.Add(1)
             };
             foreach (var swapTargetToken in input.SwapTargetTokenList)
             {
@@ -168,9 +175,13 @@ namespace AElf.Contracts.Bridge
         public override Empty RecordMerkleTree(CallbackInput input)
         {
             Assert(Context.Sender == State.OracleContract.Value, "No permission.");
-            var recordInput = new RecordMerkleTreeInput();
-            recordInput.MergeFrom(input.Result);
-            State.MerkleTreeRecorderContract.RecordMerkleTree.Send(recordInput);
+            var queryResult = new StringValue();
+            queryResult.MergeFrom(input.Result);
+            var recordMerkleTreeInput = JsonParser.Default.Parse<RecordMerkleTreeInput>(queryResult.Value);
+            // Make sure certain oracle nodes (regiment) is aiming at record for this recorder id.
+            Assert(State.RecorderIdToRegimentMap[recordMerkleTreeInput.RecorderId] == input.OracleNodes.First(),
+                "Incorrect recorder id.");
+            State.MerkleTreeRecorderContract.RecordMerkleTree.Send(recordMerkleTreeInput);
             return new Empty();
         }
 
