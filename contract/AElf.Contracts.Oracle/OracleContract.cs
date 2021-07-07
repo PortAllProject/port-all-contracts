@@ -481,7 +481,7 @@ namespace AElf.Contracts.Oracle
                     QueryId = queryRecord.QueryId,
                     Result = finalResult.Value,
                     OracleNodes = {queryRecord.DesignatedNodeList.Value}
-                });
+                }); 
             }
 
             // If this query is from a query task.

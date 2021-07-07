@@ -1,6 +1,8 @@
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.Contracts.Parliament;
+using AElf.Contracts.Regiment;
+using MTRecorder;
 
 namespace AElf.Contracts.Bridge
 {
@@ -9,5 +11,12 @@ namespace AElf.Contracts.Bridge
         internal TokenContractContainer.TokenContractReferenceState TokenContract { get; set; }
         internal OracleContractContainer.OracleContractReferenceState OracleContract { get; set; }
         internal ParliamentContractContainer.ParliamentContractReferenceState ParliamentContract { get; set; }
+        internal RegimentContractContainer.RegimentContractReferenceState RegimentContract { get; set; }
+
+        internal MerkleTreeRecorderContractContainer.MerkleTreeRecorderContractReferenceState MerkleTreeRecorderContract
+        {
+            get;
+            set;
+        }
     }
 }

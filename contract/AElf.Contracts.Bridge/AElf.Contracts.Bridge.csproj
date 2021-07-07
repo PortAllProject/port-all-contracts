@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>netstandard2.1</TargetFramework>
-        <!-- The root namespace -->
-        <!-- Mark this project as a contract -->
         <IsContract>true</IsContract>
         <RootNamespace>AElf.Contracts.Bridge</RootNamespace>
     </PropertyGroup>
@@ -37,6 +35,9 @@
         </ContractReference>
         <ContractReference Include="..\..\protobuf\oracle_contract.proto">
             <Link>Protobuf\Proto\oracle_contract.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\regiment_contract.proto">
+            <Link>Protobuf\Proto\reference\regiment_contract.proto</Link>
         </ContractReference>
         <ContractReference Include="..\..\protobuf\merkle_tree_recorder.proto">
             <Link>Protobuf\Proto\reference\merkle_tree_recorder.proto</Link>

@@ -4,10 +4,9 @@ package MTRecorder;
 
 import "aelf/core.proto";
 import "acs1.proto";
-import "google/protobuf/timestamp.proto";
 
 service MerkleTreeRecorderContract {
-    option (aelf.csharp_state) = "AElf.Contracts.MerkleTreeRecorderContract.MerkleTreeRecorderContractState";
+    option (aelf.csharp_state) = "AElf.Contracts.MerkleTreeRecorder.MerkleTreeRecorderContractState";
     option (aelf.base) = "acs1.proto";
 
     rpc Initialize (google.protobuf.Empty) returns (google.protobuf.Empty) {

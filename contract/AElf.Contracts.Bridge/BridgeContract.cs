@@ -12,7 +12,8 @@ namespace AElf.Contracts.Bridge
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
             State.OracleContract.Value = input.OracleContractAddress;
-            State.MerkleTreeRecorderContract.Value = input.MerkleTreeRecorderAddress;
+            State.MerkleTreeRecorderContract.Value = input.MerkleTreeRecorderContractAddress;
+            State.RegimentContract.Value = input.RegimentContractAddress;
             return new Empty();
         }
 

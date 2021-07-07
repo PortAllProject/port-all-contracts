@@ -34,6 +34,8 @@ service BridgeContract {
     }
     rpc Withdraw (WithdrawInput) returns (google.protobuf.Empty) {
     }
+    rpc RecordMerkleTree (CallbackInput) returns (google.protobuf.Empty) {
+    }
 
     // view methods
     
@@ -62,7 +64,9 @@ service BridgeContract {
 
 message InitializeInput {
     aelf.Address oracle_contract_address = 1;
-    aelf.Address merkle_tree_recorder_address = 2; 
+    aelf.Address merkle_tree_recorder_contract_address = 2; 
+    aelf.Address regiment_contract_address = 3; 
+    int64 recorder_id = 4;
 }
 
 message CreateBridgeInput {
@@ -129,6 +133,7 @@ message CreateSwapInput {
     bool origin_token_numeric_big_endian = 2;
     repeated SwapTargetToken swap_target_token_list = 3;
     int64 recorder_id = 4;
+    aelf.Address regiment_address = 5;
 }
 
 message SwapTargetToken {
@@ -142,7 +147,7 @@ message SwapInfo {
     int32 origin_token_size_in_byte = 2;
     bool origin_token_numeric_big_endian = 3;
     map<string, aelf.Hash> swap_target_token_map = 4;
-    aelf.Address controller = 5;
+    aelf.Address regiment_address = 5;
     int64 recorder_id = 6;
 }
 
@@ -172,34 +177,14 @@ message SwapTokenInput {
     aelf.Hash swap_id = 1;
     string origin_amount = 2;
     aelf.MerklePath merkle_path = 3;
-    aelf.Address receiver_address = 4;
-    aelf.Hash unique_id = 5; // to make every swap unique 
-    int64 last_leaf_index = 6;
-}
-
-message SwapPairAdded {
-    option (aelf.is_event) = true;
-    aelf.Hash swap_id = 1;
+    aelf.Hash unique_id = 4; // to make every swap unique 
+    int64 last_leaf_index = 5;
 }
 
 message DepositInput {
     aelf.Hash swap_id = 1;
     string target_token_symbol = 2;
     int64 amount = 3;
-}
-
-message SwapRatioChanged {
-    option (aelf.is_event) = true;
-    aelf.Hash swap_id = 1;
-    SwapRatio new_swap_ratio = 2;
-    string target_token_symbol = 3;
-}
-
-message TokenSwapEvent {
-    option (aelf.is_event) = true;
-    aelf.Address address = 1;
-    int64 amount = 2;
-    string symbol = 3;
 }
 
 message GetSwapPairInput {
@@ -225,40 +210,27 @@ message WithdrawInput {
 
 // Events
 
-message Transferred {
+message SwapRatioChanged {
     option (aelf.is_event) = true;
-    aelf.Address from = 1 [(aelf.is_indexed) = true];
-    aelf.Address to = 2 [(aelf.is_indexed) = true];
-    string symbol = 3 [(aelf.is_indexed) = true];
-    int64 amount = 4;
-    string memo = 5;
+    aelf.Hash swap_id = 1;
+    SwapRatio new_swap_ratio = 2;
+    string target_token_symbol = 3;
 }
 
-message Approved {
+message TokenSwapped {
     option (aelf.is_event) = true;
-    aelf.Address owner = 1 [(aelf.is_indexed) = true];
-    aelf.Address spender = 2 [(aelf.is_indexed) = true];
-    string symbol = 3 [(aelf.is_indexed) = true];
-    int64 amount = 4;
-}
-
-message UnApproved {
-    option (aelf.is_event) = true;
-    aelf.Address owner = 1 [(aelf.is_indexed) = true];
-    aelf.Address spender = 2 [(aelf.is_indexed) = true];
-    string symbol = 3 [(aelf.is_indexed) = true];
-    int64 amount = 4;
-}
-
-message Burned {
-    option (aelf.is_event) = true;
-    aelf.Address burner = 1 [(aelf.is_indexed) = true];
-    string symbol = 2 [(aelf.is_indexed) = true];
-    int64 amount = 3;
+    aelf.Address address = 1;
+    int64 amount = 2;
+    string symbol = 3;
 }
 
 message BridgeCreated {
     option (aelf.is_event) = true;
     BridgeTokenInfo origin_token_info = 1;
     string wrapped_token_symbol = 2;
+}
+
+message SwapPairAdded {
+    option (aelf.is_event) = true;
+    aelf.Hash swap_id = 1;
 }
