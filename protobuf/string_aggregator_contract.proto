@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "aelf/options.proto";
+import "aelf/core.proto";
+import "acs13.proto";
+
+option csharp_namespace = "AElf.Contracts.StringAggregator";
+
+// StringValue -> StringValue
+service StringAggregatorContract {
+    option (aelf.csharp_state) = "AElf.Contracts.StringAggregator.StringAggregatorContractState";
+    option (aelf.base) = "acs13.proto";
+}
+
+message AggregateDataReceived {
+    option (aelf.is_event) = true;
+    Results results = 1;
+    string final_result = 2;
+}
+
+message Results {
+    repeated string value = 1;
+}

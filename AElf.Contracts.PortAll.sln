@@ -42,6 +42,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.Regiment", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.MerkleTreeRecorder", "contract\AElf.Contracts.MerkleTreeRecorder\AElf.Contracts.MerkleTreeRecorder.csproj", "{A0089526-FC0B-430F-B0DF-90EE57E0A87A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.StringAggregator", "contract\AElf.Contracts.StringAggregator\AElf.Contracts.StringAggregator.csproj", "{0D046053-1246-4E50-86BB-980813813EA4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -108,6 +110,10 @@ Global
 		{A0089526-FC0B-430F-B0DF-90EE57E0A87A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0089526-FC0B-430F-B0DF-90EE57E0A87A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0089526-FC0B-430F-B0DF-90EE57E0A87A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D046053-1246-4E50-86BB-980813813EA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D046053-1246-4E50-86BB-980813813EA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D046053-1246-4E50-86BB-980813813EA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D046053-1246-4E50-86BB-980813813EA4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -128,6 +134,7 @@ Global
 		{2DE64377-F1F7-4787-8C19-56F074A826DA} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{E7E09610-98C7-483D-9C82-7A438CFC12C9} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{A0089526-FC0B-430F-B0DF-90EE57E0A87A} = {5C980166-C987-470D-AEE0-3858A170A903}
+		{0D046053-1246-4E50-86BB-980813813EA4} = {5C980166-C987-470D-AEE0-3858A170A903}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}
