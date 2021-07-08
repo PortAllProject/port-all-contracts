@@ -29,7 +29,6 @@
 
     <ItemGroup>
         <Folder Include="aelf\keys" />
-        <Folder Include="ContractBuild" />
     </ItemGroup>
 
     <ItemGroup>

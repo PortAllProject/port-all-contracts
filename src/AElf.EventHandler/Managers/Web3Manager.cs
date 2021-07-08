@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Nethereum.Contracts;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3;
 
@@ -38,6 +39,12 @@ namespace AElf.EventHandler
                 await setValueFunction.SendTransactionAndWaitForReceiptAsync(_senderAddress, gas, null, null, report,
                     rs, ss, rawVs);
             return transactionResult;
+        }
+
+        public Function GetFunction(string contractAddress, string methodName)
+        {
+            var contract = _web3.Eth.GetContract(_abiCode, contractAddress);
+            return contract.GetFunction(methodName);
         }
 
         public async Task<TransactionReceipt> GetTransactionReceipt(string transactionHash)

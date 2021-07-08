@@ -42,12 +42,12 @@ namespace AElf.EventHandler
             var txId = node.SendTransaction(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap[ContractName], "ConfirmReport", new ConfirmReportInput
                 {
-                    Token = _configOptions.EthereumContractAddress,
+                    Token = _configOptions.TransmitContractAddress,
                     RoundId = reportProposed.RoundId,
                     Signature = SignHelper
                         .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
                 });
-            _reportProvider.SetReport(_configOptions.EthereumContractAddress, reportProposed.RoundId, reportProposed.RawReport);
+            _reportProvider.SetReport(_configOptions.TransmitContractAddress, reportProposed.RoundId, reportProposed.RawReport);
             _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
 
             return Task.CompletedTask;

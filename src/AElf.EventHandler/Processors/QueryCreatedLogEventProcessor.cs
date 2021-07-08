@@ -40,14 +40,17 @@ namespace AElf.EventHandler
                 .Token; // Query token means the ethereum contract address oracle node should cares in report case.
             if (queryCreated.DesignatedNodeList.Value.Contains(nodeAddress) ||
                 _configOptions.ObserverAssociationAddressList.Contains(firstDesignatedNodeAddress.ToBase58()) ||
-                _configOptions.EthereumContractAddress == queryToken ||
+                _configOptions.TransmitContractAddress == queryToken ||
                 _configOptions.Token == queryToken)
             {
                 var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.Title,
                     queryCreated.QueryInfo.Options.ToList());
                 if (string.IsNullOrEmpty(data))
                 {
-                    _logger.LogError($"Failed to response to query {queryCreated.QueryId}.");
+                    _logger.LogError(queryCreated.QueryInfo.Title == "swap"
+                        ? $"No need to record merkle tree root."
+                        : $"Failed to response to query {queryCreated.QueryId}.");
+
                     return;
                 }
 
