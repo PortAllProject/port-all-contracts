@@ -72,7 +72,7 @@ namespace AElf.EventHandler
 
             if (title == "swap")
             {
-                return await GetMerkleTreeRoot();
+                return await GetRecordMerkleTreeInput();
             }
 
             string result;
@@ -106,14 +106,14 @@ namespace AElf.EventHandler
                     }
                 }
 
-                result = Aggregate(dataList, queryId);
+                result = Aggregate(dataList);
             }
 
             _dictionary[queryId] = result;
             return result;
         }
 
-        private async Task<string> GetMerkleTreeRoot()
+        private async Task<string> GetRecordMerkleTreeInput()
         {
             var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
             var merkleGeneratorContractAddress = _configOptions.MerkleGeneratorContractAddress;
@@ -160,7 +160,7 @@ namespace AElf.EventHandler
             }.ToString();
         }
 
-        private string Aggregate(List<decimal> dataList, Hash queryId)
+        private string Aggregate(List<decimal> dataList)
         {
             var finalPrice = dataList.OrderBy(p => p).ToList()[dataList.Count / 2]
                 .ToString(CultureInfo.InvariantCulture);
