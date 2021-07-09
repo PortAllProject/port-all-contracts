@@ -24,7 +24,6 @@ namespace AElf.EventHandler
         private readonly Dictionary<Hash, string> _dictionary;
         private readonly ILogger<DataProvider> _logger;
         private readonly ContractAddressOptions _contractAddressOptions;
-        private readonly ContractAbiOptions _contractAbiOptions;
         private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly ConfigOptions _configOptions;
         private readonly string _lockAbi;
@@ -36,17 +35,17 @@ namespace AElf.EventHandler
         {
             _logger = logger;
             _contractAddressOptions = contractAddressOptions.Value;
-            _contractAbiOptions = contractAbiOptions.Value;
+            var contractAbiOptions1 = contractAbiOptions.Value;
             _configOptions = configOptions.Value;
             _ethereumConfigOptions = ethereumConfigOptions.Value;
             _dictionary = new Dictionary<Hash, string>();
             {
-                var file = _contractAbiOptions.LockAbiFilePath;
+                var file = contractAbiOptions1.LockAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
             }
             {
-                var file = _contractAbiOptions.MerkleGeneratorAbiFilePath;
+                var file = contractAbiOptions1.MerkleGeneratorAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
                     _merkleGeneratorAbi = JsonHelper.ReadJson(file, "abi");
             }
@@ -135,6 +134,7 @@ namespace AElf.EventHandler
                     RecorderId = _configOptions.RecorderId
                 }).Value;
             if (lockTimes <= lastRecordedLeafIndex + 1)
+                // No need to record merkle tree.
                 return string.Empty;
 
             var satisfiedTreeCount = node.QueryView<Int64Value>(_configOptions.AccountAddress,

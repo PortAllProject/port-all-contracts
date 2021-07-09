@@ -14,5 +14,8 @@ namespace AElf.EventHandler
         public string MerkleGeneratorContractAddress { get; set; }
         public long RecorderId { get; set; }
         public int MaximumLeafCount { get; set; }
+        public bool SendQueryTransaction { get; set; }
+        public long QueryPayment { get; set; } = 1_0000_0000;
+        public string TokenSwapOracleOrganizationAddress { get; set; }
     }
 }
