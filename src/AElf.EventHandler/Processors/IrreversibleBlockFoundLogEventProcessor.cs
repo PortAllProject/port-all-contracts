@@ -42,6 +42,7 @@ namespace AElf.EventHandler
                         _logger.LogError($"Cannot found file {file}");
                     }
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
+                    _logger.LogInformation($"abi: {_lockAbi}");
                 }
             }
 
@@ -59,7 +60,6 @@ namespace AElf.EventHandler
             if (!_configOptions.SendQueryTransaction) return;
 
             var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
-            var merkleGeneratorContractAddress = _configOptions.MerkleGeneratorContractAddress;
             var web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url, lockMappingContractAddress,
                 _ethereumConfigOptions.PrivateKey, _lockAbi);
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
