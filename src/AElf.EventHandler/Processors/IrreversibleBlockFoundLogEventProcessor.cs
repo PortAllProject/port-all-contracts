@@ -76,8 +76,8 @@ namespace AElf.EventHandler
                     RecorderId = _configOptions.RecorderId
                 }).Value;
 
-            _logger.LogInformation($"lock times: {lockTimes}; last recorded leaf index: {lastRecordedLeafIndex}");
-            if (lockTimes >= lastRecordedLeafIndex + 1)
+            _logger.LogInformation($"Lock times: {lockTimes}; Last recorded leaf index: {lastRecordedLeafIndex}");
+            if (lockTimes > lastRecordedLeafIndex + 1)
             {
                 var queryInput = new QueryInput
                 {
