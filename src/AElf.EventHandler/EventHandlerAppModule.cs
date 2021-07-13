@@ -57,6 +57,7 @@ namespace AElf.EventHandler
             Configure<ContractAddressOptions>(configuration.GetSection("Contracts"));
             Configure<ConfigOptions>(configuration.GetSection("Config"));
             Configure<EthereumConfigOptions>(configuration.GetSection("Ethereum"));
+            Configure<ContractAbiOptions>(configuration.GetSection("ContractAbi"));
             context.Services.AddHostedService<EventHandlerAppHostedService>();
             context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         }
