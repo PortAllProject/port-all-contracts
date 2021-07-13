@@ -28,6 +28,8 @@ namespace AElf.EventHandler
             IOptionsSnapshot<ContractAbiOptions> contractAbiOptions,
             ILogger<IrreversibleBlockFoundLogEventProcessor> logger) : base(contractAddressOptions)
         {
+            _logger = logger;
+
             var contractAbiOptions1 = contractAbiOptions.Value;
             _configOptions = configOptions.Value;
             _ethereumConfigOptions = ethereumConfigOptions.Value;
@@ -45,8 +47,6 @@ namespace AElf.EventHandler
                     _logger.LogInformation($"abi: {_lockAbi}");
                 }
             }
-
-            _logger = logger;
         }
 
         public override string ContractName => "Consensus";
