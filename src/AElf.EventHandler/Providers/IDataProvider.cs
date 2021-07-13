@@ -157,19 +157,21 @@ namespace AElf.EventHandler
                     RecorderId = _configOptions.RecorderId
                 }).Value;
             var expectCount = (satisfiedTreeCount + 1) * _configOptions.MaximumLeafCount;
-            var result = await web3ManagerForMerkleGenerator
+            var getMerkleTreeOutput = await web3ManagerForMerkleGenerator
                 .GetFunction(merkleGeneratorContractAddress, "getMerkleTree")
                 .CallAsync<Tuple<byte[], long, long, long, byte[][]>>(expectCount);
-            var root = result.Item1;
-            var firstReceiptId = result.Item2;
-            var leafCount = result.Item3;
+            var root = getMerkleTreeOutput.Item1;
+            var firstReceiptId = getMerkleTreeOutput.Item2;
+            var leafCount = getMerkleTreeOutput.Item3;
             var lastLeafIndex = firstReceiptId + leafCount - 1;
 
+            var rootHash = Hash.LoadFromByteArray(root);
+            _logger.LogInformation($"Merkle Tree Root: {rootHash}");
             return new RecordMerkleTreeInput
             {
                 RecorderId = _configOptions.RecorderId,
                 LastLeafIndex = lastLeafIndex,
-                MerkleTreeRoot = Hash.LoadFromByteArray(root)
+                MerkleTreeRoot = rootHash
             }.ToString();
         }
 
