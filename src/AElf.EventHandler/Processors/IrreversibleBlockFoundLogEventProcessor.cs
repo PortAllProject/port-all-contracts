@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AElf.Contracts.Consensus.AEDPoS;
@@ -95,15 +97,24 @@ namespace AElf.EventHandler
                 }).Value;
 
             _logger.LogInformation($"Lock times: {lockTimes}; Last recorded leaf index: {lastRecordedLeafIndex}");
-            if (lockTimes > lastRecordedLeafIndex + 1)
+            var notRecordedReceiptsCount = lockTimes - lastRecordedLeafIndex - 1;
+            if (notRecordedReceiptsCount > 0)
             {
-                var recordReceiptsFunction = web3ManagerForMerkle.GetFunction(merkleContractAddress, "recordReceipts");
-                var gas = await recordReceiptsFunction.EstimateGasAsync(_ethereumConfigOptions.Address, null, null);
-                var recordReceipts = await recordReceiptsFunction.SendTransactionAndWaitForReceiptAsync(_ethereumConfigOptions.Address, gas, null);
-                if (recordReceipts.HasErrors().Value)
+                var receiptInfoFunction =
+                    web3ManagerForLock.GetFunction(_ethereumConfigOptions.Address, "getReceiptInfo");
+                var receiptsInfo = new List<ReceiptInfo>();
+                for (var i = lastRecordedLeafIndex + 1; i < lockTimes; i++)
                 {
-                    _logger.LogError("Failed to record receipts in ethereum MerkleTreeGenerator Contract.");
+                    var returnInfo = await receiptInfoFunction.CallAsync<Tuple<byte[], string, long>>();
+                    receiptsInfo.Add(new ReceiptInfo
+                    {
+                        ReceiptId = i,
+                        TargetAddress = Address.FromBase58(returnInfo.Item2),
+                        Amount = returnInfo.Item3
+                    });
+                    _logger.LogInformation($"Receipt: {returnInfo.Item1.ToHex()}, {returnInfo.Item2}, {returnInfo.Item3}");
                 }
+
                 var queryInput = new QueryInput
                 {
                     Payment = _configOptions.QueryPayment,
@@ -127,6 +138,13 @@ namespace AElf.EventHandler
                 node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
             }
+        }
+
+        public class ReceiptInfo
+        {
+            public long ReceiptId { get; set; }
+            public Address TargetAddress { get; set; }
+            public long Amount { get; set; }
         }
     }
 }
