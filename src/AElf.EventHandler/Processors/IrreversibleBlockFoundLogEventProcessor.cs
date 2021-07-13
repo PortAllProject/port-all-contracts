@@ -43,6 +43,7 @@ namespace AElf.EventHandler
                     {
                         _logger.LogError($"Cannot found file {file}");
                     }
+
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
                     _logger.LogInformation($"abi: {_lockAbi}");
                 }
@@ -75,26 +76,31 @@ namespace AElf.EventHandler
                     RecorderId = _configOptions.RecorderId
                 }).Value;
 
-            if (lockTimes > lastRecordedLeafIndex + 1)
+            _logger.LogInformation($"lock times: {lockTimes}; last recorded leaf index: {lastRecordedLeafIndex}");
+            if (lockTimes >= lastRecordedLeafIndex + 1)
             {
-                node.SendTransaction(_configOptions.AccountAddress,
-                    _contractAddressOptions.ContractAddressMap["Oracle"], "Query", new QueryInput
+                var queryInput = new QueryInput
+                {
+                    Payment = _configOptions.QueryPayment,
+                    QueryInfo = new QueryInfo
                     {
-                        Payment = _configOptions.QueryPayment,
-                        QueryInfo = new QueryInfo
-                        {
-                            Title = "swap"
-                        },
-                        AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
-                            .ConvertAddress(),
-                        CallbackInfo = new CallbackInfo
-                        {
-                            ContractAddress = _contractAddressOptions.ContractAddressMap["Bridge"].ConvertAddress(),
-                            MethodName = "RecordMerkleTree"
-                        },
-                        DesignatedNodeList = new AddressList
-                            {Value = {_configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress()}}
-                    });
+                        Title = "swap"
+                    },
+                    AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
+                        .ConvertAddress(),
+                    CallbackInfo = new CallbackInfo
+                    {
+                        ContractAddress = _contractAddressOptions.ContractAddressMap["Bridge"].ConvertAddress(),
+                        MethodName = "RecordMerkleTree"
+                    },
+                    DesignatedNodeList = new AddressList
+                        {Value = {_configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress()}}
+                };
+
+                _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
+
+                node.SendTransaction(_configOptions.AccountAddress,
+                    _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
             }
         }
     }
