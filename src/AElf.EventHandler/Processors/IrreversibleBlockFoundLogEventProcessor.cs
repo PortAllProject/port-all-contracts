@@ -98,7 +98,7 @@ namespace AElf.EventHandler
             if (lockTimes > lastRecordedLeafIndex + 1)
             {
                 var recordReceiptsFunction = web3ManagerForMerkle.GetFunction(merkleContractAddress, "recordReceipts");
-                var gas = await recordReceiptsFunction.EstimateGasAsync();
+                var gas = await recordReceiptsFunction.EstimateGasAsync(_ethereumConfigOptions.Address, null, null);
                 var recordReceipts = await recordReceiptsFunction.SendTransactionAndWaitForReceiptAsync(_ethereumConfigOptions.Address, gas, null);
                 if (recordReceipts.HasErrors().Value)
                 {
