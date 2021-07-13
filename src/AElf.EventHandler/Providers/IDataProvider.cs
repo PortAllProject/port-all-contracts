@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
@@ -42,12 +43,24 @@ namespace AElf.EventHandler
             {
                 var file = contractAbiOptions1.LockAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
+                {
+                    if (!File.Exists(file))
+                    {
+                        _logger.LogError($"Cannot found file {file}");
+                    }
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
+                }
             }
             {
                 var file = contractAbiOptions1.MerkleGeneratorAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
+                {
+                    if (!File.Exists(file))
+                    {
+                        _logger.LogError($"Cannot found file {file}");
+                    }
                     _merkleGeneratorAbi = JsonHelper.ReadJson(file, "abi");
+                }
             }
         }
 

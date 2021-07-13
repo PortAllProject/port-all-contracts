@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.Oracle;
@@ -35,7 +36,13 @@ namespace AElf.EventHandler
             {
                 var file = contractAbiOptions1.LockAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
+                {
+                    if (!File.Exists(file))
+                    {
+                        _logger.LogError($"Cannot found file {file}");
+                    }
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
+                }
             }
 
             _logger = logger;
