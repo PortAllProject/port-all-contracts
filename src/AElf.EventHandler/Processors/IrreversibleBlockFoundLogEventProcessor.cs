@@ -21,6 +21,8 @@ namespace AElf.EventHandler
         private readonly string _lockAbi;
         private readonly string _merkleAbi;
 
+        private long _lastedQueryReceiptCount = 0;
+
         public IrreversibleBlockFoundLogEventProcessor(
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
             IOptionsSnapshot<ConfigOptions> configOptions,
@@ -78,14 +80,18 @@ namespace AElf.EventHandler
             var merkleContractAddress = _configOptions.MerkleGeneratorContractAddress;
             var web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url, lockMappingContractAddress,
                 _ethereumConfigOptions.PrivateKey, _lockAbi);
-            var web3ManagerForMerkle = new Web3Manager(_ethereumConfigOptions.Url, merkleContractAddress,
-                _ethereumConfigOptions.PrivateKey, _merkleAbi);
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
             var merkleTreeRecorderContractAddress = _contractAddressOptions.ContractAddressMap["MTRecorder"];
 
             var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
                 .CallAsync<long>();
+
+            if (lockTimes <= _lastedQueryReceiptCount)
+            {
+                return;
+            }
+
             var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
                 merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
                 new RecorderIdInput
@@ -127,6 +133,7 @@ namespace AElf.EventHandler
                 var txId = node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
                 _logger.LogInformation($"Query tx id: {txId}");
+                _lastedQueryReceiptCount = lockTimes;
             }
         }
     }
