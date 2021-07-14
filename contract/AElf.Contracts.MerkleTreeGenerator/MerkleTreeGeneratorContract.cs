@@ -18,8 +18,8 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
         public override Empty RegisterReceiptMaker(RegisterReceiptMakerInput input)
         {
             Assert(State.Owner.Value == Context.Sender, "No permission.");
-            Assert(State.ReceiptMakers[input.ReceiptMakerAddress] == null, "Already registered.");
-            State.ReceiptMakers[input.ReceiptMakerAddress] = new ReceiptMaker
+            Assert(State.ReceiptMakerMap[input.ReceiptMakerAddress] == null, "Already registered.");
+            State.ReceiptMakerMap[input.ReceiptMakerAddress] = new ReceiptMaker
             {
                 ReceiptMakerAddress = input.ReceiptMakerAddress,
                 MerkleTreeLeafLimit = input.MerkleTreeLeafLimit
@@ -34,8 +34,8 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
         public override Empty UnRegisterReceiptMaker(Address input)
         {
             Assert(State.Owner.Value == Context.Sender, "No permission.");
-            Assert(State.ReceiptMakers[input] != null, "Not registered.");
-            State.ReceiptMakers.Remove(input);
+            Assert(State.ReceiptMakerMap[input] != null, "Not registered.");
+            State.ReceiptMakerMap.Remove(input);
             Context.Fire(new ReceiptMakerUnRegistered
             {
                 ReceiptMakerAddress = input
@@ -45,10 +45,10 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override GetMerkleTreeOutput GetMerkleTree(GetMerkleTreeInput input)
         {
-            Assert(State.ReceiptMakers[input.ReceiptMakerAddress] != null, "Not registered.");
-            var generator = State.ReceiptMakers[input.ReceiptMakerAddress];
-            var merkleTree = ConstructMerkleTree(generator.ReceiptMakerAddress, input.ExpectedFullTreeIndex,
-                generator.MerkleTreeLeafLimit);
+            Assert(State.ReceiptMakerMap[input.ReceiptMakerAddress] != null, "Receipt maker not registered.");
+            var maker = State.ReceiptMakerMap[input.ReceiptMakerAddress];
+            var merkleTree = ConstructMerkleTree(maker.ReceiptMakerAddress, input.ExpectedFullTreeIndex,
+                maker.MerkleTreeLeafLimit);
             return new GetMerkleTreeOutput
             {
                 MerkleTreeRoot = merkleTree.MerkleTreeRoot,
@@ -60,7 +60,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override Int64Value GetFullTreeCount(Address input)
         {
-            var maker = State.ReceiptMakers[input];
+            var maker = State.ReceiptMakerMap[input];
             Assert(maker != null, "Not registered.");
             var receiptCount = GetReceiptCount(input);
             return new Int64Value {Value = receiptCount.Div(maker.MerkleTreeLeafLimit)};
@@ -68,7 +68,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override GetReceiptMakerOutput GetReceiptMaker(Address input)
         {
-            var maker = State.ReceiptMakers[input];
+            var maker = State.ReceiptMakerMap[input];
             return new GetReceiptMakerOutput
             {
                 ReceiptMakerAddress = maker.ReceiptMakerAddress,
@@ -78,7 +78,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override MerklePath GetMerklePath(GetMerklePathInput input)
         {
-            var maker = State.ReceiptMakers[input.ReciptMaker];
+            var maker = State.ReceiptMakerMap[input.ReciptMaker];
             Assert(maker != null, "Not registered.");
             Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= input.FirstLeafIndex, "Invalid merkle input.");
 

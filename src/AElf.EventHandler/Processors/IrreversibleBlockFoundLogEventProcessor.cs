@@ -106,8 +106,17 @@ namespace AElf.EventHandler
                 for (var i = lastRecordedLeafIndex + 1; i < lockTimes; i++)
                 {
                     var receiptInfo = await receiptInfoFunction.CallAsync<ReceiptInfo>();
-                    _logger.LogInformation(
-                        $"Receipt: {receiptInfo.ReceiptId.ToHex()}, {receiptInfo.TargetAddress}, {receiptInfo.Amount}");
+                    if (receiptInfo == null)
+                    {
+                        _logger.LogError("receipt info is null.");
+                    }
+                    else
+                    {
+                        var receiptId = receiptInfo.ReceiptId == null ? string.Empty : receiptInfo.ReceiptId.ToHex();
+                        var targetAddress = receiptInfo.TargetAddress ?? string.Empty;
+                        _logger.LogInformation(
+                            $"Receipt: {receiptId}, {targetAddress}, {receiptInfo.Amount}");
+                    }
                 }
 
                 var queryInput = new QueryInput
