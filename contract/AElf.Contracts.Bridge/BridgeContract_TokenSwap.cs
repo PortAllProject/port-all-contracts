@@ -23,13 +23,14 @@ namespace AElf.Contracts.Bridge
                 MaximalLeafCount = State.MaximalLeafCount.Value
             });
 
+            var recorderId = State.MerkleTreeRecorderContract.GetRecorderCount.Call(new Empty()).Value.Add(1);
             var swapInfo = new SwapInfo
             {
                 SwapId = swapId,
                 OriginTokenNumericBigEndian = input.OriginTokenNumericBigEndian,
                 OriginTokenSizeInByte = input.OriginTokenSizeInByte,
                 RegimentAddress = input.RegimentAddress,
-                RecorderId = State.MerkleTreeRecorderContract.GetRecorderCount.Call(new Empty()).Value.Add(1)
+                RecorderId = recorderId
             };
             foreach (var swapTargetToken in input.SwapTargetTokenList)
             {
@@ -50,6 +51,8 @@ namespace AElf.Contracts.Bridge
                 State.SwapPairs[pairId] = swapPair;
                 TransferDepositFrom(swapTargetToken.TargetTokenSymbol, swapTargetToken.DepositAmount, Context.Sender);
             }
+
+            State.RecorderIdToRegimentMap[recorderId] = input.RegimentAddress;
 
             State.SwapInfo[swapId] = swapInfo;
             Context.Fire(new SwapPairAdded {SwapId = swapId});
