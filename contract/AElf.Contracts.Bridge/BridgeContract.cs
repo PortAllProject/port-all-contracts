@@ -23,10 +23,12 @@ namespace AElf.Contracts.Bridge
             {
                 Owner = Context.Self
             });
+            State.MaximalLeafCount.Value =
+                input.MerkleTreeLeafLimit == 0 ? DefaultMaximalLeafCount : input.MerkleTreeLeafLimit;
             State.MerkleTreeGeneratorContract.RegisterReceiptMaker.Send(new RegisterReceiptMakerInput
             {
                 ReceiptMakerAddress = Context.Self,
-                MerkleTreeLeafLimit = input.MerkleTreeLeafLimit == 0 ? MaximalLeafCount : input.MerkleTreeLeafLimit
+                MerkleTreeLeafLimit = State.MaximalLeafCount.Value
             });
             return new Empty();
         }

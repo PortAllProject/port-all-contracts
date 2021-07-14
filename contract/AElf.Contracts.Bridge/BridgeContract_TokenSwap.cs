@@ -20,7 +20,7 @@ namespace AElf.Contracts.Bridge
             State.MerkleTreeRecorderContract.CreateRecorder.Send(new Recorder
             {
                 Admin = Context.Self,
-                MaximalLeafCount = MaximalLeafCount
+                MaximalLeafCount = State.MaximalLeafCount.Value
             });
 
             var swapInfo = new SwapInfo
@@ -65,20 +65,20 @@ namespace AElf.Contracts.Bridge
                 "Invalid token swap input.");
             var leafHash = ComputeLeafHash(amount, swapInfo, receiverAddress, input.ReceiptId);
 
-            var lastLeafIndex = State.MerkleTreeRecorderContract.GetLastRecordedLeafIndex.Call(new RecorderIdInput
+            var lastRecordedLeafIndex = State.MerkleTreeRecorderContract.GetLastRecordedLeafIndex.Call(new RecorderIdInput
             {
                 RecorderId = swapInfo.RecorderId
             }).Value;
             var merklePath = State.MerkleTreeGeneratorContract.GetMerklePath.Call(new GetMerklePathInput
             {
                 ReceiptMaker = Context.Self,
-                LastLeafIndex = lastLeafIndex,
+                LastLeafIndex = lastRecordedLeafIndex,
                 ReceiptId = input.ReceiptId,
             });
 
             Assert(State.MerkleTreeRecorderContract.MerkleProof.Call(new MerkleProofInput
             {
-                LastLeafIndex = lastLeafIndex,
+                LastLeafIndex = lastRecordedLeafIndex,
                 LeafNode = leafHash,
                 MerklePath = merklePath,
                 RecorderId = swapInfo.RecorderId

@@ -11,5 +11,6 @@ namespace AElf.Contracts.Bridge
         public MappedState<long, Address> RecorderIdToRegimentMap { get; set; }
         public Int64State ReceiptCount { get; set; }
         public MappedState<long, Hash> ReceiptHashMap { get; set; }
+        public Int32State MaximalLeafCount { get; set; }
     }
 }

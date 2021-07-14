@@ -29,7 +29,6 @@ namespace AElf.EventHandler
         private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly ConfigOptions _configOptions;
         private readonly string _lockAbi;
-        private readonly string _merkleGeneratorAbi;
 
         private Web3Manager _web3ManagerForLock;
 
@@ -53,18 +52,6 @@ namespace AElf.EventHandler
                     }
 
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
-                }
-            }
-            {
-                var file = contractAbiOptions1.MerkleGeneratorAbiFilePath;
-                if (!string.IsNullOrEmpty(file))
-                {
-                    if (!File.Exists(file))
-                    {
-                        _logger.LogError($"Cannot found file {file}");
-                    }
-
-                    _merkleGeneratorAbi = JsonHelper.ReadJson(file, "abi");
                 }
             }
         }

@@ -41,7 +41,7 @@ namespace AElf.Contracts.Bridge
                 new MerkleTreeGeneratorContract.GetMerkleTreeInput
                 {
                     ReceiptMakerAddress = Context.Self,
-                    ExpectedFullTreeIndex = State.ReceiptCount.Value.Div(MaximalLeafCount)
+                    ExpectedFullTreeIndex = State.ReceiptCount.Value.Div(State.MaximalLeafCount.Value)
                 });
 
             var recordMerkleTreeInput = new RecordMerkleTreeInput
