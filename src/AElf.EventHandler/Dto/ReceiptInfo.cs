@@ -1,3 +1,4 @@
+using System.Numerics;
 using AElf.Types;
 using Nethereum.ABI.FunctionEncoding.Attributes;
 
@@ -10,7 +11,7 @@ namespace AElf.EventHandler
 
         [Parameter("string", 2)] public string TargetAddress { get; set; }
 
-        [Parameter("uint256", 3)] public long Amount { get; set; }
+        [Parameter("uint256", 3)] public BigInteger Amount { get; set; }
 
         public override string ToString()
         {

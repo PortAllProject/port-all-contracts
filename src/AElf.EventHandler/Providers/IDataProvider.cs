@@ -133,7 +133,7 @@ namespace AElf.EventHandler
             var receiptInfos = await GetReceiptInfosAsync(start, end);
             var receiptHashes = receiptInfos.Select(i =>
             {
-                var amountHash = HashHelper.ComputeFrom(i.Amount);
+                var amountHash = GetHashTokenAmountData(i.Amount.ToString(), 32, true);
                 var targetAddressHash = HashHelper.ComputeFrom(ByteArrayHelper.HexStringToByteArray(i.TargetAddress));
                 var receiptIdHash = HashHelper.ComputeFrom(i.ReceiptId);
                 return HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
@@ -149,6 +149,43 @@ namespace AElf.EventHandler
             }
 
             return input.ToString();
+        }
+
+        private Hash GetHashTokenAmountData(string stringAmount, int originTokenSizeInByte, bool isBigEndian)
+        {
+            var amount = decimal.Parse(stringAmount);
+            var preHolderSize = originTokenSizeInByte - 16;
+            int[] amountInIntegers;
+            if (isBigEndian)
+            {
+                amountInIntegers = decimal.GetBits(amount).Reverse().ToArray();
+                if (preHolderSize < 0)
+                    amountInIntegers = amountInIntegers.TakeLast(originTokenSizeInByte / 4).ToArray();
+            }
+            else
+            {
+                amountInIntegers = decimal.GetBits(amount).ToArray();
+                if (preHolderSize < 0)
+                    amountInIntegers = amountInIntegers.Take(originTokenSizeInByte / 4).ToArray();
+            }
+
+            var amountBytes = new List<byte>();
+
+            amountInIntegers.Aggregate(amountBytes, (cur, i) =>
+            {
+                cur.AddRange(i.ToBytes(isBigEndian));
+                return cur;
+            });
+
+            if (preHolderSize > 0)
+            {
+                var placeHolder = Enumerable.Repeat(new byte(), preHolderSize).ToArray();
+                amountBytes = isBigEndian
+                    ? placeHolder.Concat(amountBytes).ToList()
+                    : amountBytes.Concat(placeHolder).ToList();
+            }
+
+            return HashHelper.ComputeFrom(amountBytes.ToArray());
         }
 
         private string Aggregate(List<decimal> dataList)
@@ -268,7 +305,7 @@ namespace AElf.EventHandler
                 _web3ManagerForLock.GetFunction(_ethereumConfigOptions.Address, "getReceiptInfo");
             for (var i = start; i <= end; i++)
             {
-                var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>();
+                var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>(i);
                 _logger.LogInformation($"Got receipt info of id {i}: {receiptInfo}");
                 receiptInfoList.Add(receiptInfo);
             }
