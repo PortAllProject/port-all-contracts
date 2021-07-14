@@ -85,9 +85,8 @@ namespace AElf.Contracts.TokenLockReceiptMakerContract
 
         public override GetReceiptHashListOutput GetReceiptHashList(GetReceiptHashListInput input)
         {
-            // todo : cover the case which require too many receipt
             var res = new GetReceiptHashListOutput();
-            for (long i = input.FirstLeafIndex; i <= input.LastLeafIndex; i++)
+            for (var i = input.FirstLeafIndex; i <= input.LastLeafIndex; i++)
             {
                 res.ReceiptHashList.Add(GetReceiptHash(i));
             }

@@ -26,7 +26,7 @@ namespace AElf.Contracts.Bridge
             State.MerkleTreeGeneratorContract.RegisterReceiptMaker.Send(new RegisterReceiptMakerInput
             {
                 ReceiptMakerAddress = Context.Self,
-                MerkleTreeLeafLimit = input.MerkleTreeLeafLimit
+                MerkleTreeLeafLimit = input.MerkleTreeLeafLimit == 0 ? MaximalLeafCount : input.MerkleTreeLeafLimit
             });
             return new Empty();
         }
