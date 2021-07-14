@@ -2,6 +2,7 @@ using System.Linq;
 using AElf.Contracts.MerkleTreeGeneratorContract;
 using AElf.Contracts.ReceiptMakerContract;
 using AElf.CSharp.Core;
+using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
@@ -82,6 +83,12 @@ namespace AElf.Contracts.Bridge
 
         public override Empty ChangeMaximalLeafCount(Int32Value input)
         {
+            if (State.ParliamentContract.Value == null)
+            {
+                State.ParliamentContract.Value =
+                    Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
+            }
+
             var parliamentDefaultAddress = State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty());
             Assert(Context.Sender == parliamentDefaultAddress, "No permission.");
             State.MaximalLeafCount.Value = input.Value;
