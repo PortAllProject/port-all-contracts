@@ -2,8 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AElf.Contracts.Bridge;
 using AElf.Standards.ACS13;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Shouldly;
 using Xunit;
 
@@ -78,5 +80,7 @@ namespace AElf.Contracts.Oracle
 
             return countDict.OrderByDescending(d => d.Value).Select(d => d.Key).ToList().First();
         }
+
+
     }
 }

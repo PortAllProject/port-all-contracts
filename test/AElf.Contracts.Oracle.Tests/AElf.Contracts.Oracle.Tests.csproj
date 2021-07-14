@@ -76,7 +76,6 @@
     <ProjectReference Include="..\..\contract\AElf.Contracts.Oracle\AElf.Contracts.Oracle.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Regiment\AElf.Contracts.Regiment.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Report\AElf.Contracts.Report.csproj" />
-    <ProjectReference Include="..\..\contract\AElf.Contracts.Bridge\AElf.Contracts.Bridge.csproj" />
     <ProjectReference Include="..\..\src\AElf.Boilerplate.TestBase\AElf.Boilerplate.TestBase.csproj" />
     <ProjectReference Include="..\..\src\AElf.EventHandler\AElf.EventHandler.csproj" />
   </ItemGroup>

@@ -48,10 +48,7 @@ namespace AElf.Contracts.Oracle
                     new ReportContractInitializationProvider().ContractCodeName,
                     File.ReadAllBytes(typeof(ReportContract).Assembly.Location)
                 },
-                {
-                    new BridgeContractInitializationProvider().ContractCodeName,
-                    File.ReadAllBytes(typeof(BridgeContract).Assembly.Location)
-                },
+
                 {
                     new RegimentContractInitializationProvider().ContractCodeName,
                     File.ReadAllBytes(typeof(RegimentContract).Assembly.Location)

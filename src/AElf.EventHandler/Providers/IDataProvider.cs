@@ -78,7 +78,7 @@ namespace AElf.EventHandler
             {
                 _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
                 var recordReceiptHashInput =
-                    await GetRecordReceiptHashInput(long.Parse(options[0]), long.Parse(options[1]));
+                    await GetReceiptHashMap(long.Parse(options[0]), long.Parse(options[1]));
                 _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
                 _dictionary[queryId] = recordReceiptHashInput;
                 return recordReceiptHashInput;
@@ -122,7 +122,7 @@ namespace AElf.EventHandler
             return result;
         }
 
-        private async Task<string> GetRecordReceiptHashInput(long start, long end)
+        private async Task<string> GetReceiptHashMap(long start, long end)
         {
             if (_web3ManagerForLock == null)
             {
@@ -149,7 +149,7 @@ namespace AElf.EventHandler
             for (var i = 0; i <= end - start; i++)
             {
                 var index = (int) (i + start);
-                input.Value.Add(index, receiptHashes[index]);
+                input.Value.Add(index, receiptHashes[index].ToHex());
             }
 
             return input.ToString();

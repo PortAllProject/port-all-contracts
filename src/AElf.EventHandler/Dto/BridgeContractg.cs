@@ -70,35 +70,35 @@ namespace AElf.Contracts.Bridge {
             "ZWNlaXZlZEFtb3VudHNFbnRyeRo2ChRSZWNlaXZlZEFtb3VudHNFbnRyeRIL",
             "CgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAM6AjgBIlkKDVdpdGhkcmF3SW5w",
             "dXQSGwoHc3dhcF9pZBgBIAEoCzIKLmFlbGYuSGFzaBIbChN0YXJnZXRfdG9r",
-            "ZW5fc3ltYm9sGAIgASgJEg4KBmFtb3VudBgDIAEoAyKKAQoOUmVjZWlwdEhh",
-            "c2hNYXASKQoFdmFsdWUYASADKAsyGi5SZWNlaXB0SGFzaE1hcC5WYWx1ZUVu",
-            "dHJ5EhMKC3JlY29yZGVyX2lkGAIgASgDGjgKClZhbHVlRW50cnkSCwoDa2V5",
-            "GAEgASgDEhkKBXZhbHVlGAIgASgLMgouYWVsZi5IYXNoOgI4ASJVChVVcGRh",
-            "dGVNZXJrbGVUcmVlSW5wdXQSEwoLcmVjb3JkZXJfaWQYASABKAMSJwoQcmVn",
-            "aW1lbnRfYWRkcmVzcxgCIAEoCzINLmFlbGYuQWRkcmVzcyJ2ChBTd2FwUmF0",
-            "aW9DaGFuZ2VkEhsKB3N3YXBfaWQYASABKAsyCi5hZWxmLkhhc2gSIgoObmV3",
-            "X3N3YXBfcmF0aW8YAiABKAsyCi5Td2FwUmF0aW8SGwoTdGFyZ2V0X3Rva2Vu",
-            "X3N5bWJvbBgDIAEoCToEoLsYASJUCgxUb2tlblN3YXBwZWQSHgoHYWRkcmVz",
-            "cxgBIAEoCzINLmFlbGYuQWRkcmVzcxIOCgZhbW91bnQYAiABKAMSDgoGc3lt",
-            "Ym9sGAMgASgJOgSguxgBIjIKDVN3YXBQYWlyQWRkZWQSGwoHc3dhcF9pZBgB",
-            "IAEoCzIKLmFlbGYuSGFzaDoEoLsYATLZBQoOQnJpZGdlQ29udHJhY3QSOAoK",
-            "SW5pdGlhbGl6ZRIQLkluaXRpYWxpemVJbnB1dBoWLmdvb2dsZS5wcm90b2J1",
-            "Zi5FbXB0eSIAEiwKCkNyZWF0ZVN3YXASEC5DcmVhdGVTd2FwSW5wdXQaCi5h",
-            "ZWxmLkhhc2giABI2CglTd2FwVG9rZW4SDy5Td2FwVG9rZW5JbnB1dBoWLmdv",
-            "b2dsZS5wcm90b2J1Zi5FbXB0eSIAEkIKD0NoYW5nZVN3YXBSYXRpbxIVLkNo",
-            "YW5nZVN3YXBSYXRpb0lucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgAS",
-            "MgoHRGVwb3NpdBINLkRlcG9zaXRJbnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5F",
-            "bXB0eSIAEjQKCFdpdGhkcmF3Eg4uV2l0aGRyYXdJbnB1dBoWLmdvb2dsZS5w",
-            "cm90b2J1Zi5FbXB0eSIAEkQKEFVwZGF0ZU1lcmtsZVRyZWUSFi5VcGRhdGVN",
-            "ZXJrbGVUcmVlSW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABI9ChFS",
-            "ZWNvcmRSZWNlaXB0SGFzaBIOLkNhbGxiYWNrSW5wdXQaFi5nb29nbGUucHJv",
-            "dG9idWYuRW1wdHkiABIrCgtHZXRTd2FwSW5mbxIKLmFlbGYuSGFzaBoJLlN3",
-            "YXBJbmZvIgWIifcBARIyCgtHZXRTd2FwUGFpchIRLkdldFN3YXBQYWlySW5w",
-            "dXQaCS5Td2FwUGFpciIFiIn3AQESOwoOR2V0U3dhcEFtb3VudHMSFC5HZXRT",
-            "d2FwQW1vdW50c0lucHV0GgwuU3dhcEFtb3VudHMiBYiJ9wEBGlayzPYBKUFF",
-            "bGYuQ29udHJhY3RzLkJyaWRnZS5CcmlkZ2VDb250cmFjdFN0YXRlysr2AQth",
-            "Y3MxMy5wcm90b8rK9gETcmVjZWlwdF9tYWtlci5wcm90b0IYqgIVQUVsZi5D",
-            "b250cmFjdHMuQnJpZGdlYgZwcm90bzM="));
+            "ZW5fc3ltYm9sGAIgASgJEg4KBmFtb3VudBgDIAEoAyJ+Cg5SZWNlaXB0SGFz",
+            "aE1hcBIpCgV2YWx1ZRgBIAMoCzIaLlJlY2VpcHRIYXNoTWFwLlZhbHVlRW50",
+            "cnkSEwoLcmVjb3JkZXJfaWQYAiABKAMaLAoKVmFsdWVFbnRyeRILCgNrZXkY",
+            "ASABKAMSDQoFdmFsdWUYAiABKAk6AjgBIlUKFVVwZGF0ZU1lcmtsZVRyZWVJ",
+            "bnB1dBITCgtyZWNvcmRlcl9pZBgBIAEoAxInChByZWdpbWVudF9hZGRyZXNz",
+            "GAIgASgLMg0uYWVsZi5BZGRyZXNzInYKEFN3YXBSYXRpb0NoYW5nZWQSGwoH",
+            "c3dhcF9pZBgBIAEoCzIKLmFlbGYuSGFzaBIiCg5uZXdfc3dhcF9yYXRpbxgC",
+            "IAEoCzIKLlN3YXBSYXRpbxIbChN0YXJnZXRfdG9rZW5fc3ltYm9sGAMgASgJ",
+            "OgSguxgBIlQKDFRva2VuU3dhcHBlZBIeCgdhZGRyZXNzGAEgASgLMg0uYWVs",
+            "Zi5BZGRyZXNzEg4KBmFtb3VudBgCIAEoAxIOCgZzeW1ib2wYAyABKAk6BKC7",
+            "GAEiMgoNU3dhcFBhaXJBZGRlZBIbCgdzd2FwX2lkGAEgASgLMgouYWVsZi5I",
+            "YXNoOgSguxgBMtkFCg5CcmlkZ2VDb250cmFjdBI4CgpJbml0aWFsaXplEhAu",
+            "SW5pdGlhbGl6ZUlucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASLAoK",
+            "Q3JlYXRlU3dhcBIQLkNyZWF0ZVN3YXBJbnB1dBoKLmFlbGYuSGFzaCIAEjYK",
+            "CVN3YXBUb2tlbhIPLlN3YXBUb2tlbklucHV0GhYuZ29vZ2xlLnByb3RvYnVm",
+            "LkVtcHR5IgASQgoPQ2hhbmdlU3dhcFJhdGlvEhUuQ2hhbmdlU3dhcFJhdGlv",
+            "SW5wdXQaFi5nb29nbGUucHJvdG9idWYuRW1wdHkiABIyCgdEZXBvc2l0Eg0u",
+            "RGVwb3NpdElucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5IgASNAoIV2l0",
+            "aGRyYXcSDi5XaXRoZHJhd0lucHV0GhYuZ29vZ2xlLnByb3RvYnVmLkVtcHR5",
+            "IgASRAoQVXBkYXRlTWVya2xlVHJlZRIWLlVwZGF0ZU1lcmtsZVRyZWVJbnB1",
+            "dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIAEj0KEVJlY29yZFJlY2VpcHRI",
+            "YXNoEg4uQ2FsbGJhY2tJbnB1dBoWLmdvb2dsZS5wcm90b2J1Zi5FbXB0eSIA",
+            "EisKC0dldFN3YXBJbmZvEgouYWVsZi5IYXNoGgkuU3dhcEluZm8iBYiJ9wEB",
+            "EjIKC0dldFN3YXBQYWlyEhEuR2V0U3dhcFBhaXJJbnB1dBoJLlN3YXBQYWly",
+            "IgWIifcBARI7Cg5HZXRTd2FwQW1vdW50cxIULkdldFN3YXBBbW91bnRzSW5w",
+            "dXQaDC5Td2FwQW1vdW50cyIFiIn3AQEaVrLM9gEpQUVsZi5Db250cmFjdHMu",
+            "QnJpZGdlLkJyaWRnZUNvbnRyYWN0U3RhdGXKyvYBC2FjczEzLnByb3Rvysr2",
+            "ARNyZWNlaXB0X21ha2VyLnByb3RvQhiqAhVBRWxmLkNvbnRyYWN0cy5Ccmlk",
+            "Z2ViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { global::AElf.Types.CoreReflection.Descriptor, global::AElf.OptionsReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.EmptyReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.TimestampReflection.Descriptor, global::Google.Protobuf.WellKnownTypes.WrappersReflection.Descriptor, global::CallbackInputReflection.Descriptor, global::AElf.Standards.ACS13.Acs13Reflection.Descriptor, global::AElf.Contracts.ReceiptMakerContract.ReceiptMakerReflection.Descriptor, },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
@@ -2848,11 +2848,11 @@ namespace AElf.Contracts.Bridge {
 
     /// <summary>Field number for the "value" field.</summary>
     public const int ValueFieldNumber = 1;
-    private static readonly pbc::MapField<long, global::AElf.Types.Hash>.Codec _map_value_codec
-        = new pbc::MapField<long, global::AElf.Types.Hash>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForMessage(18, global::AElf.Types.Hash.Parser), 10);
-    private readonly pbc::MapField<long, global::AElf.Types.Hash> value_ = new pbc::MapField<long, global::AElf.Types.Hash>();
+    private static readonly pbc::MapField<long, string>.Codec _map_value_codec
+        = new pbc::MapField<long, string>.Codec(pb::FieldCodec.ForInt64(8, 0L), pb::FieldCodec.ForString(18, ""), 10);
+    private readonly pbc::MapField<long, string> value_ = new pbc::MapField<long, string>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public pbc::MapField<long, global::AElf.Types.Hash> Value {
+    public pbc::MapField<long, string> Value {
       get { return value_; }
     }
 

@@ -132,7 +132,7 @@ message WithdrawInput {
 }
 
 message ReceiptHashMap {
-    map<int64, aelf.Hash> value = 1;
+    map<int64, string> value = 1;
     int64 recorder_id = 2;
 }
 

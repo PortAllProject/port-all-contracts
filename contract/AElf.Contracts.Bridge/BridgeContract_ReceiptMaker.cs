@@ -19,7 +19,7 @@ namespace AElf.Contracts.Bridge
             var receiptHashMap = JsonParser.Default.Parse<ReceiptHashMap>(queryResult.Value);
             foreach (var (receiptId, receiptHash) in receiptHashMap.Value)
             {
-                State.ReceiptHashMap[receiptId] = receiptHash;
+                State.ReceiptHashMap[receiptId] = Hash.LoadFromHex(receiptHash);
             }
 
             State.ReceiptCount.Value = State.ReceiptCount.Value.Add(receiptHashMap.Value.Count);
