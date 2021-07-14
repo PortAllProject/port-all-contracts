@@ -10,6 +10,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MTRecorder;
+using Nethereum.ABI.FunctionEncoding.Attributes;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
@@ -51,7 +52,7 @@ namespace AElf.EventHandler
                     _logger.LogInformation($"Lock abi: {_lockAbi}");
                 }
             }
-            
+
             {
                 var file = contractAbiOptions1.MerkleGeneratorAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
@@ -102,17 +103,11 @@ namespace AElf.EventHandler
             {
                 var receiptInfoFunction =
                     web3ManagerForLock.GetFunction(_ethereumConfigOptions.Address, "getReceiptInfo");
-                var receiptsInfo = new List<ReceiptInfo>();
                 for (var i = lastRecordedLeafIndex + 1; i < lockTimes; i++)
                 {
-                    var returnInfo = await receiptInfoFunction.CallAsync<Tuple<byte[], string, long>>();
-                    receiptsInfo.Add(new ReceiptInfo
-                    {
-                        ReceiptId = i,
-                        TargetAddress = Address.FromBase58(returnInfo.Item2),
-                        Amount = returnInfo.Item3
-                    });
-                    _logger.LogInformation($"Receipt: {returnInfo.Item1.ToHex()}, {returnInfo.Item2}, {returnInfo.Item3}");
+                    var receiptInfo = await receiptInfoFunction.CallAsync<ReceiptInfo>();
+                    _logger.LogInformation(
+                        $"Receipt: {receiptInfo.ReceiptId.ToHex()}, {receiptInfo.TargetAddress}, {receiptInfo.Amount}");
                 }
 
                 var queryInput = new QueryInput
@@ -140,11 +135,14 @@ namespace AElf.EventHandler
             }
         }
 
-        public class ReceiptInfo
+        [FunctionOutput]
+        public class ReceiptInfo : IFunctionOutputDTO
         {
-            public long ReceiptId { get; set; }
-            public Address TargetAddress { get; set; }
-            public long Amount { get; set; }
+            [Parameter("bytes32", 1)] public byte[] ReceiptId { get; set; }
+
+            [Parameter("string", 2)] public string TargetAddress { get; set; }
+
+            [Parameter("uint256", 3)] public long Amount { get; set; }
         }
     }
 }
