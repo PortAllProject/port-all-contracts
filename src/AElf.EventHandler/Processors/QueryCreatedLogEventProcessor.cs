@@ -47,8 +47,8 @@ namespace AElf.EventHandler
                     queryCreated.QueryInfo.Options.ToList());
                 if (string.IsNullOrEmpty(data))
                 {
-                    _logger.LogError(queryCreated.QueryInfo.Title == "swap"
-                        ? $"No need to record merkle tree root."
+                    _logger.LogError(queryCreated.QueryInfo.Title == "record_receipts"
+                        ? "Failed to record receipts from eth to aelf."
                         : $"Failed to response to query {queryCreated.QueryId}.");
 
                     return;

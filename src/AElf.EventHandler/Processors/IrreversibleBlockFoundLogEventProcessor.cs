@@ -93,9 +93,15 @@ namespace AElf.EventHandler
                     RecorderId = _configOptions.RecorderId
                 }).Value;
 
+            if (lastRecordedLeafIndex == -2)
+            {
+                _logger.LogError($"Recorder of id {_configOptions.RecorderId} did created.");
+                return;
+            }
+
             _logger.LogInformation($"Lock times: {lockTimes}; Last recorded leaf index: {lastRecordedLeafIndex}");
             var notRecordedReceiptsCount = lockTimes - lastRecordedLeafIndex - 1;
-            if (notRecordedReceiptsCount > 0) 
+            if (notRecordedReceiptsCount > 0)
             {
                 var queryInput = new QueryInput
                 {
@@ -118,8 +124,9 @@ namespace AElf.EventHandler
 
                 _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
 
-                node.SendTransaction(_configOptions.AccountAddress,
+                var txId = node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
+                _logger.LogInformation($"Query tx id: {txId}");
             }
         }
     }

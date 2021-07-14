@@ -76,6 +76,7 @@ namespace AElf.EventHandler
 
             if (title == "record_receipts" && options.Count == 2)
             {
+                _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
                 var recordReceiptHashInput =
                     await GetRecordReceiptHashInput(long.Parse(options[0]), long.Parse(options[1]));
                 _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
@@ -122,28 +123,12 @@ namespace AElf.EventHandler
 
         private async Task<string> GetRecordReceiptHashInput(long start, long end)
         {
-            var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
             if (_web3ManagerForLock == null)
             {
                 _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
                     _configOptions.LockMappingContractAddress,
                     _ethereumConfigOptions.PrivateKey, _lockAbi);
             }
-
-            var merkleTreeRecorderContractAddress = _contractAddressOptions.ContractAddressMap["MTRecorder"];
-            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
-                _configOptions.AccountPassword);
-            var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
-                merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
-                new RecorderIdInput
-                {
-                    RecorderId = _configOptions.RecorderId
-                }).Value;
-            var lockTimes = await _web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
-                .CallAsync<long>();
-            if (lockTimes <= lastRecordedLeafIndex + 1)
-                // No need to record merkle tree.
-                return string.Empty;
 
             var receiptInfos = await GetReceiptInfosAsync(start, end);
             var receiptHashes = receiptInfos.Select(i =>
@@ -284,6 +269,7 @@ namespace AElf.EventHandler
             for (var i = start; i <= end; i++)
             {
                 var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>();
+                _logger.LogInformation($"Got receipt info of id {i}: {receiptInfo}");
                 receiptInfoList.Add(receiptInfo);
             }
 
