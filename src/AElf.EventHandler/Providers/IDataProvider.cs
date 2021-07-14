@@ -134,7 +134,7 @@ namespace AElf.EventHandler
             var receiptHashes = receiptInfos.Select(i =>
             {
                 var amountHash = GetHashTokenAmountData(i.Amount.ToString(), 32, true);
-                var targetAddressHash = HashHelper.ComputeFrom(ByteArrayHelper.HexStringToByteArray(i.TargetAddress));
+                var targetAddressHash = HashHelper.ComputeFrom(i.TargetAddress);
                 var receiptIdHash = HashHelper.ComputeFrom(i.ReceiptId);
                 return HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
             }).ToList();
