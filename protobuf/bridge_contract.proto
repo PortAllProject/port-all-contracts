@@ -33,6 +33,9 @@ service BridgeContract {
     rpc RecordReceiptHash (CallbackInput) returns (google.protobuf.Empty) {
     }
 
+    rpc ChangeMaximalLeafCount (google.protobuf.Int32Value) returns (google.protobuf.Empty) {
+    }
+
     // view methods
 
     rpc GetSwapInfo (aelf.Hash) returns (SwapInfo) {

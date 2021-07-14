@@ -13,7 +13,6 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
         private MerkleTree ConstructMerkleTree(Address receiptMaker, long expectFullTreeIndex, int leafCountLimit)
         {
             var receiptCount = GetReceiptCount(receiptMaker);
-            Assert(leafCountLimit != 0, "leafCountLimit is 0.");
             var treeCount = receiptCount % leafCountLimit == 0
                 ? receiptCount.Div(leafCountLimit)
                 : receiptCount.Div(leafCountLimit).Add(1);

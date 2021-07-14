@@ -11,6 +11,8 @@ namespace AElf.Contracts.Bridge
             Assert(State.MerkleTreeRecorderContract.Value == null, "Already initialized.");
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
+            State.ParliamentContract.Value =
+                Context.GetContractAddressByName(SmartContractConstants.ParliamentContractSystemName);
             State.OracleContract.Value = input.OracleContractAddress;
             State.MerkleTreeRecorderContract.Value = input.MerkleTreeRecorderContractAddress;
             State.RegimentContract.Value = input.RegimentContractAddress;

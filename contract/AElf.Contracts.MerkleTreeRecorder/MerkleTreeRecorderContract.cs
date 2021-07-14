@@ -49,7 +49,6 @@ namespace AElf.Contracts.MerkleTreeRecorder
                 "Satisfied MerkleTree absent.");
 
             var satisfiedMerkleTreeCount = State.SatisfiedMerkleTreeCount[input.RecorderId];
-            Assert(recorder.MaximalLeafCount != 0, "recorder.MaximalLeafCount is 0.");
             var newRecordedLeafLocated = input.LastLeafIndex.Div(recorder.MaximalLeafCount);
             if (newRecordedLeafLocated > satisfiedMerkleTreeCount)
                 Assert(lastRecordedLeafIndex ==

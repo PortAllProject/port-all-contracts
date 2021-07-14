@@ -67,7 +67,6 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             }
 
             var receiptCount = GetReceiptCount(input);
-            Assert(maker.MerkleTreeLeafLimit != 0, "maker.MerkleTreeLeafLimit is 0.");
             return new Int64Value {Value = receiptCount.Div(maker.MerkleTreeLeafLimit)};
         }
 
@@ -91,7 +90,6 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
             var receiptCount = GetReceiptCount(input.ReceiptMaker);
             Assert(receiptCount > 0, "Receipts not found.");
-            Assert(maker.MerkleTreeLeafLimit != 0, "maker.MerkleTreeLeafLimit is zero.");
             var firstLeafIndex = receiptCount.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
             Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= firstLeafIndex,
                 "Invalid merkle input.");

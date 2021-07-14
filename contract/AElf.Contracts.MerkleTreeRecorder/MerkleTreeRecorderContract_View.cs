@@ -19,7 +19,6 @@ namespace AElf.Contracts.MerkleTreeRecorder
 
             Assert(leafIndex >= 0 && lastRecordedLeafIndex >= leafIndex, "Not recorded yet.");
 
-            Assert(recorder.MaximalLeafCount != 0, "recorder.MaximalLeafCount is zero.");
             var satisfiedMerkleTreeIndex = leafIndex.Div(recorder.MaximalLeafCount);
             var merkleTree = satisfiedMerkleTreeIndex < State.SatisfiedMerkleTreeCount[input.RecorderId]
                 ? State.SatisfiedMerkleTrees[input.RecorderId][satisfiedMerkleTreeIndex]
@@ -41,7 +40,6 @@ namespace AElf.Contracts.MerkleTreeRecorder
             Assert(lastLeafIndex >= 0 && lastRecordedLeafIndex >= lastLeafIndex, "Not recorded yet.");
 
             var recorder = State.Recorder[input.RecorderId];
-            Assert(recorder.MaximalLeafCount != 0, "recorder.MaximalLeafCount is zero..");
             var satisfiedMerkleTreeIndex = lastLeafIndex.Div(recorder.MaximalLeafCount);
 
             if (satisfiedMerkleTreeIndex < State.SatisfiedMerkleTreeCount[input.RecorderId])

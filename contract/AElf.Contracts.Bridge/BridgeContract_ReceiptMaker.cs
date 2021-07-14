@@ -37,7 +37,6 @@ namespace AElf.Contracts.Bridge
         {
             Assert(Context.Sender == Context.Self, "No permission.");
 
-            Assert(State.MaximalLeafCount.Value != 0, "State.MaximalLeafCount.Value is 0.");
             var getMerkleTreeOutput = State.MerkleTreeGeneratorContract.GetMerkleTree.Call(
                 new MerkleTreeGeneratorContract.GetMerkleTreeInput
                 {
@@ -79,6 +78,14 @@ namespace AElf.Contracts.Bridge
             }
 
             return output;
+        }
+
+        public override Empty ChangeMaximalLeafCount(Int32Value input)
+        {
+            var parliamentDefaultAddress = State.ParliamentContract.GetDefaultOrganizationAddress.Call(new Empty());
+            Assert(Context.Sender == parliamentDefaultAddress, "No permission.");
+            State.MaximalLeafCount.Value = input.Value;
+            return new Empty();
         }
     }
 }
