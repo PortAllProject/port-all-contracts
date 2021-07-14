@@ -297,12 +297,12 @@ namespace AElf.EventHandler
             if (_web3ManagerForLock == null)
             {
                 _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
-                    _configOptions.LockMappingContractAddress,
+                    _ethereumConfigOptions.Address,
                     _ethereumConfigOptions.PrivateKey, _lockAbi);
             }
 
             var receiptInfoFunction =
-                _web3ManagerForLock.GetFunction(_ethereumConfigOptions.Address, "getReceiptInfo");
+                _web3ManagerForLock.GetFunction(_configOptions.LockMappingContractAddress, "getReceiptInfo");
             for (var i = start; i <= end; i++)
             {
                 var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>(i);
