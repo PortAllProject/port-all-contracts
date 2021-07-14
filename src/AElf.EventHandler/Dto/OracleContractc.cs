@@ -34,6 +34,35 @@ namespace AElf.Contracts.Oracle {
         QueryId = QueryId,
         Token = Token,
         MaximumPermissibleDeviation = MaximumPermissibleDeviation,
+        AggregateOption = AggregateOption,
+        TaskId = TaskId,
+      };
+    }
+  }
+
+  internal partial class QueryTaskCreated : aelf::IEvent<QueryTaskCreated>
+  {
+    public global::System.Collections.Generic.IEnumerable<QueryTaskCreated> GetIndexed()
+    {
+      return new List<QueryTaskCreated>
+      {
+      };
+    }
+
+    public QueryTaskCreated GetNonIndexed()
+    {
+      return new QueryTaskCreated
+      {
+        EachPayment = EachPayment,
+        SupposedQueryTimes = SupposedQueryTimes,
+        QueryInfo = QueryInfo,
+        EndTime = EndTime,
+        DesignatedNodeList = DesignatedNodeList,
+        AggregatorContractAddress = AggregatorContractAddress,
+        CallbackInfo = CallbackInfo,
+        Creator = Creator,
+        AggregateThreshold = AggregateThreshold,
+        AggregateOption = AggregateOption,
       };
     }
   }
@@ -208,7 +237,18 @@ namespace AElf.Contracts.Oracle {
     static readonly aelf::Marshaller<global::AElf.Types.Hash> __Marshaller_aelf_Hash = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.Hash.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CommitInput> __Marshaller_CommitInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CommitInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.RevealInput> __Marshaller_RevealInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.RevealInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CreateQueryTaskInput> __Marshaller_CreateQueryTaskInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CreateQueryTaskInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.TaskQueryInput> __Marshaller_TaskQueryInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.TaskQueryInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CompleteQueryTaskInput> __Marshaller_CompleteQueryTaskInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CompleteQueryTaskInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Types.Address> __Marshaller_aelf_Address = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Types.Address.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.CreateRegimentInput> __Marshaller_CreateRegimentInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.CreateRegimentInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.JoinRegimentInput> __Marshaller_JoinRegimentInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.JoinRegimentInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.LeaveRegimentInput> __Marshaller_LeaveRegimentInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.LeaveRegimentInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.AddRegimentMemberInput> __Marshaller_AddRegimentMemberInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.AddRegimentMemberInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.DeleteRegimentMemberInput> __Marshaller_DeleteRegimentMemberInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.DeleteRegimentMemberInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.TransferRegimentOwnershipInput> __Marshaller_TransferRegimentOwnershipInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.TransferRegimentOwnershipInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.AddAdminsInput> __Marshaller_AddAdminsInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.AddAdminsInput.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.DeleteAdminsInput> __Marshaller_DeleteAdminsInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.DeleteAdminsInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.LockTokensInput> __Marshaller_LockTokensInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.LockTokensInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.UnlockTokensInput> __Marshaller_UnlockTokensInput = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.UnlockTokensInput.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.OracleNodeThreshold> __Marshaller_OracleNodeThreshold = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.OracleNodeThreshold.Parser.ParseFrom);
@@ -218,6 +258,7 @@ namespace AElf.Contracts.Oracle {
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.StringValue> __Marshaller_google_protobuf_StringValue = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.StringValue.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::Google.Protobuf.WellKnownTypes.Int64Value> __Marshaller_google_protobuf_Int64Value = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Google.Protobuf.WellKnownTypes.Int64Value.Parser.ParseFrom);
     static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.AddressList> __Marshaller_AddressList = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.AddressList.Parser.ParseFrom);
+    static readonly aelf::Marshaller<global::AElf.Contracts.Oracle.QueryTask> __Marshaller_QueryTask = aelf::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::AElf.Contracts.Oracle.QueryTask.Parser.ParseFrom);
     #endregion
 
     #region Methods
@@ -263,11 +304,88 @@ namespace AElf.Contracts.Oracle {
         __Marshaller_aelf_Hash,
         __Marshaller_google_protobuf_Empty);
 
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.CreateQueryTaskInput, global::AElf.Types.Hash> __Method_CreateQueryTask = new aelf::Method<global::AElf.Contracts.Oracle.CreateQueryTaskInput, global::AElf.Types.Hash>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "CreateQueryTask",
+        __Marshaller_CreateQueryTaskInput,
+        __Marshaller_aelf_Hash);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.TaskQueryInput, global::AElf.Types.Hash> __Method_TaskQuery = new aelf::Method<global::AElf.Contracts.Oracle.TaskQueryInput, global::AElf.Types.Hash>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "TaskQuery",
+        __Marshaller_TaskQueryInput,
+        __Marshaller_aelf_Hash);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.CompleteQueryTaskInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_CompleteQueryTask = new aelf::Method<global::AElf.Contracts.Oracle.CompleteQueryTaskInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "CompleteQueryTask",
+        __Marshaller_CompleteQueryTaskInput,
+        __Marshaller_google_protobuf_Empty);
+
     static readonly aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> __Method_ChangeController = new aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty>(
         aelf::MethodType.Action,
         __ServiceName,
         "ChangeController",
         __Marshaller_aelf_Address,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.CreateRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_CreateRegiment = new aelf::Method<global::AElf.Contracts.Oracle.CreateRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "CreateRegiment",
+        __Marshaller_CreateRegimentInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.JoinRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_JoinRegiment = new aelf::Method<global::AElf.Contracts.Oracle.JoinRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "JoinRegiment",
+        __Marshaller_JoinRegimentInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.LeaveRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_LeaveRegiment = new aelf::Method<global::AElf.Contracts.Oracle.LeaveRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "LeaveRegiment",
+        __Marshaller_LeaveRegimentInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.AddRegimentMemberInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_AddRegimentMember = new aelf::Method<global::AElf.Contracts.Oracle.AddRegimentMemberInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "AddRegimentMember",
+        __Marshaller_AddRegimentMemberInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.DeleteRegimentMemberInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_DeleteRegimentMember = new aelf::Method<global::AElf.Contracts.Oracle.DeleteRegimentMemberInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "DeleteRegimentMember",
+        __Marshaller_DeleteRegimentMemberInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.TransferRegimentOwnershipInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_TransferRegimentOwnership = new aelf::Method<global::AElf.Contracts.Oracle.TransferRegimentOwnershipInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "TransferRegimentOwnership",
+        __Marshaller_TransferRegimentOwnershipInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.AddAdminsInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_AddAdmins = new aelf::Method<global::AElf.Contracts.Oracle.AddAdminsInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "AddAdmins",
+        __Marshaller_AddAdminsInput,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Contracts.Oracle.DeleteAdminsInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_DeleteAdmins = new aelf::Method<global::AElf.Contracts.Oracle.DeleteAdminsInput, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "DeleteAdmins",
+        __Marshaller_DeleteAdminsInput,
         __Marshaller_google_protobuf_Empty);
 
     static readonly aelf::Method<global::AElf.Contracts.Oracle.LockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty> __Method_LockTokens = new aelf::Method<global::AElf.Contracts.Oracle.LockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty>(
@@ -303,6 +421,20 @@ namespace AElf.Contracts.Oracle {
         __ServiceName,
         "EnableChargeFee",
         __Marshaller_google_protobuf_Empty,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> __Method_AddPostPayAddress = new aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "AddPostPayAddress",
+        __Marshaller_aelf_Address,
+        __Marshaller_google_protobuf_Empty);
+
+    static readonly aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> __Method_RemovePostPayAddress = new aelf::Method<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty>(
+        aelf::MethodType.Action,
+        __ServiceName,
+        "RemovePostPayAddress",
+        __Marshaller_aelf_Address,
         __Marshaller_google_protobuf_Empty);
 
     static readonly aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address> __Method_GetController = new aelf::Method<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address>(
@@ -361,6 +493,20 @@ namespace AElf.Contracts.Oracle {
         __Marshaller_aelf_Hash,
         __Marshaller_AddressList);
 
+    static readonly aelf::Method<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.QueryTask> __Method_GetQueryTask = new aelf::Method<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.QueryTask>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetQueryTask",
+        __Marshaller_aelf_Hash,
+        __Marshaller_QueryTask);
+
+    static readonly aelf::Method<global::AElf.Types.Address, global::AElf.Contracts.Oracle.AddressList> __Method_GetRegimentMemberList = new aelf::Method<global::AElf.Types.Address, global::AElf.Contracts.Oracle.AddressList>(
+        aelf::MethodType.View,
+        __ServiceName,
+        "GetRegimentMemberList",
+        __Marshaller_aelf_Address,
+        __Marshaller_AddressList);
+
     #endregion
 
     #region Descriptors
@@ -380,6 +526,45 @@ namespace AElf.Contracts.Oracle {
       }
     }
     #endregion
+
+    public class OracleContractReferenceState : global::AElf.Sdk.CSharp.State.ContractReferenceState
+    {
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.InitializeInput, global::Google.Protobuf.WellKnownTypes.Empty> Initialize { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.InitializeInput, global::Google.Protobuf.WellKnownTypes.Empty> InitializeAndCreateToken { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.QueryInput, global::AElf.Types.Hash> Query { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.CommitInput, global::Google.Protobuf.WellKnownTypes.Empty> Commit { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.RevealInput, global::Google.Protobuf.WellKnownTypes.Empty> Reveal { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Hash, global::Google.Protobuf.WellKnownTypes.Empty> CancelQuery { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.CreateQueryTaskInput, global::AElf.Types.Hash> CreateQueryTask { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.TaskQueryInput, global::AElf.Types.Hash> TaskQuery { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.CompleteQueryTaskInput, global::Google.Protobuf.WellKnownTypes.Empty> CompleteQueryTask { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> ChangeController { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.CreateRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty> CreateRegiment { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.JoinRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty> JoinRegiment { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.LeaveRegimentInput, global::Google.Protobuf.WellKnownTypes.Empty> LeaveRegiment { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.AddRegimentMemberInput, global::Google.Protobuf.WellKnownTypes.Empty> AddRegimentMember { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.DeleteRegimentMemberInput, global::Google.Protobuf.WellKnownTypes.Empty> DeleteRegimentMember { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.TransferRegimentOwnershipInput, global::Google.Protobuf.WellKnownTypes.Empty> TransferRegimentOwnership { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.AddAdminsInput, global::Google.Protobuf.WellKnownTypes.Empty> AddAdmins { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.DeleteAdminsInput, global::Google.Protobuf.WellKnownTypes.Empty> DeleteAdmins { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.LockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty> LockTokens { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.UnlockTokensInput, global::Google.Protobuf.WellKnownTypes.Empty> UnlockTokens { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Contracts.Oracle.OracleNodeThreshold, global::Google.Protobuf.WellKnownTypes.Empty> SetThreshold { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::Google.Protobuf.WellKnownTypes.Int32Value, global::Google.Protobuf.WellKnownTypes.Empty> ChangeDefaultExpirationSeconds { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Empty> EnableChargeFee { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> AddPostPayAddress { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Empty> RemovePostPayAddress { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Types.Address> GetController { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.QueryRecord> GetQueryRecord { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.CommitmentMap> GetCommitmentMap { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.StringValue> GetOracleTokenSymbol { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Address, global::Google.Protobuf.WellKnownTypes.Int64Value> GetLockedTokensAmount { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::Google.Protobuf.WellKnownTypes.Empty, global::AElf.Contracts.Oracle.OracleNodeThreshold> GetThreshold { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::Google.Protobuf.WellKnownTypes.Empty, global::Google.Protobuf.WellKnownTypes.Int32Value> GetDefaultExpirationSeconds { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.AddressList> GetHelpfulNodeList { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Hash, global::AElf.Contracts.Oracle.QueryTask> GetQueryTask { get; set; }
+      internal global::AElf.Sdk.CSharp.State.MethodReference<global::AElf.Types.Address, global::AElf.Contracts.Oracle.AddressList> GetRegimentMemberList { get; set; }
+    }
   }
 }
 #endregion

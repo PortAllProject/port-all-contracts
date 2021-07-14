@@ -15,7 +15,12 @@ namespace AElf.EventHandler
 
         public override string ToString()
         {
-            return $"{Hash.LoadFromByteArray(ReceiptId)}, {Address.FromBase58(TargetAddress)}, {Amount}";
+            if (ReceiptId == null)
+            {
+                return "Receipt Id is null";
+            }
+
+            return $"{Hash.LoadFromByteArray(ReceiptId)}, {Address.FromBase58(TargetAddress)}, {Amount.ToString()}";
         }
     }
 }

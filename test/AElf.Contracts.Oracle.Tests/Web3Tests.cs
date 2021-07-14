@@ -27,8 +27,7 @@ namespace AElf.Contracts.Oracle
                 receiptInfoList.Add(receiptInfo);
             }
 
-            var str = receiptInfoList.Aggregate(string.Empty,
-                (current, receiptInfo) => current + '\n' + receiptInfo);
+            var str = receiptInfoList.Aggregate(string.Empty, (current, receiptInfo) => current + '\n' + receiptInfo);
 
             str.ShouldBeNull();
         }
