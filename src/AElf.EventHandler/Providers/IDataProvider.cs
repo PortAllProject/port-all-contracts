@@ -80,6 +80,7 @@ namespace AElf.EventHandler
                 var recordReceiptHashInput =
                     await GetRecordReceiptHashInput(long.Parse(options[0]), long.Parse(options[1]));
                 _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
+                _dictionary[queryId] = recordReceiptHashInput;
                 return recordReceiptHashInput;
             }
 
