@@ -45,9 +45,15 @@
         <ContractReference Include="..\..\protobuf\acs1.proto">
             <Link>Protobuf\Proto\reference\acs1.proto</Link>
         </ContractReference>
+        <ContractReference Include="..\..\protobuf\merkle_tree_generator.proto">
+            <Link>Protobuf\Proto\reference\merkle_tree_generator.proto</Link>
+        </ContractReference>
     </ItemGroup>
 
     <ItemGroup>
+        <ContractBase Include="..\..\protobuf\receipt_maker.proto">
+            <Link>Protobuf\Proto\receipt_maker.proto</Link>
+        </ContractBase>
         <ContractCode Include="..\..\protobuf\bridge_contract.proto">
             <Link>Protobuf\Proto\bridge_contract.proto</Link>
         </ContractCode>

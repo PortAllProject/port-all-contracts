@@ -91,7 +91,7 @@ namespace AElf.Contracts.Bridge
             var amountInString = swapTokenInput.OriginAmount;
             var validationResult = amountInString.Length > 0 && IsValidAmount(swapTokenInput.OriginAmount);
             Assert(validationResult, "Invalid token swap input.");
-            Assert(State.Ledger[swapTokenInput.SwapId][swapTokenInput.UniqueId] == null, "Already claimed.");
+            Assert(State.Ledger[swapTokenInput.SwapId][swapTokenInput.ReceiptId] == null, "Already claimed.");
         }
 
         private Hash GetHashTokenAmountData(decimal amount, int originTokenSizeInByte, bool isBigEndian)
@@ -135,12 +135,13 @@ namespace AElf.Contracts.Bridge
             return HashHelper.ComputeFrom(receiverAddress.ToBase58());
         }
 
-        private Hash ComputeLeafHash(decimal amount, Hash uniqueId, SwapInfo swapInfo, Address receiverAddress)
+        private Hash ComputeLeafHash(decimal amount, SwapInfo swapInfo, Address receiverAddress, long receiptId)
         {
-            var hashFromAmount = GetHashTokenAmountData(amount, swapInfo.OriginTokenSizeInByte,
+            var amountHash = GetHashTokenAmountData(amount, swapInfo.OriginTokenSizeInByte,
                 swapInfo.OriginTokenNumericBigEndian);
-            var hashFromAddress = GetHashFromAddressData(receiverAddress);
-            return HashHelper.ConcatAndCompute(hashFromAmount, hashFromAddress, uniqueId);
+            var receiptIdHash = HashHelper.ComputeFrom(receiptId);
+            var targetAddressHash = GetHashFromAddressData(receiverAddress);
+            return HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
         }
 
         private long GetTargetTokenAmount(decimal amount, SwapRatio swapRatio)

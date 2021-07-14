@@ -61,7 +61,11 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
         public override Int64Value GetFullTreeCount(Address input)
         {
             var maker = State.ReceiptMakerMap[input];
-            Assert(maker != null, "Not registered.");
+            if (maker == null)
+            {
+                throw new AssertionException("Receipt maker not registered.");
+            }
+
             var receiptCount = GetReceiptCount(input);
             return new Int64Value {Value = receiptCount.Div(maker.MerkleTreeLeafLimit)};
         }
@@ -78,12 +82,20 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override MerklePath GetMerklePath(GetMerklePathInput input)
         {
-            var maker = State.ReceiptMakerMap[input.ReciptMaker];
-            Assert(maker != null, "Not registered.");
-            Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= input.FirstLeafIndex, "Invalid merkle input.");
+            var maker = State.ReceiptMakerMap[input.ReceiptMaker];
+            if (maker == null)
+            {
+                throw new AssertionException("Receipt maker not registered.");
+            }
 
-            var binaryMerkleTree = GenerateMerkleTree(input.ReciptMaker, input.FirstLeafIndex, input.LastLeafIndex);
-            var index = (int) input.ReceiptId.Sub(input.FirstLeafIndex);
+            var receiptCount = GetReceiptCount(input.ReceiptMaker);
+            Assert(receiptCount > 0, "Receipts not found.");
+            var firstLeafIndex = receiptCount.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
+            Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= firstLeafIndex,
+                "Invalid merkle input.");
+
+            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, firstLeafIndex, input.LastLeafIndex);
+            var index = (int) input.ReceiptId.Sub(firstLeafIndex);
             var path = binaryMerkleTree.GenerateMerklePath(index);
             return path;
         }

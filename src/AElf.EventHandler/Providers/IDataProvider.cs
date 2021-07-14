@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AElf.Contracts.Bridge;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
@@ -30,6 +31,8 @@ namespace AElf.EventHandler
         private readonly string _lockAbi;
         private readonly string _merkleGeneratorAbi;
 
+        private Web3Manager _web3ManagerForLock;
+
         public DataProvider(ILogger<DataProvider> logger, IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
             IOptionsSnapshot<ConfigOptions> configOptions, IOptionsSnapshot<ContractAbiOptions> contractAbiOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions)
@@ -48,6 +51,7 @@ namespace AElf.EventHandler
                     {
                         _logger.LogError($"Cannot found file {file}");
                     }
+
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
                 }
             }
@@ -59,6 +63,7 @@ namespace AElf.EventHandler
                     {
                         _logger.LogError($"Cannot found file {file}");
                     }
+
                     _merkleGeneratorAbi = JsonHelper.ReadJson(file, "abi");
                 }
             }
@@ -82,9 +87,12 @@ namespace AElf.EventHandler
                 return string.Empty;
             }
 
-            if (title == "swap")
+            if (title == "record_receipts" && options.Count == 2)
             {
-                return await GetRecordMerkleTreeInput();
+                var recordReceiptHashInput =
+                    await GetRecordReceiptHashInput(long.Parse(options[0]), long.Parse(options[1]));
+                _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
+                return recordReceiptHashInput;
             }
 
             string result;
@@ -125,54 +133,50 @@ namespace AElf.EventHandler
             return result;
         }
 
-        private async Task<string> GetRecordMerkleTreeInput()
+        private async Task<string> GetRecordReceiptHashInput(long start, long end)
         {
             var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
-            var merkleGeneratorContractAddress = _configOptions.MerkleGeneratorContractAddress;
-            var web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url, lockMappingContractAddress,
-                _ethereumConfigOptions.PrivateKey, _lockAbi);
-            var web3ManagerForMerkleGenerator = new Web3Manager(_ethereumConfigOptions.Url,
-                merkleGeneratorContractAddress,
-                _ethereumConfigOptions.PrivateKey, _merkleGeneratorAbi);
+            if (_web3ManagerForLock == null)
+            {
+                _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
+                    _configOptions.LockMappingContractAddress,
+                    _ethereumConfigOptions.PrivateKey, _lockAbi);
+            }
+
+            var merkleTreeRecorderContractAddress = _contractAddressOptions.ContractAddressMap["MTRecorder"];
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
-            var merkleTreeRecorderContractAddress = _contractAddressOptions.ContractAddressMap["MTRecorder"];
-
-            var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
-                .CallAsync<long>();
             var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
                 merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
                 new RecorderIdInput
                 {
                     RecorderId = _configOptions.RecorderId
                 }).Value;
+            var lockTimes = await _web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
+                .CallAsync<long>();
             if (lockTimes <= lastRecordedLeafIndex + 1)
                 // No need to record merkle tree.
                 return string.Empty;
 
-            var satisfiedTreeCount = node.QueryView<Int64Value>(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap["MTRecorder"], "GetSatisfiedTreeCount",
-                new RecorderIdInput
-                {
-                    RecorderId = _configOptions.RecorderId
-                }).Value;
-            var expectCount = (satisfiedTreeCount + 1) * _configOptions.MaximumLeafCount;
-            var getMerkleTreeOutput = await web3ManagerForMerkleGenerator
-                .GetFunction(merkleGeneratorContractAddress, "getMerkleTree")
-                .CallAsync<Tuple<byte[], long, long, long, byte[][]>>(expectCount);
-            var root = getMerkleTreeOutput.Item1;
-            var firstReceiptId = getMerkleTreeOutput.Item2;
-            var leafCount = getMerkleTreeOutput.Item3;
-            var lastLeafIndex = firstReceiptId + leafCount - 1;
-
-            var rootHash = Hash.LoadFromByteArray(root);
-            _logger.LogInformation($"Merkle Tree Root: {rootHash}");
-            return new RecordMerkleTreeInput
+            var receiptInfos = await GetReceiptInfosAsync(start, end);
+            var receiptHashes = receiptInfos.Select(i =>
             {
-                RecorderId = _configOptions.RecorderId,
-                LastLeafIndex = lastLeafIndex,
-                MerkleTreeRoot = rootHash
-            }.ToString();
+                var amountHash = HashHelper.ComputeFrom(i.Amount);
+                var targetAddressHash = HashHelper.ComputeFrom(ByteArrayHelper.HexStringToByteArray(i.TargetAddress));
+                var receiptIdHash = HashHelper.ComputeFrom(i.ReceiptId);
+                return HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
+            }).ToList();
+            var input = new ReceiptHashMap
+            {
+                RecorderId = _configOptions.RecorderId
+            };
+            for (var i = 0; i <= end - start; i++)
+            {
+                var index = (int) (i + start);
+                input.Value.Add(index, receiptHashes[index]);
+            }
+
+            return input.ToString();
         }
 
         private string Aggregate(List<decimal> dataList)
@@ -276,6 +280,27 @@ namespace AElf.EventHandler
             }
 
             return data;
+        }
+
+        private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(long start, long end)
+        {
+            var receiptInfoList = new List<ReceiptInfo>();
+            if (_web3ManagerForLock == null)
+            {
+                _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
+                    _configOptions.LockMappingContractAddress,
+                    _ethereumConfigOptions.PrivateKey, _lockAbi);
+            }
+
+            var receiptInfoFunction =
+                _web3ManagerForLock.GetFunction(_ethereumConfigOptions.Address, "getReceiptInfo");
+            for (var i = start; i <= end; i++)
+            {
+                var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>();
+                receiptInfoList.Add(receiptInfo);
+            }
+
+            return receiptInfoList;
         }
     }
 }

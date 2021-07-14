@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.Oracle;
-using AElf.Contracts.OracleUser;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MTRecorder;
-using Nethereum.ABI.FunctionEncoding.Attributes;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
@@ -99,39 +95,22 @@ namespace AElf.EventHandler
 
             _logger.LogInformation($"Lock times: {lockTimes}; Last recorded leaf index: {lastRecordedLeafIndex}");
             var notRecordedReceiptsCount = lockTimes - lastRecordedLeafIndex - 1;
-            if (notRecordedReceiptsCount > 0)
+            if (notRecordedReceiptsCount > 0) 
             {
-                var receiptInfoFunction =
-                    web3ManagerForLock.GetFunction(_ethereumConfigOptions.Address, "getReceiptInfo");
-                for (var i = lastRecordedLeafIndex + 1; i < lockTimes; i++)
-                {
-                    var receiptInfo = await receiptInfoFunction.CallAsync<ReceiptInfo>();
-                    if (receiptInfo == null)
-                    {
-                        _logger.LogError("receipt info is null.");
-                    }
-                    else
-                    {
-                        var receiptId = receiptInfo.ReceiptId == null ? string.Empty : receiptInfo.ReceiptId.ToHex();
-                        var targetAddress = receiptInfo.TargetAddress ?? string.Empty;
-                        _logger.LogInformation(
-                            $"Receipt: {receiptId}, {targetAddress}, {receiptInfo.Amount}");
-                    }
-                }
-
                 var queryInput = new QueryInput
                 {
                     Payment = _configOptions.QueryPayment,
                     QueryInfo = new QueryInfo
                     {
-                        Title = "swap"
+                        Title = "record_receipts",
+                        Options = {(lastRecordedLeafIndex + 1).ToString(), (lockTimes - 1).ToString()}
                     },
                     AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
                         .ConvertAddress(),
                     CallbackInfo = new CallbackInfo
                     {
                         ContractAddress = _contractAddressOptions.ContractAddressMap["Bridge"].ConvertAddress(),
-                        MethodName = "RecordMerkleTree"
+                        MethodName = "RecordReceiptHash"
                     },
                     DesignatedNodeList = new AddressList
                         {Value = {_configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress()}}
@@ -142,16 +121,6 @@ namespace AElf.EventHandler
                 node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
             }
-        }
-
-        [FunctionOutput]
-        public class ReceiptInfo : IFunctionOutputDTO
-        {
-            [Parameter("bytes32", 1)] public byte[] ReceiptId { get; set; }
-
-            [Parameter("string", 2)] public string TargetAddress { get; set; }
-
-            [Parameter("uint256", 3)] public long Amount { get; set; }
         }
     }
 }

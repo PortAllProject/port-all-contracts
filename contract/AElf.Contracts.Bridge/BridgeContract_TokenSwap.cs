@@ -1,8 +1,7 @@
-using System.Linq;
+using AElf.Contracts.MerkleTreeGeneratorContract;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
-using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
 using MTRecorder;
 
@@ -64,12 +63,24 @@ namespace AElf.Contracts.Bridge
             ValidateSwapTokenInput(input);
             Assert(TryGetOriginTokenAmount(input.OriginAmount, out var amount) && amount > 0,
                 "Invalid token swap input.");
-            var leafHash = ComputeLeafHash(amount, input.UniqueId, swapInfo, receiverAddress);
+            var leafHash = ComputeLeafHash(amount, swapInfo, receiverAddress, input.ReceiptId);
+
+            var lastLeafIndex = State.MerkleTreeRecorderContract.GetLastRecordedLeafIndex.Call(new RecorderIdInput
+            {
+                RecorderId = swapInfo.RecorderId
+            }).Value;
+            var merklePath = State.MerkleTreeGeneratorContract.GetMerklePath.Call(new GetMerklePathInput
+            {
+                ReceiptMaker = Context.Self,
+                LastLeafIndex = lastLeafIndex,
+                ReceiptId = input.ReceiptId,
+            });
+
             Assert(State.MerkleTreeRecorderContract.MerkleProof.Call(new MerkleProofInput
             {
-                LastLeafIndex = input.LastLeafIndex,
+                LastLeafIndex = lastLeafIndex,
                 LeafNode = leafHash,
-                MerklePath = input.MerklePath,
+                MerklePath = merklePath,
                 RecorderId = swapInfo.RecorderId
             }).Value, "Merkle proof failed.");
 
@@ -103,7 +114,7 @@ namespace AElf.Contracts.Bridge
                 swapAmounts.ReceivedAmounts[symbol] = targetTokenAmount;
             }
 
-            State.Ledger[input.SwapId][input.UniqueId] = swapAmounts;
+            State.Ledger[input.SwapId][input.ReceiptId] = swapAmounts;
 
             return new Empty();
         }
@@ -172,22 +183,9 @@ namespace AElf.Contracts.Bridge
             return new Empty();
         }
 
-        public override Empty RecordMerkleTree(CallbackInput input)
-        {
-            Assert(Context.Sender == State.OracleContract.Value, "No permission.");
-            var queryResult = new StringValue();
-            queryResult.MergeFrom(input.Result);
-            var recordMerkleTreeInput = JsonParser.Default.Parse<RecordMerkleTreeInput>(queryResult.Value);
-            // Make sure certain oracle nodes (regiment) is aiming at record for this recorder id.
-            Assert(State.RecorderIdToRegimentMap[recordMerkleTreeInput.RecorderId] == input.OracleNodes.First(),
-                "Incorrect recorder id.");
-            State.MerkleTreeRecorderContract.RecordMerkleTree.Send(recordMerkleTreeInput);
-            return new Empty();
-        }
-
         public override SwapAmounts GetSwapAmounts(GetSwapAmountsInput input)
         {
-            return State.Ledger[input.SwapId][input.UniqueId];
+            return State.Ledger[input.SwapId][input.ReceiptId];
         }
     }
 }

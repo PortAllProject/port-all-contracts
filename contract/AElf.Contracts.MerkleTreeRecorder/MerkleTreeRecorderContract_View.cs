@@ -54,7 +54,7 @@ namespace AElf.Contracts.MerkleTreeRecorder
         [View]
         public override BoolValue MerkleProof(MerkleProofInput input)
         {
-            var merkleTree = GetMerkleTree(new GetMerkleTreeInput()
+            var merkleTree = GetMerkleTree(new GetMerkleTreeInput
             {
                 LastLeafIndex = input.LastLeafIndex,
                 RecorderId = input.RecorderId

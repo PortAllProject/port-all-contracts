@@ -1,3 +1,4 @@
+using AElf.Contracts.MerkleTreeGeneratorContract;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Oracle;
 using AElf.Contracts.Parliament;
@@ -13,10 +14,10 @@ namespace AElf.Contracts.Bridge
         internal ParliamentContractContainer.ParliamentContractReferenceState ParliamentContract { get; set; }
         internal RegimentContractContainer.RegimentContractReferenceState RegimentContract { get; set; }
 
-        internal MerkleTreeRecorderContractContainer.MerkleTreeRecorderContractReferenceState MerkleTreeRecorderContract
-        {
-            get;
-            set;
-        }
+        internal MerkleTreeRecorderContractContainer.MerkleTreeRecorderContractReferenceState
+            MerkleTreeRecorderContract { get; set; }
+
+        internal MerkleTreeGeneratorContractContainer.MerkleTreeGeneratorContractReferenceState
+            MerkleTreeGeneratorContract { get; set; }
     }
 }

@@ -7,12 +7,14 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/wrappers.proto";
 import "callback_input.proto";
 import "acs13.proto";
+import "receipt_maker.proto";
 
 option csharp_namespace = "AElf.Contracts.Bridge";
 
 service BridgeContract {
     option (aelf.csharp_state) = "AElf.Contracts.Bridge.BridgeContractState";
     option (aelf.base) = "acs13.proto";
+    option (aelf.base) = "receipt_maker.proto";
 
     rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
 
@@ -26,7 +28,9 @@ service BridgeContract {
     }
     rpc Withdraw (WithdrawInput) returns (google.protobuf.Empty) {
     }
-    rpc RecordMerkleTree (CallbackInput) returns (google.protobuf.Empty) {
+    rpc UpdateMerkleTree (UpdateMerkleTreeInput) returns (google.protobuf.Empty) {
+    }
+    rpc RecordReceiptHash (CallbackInput) returns (google.protobuf.Empty) {
     }
 
     // view methods
@@ -46,7 +50,8 @@ message InitializeInput {
     aelf.Address oracle_contract_address = 1;
     aelf.Address merkle_tree_recorder_contract_address = 2; 
     aelf.Address regiment_contract_address = 3; 
-    int64 recorder_id = 4;
+    aelf.Address merkle_tree_generator_contract_address = 4;
+    int32 merkle_tree_leaf_limit = 5;
 }
 
 message CreateSwapInput {
@@ -95,10 +100,8 @@ message ChangeSwapRatioInput {
 
 message SwapTokenInput {
     aelf.Hash swap_id = 1;
-    string origin_amount = 2;
-    aelf.MerklePath merkle_path = 3;
-    aelf.Hash unique_id = 4; // to make every swap unique 
-    int64 last_leaf_index = 5;
+    int64 receipt_id = 2;
+    string origin_amount = 3;
 }
 
 message DepositInput {
@@ -114,7 +117,7 @@ message GetSwapPairInput {
 
 message GetSwapAmountsInput {
     aelf.Hash swap_id = 1;
-    aelf.Hash unique_id = 2;
+    int64 receipt_id = 2;
 }
 
 message SwapAmounts {
@@ -126,6 +129,16 @@ message WithdrawInput {
     aelf.Hash swap_id = 1;
     string target_token_symbol = 2;
     int64 amount = 3;
+}
+
+message ReceiptHashMap {
+    map<int64, aelf.Hash> value = 1;
+    int64 recorder_id = 2;
+}
+
+message UpdateMerkleTreeInput {
+    int64 recorder_id = 1;
+    aelf.Address regiment_address = 2;
 }
 
 // Events

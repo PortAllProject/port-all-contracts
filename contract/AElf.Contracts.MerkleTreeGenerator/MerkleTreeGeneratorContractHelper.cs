@@ -21,7 +21,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
                 "Unable to generate this merkle tree.");
 
             var isFullTree = (expectFullTreeIndex + 1).Mul(leafCountLimit) <= receiptCount;
-            var firstLeafIndex = expectFullTreeIndex * leafCountLimit;
+            var firstLeafIndex = expectFullTreeIndex.Mul(leafCountLimit);
             var lastLeafIndex = isFullTree
                 ? expectFullTreeIndex.Add(1).Mul(leafCountLimit).Sub(1)
                 : receiptCount.Sub(1);
