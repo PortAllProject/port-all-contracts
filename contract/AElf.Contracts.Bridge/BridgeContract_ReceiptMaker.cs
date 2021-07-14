@@ -37,6 +37,7 @@ namespace AElf.Contracts.Bridge
         {
             Assert(Context.Sender == Context.Self, "No permission.");
 
+            Assert(State.MaximalLeafCount.Value != 0, "State.MaximalLeafCount.Value is 0.");
             var getMerkleTreeOutput = State.MerkleTreeGeneratorContract.GetMerkleTree.Call(
                 new MerkleTreeGeneratorContract.GetMerkleTreeInput
                 {
