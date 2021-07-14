@@ -131,13 +131,16 @@ namespace AElf.EventHandler
             }
 
             var receiptInfos = await GetReceiptInfosAsync(start, end);
-            var receiptHashes = receiptInfos.Select(i =>
+            var receiptHashes = new List<Hash>();
+            for (var i = 0; i <= end - start; i++)
             {
-                var amountHash = GetHashTokenAmountData(i.Amount.ToString(), 32, true);
-                var targetAddressHash = HashHelper.ComputeFrom(i.TargetAddress);
-                var receiptIdHash = HashHelper.ComputeFrom(i.ReceiptId);
-                return HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
-            }).ToList();
+                var amountHash = GetHashTokenAmountData(receiptInfos[i].Amount.ToString(), 32, true);
+                var targetAddressHash = HashHelper.ComputeFrom(receiptInfos[i].TargetAddress);
+                var receiptIdHash = HashHelper.ComputeFrom(i + start);
+                var hash =  HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
+                receiptHashes.Add(hash);
+            }
+
             var input = new ReceiptHashMap
             {
                 RecorderId = _configOptions.RecorderId
