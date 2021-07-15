@@ -47,6 +47,9 @@ service BridgeContract {
     rpc GetSwapAmounts (GetSwapAmountsInput) returns (SwapAmounts) {
         option (aelf.is_view) = true;
     }
+    rpc GetRegimentAddressByRecorderId (google.protobuf.Int64Value) returns (aelf.Address) {
+        option (aelf.is_view) = true;
+    }
 }
 
 message InitializeInput {

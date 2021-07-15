@@ -190,5 +190,10 @@ namespace AElf.Contracts.Bridge
         {
             return State.Ledger[input.SwapId][input.ReceiptId];
         }
+
+        public override Address GetRegimentAddressByRecorderId(Int64Value input)
+        {
+            return State.RecorderIdToRegimentMap[input.Value];
+        }
     }
 }
