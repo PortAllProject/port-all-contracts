@@ -1,30 +1,27 @@
 using System.Threading.Tasks;
 using AElf.Contracts.Oracle;
 using AElf.Types;
-using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
     internal class SufficientCommitmentsCollectedLogEventProcessor :
-        LogEventProcessorBase<SufficientCommitmentsCollected>, ITransientDependency
+        LogEventProcessorBase<SufficientCommitmentsCollected>
     {
         private readonly ISaltProvider _saltProvider;
-        private readonly IDataProvider _dataProvider;
+        private readonly IQueryService _queryService;
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;
         private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
 
         public SufficientCommitmentsCollectedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider, IDataProvider dataProvider,
+            ISaltProvider saltProvider, IQueryService queryService,
             ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger) : base(contractAddressOptions)
         {
             _saltProvider = saltProvider;
-            _dataProvider = dataProvider;
+            _queryService = queryService;
             _logger = logger;
             _configOptions = configOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
@@ -36,7 +33,7 @@ namespace AElf.EventHandler
         {
             var collected = new SufficientCommitmentsCollected();
             collected.MergeFrom(logEvent);
-            var data = await _dataProvider.GetDataAsync(collected.QueryId);
+            var data = await _queryService.GetDataAsync(collected.QueryId);
             if (string.IsNullOrEmpty(data))
             {
                 _logger.LogError($"Failed to reveal data for query {collected.QueryId}.");

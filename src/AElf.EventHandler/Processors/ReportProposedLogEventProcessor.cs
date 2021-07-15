@@ -3,11 +3,10 @@ using AElf.Contracts.Report;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>, ITransientDependency
+    internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>
     {
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly ConfigOptions _configOptions;

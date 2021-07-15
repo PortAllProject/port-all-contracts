@@ -3,11 +3,10 @@ using AElf.Contracts.OracleUser;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class QueryDataRecordedLogEventProcessor : LogEventProcessorBase<QueryDataRecorded>, ITransientDependency
+    internal class QueryDataRecordedLogEventProcessor : LogEventProcessorBase<QueryDataRecorded>
     {
         private readonly ILogger<QueryDataRecordedLogEventProcessor> _logger;
 

@@ -60,6 +60,12 @@ namespace AElf.EventHandler
             Configure<ContractAbiOptions>(configuration.GetSection("ContractAbi"));
             context.Services.AddHostedService<EventHandlerAppHostedService>();
             context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
+
+            Configure<DataProviderOptions>(options =>
+            {
+                options.DataProviders[RecordReceiptsDataProvider.Title] = typeof(RecordReceiptsDataProvider);
+                options.DataProviders[InvalidDataProvider.Title] = typeof(InvalidDataProvider);
+            });
         }
     }
 }

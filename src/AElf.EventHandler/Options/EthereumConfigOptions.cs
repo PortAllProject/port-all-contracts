@@ -6,6 +6,7 @@ namespace AElf.EventHandler
         public string Address { get; set; }
         public string PrivateKey { get; set; }
         public bool IsEnable { get; set; }
-        
+        public string TransmitContractAddress { get; set; }
+        public string LockMappingContractAddress { get; set; }
     }
 }

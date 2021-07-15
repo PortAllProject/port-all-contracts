@@ -1,14 +1,12 @@
 using System.Threading.Tasks;
 using AElf.Contracts.IntegerAggregator;
 using AElf.Types;
-using Common.Logging;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class AggregateDataReceivedLogEventProcessor : LogEventProcessorBase<AggregateDataReceived>, ITransientDependency
+    internal class AggregateDataReceivedLogEventProcessor : LogEventProcessorBase<AggregateDataReceived>
     {
         private readonly ILogger<AggregateDataReceivedLogEventProcessor> _logger;
 

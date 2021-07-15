@@ -3,12 +3,10 @@ using AElf.Contracts.Oracle;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class QueryCompletedLogEventProcessor : LogEventProcessorBase<QueryCompletedWithAggregation>,
-        ITransientDependency
+    internal class QueryCompletedLogEventProcessor : LogEventProcessorBase<QueryCompletedWithAggregation>
     {
         public override string ContractName => "Oracle";
         private readonly ILogger<QueryCompletedLogEventProcessor> _logger;

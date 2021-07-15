@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using AElf.CSharp.Core;
 using AElf.Types;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {

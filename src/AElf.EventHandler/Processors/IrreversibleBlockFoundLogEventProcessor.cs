@@ -1,4 +1,3 @@
-using System.IO;
 using System.Threading.Tasks;
 using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.Oracle;
@@ -7,63 +6,29 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MTRecorder;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<IrreversibleBlockFound>,
-        ITransientDependency
+    public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<IrreversibleBlockFound>
     {
         private readonly ConfigOptions _configOptions;
-        private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly ContractAddressOptions _contractAddressOptions;
+        private readonly INethereumManagerFactory _nethereumManagerFactory;
         private readonly ILogger<IrreversibleBlockFoundLogEventProcessor> _logger;
-        private readonly string _lockAbi;
-        private readonly string _merkleAbi;
 
-        private long _lastedQueryReceiptCount = 0;
+        private long _lastedQueryReceiptCount;
 
         public IrreversibleBlockFoundLogEventProcessor(
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
             IOptionsSnapshot<ConfigOptions> configOptions,
-            IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
-            IOptionsSnapshot<ContractAbiOptions> contractAbiOptions,
+            INethereumManagerFactory nethereumManagerFactory,
             ILogger<IrreversibleBlockFoundLogEventProcessor> logger) : base(contractAddressOptions)
         {
+            _nethereumManagerFactory = nethereumManagerFactory;
             _logger = logger;
 
-            var contractAbiOptions1 = contractAbiOptions.Value;
             _configOptions = configOptions.Value;
-            _ethereumConfigOptions = ethereumConfigOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
-
-            {
-                var file = contractAbiOptions1.LockAbiFilePath;
-                if (!string.IsNullOrEmpty(file))
-                {
-                    if (!File.Exists(file))
-                    {
-                        _logger.LogError($"Cannot found file {file}");
-                    }
-
-                    _lockAbi = JsonHelper.ReadJson(file, "abi");
-                    _logger.LogInformation($"Lock abi: {_lockAbi}");
-                }
-            }
-
-            {
-                var file = contractAbiOptions1.MerkleGeneratorAbiFilePath;
-                if (!string.IsNullOrEmpty(file))
-                {
-                    if (!File.Exists(file))
-                    {
-                        _logger.LogError($"Cannot found file {file}");
-                    }
-
-                    _merkleAbi = JsonHelper.ReadJson(file, "abi");
-                    _logger.LogInformation($"Merkle abi: {_merkleAbi}");
-                }
-            }
         }
 
         public override string ContractName => "Consensus";
@@ -76,24 +41,19 @@ namespace AElf.EventHandler
 
             if (!_configOptions.SendQueryTransaction) return;
 
-            var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
-            var merkleContractAddress = _configOptions.MerkleGeneratorContractAddress;
-            var web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url, lockMappingContractAddress,
-                _ethereumConfigOptions.PrivateKey, _lockAbi);
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
-            var merkleTreeRecorderContractAddress = _contractAddressOptions.ContractAddressMap["MTRecorder"];
 
-            var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
-                .CallAsync<long>();
-
+            var receiptCountFunction = _nethereumManagerFactory.CreateManager(new LockMappingContractNameProvider())
+                .GetFunction("receiptCount");
+            var lockTimes = await receiptCountFunction.CallAsync<long>();
             if (lockTimes <= _lastedQueryReceiptCount)
             {
                 return;
             }
 
             var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
-                merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
+                _contractAddressOptions.ContractAddressMap["MTRecorder"], "GetLastRecordedLeafIndex",
                 new RecorderIdInput
                 {
                     RecorderId = _configOptions.RecorderId

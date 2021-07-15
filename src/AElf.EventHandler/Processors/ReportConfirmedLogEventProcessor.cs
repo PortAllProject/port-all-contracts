@@ -6,37 +6,30 @@ using AElf.Contracts.Report;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportConfirmed>, ITransientDependency
+    internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportConfirmed>
     {
         public override string ContractName => "Report";
         private readonly ILogger<ReportConfirmedLogEventProcessor> _logger;
         private readonly ISignatureRecoverableInfoProvider _signaturesRecoverableInfoProvider;
-        private readonly ContractAbiOptions _contractAbiOptions;
+        private readonly INethereumManagerFactory _nethereumManagerFactory;
         private readonly IReportProvider _reportProvider;
         private readonly EthereumConfigOptions _ethereumConfigOptions;
-        private readonly string _abi;
 
         public ReportConfirmedLogEventProcessor(ILogger<ReportConfirmedLogEventProcessor> logger,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
             IReportProvider reportProvider,
             ISignatureRecoverableInfoProvider signaturesRecoverableInfoProvider,
             IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
-            IOptionsSnapshot<ContractAbiOptions> contractAbiOptions) : base(contractAddressOptions)
+            INethereumManagerFactory nethereumManagerFactory) : base(contractAddressOptions)
         {
             _logger = logger;
             _signaturesRecoverableInfoProvider = signaturesRecoverableInfoProvider;
-            _contractAbiOptions = contractAbiOptions.Value;
+            _nethereumManagerFactory = nethereumManagerFactory;
             _reportProvider = reportProvider;
             _ethereumConfigOptions = ethereumConfigOptions.Value;
-            var file = _contractAbiOptions.TransmitAbiFilePath;
-            if (!string.IsNullOrEmpty(file))
-                _abi = JsonHelper.ReadJson(file, "abi");
         }
 
         public override async Task ProcessAsync(LogEvent logEvent)
@@ -57,14 +50,14 @@ namespace AElf.EventHandler
                     var signatureRecoverableInfos =
                         _signaturesRecoverableInfoProvider.GetSignature(ethereumContractAddress, roundId);
                     var (reportBytes, rs, ss, vs) = TransferToEthereumParameter(report, signatureRecoverableInfos);
-                    var web3Manager = new Web3Manager(_ethereumConfigOptions.Url, _ethereumConfigOptions.Address,
-                        _ethereumConfigOptions.PrivateKey, _abi);
                     try
                     {
                         _logger.LogInformation(
                             $"Try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
+
+                        var nethereumManager = _nethereumManagerFactory.CreateManager(new TransmitContractNameProvider());
                         var transactionReceipt =
-                            await web3Manager.TransmitDataOnEthereumWithReceipt(ethereumContractAddress, reportBytes,
+                            await nethereumManager.SendTransactionAndWaitForReceiptAsync("transmit", reportBytes,
                                 rs, ss, vs);
                         if (transactionReceipt.HasErrors().Value)
                         {

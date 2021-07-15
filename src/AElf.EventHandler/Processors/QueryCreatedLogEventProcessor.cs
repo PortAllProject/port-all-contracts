@@ -2,28 +2,26 @@ using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.Oracle;
 using AElf.Types;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreated>, ISingletonDependency
+    internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreated>
     {
         private readonly ISaltProvider _saltProvider;
-        private readonly IDataProvider _dataProvider;
+        private readonly IQueryService _queryService;
         private readonly ConfigOptions _configOptions;
         public override string ContractName => "Oracle";
         private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
         public QueryCreatedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider, IDataProvider dataProvider, ILogger<QueryCreatedLogEventProcessor> logger) :
+            ISaltProvider saltProvider, IQueryService queryService, ILogger<QueryCreatedLogEventProcessor> logger) :
             base(contractAddressOptions)
         {
             _saltProvider = saltProvider;
-            _dataProvider = dataProvider;
+            _queryService = queryService;
             _logger = logger;
             _configOptions = configOptions.Value;
         }
@@ -43,7 +41,7 @@ namespace AElf.EventHandler
                 _configOptions.TransmitContractAddress == queryToken ||
                 _configOptions.Token == queryToken)
             {
-                var data = await _dataProvider.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.Title,
+                var data = await _queryService.GetDataAsync(queryCreated.QueryId, queryCreated.QueryInfo.Title,
                     queryCreated.QueryInfo.Options.ToList());
                 if (string.IsNullOrEmpty(data))
                 {

@@ -3,11 +3,10 @@ using AElf.Standards.ACS0;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    internal class ContractDeployedLogEventProcessor : LogEventProcessorBase<ContractDeployed>, ITransientDependency
+    internal class ContractDeployedLogEventProcessor : LogEventProcessorBase<ContractDeployed>
     {
         public override string ContractName => "BasicZero";
         private readonly ILogger<QueryCreatedLogEventProcessor> _logger;

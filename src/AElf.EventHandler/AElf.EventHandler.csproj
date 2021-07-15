@@ -46,9 +46,6 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <None Remove="ContractBuild\MerkleGeneratorAbi.json" />
-        <Content Include="ContractBuild\MerkleGeneratorAbi.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
         <None Remove="ContractBuild\LockAbi.json" />
         <Content Include="ContractBuild\LockAbi.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
