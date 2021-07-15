@@ -149,7 +149,7 @@ namespace AElf.EventHandler
             for (var i = 0; i <= end - start; i++)
             {
                 var index = (int) (i + start);
-                input.Value.Add(index, receiptHashes[index].ToHex());
+                input.Value.Add(index, receiptHashes[i].ToHex());
             }
 
             return input.ToString();
