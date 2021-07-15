@@ -162,7 +162,8 @@ namespace AElf.Contracts.Oracle
                 QueryInfo = input.QueryInfo,
                 EndTime = input.EndTime,
                 AggregatorContractAddress = input.AggregatorContractAddress,
-                AggregateOption = input.AggregateOption
+                AggregateOption = input.AggregateOption,
+                AggregateThreshold = input.AggregateThreshold
             };
             State.QueryTaskMap[taskId] = queryTask;
             
@@ -184,6 +185,11 @@ namespace AElf.Contracts.Oracle
         public override Empty CompleteQueryTask(CompleteQueryTaskInput input)
         {
             var queryTask = State.QueryTaskMap[input.TaskId];
+            if (queryTask == null)
+            {
+                throw new AssertionException("Query task not found.");
+            }
+
             Assert(Context.Sender == queryTask.Creator, "No permission.");
 
             var designatedNodeList = GetActualDesignatedNodeList(input.DesignatedNodeList);
@@ -205,6 +211,8 @@ namespace AElf.Contracts.Oracle
                 throw new AssertionException("Query task not found.");
             }
 
+            Assert(queryTask.ActualQueriedTimes <= queryTask.SupposedQueryTimes, "Query times exceeded.");
+
             Assert(Context.Sender == queryTask.Creator, "No permission.");
             var queryInput = new QueryInput
             {
@@ -215,7 +223,8 @@ namespace AElf.Contracts.Oracle
                 DesignatedNodeList = queryTask.DesignatedNodeList,
                 QueryInfo = queryTask.QueryInfo,
                 AggregateOption = queryTask.AggregateOption,
-                TaskId = input.TaskId
+                TaskId = input.TaskId,
+                Token = $"{input.TaskId.ToHex()}:{queryTask.ActualQueriedTimes}"
             };
 
             return Query(queryInput);
