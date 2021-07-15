@@ -12,5 +12,10 @@ namespace AElf.Contracts.Bridge
         public Int64State ReceiptCount { get; set; }
         public MappedState<long, Hash> ReceiptHashMap { get; set; }
         public Int32State MaximalLeafCount { get; set; }
+
+        /// <summary>
+        /// Swap Id -> Receiver Address -> Swapped Receipt Id List
+        /// </summary>
+        public MappedState<Hash, Address, ReceiptIdList> SwappedReceiptIdListMap { get; set; }
     }
 }

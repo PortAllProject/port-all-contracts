@@ -50,6 +50,8 @@ service BridgeContract {
     rpc GetRegimentAddressByRecorderId (google.protobuf.Int64Value) returns (aelf.Address) {
         option (aelf.is_view) = true;
     }
+    rpc GetSwappedReceiptIdList (GetSwappedReceiptIdListInput) returns (ReceiptIdList) {
+    }
 }
 
 message InitializeInput {
@@ -145,6 +147,15 @@ message ReceiptHashMap {
 message UpdateMerkleTreeInput {
     int64 recorder_id = 1;
     aelf.Address regiment_address = 2;
+}
+
+message ReceiptIdList {
+    repeated int64 value = 1;
+}
+
+message GetSwappedReceiptIdListInput {
+    aelf.Hash swap_id = 1;
+    aelf.Address receiver_address = 2;
 }
 
 // Events

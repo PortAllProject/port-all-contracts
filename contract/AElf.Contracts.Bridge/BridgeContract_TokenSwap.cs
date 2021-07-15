@@ -68,10 +68,11 @@ namespace AElf.Contracts.Bridge
                 "Invalid token swap input.");
             var leafHash = ComputeLeafHash(amount, swapInfo, receiverAddress, input.ReceiptId);
 
-            var lastRecordedLeafIndex = State.MerkleTreeRecorderContract.GetLastRecordedLeafIndex.Call(new RecorderIdInput
-            {
-                RecorderId = swapInfo.RecorderId
-            }).Value;
+            var lastRecordedLeafIndex = State.MerkleTreeRecorderContract.GetLastRecordedLeafIndex.Call(
+                new RecorderIdInput
+                {
+                    RecorderId = swapInfo.RecorderId
+                }).Value;
             var merklePath = State.MerkleTreeGeneratorContract.GetMerklePath.Call(new GetMerklePathInput
             {
                 ReceiptMaker = Context.Self,
@@ -119,6 +120,10 @@ namespace AElf.Contracts.Bridge
 
             State.Ledger[input.SwapId][input.ReceiptId] = swapAmounts;
 
+            var swappedReceiptIdList =
+                State.SwappedReceiptIdListMap[input.SwapId][receiverAddress] ?? new ReceiptIdList();
+            swappedReceiptIdList.Value.Add(input.ReceiptId);
+            State.SwappedReceiptIdListMap[input.SwapId][receiverAddress] = swappedReceiptIdList;
             return new Empty();
         }
 
@@ -194,6 +199,11 @@ namespace AElf.Contracts.Bridge
         public override Address GetRegimentAddressByRecorderId(Int64Value input)
         {
             return State.RecorderIdToRegimentMap[input.Value];
+        }
+
+        public override ReceiptIdList GetSwappedReceiptIdList(GetSwappedReceiptIdListInput input)
+        {
+            return State.SwappedReceiptIdListMap[input.SwapId][input.ReceiverAddress];
         }
     }
 }
