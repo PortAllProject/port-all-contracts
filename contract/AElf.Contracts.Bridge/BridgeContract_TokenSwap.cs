@@ -23,7 +23,7 @@ namespace AElf.Contracts.Bridge
                 MaximalLeafCount = State.MaximalLeafCount.Value
             });
 
-            var recorderId = State.MerkleTreeRecorderContract.GetRecorderCount.Call(new Empty()).Value.Add(1);
+            var recorderId = State.MerkleTreeRecorderContract.GetRecorderCount.Call(new Empty()).Value;
             var swapInfo = new SwapInfo
             {
                 SwapId = swapId,
@@ -32,6 +32,7 @@ namespace AElf.Contracts.Bridge
                 RegimentAddress = input.RegimentAddress,
                 RecorderId = recorderId
             };
+
             foreach (var swapTargetToken in input.SwapTargetTokenList)
             {
                 AssertSwapTargetToken(swapTargetToken.TargetTokenSymbol);
