@@ -12,7 +12,6 @@ namespace AElf.EventHandler
     {
         public const string Title = "record_receipts";
 
-        private readonly Dictionary<Hash, string> _dictionary;
         private readonly ILogger<RecordReceiptsDataProvider> _logger;
         private readonly INethereumManagerFactory _nethereumManagerFactory;
         private readonly ConfigOptions _configOptions;
@@ -23,17 +22,11 @@ namespace AElf.EventHandler
             _logger = logger;
             _nethereumManagerFactory = nethereumManagerFactory;
             _configOptions = configOptions.Value;
-            _dictionary = new Dictionary<Hash, string>();
         }
 
         public async Task<string> GetDataAsync(Hash queryId, string title = null, List<string> options = null)
         {
-            if (_dictionary.TryGetValue(queryId, out var data))
-            {
-                return data;
-            }
-
-            if (title == null || options == null)
+            if (options == null)
             {
                 _logger.LogError($"No data of {queryId} for revealing.");
                 return string.Empty;
@@ -41,6 +34,7 @@ namespace AElf.EventHandler
 
             if (options.Count != 2)
             {
+                _logger.LogError($"Incorrect options count.");
                 return string.Empty;
             }
 
@@ -48,7 +42,6 @@ namespace AElf.EventHandler
             var recordReceiptHashInput =
                 await GetReceiptHashMap(long.Parse(options[0]), long.Parse(options[1]));
             _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
-            _dictionary[queryId] = recordReceiptHashInput;
             return recordReceiptHashInput;
         }
 

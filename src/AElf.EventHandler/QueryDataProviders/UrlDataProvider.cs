@@ -3,34 +3,24 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
-using AElf.Contracts.Bridge;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
     public class UrlDataProvider : IDataProvider, ISingletonDependency
     {
-        private readonly Dictionary<Hash, string> _dictionary;
         private readonly ILogger<UrlDataProvider> _logger;
 
         public UrlDataProvider(ILogger<UrlDataProvider> logger)
         {
             _logger = logger;
-            _dictionary = new Dictionary<Hash, string>();
         }
 
         public async Task<string> GetDataAsync(Hash queryId, string title = null, List<string> options = null)
         {
-            if (_dictionary.TryGetValue(queryId, out var data))
-            {
-                return data;
-            }
-
             if (title == null || options == null)
             {
                 _logger.LogError($"No data of {queryId} for revealing.");
@@ -71,7 +61,6 @@ namespace AElf.EventHandler
                 result = Aggregate(dataList);
             }
 
-            _dictionary[queryId] = result;
             return result;
         }
 
@@ -108,7 +97,7 @@ namespace AElf.EventHandler
 
                 if (response != string.Empty)
                 {
-                    data = ParseJson(response, attributes);
+                    data = JsonHelper.ParseJson(response, attributes);
                 }
             }
             catch (Exception e)
@@ -122,57 +111,6 @@ namespace AElf.EventHandler
                 data = "0";
                 _logger.LogError($"Failed to get {attributes.First()} from {response}, will just return 0.");
 
-            }
-
-            return data;
-        }
-
-        private string ParseJson(string response, List<string> attributes)
-        {
-            var jsonDoc = JsonDocument.Parse(response);
-            var data = string.Empty;
-
-            foreach (var attribute in attributes)
-            {
-                if (!attribute.Contains('/'))
-                {
-                    if (jsonDoc.RootElement.TryGetProperty(attribute, out var targetElement))
-                    {
-                        if (data == string.Empty)
-                        {
-                            data = targetElement.GetRawText();
-                        }
-                        else
-                        {
-                            data += $";{targetElement.GetRawText()}";
-                        }
-                    }
-                    else
-                    {
-                        return data;
-                    }
-                }
-                else
-                {
-                    var attrs = attribute.Split('/');
-                    var targetElement = jsonDoc.RootElement.GetProperty(attrs[0]);
-                    foreach (var attr in attrs.Skip(1))
-                    {
-                        if (!targetElement.TryGetProperty(attr, out targetElement))
-                        {
-                            return attr;
-                        }
-                    }
-
-                    if (data == string.Empty)
-                    {
-                        data = targetElement.GetRawText();
-                    }
-                    else
-                    {
-                        data += $";{targetElement.GetRawText()}";
-                    }
-                }
             }
 
             return data;
