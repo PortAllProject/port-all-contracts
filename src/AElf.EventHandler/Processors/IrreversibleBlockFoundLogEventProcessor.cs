@@ -17,19 +17,19 @@ namespace AElf.EventHandler
         private readonly ConfigOptions _configOptions;
         private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly ContractAddressOptions _contractAddressOptions;
+        private readonly ILatestQueriedReceiptCountProvider _latestQueriedReceiptCountProvider;
         private readonly ILogger<IrreversibleBlockFoundLogEventProcessor> _logger;
         private readonly string _lockAbi;
-        private readonly string _merkleAbi;
-
-        private long _latestQueryReceiptCount = 0;
 
         public IrreversibleBlockFoundLogEventProcessor(
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
             IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
             IOptionsSnapshot<ContractAbiOptions> contractAbiOptions,
+            ILatestQueriedReceiptCountProvider latestQueriedReceiptCountProvider,
             ILogger<IrreversibleBlockFoundLogEventProcessor> logger) : base(contractAddressOptions)
         {
+            _latestQueriedReceiptCountProvider = latestQueriedReceiptCountProvider;
             _logger = logger;
 
             var contractAbiOptions1 = contractAbiOptions.Value;
@@ -47,21 +47,6 @@ namespace AElf.EventHandler
                     }
 
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
-                    _logger.LogInformation($"Lock abi: {_lockAbi}");
-                }
-            }
-
-            {
-                var file = contractAbiOptions1.MerkleGeneratorAbiFilePath;
-                if (!string.IsNullOrEmpty(file))
-                {
-                    if (!File.Exists(file))
-                    {
-                        _logger.LogError($"Cannot found file {file}");
-                    }
-
-                    _merkleAbi = JsonHelper.ReadJson(file, "abi");
-                    _logger.LogInformation($"Merkle abi: {_merkleAbi}");
                 }
             }
         }
@@ -86,17 +71,20 @@ namespace AElf.EventHandler
             var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
                 .CallAsync<long>();
 
+            var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
+                merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
+                new RecorderIdInput
+                {
+                    RecorderId = _configOptions.RecorderId
+                }).Value;
+
             var maxAvailableIndex = lockTimes - 1;
-            if (_latestQueryReceiptCount == 0)
+            if (_latestQueriedReceiptCountProvider.Get() == 0)
             {
-                _latestQueryReceiptCount = node.QueryView<Int64Value>(_configOptions.AccountAddress,
-                    merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
-                    new RecorderIdInput
-                    {
-                        RecorderId = _configOptions.RecorderId
-                    }).Value + 1;
+                _latestQueriedReceiptCountProvider.Set(lastRecordedLeafIndex + 1);
             }
-            var latestTreeIndex = _latestQueryReceiptCount / _configOptions.MaximumLeafCount;
+
+            var latestTreeIndex = _latestQueriedReceiptCountProvider.Get() / _configOptions.MaximumLeafCount;
             var almostTreeIndex = lockTimes / _configOptions.MaximumLeafCount;
             if (latestTreeIndex < almostTreeIndex)
             {
@@ -106,17 +94,10 @@ namespace AElf.EventHandler
             _logger.LogInformation(
                 $"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}; Max available index: {maxAvailableIndex};");
 
-            if (maxAvailableIndex + 1 <= _latestQueryReceiptCount)
+            if (maxAvailableIndex + 1 <= _latestQueriedReceiptCountProvider.Get())
             {
                 return;
             }
-
-            var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
-                merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
-                new RecorderIdInput
-                {
-                    RecorderId = _configOptions.RecorderId
-                }).Value;
 
             if (lastRecordedLeafIndex == -2)
             {
@@ -152,8 +133,8 @@ namespace AElf.EventHandler
                 var txId = node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
                 _logger.LogInformation($"Query tx id: {txId}");
-                _latestQueryReceiptCount = maxAvailableIndex + 1;
-                _logger.LogInformation($"_latestQueryReceiptCount: {_latestQueryReceiptCount}");
+                _latestQueriedReceiptCountProvider.Set(maxAvailableIndex + 1);
+                _logger.LogInformation($"Latest queried receipt count: {_latestQueriedReceiptCountProvider.Get()}");
             }
         }
     }
