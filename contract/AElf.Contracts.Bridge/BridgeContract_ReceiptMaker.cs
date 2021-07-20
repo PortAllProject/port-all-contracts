@@ -23,7 +23,7 @@ namespace AElf.Contracts.Bridge
                 State.ReceiptHashMap[receiptId] = Hash.LoadFromHex(receiptHash);
             }
 
-            State.ReceiptCount.Value = State.ReceiptCount.Value.Add(receiptHashMap.Value.Count);
+            State.ReceiptCount.Value = receiptHashMap.Value.Last().Key.Add(1);
 
             Context.SendInline(Context.Self, nameof(UpdateMerkleTree), new UpdateMerkleTreeInput
             {
@@ -75,7 +75,9 @@ namespace AElf.Contracts.Bridge
             var output = new GetReceiptHashListOutput();
             for (var i = input.FirstLeafIndex; i <= input.LastLeafIndex; i++)
             {
-                output.ReceiptHashList.Add(State.ReceiptHashMap[i]);
+                var receiptHash = State.ReceiptHashMap[i];
+                Assert(receiptHash != null, $"Receipt hash of {i} is null.");
+                output.ReceiptHashList.Add(receiptHash);
             }
 
             return output;
