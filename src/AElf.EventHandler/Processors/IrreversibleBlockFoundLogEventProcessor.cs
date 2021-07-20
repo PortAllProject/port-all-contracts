@@ -94,9 +94,9 @@ namespace AElf.EventHandler
                 maxAvailableIndex = (latestTreeIndex + 1) * _configOptions.MaximumLeafCount - 1;
             }
 
-            _logger.LogInformation($"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}");
+            _logger.LogInformation($"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}; Max available index: {maxAvailableIndex};");
 
-            if (maxAvailableIndex <= _latestQueryReceiptCount)
+            if (maxAvailableIndex + 1 <= _latestQueryReceiptCount)
             {
                 return;
             }
@@ -114,7 +114,7 @@ namespace AElf.EventHandler
                 return;
             }
 
-            _logger.LogInformation($"Max available index: {maxAvailableIndex}; Last recorded leaf index: {lastRecordedLeafIndex}");
+            _logger.LogInformation($"Last recorded leaf index: {lastRecordedLeafIndex}");
             var notRecordedReceiptsCount = maxAvailableIndex - lastRecordedLeafIndex;
             if (notRecordedReceiptsCount > 0)
             {
@@ -142,7 +142,7 @@ namespace AElf.EventHandler
                 var txId = node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
                 _logger.LogInformation($"Query tx id: {txId}");
-                _latestQueryReceiptCount = maxAvailableIndex;
+                _latestQueryReceiptCount = maxAvailableIndex + 1;
             }
         }
     }
