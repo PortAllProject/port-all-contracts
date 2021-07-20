@@ -86,7 +86,7 @@ namespace AElf.EventHandler
             var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
                 .CallAsync<long>();
 
-            var maxAvailableIndex = lockTimes;
+            var maxAvailableIndex = lockTimes - 1;
             var latestTreeIndex = _latestQueryReceiptCount / _configOptions.MaximumLeafCount;
             var almostTreeIndex = lockTimes / _configOptions.MaximumLeafCount;
             if (latestTreeIndex < almostTreeIndex)
@@ -94,7 +94,8 @@ namespace AElf.EventHandler
                 maxAvailableIndex = (latestTreeIndex + 1) * _configOptions.MaximumLeafCount - 1;
             }
 
-            _logger.LogInformation($"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}; Max available index: {maxAvailableIndex};");
+            _logger.LogInformation(
+                $"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}; Max available index: {maxAvailableIndex};");
 
             if (maxAvailableIndex + 1 <= _latestQueryReceiptCount)
             {
@@ -124,7 +125,7 @@ namespace AElf.EventHandler
                     QueryInfo = new QueryInfo
                     {
                         Title = "record_receipts",
-                        Options = {(lastRecordedLeafIndex + 1).ToString(), maxAvailableIndex.ToString()}
+                        Options = { (lastRecordedLeafIndex + 1).ToString(), maxAvailableIndex.ToString() }
                     },
                     AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
                         .ConvertAddress(),
@@ -134,7 +135,7 @@ namespace AElf.EventHandler
                         MethodName = "RecordReceiptHash"
                     },
                     DesignatedNodeList = new AddressList
-                        {Value = {_configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress()}}
+                        { Value = { _configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress() } }
                 };
 
                 _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
@@ -143,6 +144,7 @@ namespace AElf.EventHandler
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
                 _logger.LogInformation($"Query tx id: {txId}");
                 _latestQueryReceiptCount = maxAvailableIndex + 1;
+                _logger.LogInformation($"_latestQueryReceiptCount: {_latestQueryReceiptCount}");
             }
         }
     }
