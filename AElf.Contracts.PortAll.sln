@@ -48,6 +48,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.MerkleTreeGe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.TokenLockReceiptMakerContract", "contract\AElf.Contracts.TokenLockReceiptMakerContract\AElf.Contracts.TokenLockReceiptMakerContract.csproj", "{B0145883-39B3-440E-9BA1-D80F13701E5C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.Lottery", "contract\AElf.Contracts.Lottery\AElf.Contracts.Lottery.csproj", "{BDB841AC-3230-4EBF-A735-EEF30CDE20ED}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{B0145883-39B3-440E-9BA1-D80F13701E5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0145883-39B3-440E-9BA1-D80F13701E5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0145883-39B3-440E-9BA1-D80F13701E5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDB841AC-3230-4EBF-A735-EEF30CDE20ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDB841AC-3230-4EBF-A735-EEF30CDE20ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDB841AC-3230-4EBF-A735-EEF30CDE20ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDB841AC-3230-4EBF-A735-EEF30CDE20ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,6 +155,7 @@ Global
 		{53FDEB6A-0E8D-473C-805E-787E5DB8D9C2} = {21D85A91-5BB8-4912-8107-49435A461AAC}
 		{4F30B2D8-432C-4686-81B5-9ADFE905B2B9} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{B0145883-39B3-440E-9BA1-D80F13701E5C} = {5C980166-C987-470D-AEE0-3858A170A903}
+		{BDB841AC-3230-4EBF-A735-EEF30CDE20ED} = {5C980166-C987-470D-AEE0-3858A170A903}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}

@@ -21,7 +21,7 @@ namespace AElf.EventHandler
         private readonly string _lockAbi;
         private readonly string _merkleAbi;
 
-        private long _lastedQueryReceiptCount = 0;
+        private long _latestQueryReceiptCount = 0;
 
         public IrreversibleBlockFoundLogEventProcessor(
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
@@ -77,7 +77,6 @@ namespace AElf.EventHandler
             if (!_configOptions.SendQueryTransaction) return;
 
             var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
-            var merkleContractAddress = _configOptions.MerkleGeneratorContractAddress;
             var web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url, lockMappingContractAddress,
                 _ethereumConfigOptions.PrivateKey, _lockAbi);
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
@@ -87,7 +86,17 @@ namespace AElf.EventHandler
             var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
                 .CallAsync<long>();
 
-            if (lockTimes <= _lastedQueryReceiptCount)
+            var maxAvailableIndex = lockTimes;
+            var latestTreeIndex = _latestQueryReceiptCount / _configOptions.MaximumLeafCount;
+            var almostTreeIndex = lockTimes / _configOptions.MaximumLeafCount;
+            if (latestTreeIndex < almostTreeIndex)
+            {
+                maxAvailableIndex = (latestTreeIndex + 1) * _configOptions.MaximumLeafCount - 1;
+            }
+
+            _logger.LogInformation($"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}");
+
+            if (maxAvailableIndex <= _latestQueryReceiptCount)
             {
                 return;
             }
@@ -101,12 +110,12 @@ namespace AElf.EventHandler
 
             if (lastRecordedLeafIndex == -2)
             {
-                _logger.LogError($"Recorder of id {_configOptions.RecorderId} did created.");
+                _logger.LogError($"Recorder of id {_configOptions.RecorderId} didn't created.");
                 return;
             }
 
-            _logger.LogInformation($"Lock times: {lockTimes}; Last recorded leaf index: {lastRecordedLeafIndex}");
-            var notRecordedReceiptsCount = lockTimes - lastRecordedLeafIndex - 1;
+            _logger.LogInformation($"Max available index: {maxAvailableIndex}; Last recorded leaf index: {lastRecordedLeafIndex}");
+            var notRecordedReceiptsCount = maxAvailableIndex - lastRecordedLeafIndex - 1;
             if (notRecordedReceiptsCount > 0)
             {
                 var queryInput = new QueryInput
@@ -115,7 +124,7 @@ namespace AElf.EventHandler
                     QueryInfo = new QueryInfo
                     {
                         Title = "record_receipts",
-                        Options = {(lastRecordedLeafIndex + 1).ToString(), (lockTimes - 1).ToString()}
+                        Options = {(lastRecordedLeafIndex + 1).ToString(), (maxAvailableIndex - 1).ToString()}
                     },
                     AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
                         .ConvertAddress(),
@@ -133,7 +142,7 @@ namespace AElf.EventHandler
                 var txId = node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
                 _logger.LogInformation($"Query tx id: {txId}");
-                _lastedQueryReceiptCount = lockTimes;
+                _latestQueryReceiptCount = maxAvailableIndex;
             }
         }
     }
