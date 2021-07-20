@@ -87,6 +87,15 @@ namespace AElf.EventHandler
                 .CallAsync<long>();
 
             var maxAvailableIndex = lockTimes - 1;
+            if (_latestQueryReceiptCount == 0)
+            {
+                _latestQueryReceiptCount = node.QueryView<Int64Value>(_configOptions.AccountAddress,
+                    merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
+                    new RecorderIdInput
+                    {
+                        RecorderId = _configOptions.RecorderId
+                    }).Value + 1;
+            }
             var latestTreeIndex = _latestQueryReceiptCount / _configOptions.MaximumLeafCount;
             var almostTreeIndex = lockTimes / _configOptions.MaximumLeafCount;
             if (latestTreeIndex < almostTreeIndex)
