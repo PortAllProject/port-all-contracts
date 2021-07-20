@@ -115,7 +115,7 @@ namespace AElf.EventHandler
             }
 
             _logger.LogInformation($"Max available index: {maxAvailableIndex}; Last recorded leaf index: {lastRecordedLeafIndex}");
-            var notRecordedReceiptsCount = maxAvailableIndex - lastRecordedLeafIndex - 1;
+            var notRecordedReceiptsCount = maxAvailableIndex - lastRecordedLeafIndex;
             if (notRecordedReceiptsCount > 0)
             {
                 var queryInput = new QueryInput
@@ -124,7 +124,7 @@ namespace AElf.EventHandler
                     QueryInfo = new QueryInfo
                     {
                         Title = "record_receipts",
-                        Options = {(lastRecordedLeafIndex + 1).ToString(), (maxAvailableIndex - 1).ToString()}
+                        Options = {(lastRecordedLeafIndex + 1).ToString(), maxAvailableIndex.ToString()}
                     },
                     AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
                         .ConvertAddress(),
