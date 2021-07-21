@@ -5,223 +5,116 @@ import "aelf/options.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
-import "acs9.proto";
 
 option csharp_namespace = "AElf.Contracts.Lottery";
 
+
+// Only for the activity after eth2aelf ELF token swap.
 service LotteryContract {
     option (aelf.csharp_state) = "AElf.Contracts.Lottery.LotteryContractState";
-    option (aelf.base) = "acs9.proto";
 
-    // Basic Actions
+    // Admin
     rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {
     }
-    rpc Buy(google.protobuf.Int64Value) returns (BoughtLotteriesInformation) {
-    }
-    rpc Draw (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
-    }
-    rpc PrepareDraw (google.protobuf.Empty) returns (google.protobuf.Empty) {
-	}
-    rpc TakeReward (TakeRewardInput) returns (google.protobuf.Empty) {
-    }
-    rpc TakeDividend(google.protobuf.Empty) returns (google.protobuf.Empty) {
-    }
-    rpc SetDividendRate(google.protobuf.Int64Value) returns (google.protobuf.Empty) {
-    }
-    rpc SetDividendRateTotalShares(google.protobuf.Int64Value) returns (google.protobuf.Empty) {
+    rpc Draw (google.protobuf.Int32Value) returns (google.protobuf.Empty) {
     }
 
-    // Management Actions
-    rpc ResetMaximumBuyAmount (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
+    // User
+    rpc Stake (google.protobuf.Int64Value) returns (OwnLottery) {
     }
-    rpc ResetPrice (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
+    rpc Redeem (google.protobuf.Empty) returns (google.protobuf.Empty) {
     }
-    rpc ResetDrawingLag (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
+    rpc Claim (google.protobuf.Empty) returns (google.protobuf.Empty) {
     }
-    rpc AddRewardList (RewardList) returns (google.protobuf.Empty) {
-    }
-    rpc SetRewardListForOnePeriod (RewardsInfo) returns (google.protobuf.Empty) {
-    }
-    rpc Suspend (google.protobuf.Empty) returns (google.protobuf.Empty) {
-    }
-    rpc Recover (google.protobuf.Empty) returns (google.protobuf.Empty) {
-    }
-    rpc Stake (google.protobuf.Int64Value) returns (google.protobuf.Empty){
-    }
-    rpc SetStakingTimestamp(SetStakingTimestampInput) returns (google.protobuf.Empty) {
-    }
-    rpc TakeBackToken(TakeBackTokenInput) returns (google.protobuf.Empty) {
-    }
-    rpc SetProfitsRate (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
-    }
-    rpc ChangeBoughtLotteryReturnLimit (google.protobuf.Int32Value) returns (google.protobuf.Empty) {
-    }
-    
-    rpc GetRewardResult (google.protobuf.Int64Value) returns (GetRewardResultOutput) {
+
+    // Views
+    rpc GetCurrentPeriodId (google.protobuf.Empty) returns (google.protobuf.Int32Value) {
         option (aelf.is_view) = true;
     }
-    rpc GetBoughtLotteries (GetBoughtLotteriesInput) returns (GetBoughtLotteriesOutput) {
-        option (aelf.is_view) = true;
-	}
-	rpc GetSales (google.protobuf.Int64Value) returns (google.protobuf.Int64Value) {
+    rpc GetLotteryCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
-	rpc GetMaximumBuyAmount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+    rpc GetLotteryCodeList (aelf.Address) returns (Int64List) {
         option (aelf.is_view) = true;
     }
-	rpc GetPrice (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+    rpc GetWinningRecord (aelf.Address) returns (Int64List) {
         option (aelf.is_view) = true;
     }
-	rpc GetDrawingLag (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+    rpc GetAwardList (google.protobuf.Int64Value) returns (AwardList) {
         option (aelf.is_view) = true;
     }
-	rpc GetCurrentPeriodNumber (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+    rpc GetLottery (google.protobuf.Int64Value) returns (Lottery) {
         option (aelf.is_view) = true;
     }
-	rpc GetPeriod (google.protobuf.Int64Value) returns (PeriodBody) {
+    rpc GetStakingAmount (aelf.Address) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
-	rpc GetCurrentPeriod (google.protobuf.Empty) returns (PeriodBody) {
-        option (aelf.is_view) = true;
-    }
-	rpc GetLottery (google.protobuf.Int64Value) returns (Lottery) {
-        option (aelf.is_view) = true;
-    }
-	rpc GetRewardList (google.protobuf.Empty) returns (RewardList) {
-        option (aelf.is_view) = true;
-    }
-	rpc GetRewardName (google.protobuf.StringValue) returns (google.protobuf.StringValue) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetBoughtLotteriesCount (aelf.Address) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetAllLotteriesCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetStakingAmount(aelf.Address) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetStakingTotal(google.protobuf.Empty) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetStakingTimestamp(google.protobuf.Empty) returns (GetStakingTimestampOutput) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetProfitsRate (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetBoughtLotteryCountInOnePeriod (GetBoughtLotteryCountInOnePeriodInput) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetBoughtLotteryReturnLimit (google.protobuf.Empty) returns (google.protobuf.Int32Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetDividendRate (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
-        option (aelf.is_view) = true;
-    }
-    rpc GetDividendRateTotalShares (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+    rpc GetOwnLottery (aelf.Address) returns (OwnLottery) {
         option (aelf.is_view) = true;
     }
 }
+
+// Lottery Code: int64
+// Period Id: int32
+// Token Amount: int64
 
 message InitializeInput {
-    string token_symbol = 1;
-    int64 maximum_amount = 2;
-    int64 price = 3;
-    int64 drawing_lag = 4;
-    google.protobuf.Timestamp start_timestamp = 5;
-    google.protobuf.Timestamp shutdown_timestamp = 6;
-    int64 profits_rate = 7;
+    google.protobuf.Timestamp start_timestamp = 1;
+    google.protobuf.Timestamp shutdown_timestamp = 2;
+    google.protobuf.Timestamp redeem_timestamp = 3;
+    repeated int64 default_award_list = 4; 
 }
 
-message BoughtLotteriesInformation {
-    int64 start_id = 1;
-    int64 amount = 2;
+message StakeInput {
+    int32 amount = 1;
 }
 
-message TakeRewardInput {
-    int64 lottery_id = 1;
-    string registration_information = 2;
+message OwnLottery {
+    repeated int64 lottery_code_list = 1;
+    int64 total_staking_amount = 2;
+    int64 total_award_amount = 3;
+    int64 claimed_award_amount = 4;
+    bool is_redeemed = 5;
 }
 
 message Lottery {
-    int64 id = 1;
-    aelf.Address owner = 2;
-    string reward_name = 3;
-    int64 block = 4;
-    string registration_information = 5;
-    bool is_reward_taken = 6;
+    int64 lottery_code = 1;
+    google.protobuf.Timestamp issue_timestamp = 2;
+    repeated int64 award_id_list = 3;
+    aelf.Address owner = 4;
+    int64 latest_claimed_award_id = 5;
 }
 
-message PeriodBody {
-    int64 block_number = 2;
-    aelf.Hash random_hash = 3;
-    repeated int64 reward_ids = 4;
-    int64 start_id = 5;
-    map<string, int32> rewards = 6;
-    google.protobuf.Timestamp supposed_draw_date = 7;
-    google.protobuf.Timestamp actual_draw_date = 8;
+// Show lottery codes.
+message Int64List {
+    repeated int64 value = 1;
 }
 
-message LotteryList {
-    repeated int64 ids = 1;
+message WinningRecord {
+    map<int32, Award> history = 1;// Period id -> Award information
+    int64 total_amount = 2;// Sum award_amounts up
 }
 
-message GetRewardResultInput {
-    int64 period = 1;
+message Award {
+    int64 award_id = 1;
+    int64 award_amount = 2;
+    int64 lottery_code = 3;
+    bool is_claimed = 4;
 }
 
-message GetRewardResultOutput {
-    int64 period = 1;
-    aelf.Hash random_hash = 2;
-    repeated Lottery reward_lotteries = 3;
+message AwardList {
+    repeated Award value = 1;
 }
 
-message GetBoughtLotteriesInput {
-    int64 period = 1;
-    int32 start_id = 2;
-    aelf.Address owner = 3;
+message PeriodAward {
+    int32 period_id = 1;
+    google.protobuf.Timestamp start_timestamp = 2;
+    google.protobuf.Timestamp end_timestamp = 3;// Also draw timestamp
+    aelf.Hash use_random_hash = 4;
+    int64 start_award_id = 5;
+    int64 end_award_id = 6;
 }
 
-message GetBoughtLotteriesOutput {
-    repeated Lottery lotteries = 3;
-}
-
-message RewardList {
-    map<string, string> reward_map = 1;
-}
-
-message RewardsInfo {
-    int64 period = 1;
-    map<string, int32> rewards = 2;
-    google.protobuf.Timestamp supposed_draw_date = 3;
-}
-
-message StringList {
-    repeated string value = 1;
-}
-
-message RegisterDividendDto {
-    string receiver = 1;
-}
-
-message SetStakingTimestampInput{
-    google.protobuf.Timestamp timestamp = 1;
-    bool is_start_timestamp = 2;
-}
-
-message GetStakingTimestampOutput{
-    google.protobuf.Timestamp start_timestamp = 1;
-    google.protobuf.Timestamp shutdown_timestamp = 2;
-}
-
-message TakeBackTokenInput{
-    string symbol = 1;
-    int64 amount = 2;
-}
-
-message GetBoughtLotteryCountInOnePeriodInput{
-    aelf.Address owner = 1;
-    int64 period_number = 2;
+message DrawInput {
+    
 }

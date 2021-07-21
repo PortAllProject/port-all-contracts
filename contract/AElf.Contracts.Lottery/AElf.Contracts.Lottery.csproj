@@ -42,9 +42,6 @@
         <ContractReference Include="..\..\protobuf\regiment_contract.proto">
             <Link>Protobuf\Proto\reference\regiment_contract.proto</Link>
         </ContractReference>
-        <ContractReference Include="..\..\protobuf\token_holder_contract.proto">
-            <Link>Protobuf\Proto\reference\token_holder_contract.proto</Link>
-        </ContractReference>
         <ContractReference Include="..\..\protobuf\transaction_fee.proto">
             <Link>Protobuf\Proto\reference\transaction_fee.proto</Link>
         </ContractReference>
