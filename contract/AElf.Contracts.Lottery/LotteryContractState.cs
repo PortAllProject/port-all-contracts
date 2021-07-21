@@ -9,14 +9,13 @@ namespace AElf.Contracts.Lottery
         public SingletonState<Address> Admin { get; set; }
 
         public SingletonState<int> CurrentPeriodId { get; set; }
-
         public SingletonState<long> CurrentLotteryCode { get; set; }
-
         public SingletonState<long> CurrentAwardId { get; set; }
 
         public MappedState<long, PeriodAward> PeriodAwardMap { get; set; }
 
-        public SingletonState<Int64List> PeriodAwardAmountList { get; set; }
+        // ReSharper disable once InconsistentNaming
+        public SingletonState<Int64List> DefaultPeriodAwardAmountList { get; set; }
 
         /// <summary>
         /// Lottery Code -> Lottery
@@ -28,6 +27,9 @@ namespace AElf.Contracts.Lottery
         /// </summary>
         public MappedState<long, Award> AwardMap { get; set; }
 
+        /// <summary>
+        /// Address - OwnLottery
+        /// </summary>
         public MappedState<Address, OwnLottery> OwnLotteryMap { get; set; }
 
         public SingletonState<Timestamp> StakingStartTimestamp { get; set; }

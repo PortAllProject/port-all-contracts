@@ -8,12 +8,12 @@ namespace AElf.Contracts.Lottery
 {
     public partial class LotteryContract
     {
-        public override Empty Draw(Int32Value input)
+        public override Empty Draw(DrawInput input)
         {
             AssertSenderIsAdmin();
-            Assert(State.CurrentPeriodId.Value == input.Value, "Incorrect period id.");
+            Assert(State.CurrentPeriodId.Value == input.PeriodId, "Incorrect period id.");
 
-            var periodAward = State.PeriodAwardMap[input.Value];
+            var periodAward = State.PeriodAwardMap[input.PeriodId];
             var randomBytes = State.RandomNumberProviderContract.GetRandomBytes.Call(new Int64Value
             {
                 Value = Context.CurrentHeight.Sub(1)
@@ -25,10 +25,12 @@ namespace AElf.Contracts.Lottery
 
             periodAward.UseRandomHash = randomHash;
             periodAward.EndTimestamp = Context.CurrentBlockTime;
-            State.PeriodAwardMap[input.Value] = periodAward;
+            State.PeriodAwardMap[input.PeriodId] = periodAward;
 
             var newPeriodId = State.CurrentPeriodId.Value.Add(1);
-            State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward();
+            State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(input.NextAwardList.Any()
+                ? new Int64List { Value = { input.NextAwardList } }
+                : null);
 
             State.CurrentPeriodId.Value = State.CurrentPeriodId.Value.Add(1);
 
@@ -91,7 +93,7 @@ namespace AElf.Contracts.Lottery
         {
             if (awardAmountList == null || !awardAmountList.Value.Any())
             {
-                awardAmountList = State.PeriodAwardAmountList.Value;
+                awardAmountList = State.DefaultPeriodAwardAmountList.Value;
             }
 
             var currentAwardId = State.CurrentAwardId.Value;

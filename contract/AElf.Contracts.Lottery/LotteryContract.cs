@@ -12,7 +12,7 @@ namespace AElf.Contracts.Lottery
 
             var defaultAwardList = input.DefaultAwardList?.ToList() ?? GetDefaultAwardList();
             State.Admin.Value = Context.Sender;
-            State.PeriodAwardAmountList.Value = new Int64List { Value = { defaultAwardList } };
+            State.DefaultPeriodAwardAmountList.Value = new Int64List { Value = { defaultAwardList } };
 
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
@@ -25,8 +25,9 @@ namespace AElf.Contracts.Lottery
             State.CurrentPeriodId.Value = 1;
             State.CurrentLotteryCode.Value = 1;
 
-            Assert(input.StartTimestamp < input.ShutdownTimestamp, "Invalid staking timestamp.");
             Assert(Context.CurrentBlockTime < input.StartTimestamp, "Invalid start timestamp.");
+            Assert(input.StartTimestamp < input.ShutdownTimestamp, "Invalid shutdown timestamp.");
+            Assert(input.ShutdownTimestamp <= input.RedeemTimestamp, "Invalid redeem timestamp.");
             State.StakingStartTimestamp.Value = input.StartTimestamp;
             State.StakingShutdownTimestamp.Value = input.ShutdownTimestamp;
             State.RedeemTimestamp.Value = input.RedeemTimestamp;

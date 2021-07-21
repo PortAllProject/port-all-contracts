@@ -16,7 +16,7 @@ service LotteryContract {
     // Admin
     rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {
     }
-    rpc Draw (google.protobuf.Int32Value) returns (google.protobuf.Empty) {
+    rpc Draw (DrawInput) returns (google.protobuf.Empty) {
     }
 
     // User
@@ -116,5 +116,6 @@ message PeriodAward {
 }
 
 message DrawInput {
-    
+    int32 period_id = 1;
+    repeated int64 next_award_list = 2; 
 }
