@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using AElf.CSharp.Core;
+using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
 
@@ -31,6 +32,8 @@ namespace AElf.Contracts.Lottery
             State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(input.NextAwardList.Any()
                 ? new Int64List { Value = { input.NextAwardList } }
                 : null);
+
+            Context.Fire(new Drew { PeriodId = State.CurrentPeriodId.Value });
 
             State.CurrentPeriodId.Value = State.CurrentPeriodId.Value.Add(1);
 

@@ -31,25 +31,35 @@ service LotteryContract {
     rpc GetCurrentPeriodId (google.protobuf.Empty) returns (google.protobuf.Int32Value) {
         option (aelf.is_view) = true;
     }
-    rpc GetLotteryCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+    rpc GetTotalLotteryCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
-    rpc GetLotteryCodeList (aelf.Address) returns (Int64List) {
+    rpc GetLotteryCodeListByUserAddress (aelf.Address) returns (Int64List) {
         option (aelf.is_view) = true;
     }
-    rpc GetWinningRecord (aelf.Address) returns (Int64List) {
+    rpc GetAwardListByUserAddress (aelf.Address) returns (AwardList) {
         option (aelf.is_view) = true;
     }
-    rpc GetAwardList (google.protobuf.Int64Value) returns (AwardList) {
+    rpc GetAwardListByPeriodId (google.protobuf.Int64Value) returns (AwardList) {
         option (aelf.is_view) = true;
     }
+    // From State.LotteryMap directly
     rpc GetLottery (google.protobuf.Int64Value) returns (Lottery) {
         option (aelf.is_view) = true;
     }
     rpc GetStakingAmount (aelf.Address) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
+    // From State.OwnLotteryMap directly
     rpc GetOwnLottery (aelf.Address) returns (OwnLottery) {
+        option (aelf.is_view) = true;
+    }
+    // From State.AwardMap directly
+    rpc GetAward (google.protobuf.Int64Value) returns (Award) {
+        option (aelf.is_view) = true;
+    }
+    // From PeriodAward directly
+    rpc GetPeriodAward (google.protobuf.Int64Value) returns (PeriodAward) {
         option (aelf.is_view) = true;
     }
 }
@@ -90,11 +100,6 @@ message Int64List {
     repeated int64 value = 1;
 }
 
-message WinningRecord {
-    map<int32, Award> history = 1;// Period id -> Award information
-    int64 total_amount = 2;// Sum award_amounts up
-}
-
 message Award {
     int64 award_id = 1;
     int64 award_amount = 2;
@@ -118,4 +123,33 @@ message PeriodAward {
 message DrawInput {
     int32 period_id = 1;
     repeated int64 next_award_list = 2; 
+}
+
+// Events
+
+message Drew {
+    option (aelf.is_event) = true;
+    int64 period_id = 1;
+}
+
+message Staked {
+    option (aelf.is_event) = true;
+    aelf.Address user = 1;
+    int64 amount = 2;
+    Int64List lottery_code_list = 3;
+}
+
+message Redeemed {
+    option (aelf.is_event) = true;
+    aelf.Address user = 1;
+    int64 amount = 2;
+    int64 period_id = 3;
+}
+
+message Claimed {
+    option (aelf.is_event) = true;
+    aelf.Address user = 1;
+    int64 amount = 2;
+    int64 period_id = 3;
+    Int64List claimed_lottery_code_list = 4;
 }

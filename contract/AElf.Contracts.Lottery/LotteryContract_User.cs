@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core;
+using AElf.Sdk.CSharp;
 using Google.Protobuf.WellKnownTypes;
 
 namespace AElf.Contracts.Lottery
@@ -65,6 +66,15 @@ namespace AElf.Contracts.Lottery
             ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(newLotteryAmount);
             State.OwnLotteryMap[Context.Sender] = ownLottery;
 
+            Context.Fire(new Staked
+            {
+                User = Context.Sender,
+                Amount = input.Value,
+                LotteryCodeList = new Int64List
+                {
+                    Value = { ownLottery.LotteryCodeList }
+                }
+            });
             return ownLottery;
         }
 
@@ -112,6 +122,16 @@ namespace AElf.Contracts.Lottery
 
             State.OwnLotteryMap[Context.Sender] = ownLottery;
 
+            Context.Fire(new Claimed
+            {
+                User = Context.Sender,
+                Amount = claimingAmount,
+                PeriodId = State.CurrentPeriodId.Value,
+                ClaimedLotteryCodeList = new Int64List
+                {
+                    Value = { ownLottery.LotteryCodeList }
+                }
+            });
             return new Empty();
         }
 
@@ -132,6 +152,12 @@ namespace AElf.Contracts.Lottery
             ownLottery.IsRedeemed = true;
             State.OwnLotteryMap[Context.Sender] = ownLottery;
 
+            Context.Fire(new Redeemed
+            {
+                User = Context.Sender,
+                Amount = ownLottery.TotalStakingAmount,
+                PeriodId = State.CurrentPeriodId.Value
+            });
             return new Empty();
         }
 

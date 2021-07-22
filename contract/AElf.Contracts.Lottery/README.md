@@ -9,8 +9,8 @@
 
 以上三个时间必须为递增，后两者可以相同。
 
-可选收入默认每期的ELF奖项：
-- default_award_list
+可选输入默认每期的ELF奖项：
+- default_award_list，是一个长整型数组
 
 如果不输入的话，使用以下数据：
 ```C#
@@ -82,3 +82,18 @@ Draw执行完毕后，下一届的奖品列表将会被初始化。
 用户通过Redeem方法赎回自己锁定的ELF。
 
 该操作将会更新用户的OwnLottery中的`is_redeemed`字段。
+
+## View方法说明
+Lottery合约中有四个主要的MappedState：
+- AwardMap，key是award id（每个奖项都有一个award id），value是该奖项的详情，如与该奖项唯一绑定的中奖码（开奖后绑定），是否已经被领取等，使用`GetAward`方法查询
+- PeriodAwardMap，key是period id，value是该期的信息，包括起始时间、award id范围等，使用`PeriodAward`方法进行查询
+- LotteryMap，key是lottery code，value是该lottery的信息，如该抽奖码所中的award id list，最近领奖领到哪个award id等，使用`GetLottery`方法进行查询
+- OwnLotteryMap，key是用户地址，value是该用户相关的信息，如锁了多少仓、有哪些抽奖码、中奖总数额、已领取总数额等，使用`GetOwnLottery`方法进行查询
+
+除此之外：
+- GetAwardListByUserAddress，可以查询某个用户的所有获奖奖项
+- GetLotteryCodeListByUserAddress，查询用户所拥有的的抽奖码（通过GetOwnLottery也可以查到）
+- GetStakingAmount，查询用户锁定了多少代币（通过GetOwnLottery也可以查到）
+- GetTotalLotteryCount，查询现在已经兑换了多少抽奖码
+- GetCurrentPeriodId，查询即将开奖的期数
+- GetAwardListByPeriodId，查询某一期所设置的奖项
