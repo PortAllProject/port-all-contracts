@@ -18,6 +18,8 @@ service LotteryContract {
     }
     rpc Draw (DrawInput) returns (google.protobuf.Empty) {
     }
+    rpc ResetTimestamp (InitializeInput) returns (google.protobuf.Empty) {
+    }
 
     // User
     rpc Stake (google.protobuf.Int64Value) returns (OwnLottery) {
@@ -40,7 +42,7 @@ service LotteryContract {
     rpc GetAwardListByUserAddress (aelf.Address) returns (AwardList) {
         option (aelf.is_view) = true;
     }
-    rpc GetAwardListByPeriodId (google.protobuf.Int64Value) returns (AwardList) {
+    rpc GetAwardList (GetAwardListInput) returns (AwardList) {
         option (aelf.is_view) = true;
     }
     // From State.LotteryMap directly
@@ -60,6 +62,18 @@ service LotteryContract {
     }
     // From PeriodAward directly
     rpc GetPeriodAward (google.protobuf.Int64Value) returns (PeriodAward) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetStartTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetShutdownTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetRedeemTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAwardAmountMap (aelf.Address) returns (AwardAmountMap) {
         option (aelf.is_view) = true;
     }
 }
@@ -102,6 +116,7 @@ message Award {
     int64 award_amount = 2;
     int64 lottery_code = 3;
     bool is_claimed = 4;
+    aelf.Address owner = 5;
 }
 
 message AwardList {
@@ -120,6 +135,16 @@ message PeriodAward {
 message DrawInput {
     int32 period_id = 1;
     repeated int64 next_award_list = 2; 
+}
+
+message GetAwardListInput {
+    int32 period_id = 1;
+    int64 start_index = 2;
+    int32 count = 3;
+}
+
+message AwardAmountMap {
+    map<int64, int64> value = 1;// Lottery Code -> Award Amount
 }
 
 // Events

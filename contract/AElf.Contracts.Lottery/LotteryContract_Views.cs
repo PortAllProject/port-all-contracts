@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using AElf.CSharp.Core;
@@ -77,15 +78,51 @@ namespace AElf.Contracts.Lottery
             return ownLottery == null ? new Int64Value() : new Int64Value { Value = ownLottery.TotalStakingAmount };
         }
 
-        public override AwardList GetAwardListByPeriodId(Int64Value input)
+        public override AwardList GetAwardList(GetAwardListInput input)
         {
-            var periodAward = State.PeriodAwardMap[input.Value];
-            var awardList = Enumerable.Range((int)periodAward.StartAwardId,
-                (int)periodAward.EndAwardId.Sub(periodAward.StartAwardId).Add(1));
+            var periodAward = State.PeriodAwardMap[input.PeriodId];
+            var awardCount = periodAward.EndAwardId.Sub(periodAward.StartAwardId).Add(1);
+            var maxCount = (int)awardCount.Sub(input.StartIndex);
+            if (input.Count == 0)
+            {
+                input.Count = maxCount;
+            }
+
+            var awardIdList = Enumerable.Range((int)periodAward.StartAwardId.Add(input.StartIndex),
+                Math.Min(maxCount, input.Count));
             return new AwardList
             {
-                Value = { awardList.Select(id => State.AwardMap[id]) }
+                Value = { awardIdList.Select(id => State.AwardMap[id]) }
             };
+        }
+
+        public override AwardAmountMap GetAwardAmountMap(Address input)
+        {
+            var awardList = GetAwardListByUserAddress(input);
+            var awardAmountMap = new AwardAmountMap();
+            var ownLottery = State.OwnLotteryMap[input];
+            foreach (var lotteryCode in ownLottery.LotteryCodeList)
+            {
+                awardAmountMap.Value.Add(lotteryCode,
+                    awardList.Value.Where(a => a.LotteryCode == lotteryCode).Sum(a => a.AwardAmount));
+            }
+
+            return awardAmountMap;
+        }
+
+        public override Timestamp GetStartTimestamp(Empty input)
+        {
+            return State.StakingStartTimestamp.Value;
+        }
+
+        public override Timestamp GetShutdownTimestamp(Empty input)
+        {
+            return State.StakingShutdownTimestamp.Value;
+        }
+
+        public override Timestamp GetRedeemTimestamp(Empty input)
+        {
+            return State.RedeemTimestamp.Value;
         }
     }
 }

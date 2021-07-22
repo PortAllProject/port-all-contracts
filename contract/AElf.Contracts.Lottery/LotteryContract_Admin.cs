@@ -63,17 +63,41 @@ namespace AElf.Contracts.Lottery
 
                 // Bind lottery id & award id in both sides.
                 var award = State.AwardMap[i];
-                award.LotteryCode = luckyLotteryCode;
-                State.AwardMap[i] = award;
 
                 var lottery = State.LotteryMap[luckyLotteryCode];
                 lottery.AwardIdList.Add(award.AwardId);
                 State.LotteryMap[luckyLotteryCode] = lottery;
 
+                award.LotteryCode = luckyLotteryCode;
+                award.Owner = lottery.Owner;
+                State.AwardMap[i] = award;
+
                 var ownLottery = State.OwnLotteryMap[lottery.Owner];
                 ownLottery.TotalAwardAmount = ownLottery.TotalAwardAmount.Add(award.AwardAmount);
                 State.OwnLotteryMap[lottery.Owner] = ownLottery;
             }
+        }
+
+        public override Empty ResetTimestamp(InitializeInput input)
+        {
+            AssertSenderIsAdmin();
+
+            if (input.StartTimestamp != null)
+            {
+                State.StakingStartTimestamp.Value = input.StartTimestamp;
+            }
+
+            if (input.ShutdownTimestamp != null)
+            {
+                State.StakingShutdownTimestamp.Value = input.ShutdownTimestamp;
+            }
+
+            if (input.RedeemTimestamp != null)
+            {
+                State.RedeemTimestamp.Value = input.RedeemTimestamp;
+            }
+
+            return new Empty();
         }
 
         private bool IsAwardInCurrentPeriod(long lotteryCode, long minimumAwardIdOfCurrentPeriod)

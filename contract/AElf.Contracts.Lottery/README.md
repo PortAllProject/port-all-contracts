@@ -102,3 +102,105 @@ Lottery合约中有四个主要的MappedState：
 - GetTotalLotteryCount，查询现在已经兑换了多少抽奖码
 - GetCurrentPeriodId，查询即将开奖的期数
 - GetAwardListByPeriodId，查询某一期所设置的奖项
+
+## 前端重点关注的View方法
+
+### 获取活动相关时间信息
+便于倒计时
+- GetStartTimestamp，活动开始时间
+- GetShutdownTimestamp，活动结束时间
+- GetRedeemTimestamp，开始赎回时间
+
+input都是Empty，output都是google.protobuf.Timestamp
+
+### 获取用户相关信息
+使用`GetOwnLottery`可以获取OwnLottery结构：
+```Protobuf
+message OwnLottery {
+    repeated int64 lottery_code_list = 1;
+    int64 total_staking_amount = 2;
+    int64 total_award_amount = 3;
+    int64 claimed_award_amount = 4;
+    bool is_redeemed = 5;
+}
+```
+包括：
+- 用户所拥有的抽奖码
+- 用户总锁仓ELF数量
+- 用户获得的ELF奖金总数
+- 用户已领取的ELF奖金数
+- 用户是否已经赎回
+
+使用`GetAwardListByUserAddress`可以获取某用户当前获得的奖项，output是AwardList类型，相关结构为：
+```Protobuf
+message Award {
+    int64 award_id = 1;
+    int64 award_amount = 2;
+    int64 lottery_code = 3;
+    bool is_claimed = 4;
+    aelf.Address owner = 5;
+}
+
+message AwardList {
+    repeated Award value = 1;
+}
+```
+Award包括：
+- Id，唯一标识
+- ELF数额
+- 该奖项绑定的抽奖码，如果没开奖就是0，不过通过这个方法返回的都是已经开奖给当前用户的
+- 是否已经被领取
+
+使用`GetAwardAmountMap`获得用户的每个抽奖码对应的中奖总数（毕竟抽奖码可以多次中奖），返回值是AwardAmountMap，就是长整型对长整型的字典
+```Protobuf
+message AwardAmountMap {
+    map<int64, int64> value = 1;// Lottery Code -> Award Amount
+}
+```
+
+在显示My Lottery Code板块时：
+- 已锁仓这一列，第一个是100，后面的都是1000（不然不显示了？）
+- 最后一列直接用`GetAwardAmountMap`方法就行了
+- 获得用户锁仓数和获奖数用`GetOwnLottery`
+
+以上方法的input都是aelf.Address
+
+### 获取开奖相关信息
+使用`GetPeriodAward`方法获取某一期的基本信息。
+```Protobuf
+message PeriodAward {
+    int32 period_id = 1;
+    google.protobuf.Timestamp start_timestamp = 2;
+    google.protobuf.Timestamp end_timestamp = 3;// Also draw timestamp
+    aelf.Hash use_random_hash = 4;
+    int64 start_award_id = 5;
+    int64 end_award_id = 6;
+}
+```
+包括：
+- 期数，1到8，不过前端显示需要对应成开奖日期
+- 本期开始时间
+- 本期结束时间（下一期的开始时间）
+- 本期使用的随机数
+- 本期第一个奖项的id
+- 本期最后一个奖项的id
+
+使用`GetAwardList`方法获取某一期所设置的所有奖项的信息，返回值是AwardList，input是GetAwardListInput：
+```Protobuf
+message GetAwardListInput {
+    int32 period_id = 1;
+    int64 start_index = 2;
+    int32 count = 3;
+}
+```
+start_index和count两个参数用于分页，前者专指这一期的index，对于每期都是从0开始。
+count不填则返回从start_index开始的所有award。
+
+前端展示开奖公示的表格用`GetAwardList`方法即可：
+- 日期使用period_id做对应
+- Lottery Code -> lottery_code
+- Reward -> award_amount
+- Owner -> owner
+
+用户勾选My Lottery Code后，筛选出Owner是用户的给他显示即可。
+

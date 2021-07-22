@@ -98,8 +98,8 @@ namespace AElf.Contracts.Lottery
                     State.AwardMap[awardId] = award;
 
                     // Double check.
-                    Assert(award.LotteryCode == lottery.LotteryCode,
-                        $"Some wrong with the Award Id {awardId} and Lottery Code {lottery.LotteryCode}.");
+                    Assert(award.LotteryCode == lottery.LotteryCode && award.Owner == lottery.Owner,
+                        $"Some wrong with the Award Id {awardId} and Lottery Code {lottery.LotteryCode}.\n{award}\n{lottery}");
                     claimingAmount = claimingAmount.Add(award.AwardAmount);
 
                     lottery.LatestClaimedAwardId = awardId;
