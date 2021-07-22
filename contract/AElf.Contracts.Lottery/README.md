@@ -50,7 +50,7 @@ private List<long> GetDefaultAwardList()
 
 Lottery合约会自动为用户兑换出合适数量的抽奖码：第一个价值100ELF，之后的价值10000ELF，相关常数配置在LotteryContract_Rules.cs文件里，可以通过升级合约修改。
 
-|  用户锁定代币   | 获得抽奖码个数  |
+|  用户锁定代币总数   | 可拥有抽奖码个数  |
 |  ----  | ----  |
 | 99  | 0 |
 | 999  | 1 |

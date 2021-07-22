@@ -1,4 +1,5 @@
-﻿using AElf.CSharp.Core;
+﻿using System;
+using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -90,11 +91,13 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
             var receiptCount = GetReceiptCount(input.ReceiptMaker);
             Assert(receiptCount > 0, "Receipts not found.");
-            var firstLeafIndex = receiptCount.Sub(1).Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
-            Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= firstLeafIndex,
+            var firstLeafIndex = input.ReceiptId.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
+            var maxLastLeafIndex = firstLeafIndex.Add(maker.MerkleTreeLeafLimit).Sub(1);
+            var lastLeafIndex = Math.Min(maxLastLeafIndex, input.LastLeafIndex);
+            Assert(lastLeafIndex >= input.ReceiptId && lastLeafIndex >= firstLeafIndex,
                 "Invalid merkle input.");
 
-            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, firstLeafIndex, input.LastLeafIndex);
+            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, firstLeafIndex, lastLeafIndex);
             var index = (int)input.ReceiptId.Sub(firstLeafIndex);
             var path = binaryMerkleTree.GenerateMerklePath(index);
             return path;
