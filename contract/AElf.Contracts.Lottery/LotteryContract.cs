@@ -11,7 +11,7 @@ namespace AElf.Contracts.Lottery
             Assert(State.Admin.Value == null, "Already initialized");
 
             var defaultAwardList = input.DefaultAwardList?.ToList() ?? GetDefaultAwardList();
-            State.Admin.Value = Context.Sender;
+            State.Admin.Value = input.Admin ?? Context.Sender;
             State.DefaultPeriodAwardAmountList.Value = new Int64List { Value = { defaultAwardList } };
 
             State.TokenContract.Value =

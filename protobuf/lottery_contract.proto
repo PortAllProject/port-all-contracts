@@ -73,6 +73,7 @@ message InitializeInput {
     google.protobuf.Timestamp shutdown_timestamp = 2;
     google.protobuf.Timestamp redeem_timestamp = 3;
     repeated int64 default_award_list = 4; 
+    aelf.Address admin = 5;
 }
 
 message StakeInput {
