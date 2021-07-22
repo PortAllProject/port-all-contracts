@@ -74,6 +74,7 @@ namespace AElf.Contracts.Bridge
                 {
                     RecorderId = swapInfo.RecorderId
                 }).Value;
+            
             var merklePath = State.MerkleTreeGeneratorContract.GetMerklePath.Call(new GetMerklePathInput
             {
                 ReceiptMaker = Context.Self,

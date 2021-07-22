@@ -76,10 +76,6 @@ message InitializeInput {
     aelf.Address admin = 5;
 }
 
-message StakeInput {
-    int32 amount = 1;
-}
-
 message OwnLottery {
     repeated int64 lottery_code_list = 1;
     int64 total_staking_amount = 2;

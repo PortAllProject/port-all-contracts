@@ -28,6 +28,7 @@ namespace AElf.Contracts.Lottery
             {
                 // Just update LotteryList.TotalStakingAmount
                 ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
+                State.OwnLotteryMap[Context.Sender] = ownLottery;
                 return ownLottery;
             }
 
