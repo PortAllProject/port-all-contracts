@@ -64,7 +64,7 @@ namespace AElf.Contracts.Lottery
             State.CurrentLotteryCode.Value = State.CurrentLotteryCode.Value.Add(newLotteryAmount);
 
             // Update LotteryList Map.
-            ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(newLotteryAmount);
+            ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
             State.OwnLotteryMap[Context.Sender] = ownLottery;
 
             Context.Fire(new Staked
