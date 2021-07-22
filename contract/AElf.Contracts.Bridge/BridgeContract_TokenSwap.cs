@@ -1,3 +1,4 @@
+using System;
 using AElf.Contracts.MerkleTreeGeneratorContract;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
@@ -56,7 +57,7 @@ namespace AElf.Contracts.Bridge
             State.RecorderIdToRegimentMap[recorderId] = input.RegimentAddress;
 
             State.SwapInfo[swapId] = swapInfo;
-            Context.Fire(new SwapPairAdded {SwapId = swapId});
+            Context.Fire(new SwapPairAdded { SwapId = swapId });
             return swapId;
         }
 
@@ -74,17 +75,22 @@ namespace AElf.Contracts.Bridge
                 {
                     RecorderId = swapInfo.RecorderId
                 }).Value;
-            
+
+            // To locate the tree of specific receipt id.
+            var firstLeafIndex = input.ReceiptId.Div(State.MaximalLeafCount.Value).Mul(State.MaximalLeafCount.Value);
+            var maxLastLeafIndex = firstLeafIndex.Add(State.MaximalLeafCount.Value).Sub(1);
+            var lastLeafIndex = Math.Min(maxLastLeafIndex, lastRecordedLeafIndex);
             var merklePath = State.MerkleTreeGeneratorContract.GetMerklePath.Call(new GetMerklePathInput
             {
                 ReceiptMaker = Context.Self,
-                LastLeafIndex = lastRecordedLeafIndex,
                 ReceiptId = input.ReceiptId,
+                FirstLeafIndex = firstLeafIndex,
+                LastLeafIndex = lastLeafIndex
             });
 
             Assert(State.MerkleTreeRecorderContract.MerkleProof.Call(new MerkleProofInput
             {
-                LastLeafIndex = lastRecordedLeafIndex,
+                LastLeafIndex = lastLeafIndex,
                 LeafNode = leafHash,
                 MerklePath = merklePath,
                 RecorderId = swapInfo.RecorderId

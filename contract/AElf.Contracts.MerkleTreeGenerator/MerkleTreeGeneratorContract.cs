@@ -89,16 +89,11 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
                 throw new AssertionException("Receipt maker not registered.");
             }
 
-            var receiptCount = GetReceiptCount(input.ReceiptMaker);
-            Assert(receiptCount > 0, "Receipts not found.");
-            var firstLeafIndex = input.ReceiptId.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
-            var maxLastLeafIndex = firstLeafIndex.Add(maker.MerkleTreeLeafLimit).Sub(1);
-            var lastLeafIndex = Math.Min(maxLastLeafIndex, input.LastLeafIndex);
-            Assert(lastLeafIndex >= input.ReceiptId && lastLeafIndex >= firstLeafIndex,
-                "Invalid merkle input.");
+            Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= input.FirstLeafIndex,
+                "Invalid get merkle path input.");
 
-            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, firstLeafIndex, lastLeafIndex);
-            var index = (int)input.ReceiptId.Sub(firstLeafIndex);
+            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, input.FirstLeafIndex, input.LastLeafIndex);
+            var index = (int)input.ReceiptId.Sub(input.FirstLeafIndex);
             var path = binaryMerkleTree.GenerateMerklePath(index);
             return path;
         }
