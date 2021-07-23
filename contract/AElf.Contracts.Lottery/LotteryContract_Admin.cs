@@ -60,7 +60,11 @@ namespace AElf.Contracts.Lottery
         private long DoDraw(long startAwardId, long endAwardId, Hash randomHash)
         {
             var randomNumber = Context.ConvertHashToInt64(randomHash);
-            var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1));
+            if (State.CurrentLotteryCode.Value == 1)
+            {
+                return startAwardId;
+            }
+            var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1)).Add(1);
             var awardedLotteryCodeList = new List<long>();
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
             {
@@ -77,7 +81,7 @@ namespace AElf.Contracts.Lottery
                     randomNumber = Context.ConvertHashToInt64(HashHelper.ConcatAndCompute(
                         HashHelper.ComputeFrom(randomNumber),
                         HashHelper.ComputeFrom(randomNumber)));
-                    luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1));
+                    luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1)).Add(1);
                 }
 
                 // Bind lottery id & award id in both sides.
@@ -155,7 +159,7 @@ namespace AElf.Contracts.Lottery
             {
                 PeriodId = State.CurrentPeriodId.Value.Add(1),
                 StartTimestamp = startTimestamp ?? Context.CurrentBlockTime,
-                StartAwardId = currentAwardId,
+                StartAwardId = currentAwardId.Add(1),
                 EndAwardId = State.CurrentAwardId.Value.Add(awardAmountList.Value.Count)
             };
         }
