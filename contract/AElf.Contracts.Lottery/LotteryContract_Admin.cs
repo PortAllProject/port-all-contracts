@@ -22,11 +22,19 @@ namespace AElf.Contracts.Lottery
             var randomHash =
                 HashHelper.ConcatAndCompute(Context.PreviousBlockHash, HashHelper.ComputeFrom(randomBytes));
 
-            DoDraw(periodAward.StartAwardId, periodAward.EndAwardId, randomHash);
+            var actualEndAwardId = DoDraw(periodAward.StartAwardId, periodAward.EndAwardId, randomHash);
 
             periodAward.UseRandomHash = randomHash;
             periodAward.EndTimestamp = Context.CurrentBlockTime;
+            periodAward.EndAwardId = actualEndAwardId;
             State.PeriodAwardMap[input.PeriodId] = periodAward;
+
+            State.CurrentAwardId.Value = actualEndAwardId;
+
+            for (var i = actualEndAwardId.Add(1); i <= periodAward.EndAwardId; i++)
+            {
+                State.AwardMap.Remove(i);
+            }
 
             var newPeriodId = State.CurrentPeriodId.Value.Add(1);
             State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(
@@ -41,7 +49,14 @@ namespace AElf.Contracts.Lottery
             return new Empty();
         }
 
-        private void DoDraw(long startAwardId, long endAwardId, Hash randomHash)
+        /// <summary>
+        /// Draw
+        /// </summary>
+        /// <param name="startAwardId"></param>
+        /// <param name="endAwardId"></param>
+        /// <param name="randomHash"></param>
+        /// <returns>the end award id</returns>
+        private long DoDraw(long startAwardId, long endAwardId, Hash randomHash)
         {
             var randomNumber = Context.ConvertHashToInt64(randomHash);
             var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1));
@@ -50,7 +65,7 @@ namespace AElf.Contracts.Lottery
                 if (endAwardId > State.CurrentLotteryCode.Value)
                 {
                     // Award count is greater than lottery code count, no need to draw.
-                    break;
+                    return i;
                 }
 
                 while (IsAwardInCurrentPeriod(luckyLotteryCode, startAwardId))
@@ -77,6 +92,8 @@ namespace AElf.Contracts.Lottery
                 ownLottery.TotalAwardAmount = ownLottery.TotalAwardAmount.Add(award.AwardAmount);
                 State.OwnLotteryMap[lottery.Owner] = ownLottery;
             }
+
+            return endAwardId;
         }
 
         public override Empty ResetTimestamp(InitializeInput input)
