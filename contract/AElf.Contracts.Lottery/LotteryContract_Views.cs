@@ -55,7 +55,7 @@ namespace AElf.Contracts.Lottery
         {
             return new Int64Value
             {
-                Value = State.CurrentLotteryCode.Value
+                Value = State.CurrentLotteryCode.Value.Sub(1)
             };
         }
 
