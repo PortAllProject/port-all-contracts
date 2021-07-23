@@ -60,12 +60,13 @@ namespace AElf.Contracts.Lottery
         {
             var randomNumber = Context.ConvertHashToInt64(randomHash);
             var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1));
-            for (var i = startAwardId; i <= endAwardId; i++)
+            for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
             {
-                if (endAwardId > State.CurrentLotteryCode.Value)
+                var drewAwardCountThisPeriod = awardId.Sub(startAwardId);
+                if (drewAwardCountThisPeriod >= GetTotalLotteryCount(new Empty()).Value)
                 {
                     // Award count is greater than lottery code count, no need to draw.
-                    return i;
+                    return awardId;
                 }
 
                 while (IsAwardInCurrentPeriod(luckyLotteryCode, startAwardId))
@@ -78,7 +79,7 @@ namespace AElf.Contracts.Lottery
                 }
 
                 // Bind lottery id & award id in both sides.
-                var award = State.AwardMap[i];
+                var award = State.AwardMap[awardId];
 
                 var lottery = State.LotteryMap[luckyLotteryCode];
                 lottery.AwardIdList.Add(award.AwardId);
@@ -86,7 +87,7 @@ namespace AElf.Contracts.Lottery
 
                 award.LotteryCode = luckyLotteryCode;
                 award.Owner = lottery.Owner;
-                State.AwardMap[i] = award;
+                State.AwardMap[awardId] = award;
 
                 var ownLottery = State.OwnLotteryMap[lottery.Owner];
                 ownLottery.TotalAwardAmount = ownLottery.TotalAwardAmount.Add(award.AwardAmount);
