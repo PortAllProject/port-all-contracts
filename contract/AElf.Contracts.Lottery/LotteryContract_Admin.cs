@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
@@ -60,6 +61,7 @@ namespace AElf.Contracts.Lottery
         {
             var randomNumber = Context.ConvertHashToInt64(randomHash);
             var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1));
+            var awardedLotteryCodeList = new List<long>();
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
             {
                 var drewAwardCountThisPeriod = awardId.Sub(startAwardId);
@@ -69,7 +71,7 @@ namespace AElf.Contracts.Lottery
                     return awardId;
                 }
 
-                while (IsAwardInCurrentPeriod(luckyLotteryCode, startAwardId))
+                while (awardedLotteryCodeList.Contains(luckyLotteryCode))
                 {
                     // Keep updating lucky lottery code.
                     randomNumber = Context.ConvertHashToInt64(HashHelper.ConcatAndCompute(
@@ -92,6 +94,8 @@ namespace AElf.Contracts.Lottery
                 var ownLottery = State.OwnLotteryMap[lottery.Owner];
                 ownLottery.TotalAwardAmount = ownLottery.TotalAwardAmount.Add(award.AwardAmount);
                 State.OwnLotteryMap[lottery.Owner] = ownLottery;
+
+                awardedLotteryCodeList.Add(luckyLotteryCode);
             }
 
             return endAwardId;
@@ -117,11 +121,6 @@ namespace AElf.Contracts.Lottery
             }
 
             return new Empty();
-        }
-
-        private bool IsAwardInCurrentPeriod(long lotteryCode, long minimumAwardIdOfCurrentPeriod)
-        {
-            return State.LotteryMap[lotteryCode].AwardIdList.Any(a => a >= minimumAwardIdOfCurrentPeriod);
         }
 
         private void AssertSenderIsAdmin()
