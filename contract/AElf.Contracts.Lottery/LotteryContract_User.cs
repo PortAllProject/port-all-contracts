@@ -21,14 +21,24 @@ namespace AElf.Contracts.Lottery
 
             // Stake ELF Tokens.
             var ownLottery = State.OwnLotteryMap[Context.Sender] ?? new OwnLottery();
-            ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
             var supposedLotteryAmount = CalculateSupposedLotteryAmount(ownLottery, input.Value);
             var newLotteryAmount = supposedLotteryAmount.Sub(ownLottery.LotteryCodeList.Count);
             Assert(newLotteryAmount >= 0, "Incorrect state.");
+            
+            ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
+
             if (newLotteryAmount == 0)
             {
                 // Just update LotteryList.TotalStakingAmount
                 State.OwnLotteryMap[Context.Sender] = ownLottery;
+                State.TokenContract.TransferFrom.Send(new TransferFromInput
+                {
+                    From = Context.Sender,
+                    To = Context.Self,
+                    Amount = input.Value,
+                    Symbol = TokenSymbol,
+                    Memo = "No new lottery code."
+                });
                 return ownLottery;
             }
 

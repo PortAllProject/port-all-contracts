@@ -25,14 +25,12 @@ namespace AElf.Contracts.Lottery.Tests
                 periodAward.EndAwardId.ShouldBe(20);
             }
 
-            await Task.Delay(1000);
-            for (var i = 0; i < 10; i++)
+            for (var i = 0; i < 20; i++)
             {
-                var user = UserStubs[i];
                 await TokenContractStub.Transfer.SendAsync(new TransferInput
                 {
                     To = Users[i].Address,
-                    Amount = 30000_00000000,
+                    Amount = 30_0000_00000000,
                     Symbol = "ELF"
                 });
                 await UserTokenContractStubs[i].Approve.SendAsync(new ApproveInput
@@ -41,6 +39,13 @@ namespace AElf.Contracts.Lottery.Tests
                     Amount = long.MaxValue,
                     Symbol = "ELF"
                 });
+            }
+
+            await Task.Delay(1000);
+
+            for (var i = 0; i < 10; i++)
+            {
+                var user = UserStubs[i];
                 await user.Stake.SendAsync(new Int64Value { Value = 100_00000000 });
             }
 
@@ -92,6 +97,15 @@ namespace AElf.Contracts.Lottery.Tests
             {
                 var user = UserStubs[i];
                 await user.Claim.SendAsync(new Empty());
+            }
+
+            await UserStubs[10].Stake.SendAsync(new Int64Value
+            {
+                Value = 19100_00000000
+            });
+            {
+                var ownLottery = await Admin.GetOwnLottery.CallAsync(Users[10].Address);
+                ownLottery.LotteryCodeList.Count.ShouldBe(20);
             }
         }
 
