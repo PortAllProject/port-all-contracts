@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core.Extension;
@@ -26,7 +25,7 @@ namespace AElf.Contracts.Lottery.Tests
                 periodAward.EndAwardId.ShouldBe(20);
             }
 
-            Thread.Sleep(5000);
+            await Task.Delay(1000);
             for (var i = 0; i < 10; i++)
             {
                 var user = UserStubs[i];
@@ -53,7 +52,7 @@ namespace AElf.Contracts.Lottery.Tests
                     Value = 1
                 });
                 periodAward.StartAwardId.ShouldBe(1);
-                periodAward.EndAwardId.ShouldBe(11);
+                periodAward.EndAwardId.ShouldBe(10);
             }
 
             {
@@ -63,6 +62,37 @@ namespace AElf.Contracts.Lottery.Tests
                 });
                 awardList.Value.Count.ShouldBe(10);
             }
+
+            for (var i = 0; i < 10; i++)
+            {
+                var user = UserStubs[i];
+                await user.Stake.SendAsync(new Int64Value { Value = 1000_00000000 });
+            }
+
+            await Admin.Draw.SendAsync(new DrawInput { PeriodId = 2 });
+
+            {
+                var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value
+                {
+                    Value = 2
+                });
+                periodAward.StartAwardId.ShouldBe(11);
+                periodAward.EndAwardId.ShouldBe(30);
+            }
+
+            {
+                var awardList = await Admin.GetAwardList.CallAsync(new GetAwardListInput
+                {
+                    PeriodId = 2
+                });
+                awardList.Value.Count.ShouldBe(20);
+            }
+            
+            for (var i = 0; i < 10; i++)
+            {
+                var user = UserStubs[i];
+                await user.Claim.SendAsync(new Empty());
+            }
         }
 
         private async Task InitializeLotteryContract()
@@ -70,8 +100,8 @@ namespace AElf.Contracts.Lottery.Tests
             await Admin.Initialize.SendAsync(new InitializeInput
             {
                 StartTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100),
-                ShutdownTimestamp = TimestampHelper.GetUtcNow().AddDays(1),
-                RedeemTimestamp = TimestampHelper.GetUtcNow().AddDays(1),
+                ShutdownTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
+                RedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 DefaultAwardList = { GetDefaultAwardList() }
             });
         }

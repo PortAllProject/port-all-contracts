@@ -21,13 +21,13 @@ namespace AElf.Contracts.Lottery
 
             // Stake ELF Tokens.
             var ownLottery = State.OwnLotteryMap[Context.Sender] ?? new OwnLottery();
+            ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
             var supposedLotteryAmount = CalculateSupposedLotteryAmount(ownLottery, input.Value);
             var newLotteryAmount = supposedLotteryAmount.Sub(ownLottery.LotteryCodeList.Count);
             Assert(newLotteryAmount >= 0, "Incorrect state.");
             if (newLotteryAmount == 0)
             {
                 // Just update LotteryList.TotalStakingAmount
-                ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
                 State.OwnLotteryMap[Context.Sender] = ownLottery;
                 return ownLottery;
             }
@@ -64,7 +64,6 @@ namespace AElf.Contracts.Lottery
             State.CurrentLotteryCode.Value = State.CurrentLotteryCode.Value.Add(newLotteryAmount);
 
             // Update LotteryList Map.
-            ownLottery.TotalStakingAmount = ownLottery.TotalStakingAmount.Add(input.Value);
             State.OwnLotteryMap[Context.Sender] = ownLottery;
 
             Context.Fire(new Staked

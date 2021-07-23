@@ -13,7 +13,8 @@ namespace AElf.Contracts.Lottery
         public override Empty Draw(DrawInput input)
         {
             AssertSenderIsAdmin();
-            Assert(State.CurrentPeriodId.Value == input.PeriodId, "Incorrect period id.");
+            Assert(State.CurrentPeriodId.Value == input.PeriodId && input.PeriodId <= TotalPeriod,
+                "Incorrect period id.");
 
             var periodAward = State.PeriodAwardMap[input.PeriodId];
             var randomBytes = State.RandomNumberProviderContract.GetRandomBytes.Call(new Int64Value
@@ -72,7 +73,7 @@ namespace AElf.Contracts.Lottery
                 if (drewAwardCountThisPeriod >= GetTotalLotteryCount(new Empty()).Value)
                 {
                     // Award count is greater than lottery code count, no need to draw.
-                    return awardId;
+                    return awardId.Sub(1);
                 }
 
                 while (awardedLotteryCodeList.Contains(luckyLotteryCode))
@@ -160,7 +161,7 @@ namespace AElf.Contracts.Lottery
                 PeriodId = State.CurrentPeriodId.Value.Add(1),
                 StartTimestamp = startTimestamp ?? Context.CurrentBlockTime,
                 StartAwardId = currentAwardId.Add(1),
-                EndAwardId = State.CurrentAwardId.Value.Add(awardAmountList.Value.Count)
+                EndAwardId = currentAwardId.Add(awardAmountList.Value.Count)
             };
         }
     }
