@@ -29,9 +29,10 @@ namespace AElf.Contracts.Lottery
             State.PeriodAwardMap[input.PeriodId] = periodAward;
 
             var newPeriodId = State.CurrentPeriodId.Value.Add(1);
-            State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(input.NextAwardList.Any()
-                ? new Int64List { Value = { input.NextAwardList } }
-                : null);
+            State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(
+                input.NextAwardList == null || input.NextAwardList.Any()
+                    ? new Int64List { Value = { input.NextAwardList } }
+                    : null);
 
             Context.Fire(new Drew { PeriodId = State.CurrentPeriodId.Value });
 
@@ -137,7 +138,7 @@ namespace AElf.Contracts.Lottery
             {
                 PeriodId = State.CurrentPeriodId.Value.Add(1),
                 StartTimestamp = startTimestamp ?? Context.CurrentBlockTime,
-                StartAwardId = State.CurrentAwardId.Value,
+                StartAwardId = currentAwardId,
                 EndAwardId = State.CurrentAwardId.Value.Add(awardAmountList.Value.Count)
             };
         }
