@@ -13,10 +13,10 @@ namespace AElf.Contracts.Lottery
         public override OwnLottery Stake(Int64Value input)
         {
             Assert(input.Value > 0, "Invalid staking amount.");
-            Assert(Context.CurrentBlockTime < State.StakingShutdownTimestamp.Value, "Activity already finished.");
+            InvalidIfDebugAssert(Context.CurrentBlockTime < State.StakingShutdownTimestamp.Value, "Activity already finished.");
             if (State.CurrentPeriodId.Value == 1)
             {
-                Assert(Context.CurrentBlockTime >= State.StakingStartTimestamp.Value, "Activity not started yet.");
+                InvalidIfDebugAssert(Context.CurrentBlockTime >= State.StakingStartTimestamp.Value, "Activity not started yet.");
             }
 
             // Stake ELF Tokens.
@@ -147,7 +147,7 @@ namespace AElf.Contracts.Lottery
 
         public override Empty Redeem(Empty input)
         {
-            Assert(Context.CurrentBlockTime >= State.RedeemTimestamp.Value,
+            InvalidIfDebugAssert(Context.CurrentBlockTime >= State.RedeemTimestamp.Value,
                 $"Cannot redeem before {State.RedeemTimestamp.Value}.");
             var ownLottery = State.OwnLotteryMap[Context.Sender];
             Assert(!ownLottery.IsRedeemed, "Already redeemed.");

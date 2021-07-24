@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core.Extension;
@@ -24,24 +26,6 @@ namespace AElf.Contracts.Lottery.Tests
                 periodAward.StartAwardId.ShouldBe(1);
                 periodAward.EndAwardId.ShouldBe(20);
             }
-
-            for (var i = 0; i < 20; i++)
-            {
-                await TokenContractStub.Transfer.SendAsync(new TransferInput
-                {
-                    To = Users[i].Address,
-                    Amount = 30_0000_00000000,
-                    Symbol = "ELF"
-                });
-                await UserTokenContractStubs[i].Approve.SendAsync(new ApproveInput
-                {
-                    Spender = DAppContractAddress,
-                    Amount = long.MaxValue,
-                    Symbol = "ELF"
-                });
-            }
-
-            await Task.Delay(1000);
 
             for (var i = 0; i < 10; i++)
             {
@@ -109,6 +93,28 @@ namespace AElf.Contracts.Lottery.Tests
             }
         }
 
+        [Theory]
+        [InlineData(99, 0)]
+        [InlineData(100, 1)]
+        [InlineData(999, 1)]
+        [InlineData(1099, 1)]
+        [InlineData(1100, 2)]
+        [InlineData(19100, 20)]
+        [InlineData(20100, 21)]
+        [InlineData(99999, 21)]
+        public async Task StakeAndGetCorrectLotteryCodeCountTest(long stakingAmount, int lotteryCodeCount)
+        {
+            await InitializeLotteryContract();
+            var user = Users.First();
+            var userStub = UserStubs.First();
+            await userStub.Stake.SendAsync(new Int64Value
+            {
+                Value = stakingAmount * 1_00000000
+            });
+            var ownLottery = await userStub.GetOwnLottery.CallAsync(user.Address);
+            ownLottery.LotteryCodeList.Count.ShouldBe(lotteryCodeCount);
+        }
+
         private async Task InitializeLotteryContract()
         {
             await Admin.Initialize.SendAsync(new InitializeInput
@@ -116,8 +122,25 @@ namespace AElf.Contracts.Lottery.Tests
                 StartTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100),
                 ShutdownTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 RedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
-                DefaultAwardList = { GetDefaultAwardList() }
+                DefaultAwardList = { GetDefaultAwardList() },
+                IsDebug = true
             });
+
+            for (var i = 0; i < 20; i++)
+            {
+                await TokenContractStub.Transfer.SendAsync(new TransferInput
+                {
+                    To = Users[i].Address,
+                    Amount = 30_0000_00000000,
+                    Symbol = "ELF"
+                });
+                await UserTokenContractStubs[i].Approve.SendAsync(new ApproveInput
+                {
+                    Spender = DAppContractAddress,
+                    Amount = long.MaxValue,
+                    Symbol = "ELF"
+                });
+            }
         }
 
         private List<long> GetDefaultAwardList()

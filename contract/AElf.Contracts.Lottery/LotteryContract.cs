@@ -14,14 +14,14 @@ namespace AElf.Contracts.Lottery
                 ? GetDefaultAwardList()
                 : input.DefaultAwardList.ToList();
             State.Admin.Value = input.Admin ?? Context.Sender;
-            State.DefaultPeriodAwardAmountList.Value = new Int64List { Value = { defaultAwardList } };
+            State.DefaultPeriodAwardAmountList.Value = new Int64List {Value = {defaultAwardList}};
 
             State.TokenContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.TokenContractSystemName);
             State.RandomNumberProviderContract.Value =
                 Context.GetContractAddressByName(SmartContractConstants.ConsensusContractSystemName);
 
-            State.PeriodAwardMap[1] = GenerateNextPeriodAward(new Int64List { Value = { defaultAwardList } },
+            State.PeriodAwardMap[1] = GenerateNextPeriodAward(new Int64List {Value = {defaultAwardList}},
                 input.StartTimestamp);
             State.CurrentAwardId.Value = State.PeriodAwardMap[1].EndAwardId;
             State.CurrentPeriodId.Value = 1;
@@ -34,7 +34,16 @@ namespace AElf.Contracts.Lottery
             State.StakingShutdownTimestamp.Value = input.ShutdownTimestamp;
             State.RedeemTimestamp.Value = input.RedeemTimestamp;
 
+            State.IsDebug.Value = input.IsDebug;
             return new Empty();
+        }
+
+        private void InvalidIfDebugAssert(bool asserted, string message)
+        {
+            if (!State.IsDebug.Value)
+            {
+                Assert(asserted, message);
+            }
         }
     }
 }
