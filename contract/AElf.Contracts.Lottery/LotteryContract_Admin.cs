@@ -134,14 +134,17 @@ namespace AElf.Contracts.Lottery
 
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
             {
-                var drewAwardCountThisPeriod = awardId.Sub(startAwardId);
-                if (drewAwardCountThisPeriod >= GetTotalLotteryCount(new Empty()).Value)
+                if (State.CachedAwardedLotteryCodeList.Value.Value.Count >= GetTotalLotteryCount(new Empty()).Value)
                 {
                     // Award count is greater than lottery code count, no need to draw.
                     return awardId.Sub(1);
                 }
 
                 var randomNumber = Context.ConvertHashToInt64(randomHash);
+                if (lotteryCodePool.Count == 0)
+                {
+                    Assert(lotteryCodePool.Count != 0, "Lottery code pool is empty.");
+                }
                 var luckyLotteryCodeIndex = (int) Math.Abs(randomNumber % lotteryCodePool.Count);
                 var luckyLotteryCode = lotteryCodePool[luckyLotteryCodeIndex];
                 lotteryCodePool.Remove(luckyLotteryCode);
@@ -151,10 +154,6 @@ namespace AElf.Contracts.Lottery
 
                 // Bind lottery id & award id in both sides.
                 var award = State.AwardMap[awardId];
-                if (award == null)
-                {
-                    throw new AssertionException("Award is null.");
-                }
 
                 var lottery = State.LotteryMap[luckyLotteryCode];
                 lottery.AwardIdList.Add(award.AwardId);

@@ -39,7 +39,7 @@ namespace AElf.Contracts.Lottery.Tests
                 });
             }
 
-            const int joinUserCount = 6;
+            const int joinUserCount = 5;
             for (var i = 0; i < joinUserCount; i++)
             {
                 var user = UserStubs[i];
@@ -69,39 +69,45 @@ namespace AElf.Contracts.Lottery.Tests
             {
                 var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value {Value = 1});
                 periodAward.StartAwardId.ShouldBe(1);
-                periodAward.EndAwardId.ShouldBe(120);
-                periodAward.DrewAwardId.ShouldBe(120);
+                periodAward.EndAwardId.ShouldBe(100);
+                periodAward.DrewAwardId.ShouldBe(100);
             }
 
             {
-                var awardList = (await Admin.GetAwardList.CallAsync(new GetAwardListInput
+                var awardList = await Admin.GetAwardList.CallAsync(new GetAwardListInput
                 {
                     PeriodId = 1
-                }));
+                });
                 var orderedAwardList = awardList.Value.OrderBy(a => a.LotteryCode);
-                orderedAwardList.Count().ShouldBe(120);
+                orderedAwardList.Count().ShouldBe(100);
             }
 
             foreach (var userStub in UserStubs.Take(joinUserCount))
             {
                 await userStub.Claim.SendAsync(new Empty());
             }
-            
-            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 2, ToAwardId = 140});
-            
+
+            for (var i = 0; i < joinUserCount; i++)
+            {
+                var user = UserStubs[i];
+                await user.Stake.SendAsync(new Int64Value {Value = 19100_00000000});
+            }
+
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 2, ToAwardId = 121});
+
             {
                 var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value {Value = 2});
-                periodAward.StartAwardId.ShouldBe(121);
-                periodAward.EndAwardId.ShouldBe(240);
-                periodAward.DrewAwardId.ShouldBe(140);
+                periodAward.StartAwardId.ShouldBe(101);
+                periodAward.EndAwardId.ShouldBe(220);
+                periodAward.DrewAwardId.ShouldBe(121);
             }
-            
+
             await Admin.Draw.SendAsync(new DrawInput {PeriodId = 2, ToAwardId = 180});
             
             {
                 var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value {Value = 2});
-                periodAward.StartAwardId.ShouldBe(121);
-                periodAward.EndAwardId.ShouldBe(240);
+                periodAward.StartAwardId.ShouldBe(101);
+                periodAward.EndAwardId.ShouldBe(220);
                 periodAward.DrewAwardId.ShouldBe(180);
             }
             
@@ -109,10 +115,21 @@ namespace AElf.Contracts.Lottery.Tests
             
             {
                 var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value {Value = 2});
-                periodAward.StartAwardId.ShouldBe(121);
-                periodAward.EndAwardId.ShouldBe(240);
-                periodAward.DrewAwardId.ShouldBe(240);
+                periodAward.StartAwardId.ShouldBe(101);
+                periodAward.EndAwardId.ShouldBe(205);
+                periodAward.DrewAwardId.ShouldBe(205);
             }
+            
+            for (var i = joinUserCount; i < joinUserCount + joinUserCount; i++)
+            {
+                var user = UserStubs[i];
+                await user.Stake.SendAsync(new Int64Value {Value = 19100_00000000});
+            }
+            
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 3, ToAwardId = 240});
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 3, ToAwardId = 300});
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 3});
+
         }
 
         [Fact]
