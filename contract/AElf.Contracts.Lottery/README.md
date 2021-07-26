@@ -63,6 +63,31 @@ Lottery合约会自动为用户兑换出合适数量的抽奖码：第一个价�
 
 例如第一次锁定1099个ELF，可以获得第一个抽奖码；第二次锁定1个ELF，可以获得第二个抽奖码。
 
+相关测试：
+```C#
+[Theory]
+[InlineData(99, 0)]
+[InlineData(100, 1)]
+[InlineData(999, 1)]
+[InlineData(1099, 1)]
+[InlineData(1100, 2)]
+[InlineData(19100, 20)]
+[InlineData(20100, 21)]
+[InlineData(99999, 21)]
+public async Task StakeAndGetCorrectLotteryCodeCountTest(long stakingAmount, int lotteryCodeCount)
+{
+    await InitializeLotteryContract();
+    var user = Users.First();
+    var userStub = UserStubs.First();
+    await userStub.Stake.SendAsync(new Int64Value
+    {
+        Value = stakingAmount * 1_00000000
+    });
+    var ownLottery = await userStub.GetOwnLottery.CallAsync(user.Address);
+    ownLottery.LotteryCodeList.Count.ShouldBe(lotteryCodeCount);
+}
+```
+
 ## Draw
 Lottery合约的Admin通过Draw方法开奖。
 
@@ -73,6 +98,10 @@ DrawInput包含两个参数：
 开奖结束后：
 - 本期所有`Award`的`lottery_code`字段将会被分配上获奖的抽奖码；
 - 相关的`Lottery`的`award_id_list`字段也会加入刚获奖奖项的`award_id`。
+
+当前有两种开奖的逻辑：
+- 当抽奖码数量小于或者等于二倍的奖项数量时，会构建一个lottery pool，不断使用随机数对lottery pool count取余，得到中奖的抽奖码的下标，随后将该抽奖码移出lottery pool
+- 当抽奖码数量大于二倍的奖项数量时，就用随机数对抽奖码的数量取余，在一次开奖过程中如果有重复中奖的情况就调整随机数（一个抽奖码每一期只能中奖一次）
 
 Draw执行完毕后，下一届的奖品列表将会被初始化。
 
