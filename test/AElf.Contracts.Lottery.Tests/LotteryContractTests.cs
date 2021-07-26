@@ -76,7 +76,7 @@ namespace AElf.Contracts.Lottery.Tests
                 });
                 awardList.Value.Count.ShouldBe(20);
             }
-            
+
             for (var i = 0; i < 10; i++)
             {
                 var user = UserStubs[i];
@@ -147,19 +147,19 @@ namespace AElf.Contracts.Lottery.Tests
         {
             var awardList = new List<long>
             {
-                5000,
-                1000, 1000,
-                500, 500
+                5000_00000000,
+                1000_00000000, 1000_00000000,
+                500_00000000, 500_00000000
             };
 
             for (var i = 0; i < 5; i++)
             {
-                awardList.Add(100);
+                awardList.Add(100_00000000);
             }
 
             for (var i = 0; i < 10; i++)
             {
-                awardList.Add(50);
+                awardList.Add(50_00000000);
             }
 
             return awardList;
