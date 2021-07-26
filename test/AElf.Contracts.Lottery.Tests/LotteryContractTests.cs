@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core.Extension;
@@ -13,6 +12,60 @@ namespace AElf.Contracts.Lottery.Tests
 {
     public class LotteryContractTests : LotteryContractTestBase
     {
+        [Fact]
+        public async Task DrawTest()
+        {
+            await Admin.Initialize.SendAsync(new InitializeInput
+            {
+                StartTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100),
+                ShutdownTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
+                RedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
+                IsDebug = true
+            });
+
+            for (var i = 0; i < 20; i++)
+            {
+                await TokenContractStub.Transfer.SendAsync(new TransferInput
+                {
+                    To = Users[i].Address,
+                    Amount = 30_0000_00000000,
+                    Symbol = "ELF"
+                });
+                await UserTokenContractStubs[i].Approve.SendAsync(new ApproveInput
+                {
+                    Spender = DAppContractAddress,
+                    Amount = long.MaxValue,
+                    Symbol = "ELF"
+                });
+            }
+
+            for (var i = 0; i < 6; i++)
+            {
+                var user = UserStubs[i];
+                await user.Stake.SendAsync(new Int64Value {Value = 19100_00000000});
+            }
+
+            {
+                var totalLotteryCodeCount = (await Admin.GetTotalLotteryCount.CallAsync(new Empty())).Value;
+                var awardList = (await Admin.GetAwardList.CallAsync(new GetAwardListInput
+                {
+                    PeriodId = 1
+                }));
+            }
+
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 1, ToAwardId = 40});
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 1, ToAwardId = 70});
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 1});
+
+            {
+                var awardList = (await Admin.GetAwardList.CallAsync(new GetAwardListInput
+                {
+                    PeriodId = 1
+                }));
+                awardList.Value.Count.ShouldBe(120);
+            }
+        }
+
         [Fact]
         public async Task PipelineTest()
         {
@@ -30,10 +83,10 @@ namespace AElf.Contracts.Lottery.Tests
             for (var i = 0; i < 10; i++)
             {
                 var user = UserStubs[i];
-                await user.Stake.SendAsync(new Int64Value { Value = 100_00000000 });
+                await user.Stake.SendAsync(new Int64Value {Value = 100_00000000});
             }
 
-            await Admin.Draw.SendAsync(new DrawInput { PeriodId = 1 });
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 1});
 
             {
                 var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value
@@ -55,10 +108,10 @@ namespace AElf.Contracts.Lottery.Tests
             for (var i = 0; i < 10; i++)
             {
                 var user = UserStubs[i];
-                await user.Stake.SendAsync(new Int64Value { Value = 1000_00000000 });
+                await user.Stake.SendAsync(new Int64Value {Value = 1000_00000000});
             }
 
-            await Admin.Draw.SendAsync(new DrawInput { PeriodId = 2 });
+            await Admin.Draw.SendAsync(new DrawInput {PeriodId = 2});
 
             {
                 var periodAward = await Admin.GetPeriodAward.CallAsync(new Int64Value
@@ -122,7 +175,7 @@ namespace AElf.Contracts.Lottery.Tests
                 StartTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100),
                 ShutdownTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 RedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
-                DefaultAwardList = { GetDefaultAwardList() },
+                DefaultAwardList = {GetDefaultAwardList()},
                 IsDebug = true
             });
 

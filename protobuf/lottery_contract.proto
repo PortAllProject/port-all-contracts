@@ -131,11 +131,13 @@ message PeriodAward {
     aelf.Hash use_random_hash = 4;
     int64 start_award_id = 5;
     int64 end_award_id = 6;
+    int64 drew_award_id = 7;
 }
 
 message DrawInput {
     int32 period_id = 1;
     repeated int64 next_award_list = 2; 
+    int64 to_award_id = 3;
 }
 
 message GetAwardListInput {
@@ -150,9 +152,15 @@ message AwardAmountMap {
 
 // Events
 
-message Drew {
+message DrewFinished {
     option (aelf.is_event) = true;
     int64 period_id = 1;
+}
+
+message DrewUnfinished {
+    option (aelf.is_event) = true;
+    int64 period_id = 1;
+    int64 to_award_id = 2;
 }
 
 message Staked {
