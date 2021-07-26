@@ -25,6 +25,8 @@ namespace AElf.Contracts.Lottery
             }.ToBytesValue());
             var randomHash =
                 HashHelper.ConcatAndCompute(Context.PreviousBlockHash, HashHelper.ComputeFrom(randomBytes));
+            periodAward.UsedRandomHashes.Add(randomHash);
+            periodAward.EndTimestamp = Context.CurrentBlockTime;
 
             var startAwardId = periodAward.DrewAwardId == 0 ? periodAward.StartAwardId : periodAward.DrewAwardId.Add(1);
             var endAwardId = input.ToAwardId == 0 || input.ToAwardId == periodAward.EndAwardId
@@ -35,9 +37,7 @@ namespace AElf.Contracts.Lottery
             var actualEndAwardId = totalLotteryCount > awardCount.Mul(2)
                 ? DoDrawForLotteryCodeEnough(startAwardId, endAwardId, randomHash)
                 : DoDrawForLotteryCodeNotEnough(startAwardId, endAwardId, randomHash);
-            periodAward.UseRandomHash = randomHash;
-            periodAward.EndTimestamp = Context.CurrentBlockTime;
-            periodAward.DrewAwardId = endAwardId;
+            periodAward.DrewAwardId = actualEndAwardId;
 
             State.CurrentAwardId.Value = actualEndAwardId;
 
@@ -86,7 +86,6 @@ namespace AElf.Contracts.Lottery
         private long DoDrawForLotteryCodeEnough(long startAwardId, long endAwardId, Hash randomHash)
         {
             var randomNumber = Context.ConvertHashToInt64(randomHash);
-
 
             var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1)).Add(1);
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)

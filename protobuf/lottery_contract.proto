@@ -128,7 +128,7 @@ message PeriodAward {
     int32 period_id = 1;
     google.protobuf.Timestamp start_timestamp = 2;
     google.protobuf.Timestamp end_timestamp = 3;// Also draw timestamp
-    aelf.Hash use_random_hash = 4;
+    repeated aelf.Hash used_random_hashes = 4;
     int64 start_award_id = 5;
     int64 end_award_id = 6;
     int64 drew_award_id = 7;
