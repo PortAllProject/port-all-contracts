@@ -20,12 +20,15 @@ namespace AElf.Contracts.Lottery
 
             var periodAward = State.PeriodAwardMap[input.PeriodId];
 
-            Assert(periodAward.StartAwardId < input.ToAwardId && input.ToAwardId <= periodAward.EndAwardId,
-                "Incorrect to award id.");
-
-            if (periodAward.DrewAwardId != 0)
+            if (input.ToAwardId != 0)
             {
-                Assert(input.ToAwardId > periodAward.DrewAwardId, "Incorrect to award id.");
+                Assert(periodAward.StartAwardId < input.ToAwardId && input.ToAwardId <= periodAward.EndAwardId,
+                    "Incorrect to award id.");
+
+                if (periodAward.DrewAwardId != 0)
+                {
+                    Assert(input.ToAwardId > periodAward.DrewAwardId, "Incorrect to award id.");
+                }
             }
 
             var randomBytes = State.RandomNumberProviderContract.GetRandomBytes.Call(new Int64Value
