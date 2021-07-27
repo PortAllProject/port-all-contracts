@@ -94,6 +94,11 @@ namespace AElf.Contracts.Lottery
             Assert(periodAward.DrewAwardId == 0 || periodAward.DrewAwardId == periodAward.EndAwardId,
                 "Cannot claim awards during drawing.");
             var ownLottery = State.OwnLotteryMap[Context.Sender];
+            if (ownLottery == null)
+            {
+                throw new AssertionException("Sender doesn't own any lottery.");
+            }
+
             var claimingAmount = 0L;
             foreach (var lotteryCode in ownLottery.LotteryCodeList)
             {
