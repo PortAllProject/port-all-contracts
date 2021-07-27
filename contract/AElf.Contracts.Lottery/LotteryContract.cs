@@ -33,6 +33,7 @@ namespace AElf.Contracts.Lottery
             State.StakingStartTimestamp.Value = input.StartTimestamp;
             State.StakingShutdownTimestamp.Value = input.ShutdownTimestamp;
             State.RedeemTimestamp.Value = input.RedeemTimestamp;
+            State.CachedAwardedLotteryCodeList.Value = new Int64List();
 
             State.IsDebug.Value = input.IsDebug;
             return new Empty();

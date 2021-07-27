@@ -37,5 +37,7 @@ namespace AElf.Contracts.Lottery
         public SingletonState<Timestamp> RedeemTimestamp { get; set; }
 
         public BoolState IsDebug { get; set; }
+
+        public SingletonState<Int64List> CachedAwardedLotteryCodeList { get; set; }
     }
 }

@@ -16,6 +16,8 @@ namespace AElf.Contracts.Lottery
             Assert(State.CurrentPeriodId.Value == input.PeriodId && input.PeriodId <= TotalPeriod,
                 "Incorrect period id.");
 
+            State.CachedAwardedLotteryCodeList.Value ??= new Int64List();
+
             var periodAward = State.PeriodAwardMap[input.PeriodId];
             var randomBytes = State.RandomNumberProviderContract.GetRandomBytes.Call(new Int64Value
             {
@@ -23,33 +25,52 @@ namespace AElf.Contracts.Lottery
             }.ToBytesValue());
             var randomHash =
                 HashHelper.ConcatAndCompute(Context.PreviousBlockHash, HashHelper.ComputeFrom(randomBytes));
+            periodAward.UsedRandomHashes.Add(randomHash);
+            periodAward.EndTimestamp = Context.CurrentBlockTime;
 
+            var startAwardId = periodAward.DrewAwardId == 0 ? periodAward.StartAwardId : periodAward.DrewAwardId.Add(1);
+            var endAwardId = input.ToAwardId == 0 || input.ToAwardId == periodAward.EndAwardId
+                ? periodAward.EndAwardId
+                : input.ToAwardId;
             var totalLotteryCount = GetTotalLotteryCount(new Empty()).Value;
             var awardCount = periodAward.EndAwardId.Sub(periodAward.StartAwardId).Sub(1);
             var actualEndAwardId = totalLotteryCount > awardCount.Mul(2)
-                ? DoDrawForLotteryCodeEnough(periodAward.StartAwardId, periodAward.EndAwardId, randomHash)
-                : DoDrawForLotteryCodeNotEnough(periodAward.StartAwardId, periodAward.EndAwardId, randomHash);
-            periodAward.UseRandomHash = randomHash;
-            periodAward.EndTimestamp = Context.CurrentBlockTime;
-            periodAward.EndAwardId = actualEndAwardId;
-            State.PeriodAwardMap[input.PeriodId] = periodAward;
+                ? DoDrawForLotteryCodeEnough(startAwardId, endAwardId, randomHash)
+                : DoDrawForLotteryCodeNotEnough(startAwardId, endAwardId, randomHash);
+            periodAward.DrewAwardId = actualEndAwardId;
 
             State.CurrentAwardId.Value = actualEndAwardId;
 
-            for (var i = actualEndAwardId.Add(1); i <= periodAward.EndAwardId; i++)
+            if (input.ToAwardId == 0 || input.ToAwardId == periodAward.EndAwardId)
             {
-                State.AwardMap.Remove(i);
+                for (var i = actualEndAwardId.Add(1); i <= periodAward.EndAwardId; i++)
+                {
+                    State.AwardMap.Remove(i);
+                }
+
+                periodAward.EndAwardId = actualEndAwardId;
+
+                var newPeriodId = State.CurrentPeriodId.Value.Add(1);
+                State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(
+                    input.NextAwardList == null || input.NextAwardList.Any()
+                        ? new Int64List {Value = {input.NextAwardList}}
+                        : null);
+
+                State.CurrentPeriodId.Value = State.CurrentPeriodId.Value.Add(1);
+
+                State.CachedAwardedLotteryCodeList.Value = new Int64List();
+                Context.Fire(new DrewFinished {PeriodId = input.PeriodId});
+            }
+            else
+            {
+                Context.Fire(new DrewUnfinished
+                {
+                    PeriodId = State.CurrentPeriodId.Value,
+                    ToAwardId = Math.Min(input.ToAwardId, actualEndAwardId)
+                });
             }
 
-            var newPeriodId = State.CurrentPeriodId.Value.Add(1);
-            State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(
-                input.NextAwardList == null || input.NextAwardList.Any()
-                    ? new Int64List { Value = { input.NextAwardList } }
-                    : null);
-
-            Context.Fire(new Drew { PeriodId = State.CurrentPeriodId.Value });
-
-            State.CurrentPeriodId.Value = State.CurrentPeriodId.Value.Add(1);
+            State.PeriodAwardMap[input.PeriodId] = periodAward;
 
             return new Empty();
         }
@@ -67,10 +88,9 @@ namespace AElf.Contracts.Lottery
             var randomNumber = Context.ConvertHashToInt64(randomHash);
 
             var luckyLotteryCode = Math.Abs(randomNumber % State.CurrentLotteryCode.Value.Sub(1)).Add(1);
-            var awardedLotteryCodeList = new List<long>();
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
             {
-                while (awardedLotteryCodeList.Contains(luckyLotteryCode))
+                while (State.CachedAwardedLotteryCodeList.Value.Value.Contains(luckyLotteryCode))
                 {
                     // Keep updating lucky lottery code.
                     randomHash = HashHelper.ComputeFrom(randomHash);
@@ -93,7 +113,7 @@ namespace AElf.Contracts.Lottery
                 ownLottery.TotalAwardAmount = ownLottery.TotalAwardAmount.Add(award.AwardAmount);
                 State.OwnLotteryMap[lottery.Owner] = ownLottery;
 
-                awardedLotteryCodeList.Add(luckyLotteryCode);
+                State.CachedAwardedLotteryCodeList.Value.Value.Add(luckyLotteryCode);
             }
 
             return endAwardId;
@@ -106,19 +126,26 @@ namespace AElf.Contracts.Lottery
                 return startAwardId;
             }
 
-            var lotteryCodePool = Enumerable.Range(1, (int)GetTotalLotteryCount(new Empty()).Value).ToList();
+            var lotteryCodePool = Enumerable.Range(1, (int) GetTotalLotteryCount(new Empty()).Value).ToList();
+            foreach (var lotteryCode in State.CachedAwardedLotteryCodeList.Value.Value)
+            {
+                lotteryCodePool.Remove((int) lotteryCode);
+            }
 
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
             {
-                var drewAwardCountThisPeriod = awardId.Sub(startAwardId);
-                if (drewAwardCountThisPeriod >= GetTotalLotteryCount(new Empty()).Value)
+                if (State.CachedAwardedLotteryCodeList.Value.Value.Count >= GetTotalLotteryCount(new Empty()).Value)
                 {
                     // Award count is greater than lottery code count, no need to draw.
                     return awardId.Sub(1);
                 }
 
                 var randomNumber = Context.ConvertHashToInt64(randomHash);
-                var luckyLotteryCodeIndex = (int)Math.Abs(randomNumber % lotteryCodePool.Count);
+                if (lotteryCodePool.Count == 0)
+                {
+                    Assert(lotteryCodePool.Count != 0, "Lottery code pool is empty.");
+                }
+                var luckyLotteryCodeIndex = (int) Math.Abs(randomNumber % lotteryCodePool.Count);
                 var luckyLotteryCode = lotteryCodePool[luckyLotteryCodeIndex];
                 lotteryCodePool.Remove(luckyLotteryCode);
 
@@ -139,6 +166,8 @@ namespace AElf.Contracts.Lottery
                 var ownLottery = State.OwnLotteryMap[lottery.Owner];
                 ownLottery.TotalAwardAmount = ownLottery.TotalAwardAmount.Add(award.AwardAmount);
                 State.OwnLotteryMap[lottery.Owner] = ownLottery;
+
+                State.CachedAwardedLotteryCodeList.Value.Value.Add(luckyLotteryCode);
             }
 
             return endAwardId;
