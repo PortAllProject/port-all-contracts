@@ -19,6 +19,15 @@ namespace AElf.Contracts.Lottery
             State.CachedAwardedLotteryCodeList.Value ??= new Int64List();
 
             var periodAward = State.PeriodAwardMap[input.PeriodId];
+
+            Assert(periodAward.StartAwardId < input.ToAwardId && input.ToAwardId <= periodAward.EndAwardId,
+                "Incorrect to award id.");
+
+            if (periodAward.DrewAwardId != 0)
+            {
+                Assert(input.ToAwardId > periodAward.DrewAwardId, "Incorrect to award id.");
+            }
+
             var randomBytes = State.RandomNumberProviderContract.GetRandomBytes.Call(new Int64Value
             {
                 Value = Context.CurrentHeight.Sub(1)
@@ -53,13 +62,13 @@ namespace AElf.Contracts.Lottery
                 var newPeriodId = State.CurrentPeriodId.Value.Add(1);
                 State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(
                     input.NextAwardList == null || input.NextAwardList.Any()
-                        ? new Int64List {Value = {input.NextAwardList}}
+                        ? new Int64List { Value = { input.NextAwardList } }
                         : null);
 
                 State.CurrentPeriodId.Value = State.CurrentPeriodId.Value.Add(1);
 
                 State.CachedAwardedLotteryCodeList.Value = new Int64List();
-                Context.Fire(new DrewFinished {PeriodId = input.PeriodId});
+                Context.Fire(new DrewFinished { PeriodId = input.PeriodId });
             }
             else
             {
@@ -126,10 +135,10 @@ namespace AElf.Contracts.Lottery
                 return startAwardId;
             }
 
-            var lotteryCodePool = Enumerable.Range(1, (int) GetTotalLotteryCount(new Empty()).Value).ToList();
+            var lotteryCodePool = Enumerable.Range(1, (int)GetTotalLotteryCount(new Empty()).Value).ToList();
             foreach (var lotteryCode in State.CachedAwardedLotteryCodeList.Value.Value)
             {
-                lotteryCodePool.Remove((int) lotteryCode);
+                lotteryCodePool.Remove((int)lotteryCode);
             }
 
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
@@ -145,7 +154,8 @@ namespace AElf.Contracts.Lottery
                 {
                     Assert(lotteryCodePool.Count != 0, "Lottery code pool is empty.");
                 }
-                var luckyLotteryCodeIndex = (int) Math.Abs(randomNumber % lotteryCodePool.Count);
+
+                var luckyLotteryCodeIndex = (int)Math.Abs(randomNumber % lotteryCodePool.Count);
                 var luckyLotteryCode = lotteryCodePool[luckyLotteryCodeIndex];
                 lotteryCodePool.Remove(luckyLotteryCode);
 

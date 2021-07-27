@@ -90,6 +90,9 @@ namespace AElf.Contracts.Lottery
 
         public override Empty Claim(Empty input)
         {
+            var periodAward = State.PeriodAwardMap[State.CurrentPeriodId.Value];
+            Assert(periodAward.DrewAwardId == 0 || periodAward.DrewAwardId == periodAward.EndAwardId,
+                "Cannot claim awards during drawing.");
             var ownLottery = State.OwnLotteryMap[Context.Sender];
             var claimingAmount = 0L;
             foreach (var lotteryCode in ownLottery.LotteryCodeList)
