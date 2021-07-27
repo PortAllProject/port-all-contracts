@@ -158,6 +158,11 @@ namespace AElf.Contracts.Lottery
             InvalidIfDebugAssert(Context.CurrentBlockTime >= State.RedeemTimestamp.Value,
                 $"Cannot redeem before {State.RedeemTimestamp.Value}.");
             var ownLottery = State.OwnLotteryMap[Context.Sender];
+            if (ownLottery == null)
+            {
+                throw new AssertionException("Sender didn't stake.");
+            }
+
             Assert(!ownLottery.IsRedeemed, "Already redeemed.");
             State.TokenContract.Transfer.Send(new TransferInput
             {
