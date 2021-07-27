@@ -61,10 +61,13 @@ namespace AElf.Contracts.Lottery
 
         public override Int64List GetLotteryCodeListByUserAddress(Address input)
         {
-            return new Int64List
-            {
-                Value = { State.OwnLotteryMap[input].LotteryCodeList }
-            };
+            var ownLottery = State.OwnLotteryMap[input];
+            return ownLottery == null
+                ? new Int64List()
+                : new Int64List
+                {
+                    Value = { ownLottery.LotteryCodeList }
+                };
         }
 
         public override Int32Value GetCurrentPeriodId(Empty input)
