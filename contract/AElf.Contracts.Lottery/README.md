@@ -45,6 +45,8 @@ private List<long> GetDefaultAwardList()
 ```
 即默认为一个长度为120的长整型数组，包括1个5000，2个1000，2个500，5个100，10个50，100个10。
 
+is_debug如果为true，会忽略对活动时间相关的Assertion，正式环境不要设置。
+
 ## Stake
 用户通过Stake方法锁定代币，其参数为用户本次锁定的代币数额。
 
@@ -91,17 +93,21 @@ public async Task StakeAndGetCorrectLotteryCodeCountTest(long stakingAmount, int
 ## Draw
 Lottery合约的Admin通过Draw方法开奖。
 
-DrawInput包含两个参数：
+DrawInput包含三个参数：
 - period_id（必填）：填入要开奖的期的期数，主要为了防止重复开奖；
-- next_award_list（选填）：用于修改下一期的奖品，不填的话使用`GetDefaultAwardList()`中的设置。
+- next_award_list（选填）：用于修改下一期的奖品，不填的话使用`GetDefaultAwardList()`中的设置；
+- to_award_id（选填）：指示本次开奖开到那个award id，不填的话开完本期所有奖项。
+
 
 开奖结束后：
 - 本期所有`Award`的`lottery_code`字段将会被分配上获奖的抽奖码；
 - 相关的`Lottery`的`award_id_list`字段也会加入刚获奖奖项的`award_id`。
 
+### 开奖逻辑
+
 当前有两种开奖的逻辑：
-- 当抽奖码数量小于或者等于二倍的奖项数量时，会构建一个lottery pool，不断使用随机数对lottery pool count取余，得到中奖的抽奖码的下标，随后将该抽奖码移出lottery pool
-- 当抽奖码数量大于二倍的奖项数量时，就用随机数对抽奖码的数量取余，在一次开奖过程中如果有重复中奖的情况就调整随机数（一个抽奖码每一期只能中奖一次）
+- 当抽奖码数量小于或者等于二倍的奖项数量时，会构建一个lottery pool，不断使用随机数对lottery pool count取余，得到中奖的抽奖码的下标，随后将该抽奖码移出lottery pool；此时循环的次数为`math.min(lottery pool count, drew award count)`
+- 当抽奖码数量大于二倍的奖项数量时，就用随机数对抽奖码的数量取余，在一次开奖过程中如果有重复中奖的情况就调整随机数（一个抽奖码每一期只能中奖一次）；此时循环的次数不好说，至少是drew award count
 
 Draw执行完毕后，下一届的奖品列表将会被初始化。
 
