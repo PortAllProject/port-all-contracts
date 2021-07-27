@@ -84,6 +84,10 @@ namespace AElf.Contracts.Lottery
         public override AwardList GetAwardList(GetAwardListInput input)
         {
             var periodAward = State.PeriodAwardMap[input.PeriodId];
+            if (periodAward == null)
+            {
+                return new AwardList();
+            }
             var awardCount = periodAward.EndAwardId.Sub(periodAward.StartAwardId).Add(1);
             var maxCount = (int)awardCount.Sub(input.StartIndex);
             if (input.Count == 0)
@@ -104,6 +108,11 @@ namespace AElf.Contracts.Lottery
             var awardList = GetAwardListByUserAddress(input);
             var awardAmountMap = new AwardAmountMap();
             var ownLottery = State.OwnLotteryMap[input];
+            if (ownLottery == null)
+            {
+                return awardAmountMap;
+            }
+
             foreach (var lotteryCode in ownLottery.LotteryCodeList)
             {
                 awardAmountMap.Value.Add(lotteryCode,
