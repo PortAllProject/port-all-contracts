@@ -1,8 +1,6 @@
 using System;
 using System.Net.Security;
 using System.Security.Authentication;
-using AElf.Contracts.Consensus.AEDPoS;
-using Common.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -51,7 +49,9 @@ namespace AElf.EventHandler
                                              SslPolicyErrors.RemoteCertificateChainErrors
                 };
                 options.Connections.Default.VirtualHost = "/";
-                options.Connections.Default.Uri = new Uri(messageQueueConfig.GetSection("Uri").Value);
+                options.Connections.Default.Uri = messageQueueConfig.Value == null
+                    ? new Uri("amqps://127.0.0.1:5671")
+                    : new Uri(messageQueueConfig.GetSection("Uri").Value);
             });
 
             Configure<ContractAddressOptions>(configuration.GetSection("Contracts"));
