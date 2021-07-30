@@ -1,4 +1,5 @@
-﻿using AElf.CSharp.Core;
+﻿using System;
+using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
@@ -67,7 +68,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             }
 
             var receiptCount = GetReceiptCount(input);
-            return new Int64Value {Value = receiptCount.Div(maker.MerkleTreeLeafLimit)};
+            return new Int64Value { Value = receiptCount.Div(maker.MerkleTreeLeafLimit) };
         }
 
         public override GetReceiptMakerOutput GetReceiptMaker(Address input)
@@ -88,14 +89,18 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
                 throw new AssertionException("Receipt maker not registered.");
             }
 
-            var receiptCount = GetReceiptCount(input.ReceiptMaker);
-            Assert(receiptCount > 0, "Receipts not found.");
-            var firstLeafIndex = receiptCount.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
-            Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= firstLeafIndex,
-                "Invalid merkle input.");
+            if (input.LastLeafIndex == 0)
+            {
+                input.FirstLeafIndex = input.ReceiptId.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
+                var maxLastLeafIndex = input.FirstLeafIndex.Add(maker.MerkleTreeLeafLimit).Sub(1);
+                input.LastLeafIndex = Math.Min(maxLastLeafIndex, GetReceiptCount(maker.ReceiptMakerAddress).Sub(1));
+            }
 
-            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, firstLeafIndex, input.LastLeafIndex);
-            var index = (int) input.ReceiptId.Sub(firstLeafIndex);
+            Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= input.FirstLeafIndex,
+                "Invalid get merkle path input.");
+
+            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, input.FirstLeafIndex, input.LastLeafIndex);
+            var index = (int)input.ReceiptId.Sub(input.FirstLeafIndex);
             var path = binaryMerkleTree.GenerateMerklePath(index);
             return path;
         }

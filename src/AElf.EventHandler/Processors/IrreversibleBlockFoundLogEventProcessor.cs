@@ -15,16 +15,17 @@ namespace AElf.EventHandler
         private readonly ContractAddressOptions _contractAddressOptions;
         private readonly INethereumManagerFactory _nethereumManagerFactory;
         private readonly ILogger<IrreversibleBlockFoundLogEventProcessor> _logger;
-
-        private long _lastedQueryReceiptCount;
+        private readonly ILatestQueriedReceiptCountProvider _latestQueriedReceiptCountProvider;
 
         public IrreversibleBlockFoundLogEventProcessor(
             IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
             IOptionsSnapshot<ConfigOptions> configOptions,
             INethereumManagerFactory nethereumManagerFactory,
+            ILatestQueriedReceiptCountProvider latestQueriedReceiptCountProvider,
             ILogger<IrreversibleBlockFoundLogEventProcessor> logger) : base(contractAddressOptions)
         {
             _nethereumManagerFactory = nethereumManagerFactory;
+            _latestQueriedReceiptCountProvider = latestQueriedReceiptCountProvider;
             _logger = logger;
 
             _configOptions = configOptions.Value;
@@ -47,10 +48,6 @@ namespace AElf.EventHandler
             var receiptCountFunction = _nethereumManagerFactory.CreateManager(new LockMappingContractNameProvider())
                 .GetFunction("receiptCount");
             var lockTimes = await receiptCountFunction.CallAsync<long>();
-            if (lockTimes <= _lastedQueryReceiptCount)
-            {
-                return;
-            }
 
             var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
                 _contractAddressOptions.ContractAddressMap["MTRecorder"], "GetLastRecordedLeafIndex",
@@ -59,14 +56,35 @@ namespace AElf.EventHandler
                     RecorderId = _configOptions.RecorderId
                 }).Value;
 
-            if (lastRecordedLeafIndex == -2)
+            var maxAvailableIndex = lockTimes - 1;
+            if (_latestQueriedReceiptCountProvider.Get() == 0)
             {
-                _logger.LogError($"Recorder of id {_configOptions.RecorderId} did created.");
+                _latestQueriedReceiptCountProvider.Set(lastRecordedLeafIndex + 1);
+            }
+
+            var latestTreeIndex = _latestQueriedReceiptCountProvider.Get() / _configOptions.MaximumLeafCount;
+            var almostTreeIndex = lockTimes / _configOptions.MaximumLeafCount;
+            if (latestTreeIndex < almostTreeIndex)
+            {
+                maxAvailableIndex = (latestTreeIndex + 1) * _configOptions.MaximumLeafCount - 1;
+            }
+
+            _logger.LogInformation(
+                $"Lock times: {lockTimes}; Latest tree index: {latestTreeIndex}; Almost tree index: {almostTreeIndex}; Max available index: {maxAvailableIndex};");
+
+            if (maxAvailableIndex + 1 <= _latestQueriedReceiptCountProvider.Get())
+            {
                 return;
             }
 
-            _logger.LogInformation($"Lock times: {lockTimes}; Last recorded leaf index: {lastRecordedLeafIndex}");
-            var notRecordedReceiptsCount = lockTimes - lastRecordedLeafIndex - 1;
+            if (lastRecordedLeafIndex == -2)
+            {
+                _logger.LogError($"Recorder of id {_configOptions.RecorderId} didn't created.");
+                return;
+            }
+
+            _logger.LogInformation($"Last recorded leaf index: {lastRecordedLeafIndex}");
+            var notRecordedReceiptsCount = maxAvailableIndex - lastRecordedLeafIndex;
             if (notRecordedReceiptsCount > 0)
             {
                 var queryInput = new QueryInput
@@ -75,7 +93,7 @@ namespace AElf.EventHandler
                     QueryInfo = new QueryInfo
                     {
                         Title = "record_receipts",
-                        Options = {(lastRecordedLeafIndex + 1).ToString(), (lockTimes - 1).ToString()}
+                        Options = { (lastRecordedLeafIndex + 1).ToString(), maxAvailableIndex.ToString() }
                     },
                     AggregatorContractAddress = _contractAddressOptions.ContractAddressMap["StringAggregator"]
                         .ConvertAddress(),
@@ -85,7 +103,7 @@ namespace AElf.EventHandler
                         MethodName = "RecordReceiptHash"
                     },
                     DesignatedNodeList = new AddressList
-                        {Value = {_configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress()}}
+                        { Value = { _configOptions.TokenSwapOracleOrganizationAddress.ConvertAddress() } }
                 };
 
                 _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
@@ -93,7 +111,8 @@ namespace AElf.EventHandler
                 var txId = node.SendTransaction(_configOptions.AccountAddress,
                     _contractAddressOptions.ContractAddressMap["Oracle"], "Query", queryInput);
                 _logger.LogInformation($"Query tx id: {txId}");
-                _lastedQueryReceiptCount = lockTimes;
+                _latestQueriedReceiptCountProvider.Set(maxAvailableIndex + 1);
+                _logger.LogInformation($"Latest queried receipt count: {_latestQueriedReceiptCountProvider.Get()}");
             }
         }
     }

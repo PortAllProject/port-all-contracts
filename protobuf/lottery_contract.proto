@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "AElf.Contracts.Lottery";
+
+
+// Only for the activity after eth2aelf ELF token swap.
+service LotteryContract {
+    option (aelf.csharp_state) = "AElf.Contracts.Lottery.LotteryContractState";
+
+    // Admin
+    rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {
+    }
+    rpc Draw (DrawInput) returns (google.protobuf.Empty) {
+    }
+    rpc ResetTimestamp (InitializeInput) returns (google.protobuf.Empty) {
+    }
+
+    // User
+    rpc Stake (google.protobuf.Int64Value) returns (OwnLottery) {
+    }
+    rpc Redeem (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+    rpc Claim (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+
+    // Views
+    rpc GetCurrentPeriodId (google.protobuf.Empty) returns (google.protobuf.Int32Value) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetTotalLotteryCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetLotteryCodeListByUserAddress (aelf.Address) returns (Int64List) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAwardListByUserAddress (aelf.Address) returns (AwardList) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAwardList (GetAwardListInput) returns (AwardList) {
+        option (aelf.is_view) = true;
+    }
+    // From State.LotteryMap directly
+    rpc GetLottery (google.protobuf.Int64Value) returns (Lottery) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetStakingAmount (aelf.Address) returns (google.protobuf.Int64Value) {
+        option (aelf.is_view) = true;
+    }
+    // From State.OwnLotteryMap directly
+    rpc GetOwnLottery (aelf.Address) returns (OwnLottery) {
+        option (aelf.is_view) = true;
+    }
+    // From State.AwardMap directly
+    rpc GetAward (google.protobuf.Int64Value) returns (Award) {
+        option (aelf.is_view) = true;
+    }
+    // From PeriodAward directly
+    rpc GetPeriodAward (google.protobuf.Int64Value) returns (PeriodAward) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetStartTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetShutdownTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetRedeemTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAwardAmountMap (aelf.Address) returns (AwardAmountMap) {
+        option (aelf.is_view) = true;
+    }
+}
+
+// Lottery Code: int64
+// Period Id: int32
+// Token Amount: int64
+
+message InitializeInput {
+    google.protobuf.Timestamp start_timestamp = 1;
+    google.protobuf.Timestamp shutdown_timestamp = 2;
+    google.protobuf.Timestamp redeem_timestamp = 3;
+    repeated int64 default_award_list = 4; 
+    aelf.Address admin = 5;
+    bool is_debug = 6;
+}
+
+message OwnLottery {
+    repeated int64 lottery_code_list = 1;
+    int64 total_staking_amount = 2;
+    int64 total_award_amount = 3;
+    int64 claimed_award_amount = 4;
+    bool is_redeemed = 5;
+}
+
+message Lottery {
+    int64 lottery_code = 1;
+    google.protobuf.Timestamp issue_timestamp = 2;
+    repeated int64 award_id_list = 3;
+    aelf.Address owner = 4;
+    int64 latest_claimed_award_id = 5;
+}
+
+// Show lottery codes.
+message Int64List {
+    repeated int64 value = 1;
+}
+
+message Award {
+    int64 award_id = 1;
+    int64 award_amount = 2;
+    int64 lottery_code = 3;
+    bool is_claimed = 4;
+    aelf.Address owner = 5;
+}
+
+message AwardList {
+    repeated Award value = 1;
+}
+
+message PeriodAward {
+    int32 period_id = 1;
+    google.protobuf.Timestamp start_timestamp = 2;
+    google.protobuf.Timestamp end_timestamp = 3;// Also draw timestamp
+    repeated aelf.Hash used_random_hashes = 4;
+    int64 start_award_id = 5;
+    int64 end_award_id = 6;
+    int64 drew_award_id = 7;
+}
+
+message DrawInput {
+    int32 period_id = 1;
+    repeated int64 next_award_list = 2; 
+    int64 to_award_id = 3;
+}
+
+message GetAwardListInput {
+    int32 period_id = 1;
+    int64 start_index = 2;
+    int32 count = 3;
+}
+
+message AwardAmountMap {
+    map<int64, int64> value = 1;// Lottery Code -> Award Amount
+}
+
+// Events
+
+message DrewFinished {
+    option (aelf.is_event) = true;
+    int64 period_id = 1;
+}
+
+message DrewUnfinished {
+    option (aelf.is_event) = true;
+    int64 period_id = 1;
+    int64 to_award_id = 2;
+}
+
+message Staked {
+    option (aelf.is_event) = true;
+    aelf.Address user = 1;
+    int64 amount = 2;
+    Int64List lottery_code_list = 3;
+}
+
+message Redeemed {
+    option (aelf.is_event) = true;
+    aelf.Address user = 1;
+    int64 amount = 2;
+    int64 period_id = 3;
+}
+
+message Claimed {
+    option (aelf.is_event) = true;
+    aelf.Address user = 1;
+    int64 amount = 2;
+    int64 period_id = 3;
+    Int64List claimed_lottery_code_list = 4;
+}
