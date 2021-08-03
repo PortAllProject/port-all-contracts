@@ -51,6 +51,10 @@ service BridgeContract {
         option (aelf.is_view) = true;
     }
     rpc GetSwappedReceiptIdList (GetSwappedReceiptIdListInput) returns (ReceiptIdList) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetSwappedReceiptInfoList (GetSwappedReceiptInfoListInput) returns (ReceiptInfoList) {
+        option (aelf.is_view) = true;
     }
 }
 
@@ -156,6 +160,28 @@ message ReceiptIdList {
 message GetSwappedReceiptIdListInput {
     aelf.Hash swap_id = 1;
     aelf.Address receiver_address = 2;
+}
+
+message GetSwappedReceiptInfoListInput {
+    aelf.Hash swap_id = 1;
+    aelf.Address receiving_address = 2;
+}
+
+message ReceiptInfo {
+    int64 receipt_id = 1;
+    aelf.Hash receiving_tx_id = 2;
+    google.protobuf.Timestamp receiving_time = 3;
+    int64 amount = 4;
+}
+
+message ReceiptInfoList {
+    repeated ReceiptInfo value = 1;
+}
+
+message SendingInfo {
+    int64 receipt_id = 1;
+    string sending_tx_id = 2;
+    string sending_time = 3;
 }
 
 // Events

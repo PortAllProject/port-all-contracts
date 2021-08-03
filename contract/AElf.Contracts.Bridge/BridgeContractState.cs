@@ -17,5 +17,7 @@ namespace AElf.Contracts.Bridge
         /// Swap Id -> Receiver Address -> Swapped Receipt Id List
         /// </summary>
         public MappedState<Hash, Address, ReceiptIdList> SwappedReceiptIdListMap { get; set; }
+
+        public MappedState<long, ReceiptInfo> ReceiptInfoMap { get; set; }
     }
 }

@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "type": "aelf",
+  "nickName": "",
+  "address": "asoqSF2R4oFJBMqr95TRuaMiUMP5SXdVdwYH5HBQjYqk22CHw",
+  "crypto": {
+    "cipher": "aes-128-ctr",
+    "ciphertext": "9b9a31f67684046ddf32a2b1c5db1ab7ac0e2eacaff3df6eedcd8641bb4986cc",
+    "cipherparams": {
+      "iv": "46336e0761da06db2fa3b78d1a474a40"
+    },
+    "mnemonicEncrypted": "6afc72bcab892fd5d1ffb63863056facf2430ef9c82b8cca3456cad5aa237f1c9cbdd6b842f29d809b1d20399a291059e5bc8be60beaa5c4ed0ac8c103f55efd774ab0cd",
+    "kdf": "scrypt",
+    "kdfparams": {
+      "r": 8,
+      "n": 8192,
+      "p": 1,
+      "dklen": 32,
+      "salt": "402a9eb392cfd668fdb0511eeb34c0ff7139493720529cdb8dcc69a11aeaf118"
+    },
+    "mac": "c53040b33f917f265ff926fab227d859d9d32d6bf2c116fa85c0df95cb6402ae"
+  }
+}

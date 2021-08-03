@@ -127,6 +127,13 @@ namespace AElf.Contracts.Bridge
             }
 
             State.Ledger[input.SwapId][input.ReceiptId] = swapAmounts;
+            State.ReceiptInfoMap[input.ReceiptId] = new ReceiptInfo
+            {
+                ReceiptId = input.ReceiptId,
+                ReceivingTime = Context.CurrentBlockTime,
+                ReceivingTxId = Context.TransactionId,
+                Amount = swapAmounts.ReceivedAmounts[Context.Variables.NativeSymbol],
+            };
 
             var swappedReceiptIdList =
                 State.SwappedReceiptIdListMap[input.SwapId][receiverAddress] ?? new ReceiptIdList();
@@ -157,8 +164,7 @@ namespace AElf.Contracts.Bridge
 
         public override SwapInfo GetSwapInfo(Hash input)
         {
-            var swapInfo = State.SwapInfo[input];
-            return swapInfo;
+            return State.SwapInfo[input];
         }
 
         public override SwapPair GetSwapPair(GetSwapPairInput input)
@@ -212,6 +218,23 @@ namespace AElf.Contracts.Bridge
         public override ReceiptIdList GetSwappedReceiptIdList(GetSwappedReceiptIdListInput input)
         {
             return State.SwappedReceiptIdListMap[input.SwapId][input.ReceiverAddress];
+        }
+
+        public override ReceiptInfoList GetSwappedReceiptInfoList(GetSwappedReceiptInfoListInput input)
+        {
+            var receiptInfoList = new ReceiptInfoList();
+            var receiptIdList = State.SwappedReceiptIdListMap[input.SwapId][input.ReceivingAddress];
+            if (receiptIdList == null)
+            {
+                return receiptInfoList;
+            }
+
+            foreach (var receiptId in receiptIdList.Value)
+            {
+                receiptInfoList.Value.Add(State.ReceiptInfoMap[receiptId]);
+            }
+
+            return receiptInfoList;
         }
     }
 }
