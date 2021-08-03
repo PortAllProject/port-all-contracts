@@ -29,7 +29,7 @@ namespace AElf.TokenSwap.Controllers
             _configOptions = configOptions.Value;
         }
 
-        [HttpPost("sending_info")]
+        [HttpPost("record")]
         public async Task<ResponseDto> InsertSendingInfo(SendingInfoDto sendingInfoDto)
         {
             _logger.LogInformation($"Inserting: {JsonSerializer.Serialize(sendingInfoDto)}");
@@ -45,12 +45,11 @@ namespace AElf.TokenSwap.Controllers
 
             return new ResponseDto
             {
-                Code = MessageHelper.GetCode(MessageHelper.Message.Success),
                 Message = $"Added sending info of receipt id {sendingInfo.ReceiptId}"
             };
         }
 
-        [HttpGet("get_receipt_info")]
+        [HttpGet("get")]
         public async Task<List<ReceiptInfoDto>> GetReceiptInfoList(string receivingAddress)
         {
             var swapId = Hash.LoadFromHex(_configOptions.SwapId);
@@ -78,11 +77,11 @@ namespace AElf.TokenSwap.Controllers
                 {
                     ReceiptId = receiptInfo.ReceiptId,
                     Amount = receiptInfo.Amount,
-                    ReceivingTime = receiptInfo.ReceivingTime.ToString(),
+                    ReceivingTime = receiptInfo.ReceivingTime?.ToString() ?? string.Empty,
                     ReceivingAddress = receivingAddress,
-                    ReceivingTxId = receiptInfo.ReceivingTxId.ToHex(),
-                    SendingTime = sendingInfo.SendingTime,
-                    SendingTxId = sendingInfo.SendingTxId
+                    ReceivingTxId = receiptInfo.ReceivingTxId?.ToHex() ?? string.Empty,
+                    SendingTime = sendingInfo?.SendingTime ?? string.Empty,
+                    SendingTxId = sendingInfo?.SendingTxId ?? string.Empty,
                 });
             }
 

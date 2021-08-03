@@ -7,11 +7,11 @@
 
 POST:
 
-`/api/v1.0/swap/sending_info`
+`/api/v1.0/swap/record`
 
 Demo:
 
-`curl -X POST "https://localhost:5001/api/v1.0/swap/sending_info" -H "accept: text/plain; v=1.0" -H "Content-Type: application/json; v=1.0" -d "{\"receipt_id\":18,\"sending_tx_id\":\"0x44432847eccef9e492bbbae32adf494fd670ac8960b9a8083b7df5c864324a0f\",\"sending_time\":\"2021-08-03 17:00:00\"}"`
+`curl -X POST "https://localhost:5001/api/v1.0/swap/record" -H "accept: text/plain; v=1.0" -H "Content-Type: application/json; v=1.0" -d "{\"receipt_id\":18,\"sending_tx_id\":\"0x44432847eccef9e492bbbae32adf494fd670ac8960b9a8083b7df5c864324a0f\",\"sending_time\":\"2021-08-03 17:00:00\"}"`
 
 # 获取Receipt Info
 
@@ -19,11 +19,11 @@ Demo:
 
 GET:
 
-`/api/v1.0/swap/get_receipt_info`
+`/api/v1.0/swap/get`
 
 Demo：
 
-`curl -X GET "https://localhost:5001/api/v1.0/swap/get_receipt_info?receivingAddress=t7nCCoqKrVbyDHNxbAMtEvtG6UoN4HZE9DVPRQG8UrppZppBq" -H "accept: text/plain; v=1.0"`
+`curl -X GET "https://localhost:5001/api/v1.0/swap/get?receivingAddress=t7nCCoqKrVbyDHNxbAMtEvtG6UoN4HZE9DVPRQG8UrppZppBq" -H "accept: text/plain; v=1.0"`
 
 返回结果：
 
@@ -52,4 +52,4 @@ Demo：
 
 其中sending_tx_id和sending_time两个字段是通过上面的POST API插入的，给string即可。
 
-注：由于Bridge合约需要升级才能记录完整信息，在2021年08月03日之前兑换的代币的ReceiptInfo只能显示Amount。
+注：由于Bridge合约需要升级才能记录完整信息，在2021年08月03日之前兑换的代币的ReceiptInfo只能显示`receiving_address`和`amount`。

@@ -3,6 +3,7 @@ using AElf.Database;
 using AElf.TokenSwap.Infrastructure;
 using Google.Protobuf;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Volo.Abp.AspNetCore;
@@ -49,12 +50,20 @@ namespace AElf.TokenSwap
             services.AddTransient(typeof(IStoreKeyPrefixProvider<>), typeof(StoreKeyPrefixProvider<>));
             services.AddStoreKeyPrefixProvide<ReceiptInfo>("ri");
             services.AddTransient(typeof(ITokenSwapStore<>), typeof(TokenSwapStore<>));
-            services.AddKeyValueDbContext<TokenSwapKeyValueDbContext>(p => p.UseRedisDatabase());
+
+            if (configuration.GetConnectionString("Default") == "InMemory")
+            {
+                services.AddKeyValueDbContext<TokenSwapKeyValueDbContext>(p => p.UseInMemoryDatabase());
+            }
+            else
+            {
+                services.AddKeyValueDbContext<TokenSwapKeyValueDbContext>(p => p.UseSsdbDatabase());
+            }
 
             services.Configure<ConfigOptions>(configuration.GetSection("Config"));
         }
     }
-    
+
     public static class StoreKeyPrefixProviderServiceCollectionExtensions
     {
         public static IServiceCollection AddStoreKeyPrefixProvide<T>(
