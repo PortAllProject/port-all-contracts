@@ -236,6 +236,16 @@ namespace AElf.Contracts.Bridge
                 {
                     receiptInfoList.Value.Add(receiptInfo);
                 }
+                else
+                {
+                    var swapAmounts = State.Ledger[input.SwapId][receiptId];
+                    var amount = swapAmounts == null ? 0 : swapAmounts.ReceivedAmounts[Context.Variables.NativeSymbol];
+                    receiptInfoList.Value.Add(new ReceiptInfo
+                    {
+                        ReceiptId = receiptId,
+                        Amount = amount
+                    });
+                }
             }
 
             return receiptInfoList;

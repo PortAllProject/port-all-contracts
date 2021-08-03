@@ -49,7 +49,7 @@ namespace AElf.TokenSwap
             services.AddTransient(typeof(IStoreKeyPrefixProvider<>), typeof(StoreKeyPrefixProvider<>));
             services.AddStoreKeyPrefixProvide<ReceiptInfo>("ri");
             services.AddTransient(typeof(ITokenSwapStore<>), typeof(TokenSwapStore<>));
-            services.AddKeyValueDbContext<TokenSwapKeyValueDbContext>(p => p.UseInMemoryDatabase());
+            services.AddKeyValueDbContext<TokenSwapKeyValueDbContext>(p => p.UseRedisDatabase());
 
             services.Configure<ConfigOptions>(configuration.GetSection("Config"));
         }
