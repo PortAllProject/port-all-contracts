@@ -231,7 +231,11 @@ namespace AElf.Contracts.Bridge
 
             foreach (var receiptId in receiptIdList.Value)
             {
-                receiptInfoList.Value.Add(State.ReceiptInfoMap[receiptId]);
+                var receiptInfo = State.ReceiptInfoMap[receiptId];
+                if (receiptInfo != null)
+                {
+                    receiptInfoList.Value.Add(receiptInfo);
+                }
             }
 
             return receiptInfoList;

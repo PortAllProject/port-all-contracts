@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace AElf.TokenSwap
 {
@@ -12,18 +13,9 @@ namespace AElf.TokenSwap
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
-        {
-            var configuration = new ConfigurationBuilder().SetBasePath(Environment.CurrentDirectory)
-                .AddJsonFile("appsettings.json")
-                .Build();
-            return Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder
-                        .UseUrls("http://0.0.0.0:7080")
-                        .UseStartup<Startup>();
-                });
-        }
+        private static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
+                .UseAutofac();
     }
 }

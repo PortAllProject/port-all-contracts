@@ -53,7 +53,7 @@ namespace AElf.TokenSwap.Controllers
         [HttpGet("get_receipt_info")]
         public async Task<List<ReceiptInfoDto>> GetReceiptInfoList(string receivingAddress)
         {
-            var swapId = Hash.LoadFromBase64(_configOptions.SwapId);
+            var swapId = Hash.LoadFromHex(_configOptions.SwapId);
 
             var nodeManager = new NodeManager(_configOptions.BlockChainEndpoint);
             var tx = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,

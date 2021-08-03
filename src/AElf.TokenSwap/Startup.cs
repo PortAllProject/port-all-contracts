@@ -1,16 +1,8 @@
 using System.Globalization;
-using AElf.Database;
-using AElf.TokenSwap.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Volo.Abp.AspNetCore;
-using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp.Caching;
-using Volo.Abp.Http.Modeling;
 
 namespace AElf.TokenSwap
 {
@@ -26,36 +18,7 @@ namespace AElf.TokenSwap
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var configuration = services.GetConfiguration();
-
-            services.AddApplication<AbpAspNetCoreModule>();
-            services.AddSingleton<IDistributedCacheSerializer, Utf8JsonDistributedCacheSerializer>();
-            services.AddSingleton<IDistributedCacheKeyNormalizer, DistributedCacheKeyNormalizer>();
-            services.AddSingleton(typeof(IDistributedCache<>), typeof(DistributedCache<>));
-            services.AddTransient<IApiDescriptionModelProvider, AspNetCoreApiDescriptionModelProvider>();
-            services.AddControllers();
-            services.AddApiVersioning(options =>
-            {
-                options.ApiVersionSelector = new CurrentImplementationApiVersionSelector(options);
-                options.AssumeDefaultVersionWhenUnspecified = true;
-                options.ApiVersionReader = new MediaTypeApiVersionReader();
-                options.UseApiBehavior = false;
-            });
-            services.AddVersionedApiExplorer();
-            services.AddDistributedMemoryCache();
-
-            services.AddSwaggerGen(
-                options =>
-                {
-                    options.SwaggerDoc("v1", new OpenApiInfo { Title = "Rural Assets Platform API", Version = "v1" });
-                    options.OperationFilter<SwaggerFileUploadFilter>();
-                    options.DocInclusionPredicate((docName, description) => true);
-                    options.CustomSchemaIds(type => type.FullName);
-                }
-            );
-            
-            services.Configure<ConfigOptions>(configuration.GetSection("Config"));
-            services.AddKeyValueDbContext<TokenSwapKeyValueDbContext>(p => p.UseInMemoryDatabase());
+            services.AddApplication<TokenSwapModule>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

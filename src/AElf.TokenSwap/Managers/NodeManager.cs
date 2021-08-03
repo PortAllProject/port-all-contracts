@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using AElf;
 using AElf.Client.Dto;
 using AElf.Client.Service;
 using AElf.Types;
