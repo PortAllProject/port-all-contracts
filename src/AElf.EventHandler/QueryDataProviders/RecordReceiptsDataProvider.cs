@@ -5,10 +5,11 @@ using AElf.Contracts.Bridge;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    public class RecordReceiptsDataProvider : IDataProvider
+    public class RecordReceiptsDataProvider : IDataProvider, ISingletonDependency
     {
         public const string Title = "record_receipts";
 
