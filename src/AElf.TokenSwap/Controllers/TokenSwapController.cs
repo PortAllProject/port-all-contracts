@@ -77,7 +77,9 @@ namespace AElf.TokenSwap.Controllers
                 {
                     ReceiptId = receiptInfo.ReceiptId,
                     Amount = receiptInfo.Amount,
-                    ReceivingTime = receiptInfo.ReceivingTime?.ToString() ?? string.Empty,
+                    ReceivingTime = receiptInfo.ReceivingTime == null
+                        ? string.Empty
+                        : (receiptInfo.ReceivingTime.Seconds * 1000).ToString(),
                     ReceivingAddress = receivingAddress,
                     ReceivingTxId = receiptInfo.ReceivingTxId?.ToHex() ?? string.Empty,
                     SendingTime = sendingInfo?.SendingTime ?? string.Empty,
