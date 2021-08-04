@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
@@ -65,13 +64,13 @@ namespace AElf.Contracts.Lottery
                 var newPeriodId = State.CurrentPeriodId.Value.Add(1);
                 State.PeriodAwardMap[newPeriodId] = GenerateNextPeriodAward(
                     input.NextAwardList == null || input.NextAwardList.Any()
-                        ? new Int64List { Value = { input.NextAwardList } }
+                        ? new Int64List {Value = {input.NextAwardList}}
                         : null);
 
                 State.CurrentPeriodId.Value = State.CurrentPeriodId.Value.Add(1);
 
                 State.CachedAwardedLotteryCodeList.Value = new Int64List();
-                Context.Fire(new DrewFinished { PeriodId = input.PeriodId });
+                Context.Fire(new DrewFinished {PeriodId = input.PeriodId});
             }
             else
             {
@@ -138,10 +137,10 @@ namespace AElf.Contracts.Lottery
                 return startAwardId;
             }
 
-            var lotteryCodePool = Enumerable.Range(1, (int)GetTotalLotteryCount(new Empty()).Value).ToList();
+            var lotteryCodePool = Enumerable.Range(1, (int) GetTotalLotteryCount(new Empty()).Value).ToList();
             foreach (var lotteryCode in State.CachedAwardedLotteryCodeList.Value.Value)
             {
-                lotteryCodePool.Remove((int)lotteryCode);
+                lotteryCodePool.Remove((int) lotteryCode);
             }
 
             for (var awardId = startAwardId; awardId <= endAwardId; awardId++)
@@ -158,7 +157,7 @@ namespace AElf.Contracts.Lottery
                     Assert(lotteryCodePool.Count != 0, "Lottery code pool is empty.");
                 }
 
-                var luckyLotteryCodeIndex = (int)Math.Abs(randomNumber % lotteryCodePool.Count);
+                var luckyLotteryCodeIndex = (int) Math.Abs(randomNumber % lotteryCodePool.Count);
                 var luckyLotteryCode = lotteryCodePool[luckyLotteryCodeIndex];
                 lotteryCodePool.Remove(luckyLotteryCode);
 
@@ -203,6 +202,11 @@ namespace AElf.Contracts.Lottery
             if (input.RedeemTimestamp != null)
             {
                 State.RedeemTimestamp.Value = input.RedeemTimestamp;
+            }
+
+            if (input.StopRedeemTimestamp != null)
+            {
+                State.StopRedeemTimestamp.Value = input.StopRedeemTimestamp;
             }
 
             return new Empty();

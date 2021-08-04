@@ -86,9 +86,10 @@ message InitializeInput {
     google.protobuf.Timestamp start_timestamp = 1;
     google.protobuf.Timestamp shutdown_timestamp = 2;
     google.protobuf.Timestamp redeem_timestamp = 3;
-    repeated int64 default_award_list = 4; 
-    aelf.Address admin = 5;
-    bool is_debug = 6;
+    google.protobuf.Timestamp stop_redeem_timestamp = 4;
+    repeated int64 default_award_list = 5; 
+    aelf.Address admin = 6;
+    bool is_debug = 7;
 }
 
 message OwnLottery {

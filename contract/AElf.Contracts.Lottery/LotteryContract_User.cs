@@ -157,6 +157,8 @@ namespace AElf.Contracts.Lottery
         {
             InvalidIfDebugAssert(Context.CurrentBlockTime >= State.RedeemTimestamp.Value,
                 $"Cannot redeem before {State.RedeemTimestamp.Value}.");
+            InvalidIfDebugAssert(Context.CurrentBlockTime < State.StopRedeemTimestamp.Value,
+                $"Cannot redeem after {State.StopRedeemTimestamp.Value}");
             var ownLottery = State.OwnLotteryMap[Context.Sender];
             if (ownLottery == null)
             {
