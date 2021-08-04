@@ -209,6 +209,8 @@ namespace AElf.Contracts.Lottery
                 State.StopRedeemTimestamp.Value = input.StopRedeemTimestamp;
             }
 
+            AssertTimestampOrder();
+
             return new Empty();
         }
 

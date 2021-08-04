@@ -28,17 +28,22 @@ namespace AElf.Contracts.Lottery
             State.CurrentLotteryCode.Value = 1;
 
             Assert(Context.CurrentBlockTime < input.StartTimestamp, "Invalid start timestamp.");
-            Assert(input.StartTimestamp < input.ShutdownTimestamp, "Invalid shutdown timestamp.");
-            Assert(input.ShutdownTimestamp <= input.RedeemTimestamp, "Invalid redeem timestamp.");
-            Assert(input.RedeemTimestamp <= input.StopRedeemTimestamp, "Invalid stop redeem timestamp.");
             State.StakingStartTimestamp.Value = input.StartTimestamp;
             State.StakingShutdownTimestamp.Value = input.ShutdownTimestamp;
             State.RedeemTimestamp.Value = input.RedeemTimestamp;
             State.StopRedeemTimestamp.Value = input.StopRedeemTimestamp;
+            AssertTimestampOrder();
             State.CachedAwardedLotteryCodeList.Value = new Int64List();
 
             State.IsDebug.Value = input.IsDebug;
             return new Empty();
+        }
+
+        private void AssertTimestampOrder()
+        {
+            Assert(State.StakingStartTimestamp.Value < State.StakingShutdownTimestamp.Value, "Invalid shutdown timestamp.");
+            Assert(State.StakingShutdownTimestamp.Value <= State.RedeemTimestamp.Value, "Invalid redeem timestamp.");
+            Assert(State.RedeemTimestamp.Value <= State.StopRedeemTimestamp.Value, "Invalid stop redeem timestamp.");
         }
 
         private void InvalidIfDebugAssert(bool asserted, string message)
