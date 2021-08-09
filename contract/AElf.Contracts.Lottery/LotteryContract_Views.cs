@@ -59,6 +59,14 @@ namespace AElf.Contracts.Lottery
             };
         }
 
+        public override Int64Value GetTotalAwardCount(Empty input)
+        {
+            return new Int64Value
+            {
+                Value = State.CurrentAwardId.Value
+            };
+        }
+
         public override Int64List GetLotteryCodeListByUserAddress(Address input)
         {
             var ownLottery = State.OwnLotteryMap[input];
@@ -96,7 +104,7 @@ namespace AElf.Contracts.Lottery
             }
 
             var awardIdList = Enumerable.Range((int)periodAward.StartAwardId.Add(input.StartIndex),
-                Math.Min(maxCount, input.Count));
+                Math.Min(maxCount, input.Count)).Reverse();
             return new AwardList
             {
                 Value = { awardIdList.Select(id => State.AwardMap[id]) }

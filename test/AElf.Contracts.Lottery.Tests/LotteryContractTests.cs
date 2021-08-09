@@ -20,6 +20,7 @@ namespace AElf.Contracts.Lottery.Tests
                 StartTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100),
                 ShutdownTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 RedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
+                StopRedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100000),
                 IsDebug = true
             });
 
@@ -241,6 +242,7 @@ namespace AElf.Contracts.Lottery.Tests
                 StartTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(100),
                 ShutdownTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 RedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
+                StopRedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 DefaultAwardList = {GetDefaultAwardList()},
                 IsDebug = true
             });

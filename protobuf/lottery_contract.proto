@@ -36,6 +36,9 @@ service LotteryContract {
     rpc GetTotalLotteryCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
+    rpc GetTotalAwardCount (google.protobuf.Empty) returns (google.protobuf.Int64Value) {
+        option (aelf.is_view) = true;
+    }
     rpc GetLotteryCodeListByUserAddress (aelf.Address) returns (Int64List) {
         option (aelf.is_view) = true;
     }
