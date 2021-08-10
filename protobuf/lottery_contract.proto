@@ -109,6 +109,7 @@ message Lottery {
     repeated int64 award_id_list = 3;
     aelf.Address owner = 4;
     int64 latest_claimed_award_id = 5;
+    int64 lottery_total_award_amount = 6;
 }
 
 // Show lottery codes.
@@ -122,6 +123,7 @@ message Award {
     int64 lottery_code = 3;
     bool is_claimed = 4;
     aelf.Address owner = 5;
+    int32 period = 6;
 }
 
 message AwardList {

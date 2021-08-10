@@ -114,6 +114,7 @@ namespace AElf.Contracts.Lottery
 
                 var lottery = State.LotteryMap[luckyLotteryCode];
                 lottery.AwardIdList.Add(award.AwardId);
+                lottery.LotteryTotalAwardAmount = lottery.LotteryTotalAwardAmount.Add(award.AwardAmount);
                 State.LotteryMap[luckyLotteryCode] = lottery;
 
                 award.LotteryCode = luckyLotteryCode;
@@ -169,6 +170,7 @@ namespace AElf.Contracts.Lottery
 
                 var lottery = State.LotteryMap[luckyLotteryCode];
                 lottery.AwardIdList.Add(award.AwardId);
+                lottery.LotteryTotalAwardAmount = lottery.LotteryTotalAwardAmount.Add(award.AwardAmount);
                 State.LotteryMap[luckyLotteryCode] = lottery;
 
                 award.LotteryCode = luckyLotteryCode;
@@ -239,6 +241,7 @@ namespace AElf.Contracts.Lottery
                 {
                     AwardId = currentAwardId.Add(i).Add(1),
                     AwardAmount = awardAmountList.Value[i],
+                    Period = State.CurrentPeriodId.Value.Add(1)
                 };
             }
 
