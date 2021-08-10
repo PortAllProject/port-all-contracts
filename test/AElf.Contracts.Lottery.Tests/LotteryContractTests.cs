@@ -211,6 +211,12 @@ namespace AElf.Contracts.Lottery.Tests
                 var ownLottery = await Admin.GetOwnLottery.CallAsync(Users[10].Address);
                 ownLottery.LotteryCodeList.Count.ShouldBe(20);
             }
+
+            var lottery = await Admin.GetLottery.CallAsync(new Int64Value{Value = 1});
+            if (lottery.AwardIdList.Count > 0)
+            {
+                lottery.LotteryTotalAwardAmount.ShouldBePositive();
+            }
         }
 
         [Theory]
@@ -245,6 +251,13 @@ namespace AElf.Contracts.Lottery.Tests
                 StopRedeemTimestamp = TimestampHelper.GetUtcNow().AddMilliseconds(10000),
                 DefaultAwardList = {GetDefaultAwardList()},
                 IsDebug = true
+            });
+
+            await TokenContractStub.Transfer.SendAsync(new TransferInput
+            {
+                To = DAppContractAddress,
+                Amount = 30_0000_00000000,
+                Symbol = "ELF"
             });
 
             for (var i = 0; i < 20; i++)
