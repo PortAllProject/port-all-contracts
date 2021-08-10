@@ -104,7 +104,7 @@ namespace AElf.Contracts.Lottery
             }
 
             var awardIdList = Enumerable.Range((int)periodAward.StartAwardId.Add(input.StartIndex),
-                Math.Min(maxCount, input.Count)).Reverse();
+                Math.Min(maxCount, input.Count));
             return new AwardList
             {
                 Value = { awardIdList.Select(id => State.AwardMap[id]) }
