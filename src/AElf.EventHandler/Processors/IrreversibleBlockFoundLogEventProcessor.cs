@@ -17,6 +17,7 @@ namespace AElf.EventHandler
         private readonly ConfigOptions _configOptions;
         private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly ContractAddressOptions _contractAddressOptions;
+        private readonly LotteryOptions _lotteryOptions;
         private readonly ILatestQueriedReceiptCountProvider _latestQueriedReceiptCountProvider;
         private readonly ILogger<IrreversibleBlockFoundLogEventProcessor> _logger;
         private readonly string _lockAbi;
@@ -26,6 +27,7 @@ namespace AElf.EventHandler
             IOptionsSnapshot<ConfigOptions> configOptions,
             IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
             IOptionsSnapshot<ContractAbiOptions> contractAbiOptions,
+            IOptionsSnapshot<LotteryOptions> lotteryOptions,
             ILatestQueriedReceiptCountProvider latestQueriedReceiptCountProvider,
             ILogger<IrreversibleBlockFoundLogEventProcessor> logger) : base(contractAddressOptions)
         {
@@ -36,6 +38,7 @@ namespace AElf.EventHandler
             _configOptions = configOptions.Value;
             _ethereumConfigOptions = ethereumConfigOptions.Value;
             _contractAddressOptions = contractAddressOptions.Value;
+            _lotteryOptions = lotteryOptions.Value;
 
             {
                 var file = contractAbiOptions1.LockAbiFilePath;
@@ -58,6 +61,11 @@ namespace AElf.EventHandler
             var libFound = new IrreversibleBlockFound();
             libFound.MergeFrom(logEvent);
             _logger.LogInformation($"IrreversibleBlockFound: {libFound}");
+
+            if (_lotteryOptions.IsDrawLottery)
+            {
+                DrawHelper.TryToDrawLottery(_configOptions.BlockChainEndpoint, _lotteryOptions);
+            }
 
             if (!_configOptions.SendQueryTransaction) return;
 
