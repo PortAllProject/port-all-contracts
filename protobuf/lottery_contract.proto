@@ -20,6 +20,8 @@ service LotteryContract {
     }
     rpc ResetTimestamp (InitializeInput) returns (google.protobuf.Empty) {
     }
+    rpc Withdraw (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
+    }
 
     // User
     rpc Stake (google.protobuf.Int64Value) returns (OwnLottery) {
@@ -74,6 +76,9 @@ service LotteryContract {
         option (aelf.is_view) = true;
     }
     rpc GetRedeemTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetStopRedeemTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
         option (aelf.is_view) = true;
     }
     rpc GetAwardAmountMap (aelf.Address) returns (AwardAmountMap) {

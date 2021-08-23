@@ -47,7 +47,7 @@ namespace AElf.Contracts.Lottery
 
             return new AwardList
             {
-                Value = { awardIdList.Select(i => State.AwardMap[i]) }
+                Value = {awardIdList.Select(i => State.AwardMap[i])}
             };
         }
 
@@ -74,19 +74,19 @@ namespace AElf.Contracts.Lottery
                 ? new Int64List()
                 : new Int64List
                 {
-                    Value = { ownLottery.LotteryCodeList }
+                    Value = {ownLottery.LotteryCodeList}
                 };
         }
 
         public override Int32Value GetCurrentPeriodId(Empty input)
         {
-            return new Int32Value { Value = State.CurrentPeriodId.Value };
+            return new Int32Value {Value = State.CurrentPeriodId.Value};
         }
 
         public override Int64Value GetStakingAmount(Address input)
         {
             var ownLottery = GetOwnLottery(input);
-            return ownLottery == null ? new Int64Value() : new Int64Value { Value = ownLottery.TotalStakingAmount };
+            return ownLottery == null ? new Int64Value() : new Int64Value {Value = ownLottery.TotalStakingAmount};
         }
 
         public override AwardList GetAwardList(GetAwardListInput input)
@@ -96,18 +96,19 @@ namespace AElf.Contracts.Lottery
             {
                 return new AwardList();
             }
+
             var awardCount = periodAward.EndAwardId.Sub(periodAward.StartAwardId).Add(1);
-            var maxCount = (int)awardCount.Sub(input.StartIndex);
+            var maxCount = (int) awardCount.Sub(input.StartIndex);
             if (input.Count == 0)
             {
                 input.Count = maxCount;
             }
 
-            var awardIdList = Enumerable.Range((int)periodAward.StartAwardId.Add(input.StartIndex),
+            var awardIdList = Enumerable.Range((int) periodAward.StartAwardId.Add(input.StartIndex),
                 Math.Min(maxCount, input.Count));
             return new AwardList
             {
-                Value = { awardIdList.Select(id => State.AwardMap[id]) }
+                Value = {awardIdList.Select(id => State.AwardMap[id])}
             };
         }
 
@@ -143,6 +144,11 @@ namespace AElf.Contracts.Lottery
         public override Timestamp GetRedeemTimestamp(Empty input)
         {
             return State.RedeemTimestamp.Value;
+        }
+
+        public override Timestamp GetStopRedeemTimestamp(Empty input)
+        {
+            return State.StopRedeemTimestamp.Value;
         }
     }
 }

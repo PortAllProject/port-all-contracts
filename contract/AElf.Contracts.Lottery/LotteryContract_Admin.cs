@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using AElf.Contracts.MultiToken;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
 using AElf.Types;
@@ -252,6 +253,24 @@ namespace AElf.Contracts.Lottery
                 StartAwardId = currentAwardId.Add(1),
                 EndAwardId = currentAwardId.Add(awardAmountList.Value.Count)
             };
+        }
+
+        public override Empty Withdraw(Int64Value input)
+        {
+            AssertSenderIsAdmin();
+            var totalAmount = State.TokenContract.GetBalance.Call(new GetBalanceInput
+            {
+                Owner = Context.Self,
+                Symbol = Context.Variables.NativeSymbol
+            }).Balance;
+            State.TokenContract.Transfer.Send(new TransferInput
+            {
+                To = State.Admin.Value,
+                Symbol = TokenSymbol,
+                Amount = totalAmount,
+                Memo = "Take all awards."
+            });
+            return new Empty();
         }
     }
 }
