@@ -15,24 +15,17 @@ namespace AElf.Contracts.Lottery
         {
             var awardList = new List<long>
             {
-                5000_00000000,
-                1000_00000000, 1000_00000000,
-                500_00000000, 500_00000000
+                10000_00000000,
             };
 
             for (var i = 0; i < 5; i++)
             {
+                awardList.Add(1000_00000000);
+            }
+
+            for (var i = 0; i < 20; i++)
+            {
                 awardList.Add(100_00000000);
-            }
-
-            for (var i = 0; i < 10; i++)
-            {
-                awardList.Add(50_00000000);
-            }
-
-            for (var i = 0; i < 100; i++)
-            {
-                awardList.Add(10_00000000);
             }
 
             return awardList;
