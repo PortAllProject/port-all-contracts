@@ -232,7 +232,7 @@ namespace AElf.Contracts.Lottery
         {
             if (awardAmountList == null || !awardAmountList.Value.Any())
             {
-                awardAmountList = State.DefaultPeriodAwardAmountList.Value;
+                awardAmountList = new Int64List { Value = { GetDefaultAwardList() } };
             }
 
             var currentAwardId = State.CurrentAwardId.Value;
