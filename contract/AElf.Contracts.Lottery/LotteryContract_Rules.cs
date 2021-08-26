@@ -9,7 +9,7 @@ namespace AElf.Contracts.Lottery
         private const int MaximumLotteryCodeAmountForSingleAddress = 21;
         private const string TokenSymbol = "ELF";
 
-        private const int TotalPeriod = 8;
+        private const int TotalPeriod = 7;
 
         private List<long> GetDefaultAwardList()
         {

@@ -10,32 +10,22 @@ namespace AElf.EventHandler
     {
         private static int _drewPeriod;
 
-        public static void TryToDrawLottery(string url, LotteryOptions lotteryOptions)
+        public static bool TryToDrawLottery(string url, LotteryOptions lotteryOptions, out int period)
         {
+            _drewPeriod = lotteryOptions.LatestDrewPeriod == 0 ? _drewPeriod : lotteryOptions.LatestDrewPeriod;
+
             var nodeManager = new NodeManager(url, lotteryOptions.AccountAddress, lotteryOptions.AccountPassword);
             CalculateDrawInfo(Timestamp.FromDateTime(DateTime.Parse(lotteryOptions.StartTimestamp)),
-                lotteryOptions.IntervalMinutes, out var isTimeToDraw, out var period);
-            if (isTimeToDraw && lotteryOptions.IsDrawLottery)
-            {
-                var periodAwardBytes = nodeManager.QueryView(lotteryOptions.AccountAddress,
-                    lotteryOptions.LotteryContractAddress, "GetPeriodAward", new Int64Value
-                    {
-                        Value = period
-                    });
-                var periodAward = new PeriodAward();
-                periodAward.MergeFrom(periodAwardBytes);
-                nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
-                    "Draw", new DrawInput
-                    {
-                        PeriodId = period,
-                        ToAwardId = periodAward.StartAwardId + 60
-                    });
-                nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
-                    "Draw", new DrawInput
-                    {
-                        PeriodId = period
-                    });
-            }
+                lotteryOptions.IntervalMinutes, out var isDraw, out period);
+            if (!isDraw || !lotteryOptions.IsDrawLottery) return true;
+
+            nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
+                "Draw", new DrawInput
+                {
+                    PeriodId = period
+                });
+
+            return true;
         }
 
         private static void CalculateDrawInfo(Timestamp startTimestamp, long intervalMinutes, out bool isDraw, out int period)

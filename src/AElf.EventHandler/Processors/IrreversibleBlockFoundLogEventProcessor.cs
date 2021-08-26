@@ -1,7 +1,9 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.Oracle;
+using AElf.Kernel;
 using AElf.Types;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
@@ -64,7 +66,16 @@ namespace AElf.EventHandler
 
             if (_lotteryOptions.IsDrawLottery)
             {
-                DrawHelper.TryToDrawLottery(_configOptions.BlockChainEndpoint, _lotteryOptions);
+                // Just for logging.
+                var startTimestamp = Timestamp.FromDateTime(DateTime.Parse(_lotteryOptions.StartTimestamp));
+                var duration = TimestampHelper.GetUtcNow() - startTimestamp;
+                _logger.LogInformation(
+                    $"Trying to draw lottery of supposed period {(int)(duration.Seconds / 60 / _lotteryOptions.IntervalMinutes)}. StartTimestamp: {startTimestamp}. Duration: {duration}");
+
+                _logger.LogInformation(
+                    DrawHelper.TryToDrawLottery(_configOptions.BlockChainEndpoint, _lotteryOptions, out var period)
+                        ? $"Drew period {period}"
+                        : $"Not draw.");
             }
 
             if (!_configOptions.SendQueryTransaction) return;
