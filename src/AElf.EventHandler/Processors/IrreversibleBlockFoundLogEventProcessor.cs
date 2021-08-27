@@ -70,7 +70,7 @@ namespace AElf.EventHandler
                 var startTimestamp = TimestampHelper.DurationFromSeconds(_lotteryOptions.StartTimestamp);
                 var duration = TimestampHelper.GetUtcNow() - startTimestamp;
                 _logger.LogInformation(
-                    $"Trying to draw lottery of supposed period {(int)(duration.Seconds / 60 / _lotteryOptions.IntervalMinutes)}. StartTimestamp: {startTimestamp}. Duration: {duration}");
+                    $"Trying to draw lottery of supposed period {(int)(duration.Seconds / 60 / _lotteryOptions.IntervalMinutes)}. StartTimestamp: {startTimestamp}. Duration: {duration.Seconds} seconds.");
 
                 _logger.LogInformation(
                     DrawHelper.TryToDrawLottery(_configOptions.BlockChainEndpoint, _lotteryOptions, out var period)

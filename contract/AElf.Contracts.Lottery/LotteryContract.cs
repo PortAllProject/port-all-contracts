@@ -35,6 +35,11 @@ namespace AElf.Contracts.Lottery
             AssertTimestampOrder();
             State.CachedAwardedLotteryCodeList.Value = new Int64List();
 
+            if (input.TxFee != null)
+            {
+                State.TxFee.Value = input.TxFee;
+            }
+
             State.IsDebug.Value = input.IsDebug;
             return new Empty();
         }

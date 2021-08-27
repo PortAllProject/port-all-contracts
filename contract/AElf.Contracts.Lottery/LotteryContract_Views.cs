@@ -150,5 +150,10 @@ namespace AElf.Contracts.Lottery
         {
             return State.StopRedeemTimestamp.Value;
         }
+
+        public override TxFee GetTxFee(Empty input)
+        {
+            return State.TxFee.Value;
+        }
     }
 }

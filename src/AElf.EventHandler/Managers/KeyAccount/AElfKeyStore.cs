@@ -117,7 +117,7 @@ namespace AElf.EventHandler
             if (dataDirectory == "")
                 dataDirectory = CommonHelper.GetCurrentDataDir();
 
-            if (_keyStore != null && _keyStore._dataDirectory == dataDirectory)
+            if (_keyStore != null && _keyStore._dataDirectory == dataDirectory && _keyStore._address == address)
                 return _keyStore;
 
             _keyStore = new AElfKeyStore(address, password, dataDirectory);

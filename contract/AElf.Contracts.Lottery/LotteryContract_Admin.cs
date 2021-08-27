@@ -232,7 +232,7 @@ namespace AElf.Contracts.Lottery
         {
             if (awardAmountList == null || !awardAmountList.Value.Any())
             {
-                awardAmountList = new Int64List { Value = { GetDefaultAwardList() } };
+                awardAmountList = new Int64List {Value = {GetDefaultAwardList()}};
             }
 
             var currentAwardId = State.CurrentAwardId.Value;
@@ -270,6 +270,13 @@ namespace AElf.Contracts.Lottery
                 Amount = totalAmount,
                 Memo = "Take all awards."
             });
+            return new Empty();
+        }
+
+        public override Empty ResetTxFee(TxFee input)
+        {
+            AssertSenderIsAdmin();
+            State.TxFee.Value = input;
             return new Empty();
         }
     }
