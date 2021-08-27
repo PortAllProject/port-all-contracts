@@ -10,18 +10,18 @@ namespace AElf.EventHandler
     {
         private static int _drewPeriod;
 
-        public static bool TryToDrawLottery(string url, LotteryOptions lotteryOptions, out int period)
+        public static bool TryToDrawLottery(string url, LotteryOptions lotteryOptions, out int period, out string txId)
         {
             _drewPeriod = lotteryOptions.LatestDrewPeriod == 0 ? _drewPeriod : lotteryOptions.LatestDrewPeriod;
-
+            txId = string.Empty;
             var nodeManager = new NodeManager(url, lotteryOptions.AccountAddress, lotteryOptions.AccountPassword);
             var duration = TimestampHelper.GetUtcNow() -
                            TimestampHelper.DurationFromSeconds(lotteryOptions.StartTimestamp);
             CalculateDrawInfo(duration,
                 lotteryOptions.IntervalMinutes, out var isDraw, out period);
-            if (!isDraw || !lotteryOptions.IsDrawLottery) return true;
+            if (!isDraw || !lotteryOptions.IsDrawLottery) return false;
 
-            nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
+            txId = nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
                 "Draw", new DrawInput
                 {
                     PeriodId = period

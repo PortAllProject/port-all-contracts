@@ -73,8 +73,8 @@ namespace AElf.EventHandler
                     $"Trying to draw lottery of supposed period {(int)(duration.Seconds / 60 / _lotteryOptions.IntervalMinutes)}. StartTimestamp: {startTimestamp}. Duration: {duration.Seconds} seconds.");
 
                 _logger.LogInformation(
-                    DrawHelper.TryToDrawLottery(_configOptions.BlockChainEndpoint, _lotteryOptions, out var period)
-                        ? $"Drew period {period}"
+                    DrawHelper.TryToDrawLottery(_configOptions.BlockChainEndpoint, _lotteryOptions, out var period, out var txId)
+                        ? $"Drew period {period}, Tx id: {txId}"
                         : $"Not draw.");
             }
 
