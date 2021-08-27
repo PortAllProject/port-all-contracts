@@ -279,5 +279,12 @@ namespace AElf.Contracts.Lottery
             State.TxFee.Value = input;
             return new Empty();
         }
+
+        public override Empty ResetAdmin(Address input)
+        {
+            AssertSenderIsAdmin();
+            State.Admin.Value = input;
+            return new Empty();
+        }
     }
 }

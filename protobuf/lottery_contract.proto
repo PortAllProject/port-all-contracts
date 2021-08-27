@@ -22,6 +22,8 @@ service LotteryContract {
     }
     rpc ResetTxFee (TxFee) returns (google.protobuf.Empty) {
     }
+    rpc ResetAdmin (aelf.Address) returns (google.protobuf.Empty) {
+    }
     rpc Withdraw (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
     }
 
@@ -87,6 +89,9 @@ service LotteryContract {
         option (aelf.is_view) = true;
     }
     rpc GetTxFee (google.protobuf.Empty) returns (TxFee) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAdmin (google.protobuf.Empty) returns (aelf.Address) {
         option (aelf.is_view) = true;
     }
 }

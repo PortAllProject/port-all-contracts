@@ -155,5 +155,10 @@ namespace AElf.Contracts.Lottery
         {
             return State.TxFee.Value;
         }
+
+        public override Address GetAdmin(Empty input)
+        {
+            return State.Admin.Value;
+        }
     }
 }
