@@ -10,16 +10,18 @@ namespace AElf.EventHandler
     {
         private static int _drewPeriod;
 
-        public static bool TryToDrawLottery(string url, LotteryOptions lotteryOptions, out int period)
+        public static bool TryToDrawLottery(string url, LotteryOptions lotteryOptions, out int period, out string txId)
         {
             _drewPeriod = lotteryOptions.LatestDrewPeriod == 0 ? _drewPeriod : lotteryOptions.LatestDrewPeriod;
-
+            txId = string.Empty;
             var nodeManager = new NodeManager(url, lotteryOptions.AccountAddress, lotteryOptions.AccountPassword);
-            CalculateDrawInfo(Timestamp.FromDateTime(DateTime.Parse(lotteryOptions.StartTimestamp)),
+            var duration = TimestampHelper.GetUtcNow() -
+                           TimestampHelper.DurationFromSeconds(lotteryOptions.StartTimestamp);
+            CalculateDrawInfo(duration,
                 lotteryOptions.IntervalMinutes, out var isDraw, out period);
-            if (!isDraw || !lotteryOptions.IsDrawLottery) return true;
+            if (!isDraw || !lotteryOptions.IsDrawLottery) return false;
 
-            nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
+            txId = nodeManager.SendTransaction(lotteryOptions.AccountAddress, lotteryOptions.LotteryContractAddress,
                 "Draw", new DrawInput
                 {
                     PeriodId = period
@@ -28,9 +30,8 @@ namespace AElf.EventHandler
             return true;
         }
 
-        private static void CalculateDrawInfo(Timestamp startTimestamp, long intervalMinutes, out bool isDraw, out int period)
+        private static void CalculateDrawInfo(Timestamp duration, long intervalMinutes, out bool isDraw, out int period)
         {
-            var duration = TimestampHelper.GetUtcNow() - startTimestamp;
             period = (int)(duration.Seconds / 60 / intervalMinutes);
             if (_drewPeriod >= period)
             {

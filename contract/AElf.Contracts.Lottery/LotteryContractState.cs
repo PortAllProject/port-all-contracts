@@ -40,5 +40,7 @@ namespace AElf.Contracts.Lottery
         public BoolState IsDebug { get; set; }
 
         public SingletonState<Int64List> CachedAwardedLotteryCodeList { get; set; }
+
+        public SingletonState<TxFee> TxFee { get; set; }
     }
 }

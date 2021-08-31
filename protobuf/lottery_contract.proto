@@ -20,6 +20,10 @@ service LotteryContract {
     }
     rpc ResetTimestamp (InitializeInput) returns (google.protobuf.Empty) {
     }
+    rpc ResetTxFee (TxFee) returns (google.protobuf.Empty) {
+    }
+    rpc ResetAdmin (aelf.Address) returns (google.protobuf.Empty) {
+    }
     rpc Withdraw (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
     }
 
@@ -84,6 +88,12 @@ service LotteryContract {
     rpc GetAwardAmountMap (aelf.Address) returns (AwardAmountMap) {
         option (aelf.is_view) = true;
     }
+    rpc GetTxFee (google.protobuf.Empty) returns (TxFee) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetAdmin (google.protobuf.Empty) returns (aelf.Address) {
+        option (aelf.is_view) = true;
+    }
 }
 
 // Lottery Code: int64
@@ -98,6 +108,7 @@ message InitializeInput {
     repeated int64 default_award_list = 5; 
     aelf.Address admin = 6;
     bool is_debug = 7;
+    TxFee tx_fee = 8;
 }
 
 message OwnLottery {
@@ -159,6 +170,12 @@ message GetAwardListInput {
 
 message AwardAmountMap {
     map<int64, int64> value = 1;// Lottery Code -> Award Amount
+}
+
+message TxFee {
+    int64 stake_tx_fee = 1;
+    int64 redeem_tx_fee = 2;
+    int64 claim_tx_fee = 3;
 }
 
 // Events

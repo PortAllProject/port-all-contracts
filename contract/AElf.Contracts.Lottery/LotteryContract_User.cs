@@ -19,6 +19,8 @@ namespace AElf.Contracts.Lottery
                 InvalidIfDebugAssert(Context.CurrentBlockTime >= State.StakingStartTimestamp.Value, "Activity not started yet.");
             }
 
+            var transferAmount = input.Value.Add(State.TxFee.Value.StakeTxFee);
+
             // Stake ELF Tokens.
             var ownLottery = State.OwnLotteryMap[Context.Sender] ?? new OwnLottery();
             var supposedLotteryAmount = CalculateSupposedLotteryAmount(ownLottery, input.Value);
@@ -35,7 +37,7 @@ namespace AElf.Contracts.Lottery
                 {
                     From = Context.Sender,
                     To = Context.Self,
-                    Amount = input.Value,
+                    Amount = transferAmount,
                     Symbol = TokenSymbol,
                     Memo = "No new lottery code."
                 });
@@ -49,7 +51,7 @@ namespace AElf.Contracts.Lottery
             {
                 From = Context.Sender,
                 To = Context.Self,
-                Amount = input.Value,
+                Amount = transferAmount,
                 Symbol = TokenSymbol,
                 Memo = newLotteryAmount == 1
                     ? $"Got lottery with code {newLotteryCodeList.First()}"
@@ -132,7 +134,7 @@ namespace AElf.Contracts.Lottery
             {
                 To = Context.Sender,
                 Symbol = TokenSymbol,
-                Amount = claimingAmount,
+                Amount = claimingAmount.Sub(State.TxFee.Value.ClaimTxFee),
                 Memo = "Awards"
             });
 
@@ -170,7 +172,7 @@ namespace AElf.Contracts.Lottery
             {
                 To = Context.Sender,
                 Symbol = TokenSymbol,
-                Amount = ownLottery.TotalStakingAmount,
+                Amount = ownLottery.TotalStakingAmount.Sub(State.TxFee.Value.RedeemTxFee),
                 Memo = "Redeem staked tokens."
             });
 
