@@ -19,7 +19,7 @@ namespace AElf.TokenSwap
 #endif
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Async(c => c.File($"Logs/TokenSwap{DateTime.UtcNow:yyyy-MM-dd}.logs"))
+                .WriteTo.File($"Logs/TokenSwap-.logs", rollingInterval: RollingInterval.Day)
                 .WriteTo.Async(c => c.Console())
                 .CreateLogger();
 
@@ -43,6 +43,7 @@ namespace AElf.TokenSwap
 
         private static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); })
                 .UseAutofac();
     }

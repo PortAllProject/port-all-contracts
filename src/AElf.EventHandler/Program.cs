@@ -19,7 +19,7 @@ namespace AElf.EventHandler
 #endif
                 .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
                 .Enrich.FromLogContext()
-                .WriteTo.Async(c => c.File($"Logs/EventHandler{DateTime.UtcNow:yyyy-MM-dd}.logs"))
+                .WriteTo.File("Logs/EventHandler-.logs", rollingInterval: RollingInterval.Day)
                 .WriteTo.Async(c => c.Console())
                 .CreateLogger();
 
