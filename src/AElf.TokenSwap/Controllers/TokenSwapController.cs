@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AElf.Client.Dto;
@@ -146,7 +147,7 @@ namespace AElf.TokenSwap.Controllers
                 });
                 var periodAward = new PeriodAward();
                 periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
-                tokenSwapInfo.CurrentPeriodId = periodAward.PeriodId;
+                tokenSwapInfo.CurrentPeriodId = Math.Max(periodAward.PeriodId, 7);
                 tokenSwapInfo.CurrentPeriodStartTimestamp = periodAward.StartTimestamp.ToString();
             }
 
