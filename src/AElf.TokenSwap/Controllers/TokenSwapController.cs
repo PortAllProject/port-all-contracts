@@ -96,7 +96,7 @@ namespace AElf.TokenSwap.Controllers
         }
 
         [HttpGet("get_swap_info")]
-        public async Task<TokenSwapInfoDto> GetBridgeBalance()
+        public async Task<TokenSwapInfoDto> GetSwapInfo()
         {
             var tokenSwapInfo = new TokenSwapInfoDto();
 
@@ -121,10 +121,25 @@ namespace AElf.TokenSwap.Controllers
                 tokenSwapInfo.BridgeContractBalance = getBalanceOutputBridge.Balance;
             }
 
+            var currentPeriodId = 0L;
+
+            {
+                var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.LotteryContractAddress,
+                    "GetCurrentPeriodId", new Empty());
+                var result = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txBridge
+                });
+                var count = new Int32Value();
+                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(result)));
+                currentPeriodId = count.Value;
+            }
+
             {
                 var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
                     _configOptions.LotteryContractAddress,
-                    "GetPreviousPeriodAward", new Empty());
+                    "GetPeriodAward", new Int64Value {Value = currentPeriodId - 1});
                 var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
                 {
                     RawTransaction = txLottery
@@ -139,7 +154,7 @@ namespace AElf.TokenSwap.Controllers
             {
                 var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
                     _configOptions.LotteryContractAddress,
-                    "GetCurrentPeriodAward", new Empty());
+                    "GetPeriodAward", new Int64Value {Value = currentPeriodId});
                 var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
                 {
                     RawTransaction = txLottery
@@ -148,7 +163,6 @@ namespace AElf.TokenSwap.Controllers
                 periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
                 tokenSwapInfo.CurrentPeriodId = periodAward.PeriodId;
                 tokenSwapInfo.CurrentPeriodAwardIds = $"{periodAward.StartAwardId} - {periodAward.EndAwardId}";
-                tokenSwapInfo.CurrentPeriodEndTimestamp = periodAward.EndTimestamp.ToString();
             }
 
             {
