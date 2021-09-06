@@ -19,7 +19,7 @@ namespace AElf.Contracts.Lottery
                 InvalidIfDebugAssert(Context.CurrentBlockTime >= State.StakingStartTimestamp.Value, "Activity not started yet.");
             }
 
-            var transferAmount = input.Value.Add(State.TxFee.Value.StakeTxFee);
+            var transferAmount = input.Value.Add(State.TxFee.Value?.StakeTxFee ?? 0);
 
             // Stake ELF Tokens.
             var ownLottery = State.OwnLotteryMap[Context.Sender] ?? new OwnLottery();
@@ -87,6 +87,15 @@ namespace AElf.Contracts.Lottery
                     Value = { ownLottery.LotteryCodeList }
                 }
             });
+
+            if (State.TxFee.Value != null &&  State.TxFee.Value.StakeTxFee > 0)
+            {
+                Context.Fire(new TransactionFeeCharged
+                {
+                    Amount = State.TxFee.Value.StakeTxFee,
+                    Symbol = Context.Variables.NativeSymbol
+                });
+            }
             return ownLottery;
         }
 
@@ -134,7 +143,7 @@ namespace AElf.Contracts.Lottery
             {
                 To = Context.Sender,
                 Symbol = TokenSymbol,
-                Amount = claimingAmount.Sub(State.TxFee.Value.ClaimTxFee),
+                Amount = claimingAmount.Sub(State.TxFee.Value?.ClaimTxFee ?? 0),
                 Memo = "Awards"
             });
 
@@ -152,6 +161,15 @@ namespace AElf.Contracts.Lottery
                     Value = { ownLottery.LotteryCodeList }
                 }
             });
+
+            if (State.TxFee.Value != null && State.TxFee.Value.ClaimTxFee > 0)
+            {
+                Context.Fire(new TransactionFeeCharged
+                {
+                    Amount = State.TxFee.Value.ClaimTxFee,
+                    Symbol = Context.Variables.NativeSymbol
+                });
+            }
             return new Empty();
         }
 
@@ -172,7 +190,7 @@ namespace AElf.Contracts.Lottery
             {
                 To = Context.Sender,
                 Symbol = TokenSymbol,
-                Amount = ownLottery.TotalStakingAmount.Sub(State.TxFee.Value.RedeemTxFee),
+                Amount = ownLottery.TotalStakingAmount.Sub(State.TxFee.Value?.RedeemTxFee ?? 0),
                 Memo = "Redeem staked tokens."
             });
 
@@ -185,6 +203,15 @@ namespace AElf.Contracts.Lottery
                 Amount = ownLottery.TotalStakingAmount,
                 PeriodId = State.CurrentPeriodId.Value
             });
+
+            if (State.TxFee.Value != null && State.TxFee.Value.RedeemTxFee > 0)
+            {
+                Context.Fire(new TransactionFeeCharged
+                {
+                    Amount = State.TxFee.Value.RedeemTxFee,
+                    Symbol = Context.Variables.NativeSymbol
+                });
+            }
             return new Empty();
         }
 

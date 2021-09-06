@@ -160,5 +160,16 @@ namespace AElf.Contracts.Lottery
         {
             return State.Admin.Value;
         }
+
+        public override PeriodAward GetPreviousPeriodAward(Empty input)
+        {
+            var previousPeriodId = State.CurrentPeriodId.Value.Sub(1);
+            if (previousPeriodId == 0)
+            {
+                return new PeriodAward();
+            }
+
+            return State.PeriodAwardMap[previousPeriodId];
+        }
     }
 }

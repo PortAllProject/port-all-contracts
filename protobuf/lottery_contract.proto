@@ -73,6 +73,9 @@ service LotteryContract {
     rpc GetPeriodAward (google.protobuf.Int64Value) returns (PeriodAward) {
         option (aelf.is_view) = true;
     }
+    rpc GetPreviousPeriodAward (google.protobuf.Empty) returns (PeriodAward) {
+        option (aelf.is_view) = true;
+    }
     rpc GetStartTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
         option (aelf.is_view) = true;
     }
@@ -211,4 +214,10 @@ message Claimed {
     int64 amount = 2;
     int64 period_id = 3;
     Int64List claimed_lottery_code_list = 4;
+}
+
+message TransactionFeeCharged {
+    option (aelf.is_event) = true;
+    string symbol = 1;
+    int64 amount = 2;
 }

@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AElf.Client.Dto;
 using AElf.Contracts.Bridge;
+using AElf.Contracts.MultiToken;
 using AElf.TokenSwap.Dtos;
 using AElf.Types;
 using Google.Protobuf;
@@ -88,6 +89,47 @@ namespace AElf.TokenSwap.Controllers
             }
 
             return receiptInfoDtoList;
+        }
+
+        [HttpGet("get_bridge_balance")]
+        public async Task<TokenSwapInfoDto> GetBridgeBalance()
+        {
+            var tokenSwapInfo = new TokenSwapInfoDto();
+
+            var nodeManager = new NodeManager(_configOptions.BlockChainEndpoint);
+
+            // get Bridge Contract balance.
+            var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                _configOptions.TokenContractAddress,
+                "GetBalance", new GetBalanceInput
+                {
+                    Owner = Address.FromBase58(_configOptions.BridgeContractAddress),
+                    Symbol = "ELF"
+                });
+            var resultBridge = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+            {
+                RawTransaction = txBridge
+            });
+            var getBalanceOutputBridge = new GetBalanceOutput();
+            getBalanceOutputBridge.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
+            var balanceOfBridge = getBalanceOutputBridge.Balance;
+            
+            var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                _configOptions.TokenContractAddress,
+                "GetBalance", new GetBalanceInput
+                {
+                    Owner = Address.FromBase58(_configOptions.BridgeContractAddress),
+                    Symbol = "ELF"
+                });
+            var resultLottery = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+            {
+                RawTransaction = txLottery
+            });
+            var getBalanceOutputLottery = new GetBalanceOutput();
+            getBalanceOutputLottery.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultLottery)));
+            tokenSwapInfo.PreviousPeriodAward = getBalanceOutputLottery.Balance;
+
+            return tokenSwapInfo;
         }
     }
 }

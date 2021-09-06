@@ -276,6 +276,7 @@ namespace AElf.Contracts.Lottery
         public override Empty ResetTxFee(TxFee input)
         {
             AssertSenderIsAdmin();
+            Assert(input != null, "TxFee cannot be null.");
             State.TxFee.Value = input;
             return new Empty();
         }
