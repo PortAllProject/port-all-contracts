@@ -139,21 +139,6 @@ namespace AElf.TokenSwap.Controllers
             {
                 var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
                     _configOptions.LotteryContractAddress,
-                    "GetPeriodAward", new Int64Value {Value = currentPeriodId - 1});
-                var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
-                {
-                    RawTransaction = txLottery
-                });
-                var periodAward = new PeriodAward();
-                periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
-                tokenSwapInfo.PreviousPeriodId = periodAward.PeriodId;
-                tokenSwapInfo.PreviousPeriodAwardIds = $"{periodAward.StartAwardId} - {periodAward.EndAwardId}";
-                tokenSwapInfo.PreviousPeriodEndTimestamp = periodAward.EndTimestamp.ToString();
-            }
-
-            {
-                var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                    _configOptions.LotteryContractAddress,
                     "GetPeriodAward", new Int64Value {Value = currentPeriodId});
                 var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
                 {
@@ -162,7 +147,7 @@ namespace AElf.TokenSwap.Controllers
                 var periodAward = new PeriodAward();
                 periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
                 tokenSwapInfo.CurrentPeriodId = periodAward.PeriodId;
-                tokenSwapInfo.CurrentPeriodAwardIds = $"{periodAward.StartAwardId} - {periodAward.EndAwardId}";
+                tokenSwapInfo.CurrentPeriodStartTimestamp = periodAward.StartTimestamp.ToString();
             }
 
             {
