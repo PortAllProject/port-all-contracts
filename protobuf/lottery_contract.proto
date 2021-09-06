@@ -76,6 +76,9 @@ service LotteryContract {
     rpc GetPreviousPeriodAward (google.protobuf.Empty) returns (PeriodAward) {
         option (aelf.is_view) = true;
     }
+    rpc GetCurrentPeriodAward (google.protobuf.Empty) returns (PeriodAward) {
+        option (aelf.is_view) = true;
+    }
     rpc GetStartTimestamp (google.protobuf.Empty) returns (google.protobuf.Timestamp) {
         option (aelf.is_view) = true;
     }

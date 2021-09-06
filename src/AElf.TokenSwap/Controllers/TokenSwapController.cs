@@ -1,15 +1,19 @@
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using AElf.Client.Dto;
 using AElf.Contracts.Bridge;
+using AElf.Contracts.Lottery;
 using AElf.Contracts.MultiToken;
 using AElf.TokenSwap.Dtos;
 using AElf.Types;
 using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace AElf.TokenSwap.Controllers
 {
@@ -91,7 +95,7 @@ namespace AElf.TokenSwap.Controllers
             return receiptInfoDtoList;
         }
 
-        [HttpGet("get_bridge_balance")]
+        [HttpGet("get_swap_info")]
         public async Task<TokenSwapInfoDto> GetBridgeBalance()
         {
             var tokenSwapInfo = new TokenSwapInfoDto();
@@ -99,37 +103,95 @@ namespace AElf.TokenSwap.Controllers
             var nodeManager = new NodeManager(_configOptions.BlockChainEndpoint);
 
             // get Bridge Contract balance.
-            var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                _configOptions.TokenContractAddress,
-                "GetBalance", new GetBalanceInput
-                {
-                    Owner = Address.FromBase58(_configOptions.BridgeContractAddress),
-                    Symbol = "ELF"
-                });
-            var resultBridge = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
             {
-                RawTransaction = txBridge
-            });
-            var getBalanceOutputBridge = new GetBalanceOutput();
-            getBalanceOutputBridge.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
-            var balanceOfBridge = getBalanceOutputBridge.Balance;
-            
-            var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                _configOptions.TokenContractAddress,
-                "GetBalance", new GetBalanceInput
+                var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.TokenContractAddress,
+                    "GetBalance", new GetBalanceInput
+                    {
+                        Owner = Address.FromBase58(_configOptions.BridgeContractAddress),
+                        Symbol = "ELF"
+                    });
+                var resultBridge = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
                 {
-                    Owner = Address.FromBase58(_configOptions.BridgeContractAddress),
-                    Symbol = "ELF"
+                    RawTransaction = txBridge
                 });
-            var resultLottery = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                var getBalanceOutputBridge = new GetBalanceOutput();
+                getBalanceOutputBridge.MergeFrom(
+                    ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
+                tokenSwapInfo.BridgeContractBalance = getBalanceOutputBridge.Balance;
+            }
+
             {
-                RawTransaction = txLottery
-            });
-            var getBalanceOutputLottery = new GetBalanceOutput();
-            getBalanceOutputLottery.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultLottery)));
-            tokenSwapInfo.PreviousPeriodAward = getBalanceOutputLottery.Balance;
+                var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.LotteryContractAddress,
+                    "GetPreviousPeriodAward", new Empty());
+                var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txLottery
+                });
+                var periodAward = new PeriodAward();
+                periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
+                tokenSwapInfo.PreviousPeriodId = periodAward.PeriodId;
+                tokenSwapInfo.PreviousPeriodAwardIds = $"{periodAward.StartAwardId} - {periodAward.EndAwardId}";
+                tokenSwapInfo.PreviousPeriodEndTimestamp = periodAward.EndTimestamp.ToString();
+            }
+
+            {
+                var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.LotteryContractAddress,
+                    "GetCurrentPeriodAward", new Empty());
+                var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txLottery
+                });
+                var periodAward = new PeriodAward();
+                periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
+                tokenSwapInfo.CurrentPeriodId = periodAward.PeriodId;
+                tokenSwapInfo.CurrentPeriodAwardIds = $"{periodAward.StartAwardId} - {periodAward.EndAwardId}";
+                tokenSwapInfo.CurrentPeriodEndTimestamp = periodAward.EndTimestamp.ToString();
+            }
+
+            {
+                var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.BridgeContractAddress,
+                    "GetReceiptCount", new Empty());
+                var resultBridge = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txBridge
+                });
+                var count = new Int64Value();
+                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
+                tokenSwapInfo.TransmittedReceiptCount = count.Value;
+            }
+
+            var file = _configOptions.LockAbiFilePath;
+            if (!string.IsNullOrEmpty(file))
+            {
+                if (!System.IO.File.Exists(file))
+                {
+                    _logger.LogError($"Cannot found file {file}");
+                }
+
+                var lockAbi = ReadJson(file, "abi");
+
+                var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
+                var web3ManagerForLock = new Web3Manager(_configOptions.EthereumUrl, lockMappingContractAddress,
+                    _configOptions.EthereumPrivateKey, lockAbi);
+                var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
+                    .CallAsync<long>();
+                tokenSwapInfo.CreatedReceiptCount = lockTimes;
+            }
 
             return tokenSwapInfo;
+        }
+
+        public static string ReadJson(string jsonfile, string key)
+        {
+            using var file = System.IO.File.OpenText(jsonfile);
+            using var reader = new JsonTextReader(file);
+            var o = (JObject) JToken.ReadFrom(reader);
+            var value = o[key]?.ToString();
+            return value;
         }
     }
 }

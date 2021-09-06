@@ -171,5 +171,10 @@ namespace AElf.Contracts.Lottery
 
             return State.PeriodAwardMap[previousPeriodId];
         }
+
+        public override PeriodAward GetCurrentPeriodAward(Empty input)
+        {
+            return State.PeriodAwardMap[State.CurrentPeriodId.Value];
+        }
     }
 }
