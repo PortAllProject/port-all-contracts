@@ -7,6 +7,7 @@ namespace AElf.TokenSwap
         public string BridgeContractAddress { get; set; }
         public string TokenContractAddress { get; set; }
         public string LotteryContractAddress { get; set; }
+        public string ElectionContractAddress { get; set; }
         public string SwapId { get; set; }
         public string LockMappingContractAddress { get; set; }
         public string EthereumUrl { get; set; }

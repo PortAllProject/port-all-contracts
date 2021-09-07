@@ -164,6 +164,45 @@ namespace AElf.TokenSwap.Controllers
                 tokenSwapInfo.TransmittedReceiptCount = count.Value;
             }
 
+            {
+                var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.LotteryContractAddress,
+                    "GetTotalLotteryCount", new Empty());
+                var resultLottery = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txLottery
+                });
+                var count = new Int64Value();
+                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultLottery)));
+                tokenSwapInfo.LotteryCodeCount = count.Value;
+            }
+
+            {
+                var txElection = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.ElectionContractAddress,
+                    "GetVotersCount", new Empty());
+                var resultVoters = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txElection
+                });
+                var count = new Int64Value();
+                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultVoters)));
+                tokenSwapInfo.VotersCount = count.Value;
+            }
+
+            {
+                var txElection = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.ElectionContractAddress,
+                    "GetVotesAmount", new Empty());
+                var resultVoters = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
+                {
+                    RawTransaction = txElection
+                });
+                var count = new Int64Value();
+                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultVoters)));
+                tokenSwapInfo.VotesCount = count.Value;
+            }
+
             var file = _configOptions.LockAbiFilePath;
             if (!string.IsNullOrEmpty(file))
             {
