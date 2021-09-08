@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
 using AElf.Client.Dto;
 using AElf.Contracts.Bridge;
@@ -119,7 +120,8 @@ namespace AElf.TokenSwap.Controllers
                 var getBalanceOutputBridge = new GetBalanceOutput();
                 getBalanceOutputBridge.MergeFrom(
                     ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
-                tokenSwapInfo.BridgeContractBalance = getBalanceOutputBridge.Balance;
+                tokenSwapInfo.BridgeContractBalance =
+                    ((double) getBalanceOutputBridge.Balance / 1_00000000).ToString(CultureInfo.InvariantCulture);
             }
 
             var currentPeriodId = 0L;
@@ -200,7 +202,7 @@ namespace AElf.TokenSwap.Controllers
                 });
                 var count = new Int64Value();
                 count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultVoters)));
-                tokenSwapInfo.VotesCount = count.Value;
+                tokenSwapInfo.VotesCount = ((double) count.Value / 1_00000000).ToString(CultureInfo.InvariantCulture);
             }
 
             var file = _configOptions.LockAbiFilePath;
