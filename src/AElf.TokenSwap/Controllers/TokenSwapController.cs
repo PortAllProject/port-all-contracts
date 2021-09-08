@@ -149,7 +149,8 @@ namespace AElf.TokenSwap.Controllers
                 var periodAward = new PeriodAward();
                 periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
                 tokenSwapInfo.CurrentPeriodId = Math.Min(periodAward.PeriodId, 7);
-                tokenSwapInfo.CurrentPeriodStartTimestamp = periodAward.StartTimestamp.ToString().Replace("\"", "");
+                tokenSwapInfo.CurrentPeriodStartTimestamp = periodAward.StartTimestamp.ToDateTime().AddHours(8)
+                    .ToString("yyyy-MM-dd HH:mm:ss");
             }
 
             {
