@@ -10,12 +10,18 @@ namespace AElf.EventHandler
         public string Token { get; set; }
         public List<string> ObserverAssociationAddressList { get; set; }
         public string TransmitContractAddress { get; set; }
-        public string LockMappingContractAddress { get; set; }
         public string MerkleGeneratorContractAddress { get; set; }
-        public long RecorderId { get; set; }
+        public List<SwapConfig> SwapConfigList { get; set; }
         public int MaximumLeafCount { get; set; }
         public bool SendQueryTransaction { get; set; }
         public long QueryPayment { get; set; } = 1_0000_0000;
         public string TokenSwapOracleOrganizationAddress { get; set; }
+    }
+
+    public class SwapConfig
+    {
+        public string TokenSymbol { get; set; }
+        public long RecorderId { get; set; }
+        public string LockMappingContractAddress { get; set; }
     }
 }

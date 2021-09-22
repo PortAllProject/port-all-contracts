@@ -8,10 +8,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AElf.Contracts.Bridge;
 using AElf.Types;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using MTRecorder;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
@@ -74,11 +72,16 @@ namespace AElf.EventHandler
                 return string.Empty;
             }
 
-            if (title == "record_receipts" && options.Count == 2)
+            if (title.StartsWith("record_receipts") && options.Count == 2)
             {
+                var symbol = title.Split('_').Last();
+                _logger.LogInformation($"Trying to query record receipt data of {symbol}");
+                var swapConfig = _configOptions.SwapConfigList.Single(c => c.TokenSymbol == symbol);
+                var recorderId = swapConfig.RecorderId;
+                var lockMappingAddress = swapConfig.LockMappingContractAddress;
                 _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
                 var recordReceiptHashInput =
-                    await GetReceiptHashMap(long.Parse(options[0]), long.Parse(options[1]));
+                    await GetReceiptHashMap(recorderId, lockMappingAddress, long.Parse(options[0]), long.Parse(options[1]));
                 _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
                 _dictionary[queryId] = recordReceiptHashInput;
                 return recordReceiptHashInput;
@@ -122,29 +125,28 @@ namespace AElf.EventHandler
             return result;
         }
 
-        private async Task<string> GetReceiptHashMap(long start, long end)
+        private async Task<string> GetReceiptHashMap(long recorderId, string lockMappingAddress, long start, long end)
         {
             if (_web3ManagerForLock == null)
             {
                 _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
-                    _configOptions.LockMappingContractAddress,
-                    _ethereumConfigOptions.PrivateKey, _lockAbi);
+                    lockMappingAddress, _ethereumConfigOptions.PrivateKey, _lockAbi);
             }
 
-            var receiptInfos = await GetReceiptInfosAsync(start, end);
+            var receiptInfos = await GetReceiptInfosAsync(lockMappingAddress, start, end);
             var receiptHashes = new List<Hash>();
             for (var i = 0; i <= end - start; i++)
             {
                 var amountHash = GetHashTokenAmountData(receiptInfos[i].Amount.ToString(), 32, true);
                 var targetAddressHash = HashHelper.ComputeFrom(receiptInfos[i].TargetAddress);
                 var receiptIdHash = HashHelper.ComputeFrom(i + start);
-                var hash =  HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
+                var hash = HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
                 receiptHashes.Add(hash);
             }
 
             var input = new ReceiptHashMap
             {
-                RecorderId = _configOptions.RecorderId
+                RecorderId = recorderId
             };
             for (var i = 0; i <= end - start; i++)
             {
@@ -295,7 +297,7 @@ namespace AElf.EventHandler
             return data;
         }
 
-        private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(long start, long end)
+        private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(string lockMappingContractAddress, long start, long end)
         {
             var receiptInfoList = new List<ReceiptInfo>();
             if (_web3ManagerForLock == null)
@@ -306,7 +308,7 @@ namespace AElf.EventHandler
             }
 
             var receiptInfoFunction =
-                _web3ManagerForLock.GetFunction(_configOptions.LockMappingContractAddress, "getReceiptInfo");
+                _web3ManagerForLock.GetFunction(lockMappingContractAddress, "getReceiptInfo");
             for (var i = start; i <= end; i++)
             {
                 var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>(i);
