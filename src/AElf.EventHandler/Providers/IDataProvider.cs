@@ -312,7 +312,7 @@ namespace AElf.EventHandler
             for (var i = start; i <= end; i++)
             {
                 var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>(i);
-                _logger.LogInformation($"Got receipt info of id {i}: {receiptInfo}");
+                //_logger.LogInformation($"Got receipt info of id {i}: {receiptInfo}");
                 receiptInfoList.Add(receiptInfo);
             }
 
