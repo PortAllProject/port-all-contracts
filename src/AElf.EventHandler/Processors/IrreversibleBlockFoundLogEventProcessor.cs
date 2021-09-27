@@ -81,7 +81,7 @@ namespace AElf.EventHandler
 
             if (!_configOptions.SendQueryTransaction) return;
 
-            foreach (var swapConfig in _configOptions.SwapConfigList)
+            foreach (var swapConfig in _configOptions.SwapConfigs)
             {
                 await SendQueryAsync(swapConfig.LockMappingContractAddress, swapConfig.RecorderId,
                     swapConfig.TokenSymbol);

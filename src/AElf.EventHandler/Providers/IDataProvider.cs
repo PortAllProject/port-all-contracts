@@ -76,7 +76,7 @@ namespace AElf.EventHandler
             {
                 var symbol = title.Split('_').Last();
                 _logger.LogInformation($"Trying to query record receipt data of {symbol}");
-                var swapConfig = _configOptions.SwapConfigList.Single(c => c.TokenSymbol == symbol);
+                var swapConfig = _configOptions.SwapConfigs.Single(c => c.TokenSymbol == symbol);
                 var recorderId = swapConfig.RecorderId;
                 var lockMappingAddress = swapConfig.LockMappingContractAddress;
                 _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");

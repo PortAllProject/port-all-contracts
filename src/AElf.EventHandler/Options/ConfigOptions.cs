@@ -11,7 +11,7 @@ namespace AElf.EventHandler
         public List<string> ObserverAssociationAddressList { get; set; }
         public string TransmitContractAddress { get; set; }
         public string MerkleGeneratorContractAddress { get; set; }
-        public List<SwapConfig> SwapConfigList { get; set; }
+        public List<SwapConfig> SwapConfigs { get; set; }
         public int MaximumLeafCount { get; set; }
         public bool SendQueryTransaction { get; set; }
         public long QueryPayment { get; set; } = 1_0000_0000;
