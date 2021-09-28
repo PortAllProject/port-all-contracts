@@ -214,7 +214,7 @@ namespace AElf.Contracts.Oracle
 
             Assert(Context.Sender == queryTask.Creator, "No permission.");
             Assert(queryTask.OnGoing == false, "Previous query not finished.");
-            Assert(queryTask.ActualQueriedTimes <= queryTask.SupposedQueryTimes, "Query times exceeded.");
+            Assert(queryTask.ActualQueriedTimes < queryTask.SupposedQueryTimes, "Query times exceeded.");
 
             queryTask.OnGoing = true;
             State.QueryTaskMap[input.TaskId] = queryTask;
