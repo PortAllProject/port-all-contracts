@@ -190,6 +190,7 @@ namespace AElf.Contracts.Oracle
                 throw new AssertionException("Query task not found.");
             }
 
+            Assert(queryTask.DesignatedNodeList == null, "Designated node list already assigned.");
             Assert(Context.Sender == queryTask.Creator, "No permission.");
 
             var designatedNodeList = GetActualDesignatedNodeList(input.DesignatedNodeList);
@@ -211,9 +212,13 @@ namespace AElf.Contracts.Oracle
                 throw new AssertionException("Query task not found.");
             }
 
+            Assert(Context.Sender == queryTask.Creator, "No permission.");
+            Assert(queryTask.OnGoing == false, "Previous query not finished.");
             Assert(queryTask.ActualQueriedTimes <= queryTask.SupposedQueryTimes, "Query times exceeded.");
 
-            Assert(Context.Sender == queryTask.Creator, "No permission.");
+            queryTask.OnGoing = true;
+            State.QueryTaskMap[input.TaskId] = queryTask;
+
             var queryInput = new QueryInput
             {
                 Payment = queryTask.EachPayment,
@@ -497,6 +502,7 @@ namespace AElf.Contracts.Oracle
             if (queryRecord.TaskId != Hash.Empty)
             {
                 var queryTask = State.QueryTaskMap[queryRecord.TaskId];
+                queryTask.OnGoing = false;
                 queryTask.ActualQueriedTimes = queryTask.ActualQueriedTimes.Add(1);
                 State.QueryTaskMap[queryRecord.TaskId] = queryTask;
             }

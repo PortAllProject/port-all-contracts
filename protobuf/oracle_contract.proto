@@ -234,6 +234,7 @@ message QueryTask {
     aelf.Address creator = 9;
     int32 aggregate_threshold = 10;
     int32 aggregate_option = 11;
+    bool on_going = 12;
 }
 
 message CommitInput {
