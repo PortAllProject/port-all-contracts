@@ -17,8 +17,14 @@ namespace AElf.Contracts.MerkleTreeRecorder
         /// </summary>
         public MappedState<long, Recorder> Recorder { get; set; }
 
+        /// <summary>
+        /// Recorder Id -> Satisfied Merkle Tree Index -> Merkle Tree
+        /// </summary>
         public MappedState<long, long, MerkleTree> SatisfiedMerkleTrees { get; set; }
 
+        /// <summary>
+        /// Recorder Id -> Current Reached Index -> Merkle Tree
+        /// </summary>
         public MappedState<long, long, MerkleTree> UnSatisfiedMerkleTrees { get; set; }
 
         public MappedState<long, long> LastRecordedLeafIndex { get; set; }

@@ -20,10 +20,10 @@ namespace AElf.Contracts.Bridge
             var receiptHashMap = JsonParser.Default.Parse<ReceiptHashMap>(queryResult.Value);
             foreach (var (receiptId, receiptHash) in receiptHashMap.Value)
             {
-                State.ReceiptHashMap[receiptId] = Hash.LoadFromHex(receiptHash);
+                State.RecorderReceiptHashMap[receiptHashMap.RecorderId][receiptId] = Hash.LoadFromHex(receiptHash);
             }
 
-            State.ReceiptCount.Value = receiptHashMap.Value.Last().Key.Add(1);
+            State.ReceiptCountMap[receiptHashMap.RecorderId] = receiptHashMap.Value.Last().Key.Add(1);
 
             Context.SendInline(Context.Self, nameof(UpdateMerkleTree), new UpdateMerkleTreeInput
             {
@@ -42,7 +42,8 @@ namespace AElf.Contracts.Bridge
                 new MerkleTreeGeneratorContract.GetMerkleTreeInput
                 {
                     ReceiptMakerAddress = Context.Self,
-                    ExpectedFullTreeIndex = State.ReceiptCount.Value.Sub(1).Div(State.MaximalLeafCount.Value)
+                    ExpectedFullTreeIndex =
+                        State.ReceiptCountMap[input.RecorderId].Sub(1).Div(State.MaximalLeafCount.Value)
                 });
 
             var recordMerkleTreeInput = new RecordMerkleTreeInput
@@ -60,14 +61,15 @@ namespace AElf.Contracts.Bridge
             return new Empty();
         }
 
-        public override Int64Value GetReceiptCount(Empty input)
+        public override Int64Value GetReceiptCount(Int64Value input)
         {
-            return new Int64Value {Value = State.ReceiptCount.Value};
+            return new Int64Value {Value = State.ReceiptCountMap[input.Value]};
         }
 
-        public override Hash GetReceiptHash(Int64Value input)
+        public override Hash GetReceiptHash(GetReceiptHashInput input)
         {
-            return State.ReceiptHashMap[input.Value];
+            return State.RecorderReceiptHashMap[input.RecorderId][input.ReceiptId] ??
+                   State.ReceiptHashMap[input.ReceiptId];
         }
 
         public override GetReceiptHashListOutput GetReceiptHashList(GetReceiptHashListInput input)
@@ -75,7 +77,11 @@ namespace AElf.Contracts.Bridge
             var output = new GetReceiptHashListOutput();
             for (var i = input.FirstLeafIndex; i <= input.LastLeafIndex; i++)
             {
-                var receiptHash = State.ReceiptHashMap[i];
+                var receiptHash = GetReceiptHash(new GetReceiptHashInput
+                {
+                    RecorderId = input.RecorderId,
+                    ReceiptId = i
+                });
                 Assert(receiptHash != null, $"Receipt hash of {i} is null.");
                 output.ReceiptHashList.Add(receiptHash);
             }

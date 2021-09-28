@@ -57,7 +57,7 @@ namespace AElf.Contracts.Bridge
             State.RecorderIdToRegimentMap[recorderId] = input.RegimentAddress;
 
             State.SwapInfo[swapId] = swapInfo;
-            Context.Fire(new SwapPairAdded { SwapId = swapId });
+            Context.Fire(new SwapPairAdded {SwapId = swapId});
             return swapId;
         }
 
@@ -127,7 +127,7 @@ namespace AElf.Contracts.Bridge
             }
 
             State.Ledger[input.SwapId][input.ReceiptId] = swapAmounts;
-            State.ReceiptInfoMap[input.ReceiptId] = new ReceiptInfo
+            State.RecorderReceiptInfoMap[input.SwapId][input.ReceiptId] = new ReceiptInfo
             {
                 ReceiptId = input.ReceiptId,
                 ReceivingTime = Context.CurrentBlockTime,
@@ -140,6 +140,11 @@ namespace AElf.Contracts.Bridge
             swappedReceiptIdList.Value.Add(input.ReceiptId);
             State.SwappedReceiptIdListMap[input.SwapId][receiverAddress] = swappedReceiptIdList;
             return new Empty();
+        }
+
+        private ReceiptInfo GetReceiptInfo(Hash swapId, long receiptId)
+        {
+            return State.RecorderReceiptInfoMap[swapId][receiptId] ?? State.ReceiptInfoMap[receiptId];
         }
 
         public override Empty ChangeSwapRatio(ChangeSwapRatioInput input)
@@ -231,7 +236,7 @@ namespace AElf.Contracts.Bridge
 
             foreach (var receiptId in receiptIdList.Value)
             {
-                var receiptInfo = State.ReceiptInfoMap[receiptId];
+                var receiptInfo = GetReceiptInfo(input.SwapId, receiptId);
                 if (receiptInfo != null)
                 {
                     receiptInfoList.Value.Add(receiptInfo);
@@ -239,7 +244,7 @@ namespace AElf.Contracts.Bridge
                 else
                 {
                     var swapAmounts = State.Ledger[input.SwapId][receiptId];
-                    var amount = swapAmounts == null ? 0 : swapAmounts.ReceivedAmounts[Context.Variables.NativeSymbol];
+                    var amount = swapAmounts?.ReceivedAmounts[Context.Variables.NativeSymbol] ?? 0;
                     receiptInfoList.Value.Add(new ReceiptInfo
                     {
                         ReceiptId = receiptId,

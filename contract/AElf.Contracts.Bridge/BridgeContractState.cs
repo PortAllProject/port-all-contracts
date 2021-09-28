@@ -9,8 +9,22 @@ namespace AElf.Contracts.Bridge
         public MappedState<Hash, SwapPair> SwapPairs { get; set; }
         public MappedState<Hash, long, SwapAmounts> Ledger { get; set; }
         public MappedState<long, Address> RecorderIdToRegimentMap { get; set; }
-        public Int64State ReceiptCount { get; set; }
+
+        /// <summary>
+        /// Recorder Id -> Receipt Count
+        /// </summary>
+        public MappedState<long, long> ReceiptCountMap { get; set; }
+
+        /// <summary>
+        /// Not use
+        /// </summary>
         public MappedState<long, Hash> ReceiptHashMap { get; set; }
+
+        /// <summary>
+        /// Recorder Id -> Receipt Id -> Receipt Hash
+        /// </summary>
+        public MappedState<long, long, Hash> RecorderReceiptHashMap { get; set; }
+
         public Int32State MaximalLeafCount { get; set; }
 
         /// <summary>
@@ -18,6 +32,14 @@ namespace AElf.Contracts.Bridge
         /// </summary>
         public MappedState<Hash, Address, ReceiptIdList> SwappedReceiptIdListMap { get; set; }
 
+        /// <summary>
+        /// Not use.
+        /// </summary>
         public MappedState<long, ReceiptInfo> ReceiptInfoMap { get; set; }
+
+        /// <summary>
+        /// Swap Id -> Receipt Id -> Receipt Hash
+        /// </summary>
+        public MappedState<Hash, long, ReceiptInfo> RecorderReceiptInfoMap { get; set; }
     }
 }

@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.Lottery.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.TokenSwap", "src\AElf.TokenSwap\AElf.TokenSwap.csproj", "{AFFFAFFC-992F-4A88-95A8-C395D04B36D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Contracts.Bridge.Tests", "test\AElf.Contracts.Bridge.Tests\AElf.Contracts.Bridge.Tests.csproj", "{463F5276-2D88-4A66-AA45-688F1920E1D7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -144,6 +146,10 @@ Global
 		{AFFFAFFC-992F-4A88-95A8-C395D04B36D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFFFAFFC-992F-4A88-95A8-C395D04B36D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFFFAFFC-992F-4A88-95A8-C395D04B36D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{463F5276-2D88-4A66-AA45-688F1920E1D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463F5276-2D88-4A66-AA45-688F1920E1D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463F5276-2D88-4A66-AA45-688F1920E1D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463F5276-2D88-4A66-AA45-688F1920E1D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +176,7 @@ Global
 		{BDB841AC-3230-4EBF-A735-EEF30CDE20ED} = {5C980166-C987-470D-AEE0-3858A170A903}
 		{073D711D-9F38-472D-ACE2-9830A222768C} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
 		{AFFFAFFC-992F-4A88-95A8-C395D04B36D3} = {21D85A91-5BB8-4912-8107-49435A461AAC}
+		{463F5276-2D88-4A66-AA45-688F1920E1D7} = {DBC47323-E6A2-42A2-A624-CE2EE6139567}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}

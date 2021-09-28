@@ -73,14 +73,14 @@ namespace AElf.Contracts.TokenLockReceiptMakerContract
             };
         }
 
-        public override Int64Value GetReceiptCount(Empty input)
+        public override Int64Value GetReceiptCount(Int64Value input)
         {
             return new Int64Value {Value = State.ReceiptCount.Value};
         }
 
-        public override Hash GetReceiptHash(Int64Value input)
+        public override Hash GetReceiptHash(GetReceiptHashInput input)
         {
-            return GetReceiptHash(input.Value);
+            return GetReceiptHash(input.ReceiptId);
         }
 
         public override GetReceiptHashListOutput GetReceiptHashList(GetReceiptHashListInput input)
