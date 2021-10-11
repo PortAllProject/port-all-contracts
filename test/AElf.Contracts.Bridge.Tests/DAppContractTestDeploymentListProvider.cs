@@ -6,24 +6,17 @@ using AElf.Types;
 
 namespace AElf.Contracts.Bridge.Tests
 {
-    public class SideChainDAppContractTestDeploymentListProvider : SideChainContractDeploymentListProvider,
-        IContractDeploymentListProvider
-    {
-        public List<Hash> GetDeployContractNameList()
-        {
-            var list = base.GetDeployContractNameList();
-            list.Add(BridgeSmartContractAddressNameProvider.Name);
-            return list;
-        }
-    }
-
     public class MainChainDAppContractTestDeploymentListProvider : MainChainContractDeploymentListProvider,
         IContractDeploymentListProvider
     {
-        public List<Hash> GetDeployContractNameList()
+        public new List<Hash> GetDeployContractNameList()
         {
             var list = base.GetDeployContractNameList();
             list.Add(BridgeSmartContractAddressNameProvider.Name);
+            list.Add(OracleSmartContractAddressNameProvider.Name);
+            list.Add(RegimentSmartContractAddressNameProvider.Name);
+            list.Add(MerkleTreeRecorderSmartContractAddressNameProvider.Name);
+            list.Add(MerkleTreeGeneratorSmartContractAddressNameProvider.Name);
             return list;
         }
     }

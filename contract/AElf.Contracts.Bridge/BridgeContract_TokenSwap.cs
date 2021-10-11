@@ -12,6 +12,7 @@ namespace AElf.Contracts.Bridge
     {
         public override Hash CreateSwap(CreateSwapInput input)
         {
+            Assert(input.RegimentAddress != null, "Regiment address cannot be null.");
             Assert(State.MerkleTreeRecorderContract.Value != null, "Not initialized.");
             var swapId = HashHelper.ConcatAndCompute(Context.TransactionId, HashHelper.ComputeFrom(input));
             Assert(State.SwapInfo[swapId] == null, "Swap already created.");

@@ -67,12 +67,24 @@
         <ContractStub Include="..\..\protobuf\bridge_contract.proto">
             <Link>Protobuf\Proto\bridge_contract.proto</Link>
         </ContractStub>
+        <ContractStub Include="..\..\protobuf\receipt_maker.proto">
+            <Link>Protobuf\Proto\receipt_maker.proto</Link>
+        </ContractStub>
+        <ContractStub Include="..\..\protobuf\merkle_tree_recorder.proto">
+            <Link>Protobuf\Proto\merkle_tree_recorder.proto</Link>
+        </ContractStub>
+        <ContractStub Include="..\..\protobuf\merkle_tree_generator.proto">
+            <Link>Protobuf\Proto\merkle_tree_generator.proto</Link>
+        </ContractStub>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\..\contract\AElf.Contracts.Oracle\AElf.Contracts.Oracle.csproj" />
         <ProjectReference Include="..\..\contract\AElf.Contracts.Regiment\AElf.Contracts.Regiment.csproj" />
         <ProjectReference Include="..\..\contract\AElf.Contracts.Bridge\AElf.Contracts.Bridge.csproj" />
+        <ProjectReference Include="..\..\contract\AElf.Contracts.MerkleTreeRecorder\AElf.Contracts.MerkleTreeRecorder.csproj" />
+        <ProjectReference Include="..\..\contract\AElf.Contracts.MerkleTreeGenerator\AElf.Contracts.MerkleTreeGenerator.csproj" />
+        <ProjectReference Include="..\..\contract\AElf.Contracts.StringAggregator\AElf.Contracts.StringAggregator.csproj" />
         <ProjectReference Include="..\..\src\AElf.Boilerplate.TestBase\AElf.Boilerplate.TestBase.csproj" />
         <ProjectReference Include="..\..\src\AElf.EventHandler\AElf.EventHandler.csproj" />
     </ItemGroup>

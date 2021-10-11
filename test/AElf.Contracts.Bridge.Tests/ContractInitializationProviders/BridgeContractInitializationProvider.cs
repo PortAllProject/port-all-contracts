@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using AElf.Boilerplate.TestBase;
 using AElf.Kernel.SmartContract.Application;
 using AElf.Types;
+using Volo.Abp.DependencyInjection;
 
 namespace AElf.Contracts.Bridge
 {
-    public class BridgeContractInitializationProvider : IContractInitializationProvider
+    public class BridgeContractInitializationProvider : IContractInitializationProvider, ISingletonDependency
     {
         public List<ContractInitializationMethodCall> GetInitializeMethodList(byte[] contractCode)
         {

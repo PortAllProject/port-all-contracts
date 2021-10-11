@@ -11,6 +11,15 @@ namespace AElf.Boilerplate.TestBase
         {
             var list = base.GetDeployContractNameList();
             list.Add(DAppSmartContractAddressNameProvider.Name);
+            list.Add(OracleUserSmartContractAddressNameProvider.Name);
+            list.Add(OracleSmartContractAddressNameProvider.Name);
+            list.Add(NumericAggregatorSmartContractAddressNameProvider.Name);
+            list.Add(StringAggregatorSmartContractAddressNameProvider.Name);
+            list.Add(ReportSmartContractAddressNameProvider.Name);
+            list.Add(RegimentSmartContractAddressNameProvider.Name);
+            list.Add(BridgeSmartContractAddressNameProvider.Name);
+            list.Add(MerkleTreeGeneratorSmartContractAddressNameProvider.Name);
+            list.Add(MerkleTreeRecorderSmartContractAddressNameProvider.Name);
             return list;
         }
     }
@@ -22,11 +31,14 @@ namespace AElf.Boilerplate.TestBase
             var list = base.GetDeployContractNameList();
             list.Add(DAppSmartContractAddressNameProvider.Name);
             list.Add(OracleUserSmartContractAddressNameProvider.Name);
+            list.Add(OracleSmartContractAddressNameProvider.Name);
             list.Add(NumericAggregatorSmartContractAddressNameProvider.Name);
             list.Add(StringAggregatorSmartContractAddressNameProvider.Name);
             list.Add(ReportSmartContractAddressNameProvider.Name);
             list.Add(RegimentSmartContractAddressNameProvider.Name);
             list.Add(BridgeSmartContractAddressNameProvider.Name);
+            list.Add(MerkleTreeGeneratorSmartContractAddressNameProvider.Name);
+            list.Add(MerkleTreeRecorderSmartContractAddressNameProvider.Name);
             return list;
         }
     }
