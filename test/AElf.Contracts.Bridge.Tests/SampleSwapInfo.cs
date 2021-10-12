@@ -17,13 +17,13 @@ namespace AElf.Contracts.Bridge.Tests
                 SwapInfos.Add(new SwapInfo
                 {
                     OriginAmount = (100000000000000000 * i).ToString(),
-                    ReceiverAddress = _receivers[i % 5],
+                    ReceiverAddress = Receivers[(i - 1) % 5],
                     ReceiptId = i - 1
                 });
             }
         }
 
-        private static readonly List<Address> _receivers =
+        private static readonly List<Address> Receivers =
             SampleAccount.Accounts.Skip(6).Take(5).Select(a => a.Address).ToList();
     }
 

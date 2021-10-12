@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using AElf.Contracts.MerkleTreeGeneratorContract;
 using AElf.CSharp.Core;
 using AElf.Sdk.CSharp;
@@ -133,7 +134,8 @@ namespace AElf.Contracts.Bridge
                 ReceiptId = input.ReceiptId,
                 ReceivingTime = Context.CurrentBlockTime,
                 ReceivingTxId = Context.TransactionId,
-                Amount = swapAmounts.ReceivedAmounts[Context.Variables.NativeSymbol],
+                Amount = swapAmounts.ReceivedAmounts[swapInfo.SwapTargetTokenMap.Keys.First()],
+                AmountMap = {swapAmounts.ReceivedAmounts}
             };
 
             var swappedReceiptIdList =

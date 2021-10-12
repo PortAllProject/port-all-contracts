@@ -172,6 +172,7 @@ message ReceiptInfo {
     aelf.Hash receiving_tx_id = 2;
     google.protobuf.Timestamp receiving_time = 3;
     int64 amount = 4;
+    map<string, int64> amount_map = 5;
 }
 
 message ReceiptInfoList {

@@ -16,6 +16,10 @@ namespace AElf.Contracts.Bridge
 
         private void TransferToken(string symbol, long amount, Address to)
         {
+            if (amount <= 0)
+            {
+                return;
+            }
             RequireTokenContractStateSet();
             State.TokenContract.Transfer.Send(new TransferInput
             {
