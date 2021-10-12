@@ -17,6 +17,7 @@ namespace AElf.Contracts.Bridge.Tests
             list.Add(RegimentSmartContractAddressNameProvider.Name);
             list.Add(MerkleTreeRecorderSmartContractAddressNameProvider.Name);
             list.Add(MerkleTreeGeneratorSmartContractAddressNameProvider.Name);
+            list.Add(StringAggregatorSmartContractAddressNameProvider.Name);
             return list;
         }
     }

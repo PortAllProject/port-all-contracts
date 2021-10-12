@@ -254,6 +254,11 @@ namespace AElf.Contracts.Oracle
         {
             var queryRecord = State.QueryRecords[input.QueryId];
 
+            if (queryRecord == null)
+            {
+                throw new AssertionException("Query id not exists.");
+            }
+
             Assert(queryRecord.ExpirationTimestamp > Context.CurrentBlockTime, "Query expired.");
             Assert(!queryRecord.IsCancelled, "Query already cancelled.");
 

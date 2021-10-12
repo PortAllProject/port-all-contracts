@@ -18,11 +18,18 @@ namespace AElf.Contracts.Bridge.Tests
         protected Address DefaultSenderAddress { get; set; }
         protected ECKeyPair DefaultKeypair => SampleAccount.Accounts.First().KeyPair;
         internal List<Account> Transmitters => SampleAccount.Accounts.Skip(1).Take(5).ToList();
+        internal List<Account> Receivers => SampleAccount.Accounts.Skip(6).Take(5).ToList();
         internal TokenContractContainer.TokenContractStub TokenContractStub { get; set; }
         internal ParliamentContractImplContainer.ParliamentContractImplStub ParliamentContractStub { get; set; }
         internal BridgeContractContainer.BridgeContractStub BridgeContractStub { get; set; }
         internal OracleContractContainer.OracleContractStub OracleContractStub { get; set; }
         internal RegimentContractContainer.RegimentContractStub RegimentContractStub { get; set; }
+
+        internal List<OracleContractContainer.OracleContractStub> TransmittersOracleContractStubs { get; set; } =
+            new List<OracleContractContainer.OracleContractStub>();
+
+        internal List<BridgeContractContainer.BridgeContractStub> ReceiverBridgeContractStubs { get; set; } =
+            new List<BridgeContractContainer.BridgeContractStub>();
 
         internal Address MerkleTreeRecorderContractAddress =>
             GetAddress(MerkleTreeRecorderSmartContractAddressNameProvider.StringName);
@@ -39,6 +46,9 @@ namespace AElf.Contracts.Bridge.Tests
         internal Address RegimentContractAddress =>
             GetAddress(RegimentSmartContractAddressNameProvider.StringName);
 
+        internal Address StringAggregatorContractAddress =>
+            GetAddress(StringAggregatorSmartContractAddressNameProvider.StringName);
+
         public BridgeContractTestBase()
         {
             DefaultSenderAddress = SampleAccount.Accounts.First().Address;
@@ -49,6 +59,16 @@ namespace AElf.Contracts.Bridge.Tests
             RegimentContractStub = GetRegimentContractStub(DefaultKeypair);
             var merkleTreeGeneratorContractStub = GetMerkleTreeGeneratorContractStub(DefaultKeypair);
             var merkleTreeRecorderContractStub = GetMerkleTreeRecorderContractStub(DefaultKeypair);
+
+            foreach (var transmitter in Transmitters)
+            {
+                TransmittersOracleContractStubs.Add(GetOracleContractStub(transmitter.KeyPair));
+            }
+
+            foreach (var receiver in Receivers)
+            {
+                ReceiverBridgeContractStubs.Add(GetBridgeContractStub(receiver.KeyPair));
+            }
         }
 
         internal TokenContractContainer.TokenContractStub GetTokenContractStub(ECKeyPair senderKeyPair)
