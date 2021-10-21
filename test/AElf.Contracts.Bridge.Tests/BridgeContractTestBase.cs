@@ -57,8 +57,6 @@ namespace AElf.Contracts.Bridge.Tests
             BridgeContractStub = GetBridgeContractStub(DefaultKeypair);
             OracleContractStub = GetOracleContractStub(DefaultKeypair);
             RegimentContractStub = GetRegimentContractStub(DefaultKeypair);
-            var merkleTreeGeneratorContractStub = GetMerkleTreeGeneratorContractStub(DefaultKeypair);
-            var merkleTreeRecorderContractStub = GetMerkleTreeRecorderContractStub(DefaultKeypair);
 
             foreach (var transmitter in Transmitters)
             {

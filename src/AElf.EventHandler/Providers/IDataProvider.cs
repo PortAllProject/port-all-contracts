@@ -81,7 +81,8 @@ namespace AElf.EventHandler
                 var lockMappingAddress = swapConfig.LockMappingContractAddress;
                 _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
                 var recordReceiptHashInput =
-                    await GetReceiptHashMap(recorderId, lockMappingAddress, long.Parse(options[0]), long.Parse(options[1]));
+                    await GetReceiptHashMap(recorderId, lockMappingAddress, long.Parse(options[0]),
+                        long.Parse(options[1]));
                 _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
                 _dictionary[queryId] = recordReceiptHashInput;
                 return recordReceiptHashInput;
@@ -127,13 +128,14 @@ namespace AElf.EventHandler
 
         private async Task<string> GetReceiptHashMap(long recorderId, string lockMappingAddress, long start, long end)
         {
+            var nodeUrl = _configOptions.SwapConfigs.Single(c => c.RecorderId == recorderId).NodeUrl;
             if (_web3ManagerForLock == null)
             {
-                _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
+                _web3ManagerForLock = new Web3Manager(nodeUrl,
                     lockMappingAddress, _ethereumConfigOptions.PrivateKey, _lockAbi);
             }
 
-            var receiptInfos = await GetReceiptInfosAsync(lockMappingAddress, start, end);
+            var receiptInfos = await GetReceiptInfosAsync(lockMappingAddress, start, end, nodeUrl);
             var receiptHashes = new List<Hash>();
             for (var i = 0; i <= end - start; i++)
             {
@@ -297,12 +299,13 @@ namespace AElf.EventHandler
             return data;
         }
 
-        private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(string lockMappingContractAddress, long start, long end)
+        private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(string lockMappingContractAddress, long start,
+            long end, string nodeUrl)
         {
             var receiptInfoList = new List<ReceiptInfo>();
             if (_web3ManagerForLock == null)
             {
-                _web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url,
+                _web3ManagerForLock = new Web3Manager(nodeUrl,
                     _ethereumConfigOptions.Address,
                     _ethereumConfigOptions.PrivateKey, _lockAbi);
             }

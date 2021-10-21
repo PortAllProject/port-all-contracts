@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AElf.Contracts.Consensus.AEDPoS;
 using AElf.Contracts.Oracle;
@@ -90,7 +91,8 @@ namespace AElf.EventHandler
 
         private async Task SendQueryAsync(string lockMappingContractAddress, long recorderId, string symbol)
         {
-            var web3ManagerForLock = new Web3Manager(_ethereumConfigOptions.Url, lockMappingContractAddress,
+            var nodeUrl = _configOptions.SwapConfigs.Single(c => c.RecorderId == recorderId).NodeUrl;
+            var web3ManagerForLock = new Web3Manager(nodeUrl, lockMappingContractAddress,
                 _ethereumConfigOptions.PrivateKey, _lockAbi);
             var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
                 _configOptions.AccountPassword);
