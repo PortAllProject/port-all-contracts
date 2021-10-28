@@ -91,6 +91,7 @@ namespace AElf.EventHandler
 
         private async Task SendQueryAsync(string lockMappingContractAddress, long recorderId, string symbol)
         {
+            _logger.LogInformation($"Querying {lockMappingContractAddress}, Recorder Id {recorderId}, Symbol {symbol}");
             var nodeUrl = _configOptions.SwapConfigs.Single(c => c.RecorderId == recorderId).NodeUrl;
             var web3ManagerForLock = new Web3Manager(nodeUrl, lockMappingContractAddress,
                 _ethereumConfigOptions.PrivateKey, _lockAbi);
@@ -100,6 +101,8 @@ namespace AElf.EventHandler
 
             var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
                 .CallAsync<long>();
+
+            _logger.LogInformation($"{symbol} lock times: {lockTimes}");
 
             var lastRecordedLeafIndex = node.QueryView<Int64Value>(_configOptions.AccountAddress,
                 merkleTreeRecorderContractAddress, "GetLastRecordedLeafIndex",
@@ -115,6 +118,8 @@ namespace AElf.EventHandler
             }
 
             var latestTreeIndex = _latestQueriedReceiptCountProvider.Get(symbol) / _configOptions.MaximumLeafCount;
+            _logger.LogInformation($"{symbol} latest tree index: {latestTreeIndex}");
+
             var almostTreeIndex = lockTimes / _configOptions.MaximumLeafCount;
             if (latestTreeIndex < almostTreeIndex)
             {
