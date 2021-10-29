@@ -87,7 +87,8 @@ namespace AElf.Contracts.Bridge
                 ReceiptMaker = Context.Self,
                 ReceiptId = input.ReceiptId,
                 FirstLeafIndex = firstLeafIndex,
-                LastLeafIndex = lastLeafIndex
+                LastLeafIndex = lastLeafIndex,
+                RecorderId = swapInfo.RecorderId
             });
 
             Assert(State.MerkleTreeRecorderContract.MerkleProof.Call(new MerkleProofInput

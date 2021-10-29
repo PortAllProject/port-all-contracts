@@ -49,7 +49,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             Assert(State.ReceiptMakerMap[input.ReceiptMakerAddress] != null, "Receipt maker not registered.");
             var maker = State.ReceiptMakerMap[input.ReceiptMakerAddress];
             var merkleTree = ConstructMerkleTree(maker.ReceiptMakerAddress, input.ExpectedFullTreeIndex,
-                maker.MerkleTreeLeafLimit);
+                maker.MerkleTreeLeafLimit, input.RecorderId);
             return new GetMerkleTreeOutput
             {
                 MerkleTreeRoot = merkleTree.MerkleTreeRoot,
@@ -100,7 +100,8 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
                 $"Invalid get merkle path input." +
                 $"{input.LastLeafIndex} >= {input.ReceiptId} && {input.LastLeafIndex} >= {input.FirstLeafIndex}");
 
-            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, input.FirstLeafIndex, input.LastLeafIndex);
+            var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, input.FirstLeafIndex, input.LastLeafIndex,
+                input.RecorderId);
             var index = (int)input.ReceiptId.Sub(input.FirstLeafIndex);
             var path = binaryMerkleTree.GenerateMerklePath(index);
             return path;

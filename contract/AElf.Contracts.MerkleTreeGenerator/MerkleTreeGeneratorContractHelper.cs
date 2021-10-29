@@ -10,7 +10,8 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 {
     public partial class MerkleTreeGeneratorContract
     {
-        private MerkleTree ConstructMerkleTree(Address receiptMaker, long expectFullTreeIndex, int leafCountLimit)
+        private MerkleTree ConstructMerkleTree(Address receiptMaker, long expectFullTreeIndex, int leafCountLimit,
+            long recorderId)
         {
             var receiptCount = GetReceiptCount(receiptMaker);
             var treeCount = receiptCount % leafCountLimit == 0
@@ -25,7 +26,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             var lastLeafIndex = isFullTree
                 ? expectFullTreeIndex.Add(1).Mul(leafCountLimit).Sub(1)
                 : receiptCount.Sub(1);
-            var binaryMerkleTree = GenerateMerkleTree(receiptMaker, firstLeafIndex, lastLeafIndex);
+            var binaryMerkleTree = GenerateMerkleTree(receiptMaker, firstLeafIndex, lastLeafIndex, recorderId);
 
             return new MerkleTree
             {
@@ -36,21 +37,24 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             };
         }
 
-        private BinaryMerkleTree GenerateMerkleTree(Address receiptMaker, long firstLeafIndex, long lastLeafIndex)
+        private BinaryMerkleTree GenerateMerkleTree(Address receiptMaker, long firstLeafIndex, long lastLeafIndex,
+            long recorderId)
         {
-            var receiptHashList = GetReceiptHashList(receiptMaker, firstLeafIndex, lastLeafIndex);
+            var receiptHashList = GetReceiptHashList(receiptMaker, firstLeafIndex, lastLeafIndex, recorderId);
             var binaryMerkleTree = BinaryMerkleTree.FromLeafNodes(receiptHashList);
             return binaryMerkleTree;
         }
 
-        private List<Hash> GetReceiptHashList(Address receiptMaker, long firstLeafIndex, long lastLeafIndex)
+        private List<Hash> GetReceiptHashList(Address receiptMaker, long firstLeafIndex, long lastLeafIndex,
+            long recorderId)
         {
             var receiptHashList = Context.Call<GetReceiptHashListOutput>(receiptMaker,
                 nameof(ReceiptMakerContractContainer.ReceiptMakerContractReferenceState.GetReceiptHashList),
                 new GetReceiptHashListInput
                 {
                     FirstLeafIndex = firstLeafIndex,
-                    LastLeafIndex = lastLeafIndex
+                    LastLeafIndex = lastLeafIndex,
+                    RecorderId = recorderId
                 });
 
             return receiptHashList.ReceiptHashList.ToList();
