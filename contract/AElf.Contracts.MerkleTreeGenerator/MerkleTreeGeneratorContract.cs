@@ -97,7 +97,8 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             }
 
             Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= input.FirstLeafIndex,
-                "Invalid get merkle path input.");
+                $"Invalid get merkle path input." +
+                $"{input.LastLeafIndex} >= {input.ReceiptId} && {input.LastLeafIndex} >= {input.FirstLeafIndex}");
 
             var binaryMerkleTree = GenerateMerkleTree(input.ReceiptMaker, input.FirstLeafIndex, input.LastLeafIndex);
             var index = (int)input.ReceiptId.Sub(input.FirstLeafIndex);
