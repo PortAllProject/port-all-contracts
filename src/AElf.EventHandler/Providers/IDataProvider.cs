@@ -27,6 +27,7 @@ namespace AElf.EventHandler
         private readonly EthereumConfigOptions _ethereumConfigOptions;
         private readonly ConfigOptions _configOptions;
         private readonly string _lockAbi;
+        private readonly string _lockWithTakeTokenAbi;
 
         private Web3Manager _web3ManagerForLock;
 
@@ -36,12 +37,12 @@ namespace AElf.EventHandler
         {
             _logger = logger;
             _contractAddressOptions = contractAddressOptions.Value;
-            var contractAbiOptions1 = contractAbiOptions.Value;
+            var contractAbiOption = contractAbiOptions.Value;
             _configOptions = configOptions.Value;
             _ethereumConfigOptions = ethereumConfigOptions.Value;
             _dictionary = new Dictionary<Hash, string>();
             {
-                var file = contractAbiOptions1.LockAbiFilePath;
+                var file = contractAbiOption.LockAbiFilePath;
                 if (!string.IsNullOrEmpty(file))
                 {
                     if (!File.Exists(file))
@@ -50,6 +51,21 @@ namespace AElf.EventHandler
                     }
 
                     _lockAbi = JsonHelper.ReadJson(file, "abi");
+                }
+            }
+
+            {
+                {
+                    var file = contractAbiOption.LockWithTakeTokenAbiFilePath;
+                    if (!string.IsNullOrEmpty(file))
+                    {
+                        if (!File.Exists(file))
+                        {
+                            _logger.LogError($"Cannot found file {file}");
+                        }
+
+                        _lockWithTakeTokenAbi = JsonHelper.ReadJson(file, "abi");
+                    }
                 }
             }
         }
@@ -135,7 +151,8 @@ namespace AElf.EventHandler
                     lockMappingAddress, _ethereumConfigOptions.PrivateKey, _lockAbi);
             }
 
-            var receiptInfos = await GetReceiptInfosAsync(lockMappingAddress, start, end, nodeUrl);
+            var canTakeToken = _configOptions.SwapConfigs.Single(c => c.RecorderId == recorderId).CanTakeToken;
+            var receiptInfos = await GetReceiptInfosAsync(lockMappingAddress, start, end, nodeUrl, canTakeToken);
             var receiptHashes = new List<Hash>();
             for (var i = 0; i <= end - start; i++)
             {
@@ -300,14 +317,15 @@ namespace AElf.EventHandler
         }
 
         private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(string lockMappingContractAddress, long start,
-            long end, string nodeUrl)
+            long end, string nodeUrl, bool canTakeToken)
         {
             var receiptInfoList = new List<ReceiptInfo>();
+            var usingAbi = canTakeToken ? _lockWithTakeTokenAbi : _lockAbi;
             if (_web3ManagerForLock == null)
             {
                 _web3ManagerForLock = new Web3Manager(nodeUrl,
                     _ethereumConfigOptions.Address,
-                    _ethereumConfigOptions.PrivateKey, _lockAbi);
+                    _ethereumConfigOptions.PrivateKey, usingAbi);
             }
 
             var receiptInfoFunction =

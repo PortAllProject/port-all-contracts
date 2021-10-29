@@ -24,5 +24,6 @@ namespace AElf.EventHandler
         public long RecorderId { get; set; }
         public string LockMappingContractAddress { get; set; }
         public string NodeUrl { get; set; }
+        public bool CanTakeToken { get; set; }
     }
 }

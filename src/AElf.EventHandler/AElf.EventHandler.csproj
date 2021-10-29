@@ -54,6 +54,10 @@
         <Content Include="ContractBuild\LockAbi.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="ContractBuild\LockWithTakeTokenAbi.json" />
+        <Content Include="ContractBuild\LockWithTakeTokenAbi.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
