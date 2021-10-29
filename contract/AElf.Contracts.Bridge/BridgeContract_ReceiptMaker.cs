@@ -43,7 +43,8 @@ namespace AElf.Contracts.Bridge
                 {
                     ReceiptMakerAddress = Context.Self,
                     ExpectedFullTreeIndex =
-                        State.ReceiptCountMap[input.RecorderId].Sub(1).Div(State.MaximalLeafCount.Value)
+                        State.ReceiptCountMap[input.RecorderId].Sub(1).Div(State.MaximalLeafCount.Value),
+                    RecorderId = input.RecorderId
                 });
 
             var recordMerkleTreeInput = new RecordMerkleTreeInput
