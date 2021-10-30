@@ -145,7 +145,7 @@ namespace AElf.EventHandler
         private async Task<string> GetReceiptHashMap(long recorderId, string lockMappingAddress, long start, long end)
         {
             var nodeUrl = _configOptions.SwapConfigs.Single(c => c.RecorderId == recorderId).NodeUrl;
-            if (_web3ManagerForLock == null)
+            if (_web3ManagerForLock == null || _web3ManagerForLock.BaseUrl != nodeUrl)
             {
                 _web3ManagerForLock = new Web3Manager(nodeUrl,
                     lockMappingAddress, _ethereumConfigOptions.PrivateKey, _lockAbi);

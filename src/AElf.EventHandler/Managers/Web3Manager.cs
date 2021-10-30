@@ -11,6 +11,7 @@ namespace AElf.EventHandler
         private readonly string _senderAddress;
         private readonly string _abiCode;
         private readonly Web3 _web3;
+        public string BaseUrl { get; set; }
 
         public Web3Manager(string url, string senderAddress, string privateKey, string abiCode)
         {
@@ -18,6 +19,7 @@ namespace AElf.EventHandler
             _abiCode = abiCode;
             var account = new Nethereum.Web3.Accounts.Account(privateKey);
             _web3 = new Web3(account, url);
+            BaseUrl = url;
         }
 
         public async Task TransmitDataOnEthereum(string contractAddress, byte[] report, byte[][] rs, byte[][] ss,
