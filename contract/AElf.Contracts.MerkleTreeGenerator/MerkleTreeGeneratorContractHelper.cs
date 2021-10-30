@@ -13,7 +13,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
         private MerkleTree ConstructMerkleTree(Address receiptMaker, long expectFullTreeIndex, int leafCountLimit,
             long recorderId)
         {
-            var receiptCount = GetReceiptCount(receiptMaker);
+            var receiptCount = GetReceiptCount(receiptMaker, recorderId);
             var treeCount = receiptCount % leafCountLimit == 0
                 ? receiptCount.Div(leafCountLimit)
                 : receiptCount.Div(leafCountLimit).Add(1);
@@ -60,10 +60,11 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             return receiptHashList.ReceiptHashList.ToList();
         }
 
-        private long GetReceiptCount(Address receiptMaker)
+        private long GetReceiptCount(Address receiptMaker, long recorderId)
         {
             var receiptCount = Context.Call<Int64Value>(receiptMaker,
-                nameof(ReceiptMakerContractContainer.ReceiptMakerContractReferenceState.GetReceiptCount), new Empty());
+                nameof(ReceiptMakerContractContainer.ReceiptMakerContractReferenceState.GetReceiptCount),
+                new Int64Value {Value = recorderId});
             return receiptCount.Value;
         }
     }

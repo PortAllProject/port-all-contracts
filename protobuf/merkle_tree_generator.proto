@@ -20,7 +20,7 @@ service MerkleTreeGeneratorContract {
     rpc UnRegisterReceiptMaker (aelf.Address) returns (google.protobuf.Empty) {
     }
 
-    rpc GetFullTreeCount (aelf.Address) returns (google.protobuf.Int64Value) {
+    rpc GetFullTreeCount (GetFullTreeCountInput) returns (google.protobuf.Int64Value) {
         option (aelf.is_view) = true;
     }
 
@@ -82,6 +82,11 @@ message GetMerklePathInput {
     int64 first_leaf_index = 3;
     int64 last_leaf_index = 4;
     int64 recorder_id = 5;
+}
+
+message GetFullTreeCountInput {
+    aelf.Address receipt_maker = 1;
+    int64 recorder_id = 2;
 }
 
 message ReceiptMakerRegistered {

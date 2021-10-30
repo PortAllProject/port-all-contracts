@@ -59,15 +59,15 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             };
         }
 
-        public override Int64Value GetFullTreeCount(Address input)
+        public override Int64Value GetFullTreeCount(GetFullTreeCountInput input)
         {
-            var maker = State.ReceiptMakerMap[input];
+            var maker = State.ReceiptMakerMap[input.ReceiptMaker];
             if (maker == null)
             {
                 throw new AssertionException("Receipt maker not registered.");
             }
 
-            var receiptCount = GetReceiptCount(input);
+            var receiptCount = GetReceiptCount(input.ReceiptMaker, input.RecorderId);
             return new Int64Value { Value = receiptCount.Div(maker.MerkleTreeLeafLimit) };
         }
 
@@ -93,7 +93,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
             {
                 input.FirstLeafIndex = input.ReceiptId.Div(maker.MerkleTreeLeafLimit).Mul(maker.MerkleTreeLeafLimit);
                 var maxLastLeafIndex = input.FirstLeafIndex.Add(maker.MerkleTreeLeafLimit).Sub(1);
-                input.LastLeafIndex = Math.Min(maxLastLeafIndex, GetReceiptCount(maker.ReceiptMakerAddress).Sub(1));
+                input.LastLeafIndex = Math.Min(maxLastLeafIndex, GetReceiptCount(maker.ReceiptMakerAddress, input.RecorderId).Sub(1));
             }
 
             Assert(input.LastLeafIndex >= input.ReceiptId && input.LastLeafIndex >= input.FirstLeafIndex,
