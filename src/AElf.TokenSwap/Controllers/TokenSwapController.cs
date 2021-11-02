@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using AElf.Client.Dto;
 using AElf.Contracts.Bridge;
@@ -56,10 +57,39 @@ namespace AElf.TokenSwap.Controllers
             };
         }
 
+        private Hash GetSwapId(long recorderId)
+        {
+            var swapInformation = _configOptions.SwapList.Single(i => i.RecorderId == recorderId);
+            return Hash.LoadFromHex(swapInformation.SwapId);
+        }
+
         [HttpGet("get")]
         public async Task<List<ReceiptInfoDto>> GetReceiptInfoList(string receivingAddress)
         {
-            var swapId = Hash.LoadFromHex(_configOptions.SwapId);
+            return await GetReceiptInfoList(0, receivingAddress);
+        }
+
+        [HttpGet("get0")]
+        public async Task<List<ReceiptInfoDto>> GetReceiptInfoList0(string receivingAddress)
+        {
+            return await GetReceiptInfoList(0, receivingAddress);
+        }
+
+        [HttpGet("get1")]
+        public async Task<List<ReceiptInfoDto>> GetReceiptInfoList1(string receivingAddress)
+        {
+            return await GetReceiptInfoList(1, receivingAddress);
+        }
+
+        [HttpGet("get2")]
+        public async Task<List<ReceiptInfoDto>> GetReceiptInfoList2(string receivingAddress)
+        {
+            return await GetReceiptInfoList(2, receivingAddress);
+        }
+
+        private async Task<List<ReceiptInfoDto>> GetReceiptInfoList(long recorderId, string receivingAddress)
+        {
+            var swapId = GetSwapId(recorderId);
 
             var nodeManager = new NodeManager(_configOptions.BlockChainEndpoint);
             var tx = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
@@ -104,36 +134,19 @@ namespace AElf.TokenSwap.Controllers
 
             var nodeManager = new NodeManager(_configOptions.BlockChainEndpoint);
 
-            // get Bridge Contract balance.
-            {
-                var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                    _configOptions.TokenContractAddress,
-                    "GetBalance", new GetBalanceInput
-                    {
-                        Owner = Address.FromBase58(_configOptions.BridgeContractAddress),
-                        Symbol = "ELF"
-                    });
-                var resultBridge = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
-                {
-                    RawTransaction = txBridge
-                });
-                var getBalanceOutputBridge = new GetBalanceOutput();
-                getBalanceOutputBridge.MergeFrom(
-                    ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
-                tokenSwapInfo.BridgeContractBalance = (double) getBalanceOutputBridge.Balance / 1_00000000;
-            }
-
+            tokenSwapInfo.TransmittedReceiptCounts = new List<long>();
+            for (var i = 0; i < _configOptions.SwapList.Count; i++)
             {
                 var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
                     _configOptions.BridgeContractAddress,
-                    "GetReceiptCount", new Empty());
+                    "GetReceiptCount", new Int64Value {Value = i});
                 var resultBridge = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
                 {
                     RawTransaction = txBridge
                 });
                 var count = new Int64Value();
                 count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
-                tokenSwapInfo.TransmittedReceiptCount = count.Value;
+                tokenSwapInfo.TransmittedReceiptCounts.Add(count.Value);
             }
 
             {
@@ -162,28 +175,57 @@ namespace AElf.TokenSwap.Controllers
                 tokenSwapInfo.VotesCount = (double) count.Value / 1_00000000;
             }
 
-            var file = _configOptions.LockAbiFilePath;
-            if (!string.IsNullOrEmpty(file))
+            tokenSwapInfo.BridgeContractBalances = new List<double>();
+            foreach (var swapInformation in _configOptions.SwapList.OrderBy(i => i.RecorderId))
             {
-                if (!System.IO.File.Exists(file))
+                var tx = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
+                    _configOptions.BridgeContractAddress,
+                    "GetSwapPair", new GetSwapPairInput
+                    {
+                        SwapId = Hash.LoadFromHex(swapInformation.SwapId),
+                        TargetTokenSymbol = swapInformation.TokenSymbols.First()
+                    });
+                var result = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
                 {
-                    _logger.LogError($"Cannot found file {file}");
+                    RawTransaction = tx
+                });
+                var swapPair = new SwapPair();
+                swapPair.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(result)));
+                var foo = 1L;
+                for (var i = 0; i < swapInformation.Decimal; i++)
+                {
+                    foo *= 10;
                 }
 
-                var lockAbi = ReadJson(file, "abi");
+                tokenSwapInfo.BridgeContractBalances.Add((double) swapPair.DepositAmount / foo);
+            }
 
-                var lockMappingContractAddress = _configOptions.LockMappingContractAddress;
-                var web3ManagerForLock = new Web3Manager(_configOptions.EthereumUrl, lockMappingContractAddress,
-                    _configOptions.EthereumPrivateKey, lockAbi);
-                var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
-                    .CallAsync<long>();
-                tokenSwapInfo.CreatedReceiptCount = lockTimes;
+            tokenSwapInfo.CreatedReceiptCounts = new List<long>();
+            foreach (var swapInformation in _configOptions.SwapList.OrderBy(i => i.RecorderId))
+            {
+                var file = _configOptions.LockAbiFilePath;
+                if (!string.IsNullOrEmpty(file))
+                {
+                    if (!System.IO.File.Exists(file))
+                    {
+                        _logger.LogError($"Cannot found file {file}");
+                    }
+
+                    var lockAbi = ReadJson(file, "abi");
+
+                    var lockMappingContractAddress = swapInformation.LockMappingContractAddress;
+                    var web3ManagerForLock = new Web3Manager(_configOptions.EthereumUrl, lockMappingContractAddress,
+                        _configOptions.EthereumPrivateKey, lockAbi);
+                    var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
+                        .CallAsync<long>();
+                    tokenSwapInfo.CreatedReceiptCounts.Add(lockTimes);
+                }
             }
 
             return tokenSwapInfo;
         }
 
-        public static string ReadJson(string jsonfile, string key)
+        private static string ReadJson(string jsonfile, string key)
         {
             using var file = System.IO.File.OpenText(jsonfile);
             using var reader = new JsonTextReader(file);
