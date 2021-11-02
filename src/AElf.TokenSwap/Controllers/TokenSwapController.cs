@@ -123,36 +123,6 @@ namespace AElf.TokenSwap.Controllers
                 tokenSwapInfo.BridgeContractBalance = (double) getBalanceOutputBridge.Balance / 1_00000000;
             }
 
-            var currentPeriodId = 0L;
-
-            {
-                var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                    _configOptions.LotteryContractAddress,
-                    "GetCurrentPeriodId", new Empty());
-                var result = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
-                {
-                    RawTransaction = txBridge
-                });
-                var count = new Int32Value();
-                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(result)));
-                currentPeriodId = count.Value;
-            }
-
-            {
-                var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                    _configOptions.LotteryContractAddress,
-                    "GetPeriodAward", new Int64Value {Value = currentPeriodId});
-                var resultAward = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
-                {
-                    RawTransaction = txLottery
-                });
-                var periodAward = new PeriodAward();
-                periodAward.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultAward)));
-                tokenSwapInfo.CurrentPeriodId = Math.Min(periodAward.PeriodId, 7);
-                tokenSwapInfo.CurrentPeriodStartTimestamp = periodAward.StartTimestamp.ToDateTime().AddHours(8)
-                    .ToString("yyyy-MM-dd HH:mm:ss");
-            }
-
             {
                 var txBridge = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
                     _configOptions.BridgeContractAddress,
@@ -164,19 +134,6 @@ namespace AElf.TokenSwap.Controllers
                 var count = new Int64Value();
                 count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultBridge)));
                 tokenSwapInfo.TransmittedReceiptCount = count.Value;
-            }
-
-            {
-                var txLottery = nodeManager.GenerateRawTransaction(_configOptions.AccountAddress,
-                    _configOptions.LotteryContractAddress,
-                    "GetTotalLotteryCount", new Empty());
-                var resultLottery = await nodeManager.ApiClient.ExecuteTransactionAsync(new ExecuteTransactionDto
-                {
-                    RawTransaction = txLottery
-                });
-                var count = new Int64Value();
-                count.MergeFrom(ByteString.CopyFrom(ByteArrayHelper.HexStringToByteArray(resultLottery)));
-                tokenSwapInfo.LotteryCodeCount = count.Value;
             }
 
             {
