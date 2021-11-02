@@ -9,10 +9,7 @@ namespace AElf.TokenSwap
         public string AccountAddress { get; set; }
         public string BlockChainEndpoint { get; set; }
         public string BridgeContractAddress { get; set; }
-        public string TokenContractAddress { get; set; }
         public string ElectionContractAddress { get; set; }
-        public string LockMappingContractAddress { get; set; }
-        public string EthereumUrl { get; set; }
         public string EthereumPrivateKey { get; set; }
         public string LockAbiFilePath { get; set; }
         public List<SwapInformation> SwapList { get; set; }
@@ -25,5 +22,6 @@ namespace AElf.TokenSwap
         public List<string> TokenSymbols { get; set; }
         public int Decimal { get; set; }
         public string LockMappingContractAddress { get; set; }
+        public string NodeUrl { get; set; }
     }
 }

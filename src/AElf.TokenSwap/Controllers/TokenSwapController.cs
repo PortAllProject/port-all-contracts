@@ -214,7 +214,7 @@ namespace AElf.TokenSwap.Controllers
                     var lockAbi = ReadJson(file, "abi");
 
                     var lockMappingContractAddress = swapInformation.LockMappingContractAddress;
-                    var web3ManagerForLock = new Web3Manager(_configOptions.EthereumUrl, lockMappingContractAddress,
+                    var web3ManagerForLock = new Web3Manager(swapInformation.NodeUrl, lockMappingContractAddress,
                         _configOptions.EthereumPrivateKey, lockAbi);
                     var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")
                         .CallAsync<long>();
