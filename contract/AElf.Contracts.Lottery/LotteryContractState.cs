@@ -8,6 +8,7 @@ namespace AElf.Contracts.Lottery
     {
         public SingletonState<Address> Admin { get; set; }
 
+        public StringState TokenSymbol { get; set; }
         public SingletonState<int> CurrentPeriodId { get; set; }
         public SingletonState<long> CurrentLotteryCode { get; set; }
         public SingletonState<long> CurrentAwardId { get; set; }

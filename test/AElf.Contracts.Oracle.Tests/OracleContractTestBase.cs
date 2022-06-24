@@ -26,7 +26,6 @@ namespace AElf.Contracts.Oracle
         internal ParliamentContractImplContainer.ParliamentContractImplStub ParliamentContractStub { get; set; }
         internal AssociationContractContainer.AssociationContractStub AssociationContractStub { get; set; }
         internal OracleUserContractContainer.OracleUserContractStub OracleUserContractStub { get; set; }
-        internal ReportContractContainer.ReportContractStub ReportContractStub { get; set; }
 
         internal IntegerAggregatorContractContainer.IntegerAggregatorContractStub IntegerAggregatorContractStub
         {
@@ -57,7 +56,6 @@ namespace AElf.Contracts.Oracle
             ParliamentContractStub = GetParliamentContractStub(keyPair);
             OracleUserContractStub = GetOracleUserContractStub(keyPair);
             AssociationContractStub = GetAssociationContractStub(keyPair);
-            ReportContractStub = GetReportContractStub(keyPair);
             IntegerAggregatorContractStub = GetIntegerAggregatorContractStub(keyPair);
             RegimentContractStub = GetRegimentContractStub(keyPair);
             OracleNodes = new List<OracleContractContainer.OracleContractStub>();
@@ -84,12 +82,6 @@ namespace AElf.Contracts.Oracle
             ECKeyPair senderKeyPair)
         {
             return GetTester<AssociationContractContainer.AssociationContractStub>(AssociationContractAddress,
-                senderKeyPair);
-        }
-
-        internal ReportContractContainer.ReportContractStub GetReportContractStub(ECKeyPair senderKeyPair)
-        {
-            return GetTester<ReportContractContainer.ReportContractStub>(ReportContractAddress,
                 senderKeyPair);
         }
 

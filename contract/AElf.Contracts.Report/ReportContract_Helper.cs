@@ -47,7 +47,7 @@ namespace AElf.Contracts.Report
                 .ToHex();
         }
 
-        private IList<byte> GenerateConfigText(ByteString configDigest, Report report)
+        private List<byte> GenerateConfigText(ByteString configDigest, Report report)
         {
             long round = report.RoundId;
             byte validBytesCount = (byte) report.AggregatedData.Length;
@@ -71,7 +71,7 @@ namespace AElf.Contracts.Report
             return configText;
         }
 
-        private IList<byte> FillObservationBytes(byte[] result)
+        private List<byte> FillObservationBytes(byte[] result)
         {
             if (result.Length == 0)
                 return GetByteListWithCapacity(SlotByteSize);
@@ -91,7 +91,7 @@ namespace AElf.Contracts.Report
             var groupObservation = observations.GroupBy(x => x).ToList();
             observerIndex = GetByteListWithCapacity(SlotByteSize);
             observationsCount = GetByteListWithCapacity(SlotByteSize);
-            IList<Address> memberList = State.ObserverListMap[regimentAssociationAddress].Value;
+            var memberList = State.ObserverListMap[regimentAssociationAddress].Value;
 
             var i = 0;
             foreach (var gp in groupObservation)
@@ -128,7 +128,7 @@ namespace AElf.Contracts.Report
             }
         }
 
-        private IList<byte> SerializeReport(IList<object> data, params string[] dataType)
+        private List<byte> SerializeReport(List<object> data, params string[] dataType)
         {
             var dataLength = (long) dataType.Length;
             if (dataLength != data.Count)
@@ -181,7 +181,7 @@ namespace AElf.Contracts.Report
             return result;
         }
 
-        private IList<byte> ConvertLong(long data)
+        private IEnumerable<byte> ConvertLong(long data)
         {
             var b = data.ToBytes();
             if (b.Length == SlotByteSize)
@@ -203,7 +203,7 @@ namespace AElf.Contracts.Report
             return longDataBytes;
         }
 
-        private IList<byte> ConvertLongArray(string dataType, IEnumerable<long> dataList)
+        private List<byte> ConvertLongArray(string dataType, IEnumerable<long> dataList)
         {
             if (dataType != Uint256)
                 return null;
@@ -216,7 +216,7 @@ namespace AElf.Contracts.Report
             return dataBytes;
         }
 
-        private IList<byte> ConvertBytes32Array(IList<byte> data, int dataSize)
+        private List<byte> ConvertBytes32Array(List<byte> data, int dataSize)
         {
             if (dataSize == 0)
             {
@@ -228,9 +228,9 @@ namespace AElf.Contracts.Report
             return target;
         }
 
-        private IList<byte> ConvertBytes32(object data)
+        private List<byte> ConvertBytes32(object data)
         {
-            var dataBytes = data as IList<byte>;
+            var dataBytes = data as List<byte>;
             if (dataBytes.Count != SlotByteSize)
             {
                 throw new AssertionException("invalid bytes32 data");
@@ -239,7 +239,7 @@ namespace AElf.Contracts.Report
             return dataBytes;
         }
 
-        private void BytesCopy(IList<byte> src, int srcOffset, IList<byte> dst, int dstOffset, int count)
+        private void BytesCopy(IReadOnlyList<byte> src, int srcOffset, List<byte> dst, int dstOffset, int count)
         {
             for (var i = srcOffset; i < srcOffset + count; i++)
             {

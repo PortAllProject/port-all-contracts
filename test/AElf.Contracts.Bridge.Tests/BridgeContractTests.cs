@@ -143,7 +143,7 @@ namespace AElf.Contracts.Bridge.Tests
                     Options = {from.ToString(), count.ToString()}
                 },
                 AggregatorContractAddress = StringAggregatorContractAddress,
-                CallbackInfo = new CallbackInfo
+                CallbackInfo = new Oracle.CallbackInfo
                 {
                     ContractAddress = BridgeContractAddress,
                     MethodName = "RecordReceiptHash"

@@ -281,6 +281,7 @@ namespace AElf.EventHandler
                     Thread.Sleep(5000);
                     transactionResult = AsyncHelper.RunSync(() => ApiClient.GetTransactionResultAsync(id));
                 }
+
                 var status = transactionResult.Status.ConvertTransactionResultStatus();
                 switch (status)
                 {
@@ -364,12 +365,12 @@ namespace AElf.EventHandler
 
         public bool NetAddPeer(string address)
         {
-            return AsyncHelper.RunSync(() => ApiClient.AddPeerAsync(address));
+            return AsyncHelper.RunSync(() => ApiClient.AddPeerAsync(address, string.Empty, string.Empty));
         }
 
         public bool NetRemovePeer(string address)
         {
-            return AsyncHelper.RunSync(() => ApiClient.RemovePeerAsync(address));
+            return AsyncHelper.RunSync(() => ApiClient.RemovePeerAsync(address, string.Empty, string.Empty));
         }
 
         public NetworkInfoOutput NetworkInfo()

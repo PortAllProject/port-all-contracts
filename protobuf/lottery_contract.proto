@@ -27,6 +27,9 @@ service LotteryContract {
     rpc Withdraw (google.protobuf.Int64Value) returns (google.protobuf.Empty) {
     }
 
+    rpc SetNFTContractAddress (aelf.Address) returns (google.protobuf.Empty) {
+    }
+
     // User
     rpc Stake (google.protobuf.Int64Value) returns (OwnLottery) {
     }
@@ -115,6 +118,7 @@ message InitializeInput {
     aelf.Address admin = 6;
     bool is_debug = 7;
     TxFee tx_fee = 8;
+    aelf.Address nft_contract_address = 9;
 }
 
 message OwnLottery {

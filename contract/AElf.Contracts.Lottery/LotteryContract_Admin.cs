@@ -266,7 +266,7 @@ namespace AElf.Contracts.Lottery
             State.TokenContract.Transfer.Send(new TransferInput
             {
                 To = State.Admin.Value,
-                Symbol = TokenSymbol,
+                Symbol = GetTokenSymbol(),
                 Amount = totalAmount,
                 Memo = "Take all awards."
             });
@@ -285,6 +285,13 @@ namespace AElf.Contracts.Lottery
         {
             AssertSenderIsAdmin();
             State.Admin.Value = input;
+            return new Empty();
+        }
+
+        public override Empty SetNFTContractAddress(Address input)
+        {
+            AssertSenderIsAdmin();
+            State.NFTContract.Value = input;
             return new Empty();
         }
     }

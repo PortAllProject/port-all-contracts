@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <IsContract>true</IsContract>
         <RootNamespace>AElf.Contracts.Lottery</RootNamespace>
     </PropertyGroup>
@@ -53,6 +53,9 @@
         </ContractReference>
         <ContractReference Include="..\..\protobuf\acs6.proto">
             <Link>Protobuf\Proto\reference\acs6.proto</Link>
+        </ContractReference>
+        <ContractReference Include="..\..\protobuf\nft_contract.proto">
+            <Link>Protobuf\Proto\reference\nft_contract.proto</Link>
         </ContractReference>
     </ItemGroup>
 

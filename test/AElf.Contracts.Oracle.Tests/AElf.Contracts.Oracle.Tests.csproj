@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>AElf.Contracts.Oracle</RootNamespace>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -11,9 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AElf.EconomicSystem" Version="1.0.0" />
-    <PackageReference Include="AElf.GovernmentSystem" Version="1.0.0" />
-    <PackageReference Include="coverlet.msbuild" Version="2.5.1" />
+    <PackageReference Include="AElf.EconomicSystem" Version="1.2.0" />
+    <PackageReference Include="AElf.GovernmentSystem" Version="1.2.0" />
+    <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.3.0" />
     <PackageReference Include="Shouldly" Version="3.0.2" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -22,8 +25,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AElf.ContractTestKit" Version="1.0.0" />
-    <PackageReference Include="AElf.ContractTestBase" Version="1.0.0" />
+    <PackageReference Include="AElf.ContractTestKit" Version="1.2.0" />
+    <PackageReference Include="AElf.ContractTestBase" Version="1.2.0" />
   </ItemGroup>
   <ItemGroup>
     <ContractMessage Include="..\..\protobuf\authority_info.proto">
@@ -55,9 +58,6 @@
     <ContractStub Include="..\..\protobuf\oracle_user_contract.proto">
       <Link>Protobuf\Proto\oracle_user_contract.proto</Link>
     </ContractStub>
-    <ContractStub Include="..\..\protobuf\report_contract.proto">
-      <Link>Protobuf\Proto\report_contract.proto</Link>
-    </ContractStub>
     <ContractStub Include="..\..\protobuf\integer_aggregator_contract.proto">
       <Link>Protobuf\Proto\integer_aggregator_contract.proto</Link>
     </ContractStub>
@@ -75,7 +75,6 @@
     <ProjectReference Include="..\..\contract\AElf.Contracts.OracleUser\AElf.Contracts.OracleUser.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Oracle\AElf.Contracts.Oracle.csproj" />
     <ProjectReference Include="..\..\contract\AElf.Contracts.Regiment\AElf.Contracts.Regiment.csproj" />
-    <ProjectReference Include="..\..\contract\AElf.Contracts.Report\AElf.Contracts.Report.csproj" />
     <ProjectReference Include="..\..\src\AElf.Boilerplate.TestBase\AElf.Boilerplate.TestBase.csproj" />
     <ProjectReference Include="..\..\src\AElf.EventHandler\AElf.EventHandler.csproj" />
   </ItemGroup>

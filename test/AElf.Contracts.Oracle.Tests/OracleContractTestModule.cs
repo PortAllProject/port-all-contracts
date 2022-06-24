@@ -45,11 +45,6 @@ namespace AElf.Contracts.Oracle
                     File.ReadAllBytes(typeof(NumericAggregatorContract).Assembly.Location)
                 },
                 {
-                    new ReportContractInitializationProvider().ContractCodeName,
-                    File.ReadAllBytes(typeof(ReportContract).Assembly.Location)
-                },
-
-                {
                     new RegimentContractInitializationProvider().ContractCodeName,
                     File.ReadAllBytes(typeof(RegimentContract).Assembly.Location)
                 }

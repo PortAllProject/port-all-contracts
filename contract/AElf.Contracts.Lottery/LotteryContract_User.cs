@@ -38,7 +38,7 @@ namespace AElf.Contracts.Lottery
                     From = Context.Sender,
                     To = Context.Self,
                     Amount = transferAmount,
-                    Symbol = TokenSymbol,
+                    Symbol = GetTokenSymbol(),
                     Memo = "No new lottery code."
                 });
                 return ownLottery;
@@ -52,7 +52,7 @@ namespace AElf.Contracts.Lottery
                 From = Context.Sender,
                 To = Context.Self,
                 Amount = transferAmount,
-                Symbol = TokenSymbol,
+                Symbol = GetTokenSymbol(),
                 Memo = newLotteryAmount == 1
                     ? $"Got lottery with code {newLotteryCodeList.First()}"
                     : $"Got lotteries with code from {newLotteryCodeList.First()} to {newLotteryCodeList.Last()}"
@@ -142,7 +142,7 @@ namespace AElf.Contracts.Lottery
             State.TokenContract.Transfer.Send(new TransferInput
             {
                 To = Context.Sender,
-                Symbol = TokenSymbol,
+                Symbol = GetTokenSymbol(),
                 Amount = claimingAmount.Sub(State.TxFee.Value?.ClaimTxFee ?? 0),
                 Memo = "Awards"
             });
@@ -189,7 +189,7 @@ namespace AElf.Contracts.Lottery
             State.TokenContract.Transfer.Send(new TransferInput
             {
                 To = Context.Sender,
-                Symbol = TokenSymbol,
+                Symbol = GetTokenSymbol(),
                 Amount = ownLottery.TotalStakingAmount.Sub(State.TxFee.Value?.RedeemTxFee ?? 0),
                 Memo = "Redeem staked tokens."
             });

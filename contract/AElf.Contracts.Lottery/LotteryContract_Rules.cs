@@ -7,7 +7,7 @@ namespace AElf.Contracts.Lottery
         private const long AmountOfElfToGetFirstLotteryCode = 100_0000_0000;
         private const long AmountOfElfToGetMoreLotteryCode = 1000_0000_0000;
         private const int MaximumLotteryCodeAmountForSingleAddress = 21;
-        private const string TokenSymbol = "ELF";
+        private const int MinimumNftTokenSymbolLength = 11;
 
         private const int TotalPeriod = 7;
 

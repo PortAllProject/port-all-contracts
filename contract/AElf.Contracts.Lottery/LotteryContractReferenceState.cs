@@ -1,4 +1,5 @@
 using AElf.Contracts.MultiToken;
+using AElf.Contracts.NFT;
 using AElf.Standards.ACS6;
 
 namespace AElf.Contracts.Lottery
@@ -9,5 +10,7 @@ namespace AElf.Contracts.Lottery
             RandomNumberProviderContract { get; set; }
 
         internal TokenContractImplContainer.TokenContractImplReferenceState TokenContract { get; set; }
+
+        internal NFTContractContainer.NFTContractReferenceState NFTContract { get; set; }
     }
 }
