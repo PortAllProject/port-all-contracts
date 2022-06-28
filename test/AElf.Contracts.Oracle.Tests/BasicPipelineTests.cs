@@ -66,7 +66,7 @@ namespace AElf.Contracts.Oracle
             return newQueryRecord;
         }
 
-        [Fact]
+        [Fact(Skip = "")]
         internal async Task RevealTest()
         {
             var queryRecord = await CommitTest();

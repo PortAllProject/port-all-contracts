@@ -29,19 +29,5 @@ namespace AElf.Contracts.Oracle
             var controller = await ControllerStub.GetController.CallAsync(new Empty());
             controller.ShouldBe(_controllerAccount.Address);
         }
-
-        [Fact]
-        public async Task CreateRegimentTest()
-        {
-            var managerAccount = SampleAccount.Accounts[1];
-            var managerStub = GetRegimentContractStub(managerAccount.KeyPair);
-
-            await managerStub.CreateRegiment.SendAsync(new Regiment.CreateRegimentInput
-            {
-                InitialMemberList = {SampleAccount.Accounts.Skip(2).Take(3).Select(a => a.Address)}
-            });
-            
-            
-        }
     }
 }

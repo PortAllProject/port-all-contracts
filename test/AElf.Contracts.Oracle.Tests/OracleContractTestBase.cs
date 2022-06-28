@@ -6,7 +6,6 @@ using AElf.Contracts.Association;
 using AElf.Contracts.IntegerAggregator;
 using AElf.Contracts.MultiToken;
 using AElf.Contracts.Parliament;
-using AElf.Contracts.Report;
 using AElf.Contracts.OracleUser;
 using AElf.Contracts.Regiment;
 using AElf.ContractTestKit;
@@ -37,9 +36,6 @@ namespace AElf.Contracts.Oracle
 
         protected Address OracleUserContractAddress =>
             SystemContractAddresses[OracleUserSmartContractAddressNameProvider.Name];
-
-        protected Address ReportContractAddress =>
-            SystemContractAddresses[ReportSmartContractAddressNameProvider.Name];
 
         protected Address IntegerAggregatorContractAddress =>
             SystemContractAddresses[NumericAggregatorSmartContractAddressNameProvider.Name];

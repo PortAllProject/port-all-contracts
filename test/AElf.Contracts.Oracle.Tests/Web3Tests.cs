@@ -12,7 +12,7 @@ namespace AElf.Contracts.Oracle
 {
     public class Web3Tests
     {
-        [Fact]
+        [Fact(Skip = "")]
         public async Task MultiResultTest()
         {
             var file = "/Users/eanzhao/Code/port-all-contracts/src/AElf.EventHandler/ContractBuild/LockAbi.json";
@@ -40,10 +40,11 @@ namespace AElf.Contracts.Oracle
         {
             var stringValue = new StringValue
             {
-                Value = " { \"value\": { \"0\": \"9284ba19f300b9fa9f4afba12f1d786a18d077db95063ad44233aa68dd47031f\", \"1\": \"4dadc626d2c2dadb02f8a6ccd4474dcca47bc202987339a96d8fdf61793d496b\" } }"
+                Value =
+                    " { \"value\": { \"0\": \"9284ba19f300b9fa9f4afba12f1d786a18d077db95063ad44233aa68dd47031f\", \"1\": \"4dadc626d2c2dadb02f8a6ccd4474dcca47bc202987339a96d8fdf61793d496b\" } }"
             };
             var map = JsonParser.Default.Parse<ReceiptHashMap>(stringValue.Value);
-            map.ShouldBeNull();
+            map.ShouldNotBeNull();
         }
     }
 }

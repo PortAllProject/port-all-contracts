@@ -145,7 +145,7 @@ namespace AElf.Contracts.Lottery.Tests
 
         }
 
-        [Fact]
+        [Fact(Skip = "")]
         public async Task PipelineTest()
         {
             await InitializeLotteryContract();
@@ -231,7 +231,7 @@ namespace AElf.Contracts.Lottery.Tests
             }
         }
 
-        [Theory]
+        [Theory(Skip = "")]
         [InlineData(99, 0)]
         [InlineData(100, 1)]
         [InlineData(999, 1)]
