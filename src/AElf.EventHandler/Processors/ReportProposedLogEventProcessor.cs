@@ -1,56 +1,57 @@
 using System.Threading.Tasks;
+using AElf.Client.Core;
+using AElf.Client.Core.Options;
+using AElf.Client.Report;
 using AElf.Contracts.Report;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
-namespace AElf.EventHandler
+namespace AElf.EventHandler;
+
+internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>
 {
-    internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>, ITransientDependency
+    private readonly AElfContractOptions _contractAddressOptions;
+    private readonly ConfigOptions _configOptions;
+    private readonly IReportProvider _reportProvider;
+    private readonly IReportService _reportService;
+    private readonly IAElfAccountProvider _accountProvider;
+
+    public override string ContractName => "Report";
+    private readonly ILogger<ReportProposedLogEventProcessor> _logger;
+
+    public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
+        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
+        IReportProvider reportProvider,
+        IReportService reportService,
+        IAElfAccountProvider accountProvider,
+        ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
     {
-        private readonly ContractAddressOptions _contractAddressOptions;
-        private readonly ConfigOptions _configOptions;
-        private readonly IKeyStore _keyStore;
-        private readonly IReportProvider _reportProvider;
+        _logger = logger;
+        _configOptions = configOptions.Value;
+        _contractAddressOptions = contractAddressOptions.Value;
+        _reportProvider = reportProvider;
+        _reportService = reportService;
+        _accountProvider = accountProvider;
+    }
 
-        public override string ContractName => "Report";
-        private readonly ILogger<ReportProposedLogEventProcessor> _logger;
-
-        public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
-            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            IReportProvider reportProvider,
-            ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
-        {
-            _logger = logger;
-            _configOptions = configOptions.Value;
-            _contractAddressOptions = contractAddressOptions.Value;
-            _keyStore = AElfKeyStore.GetKeyStore(configOptions.Value.AccountAddress,
-                configOptions.Value.AccountPassword);
-            _reportProvider = reportProvider;
-        }
-
-        public override Task ProcessAsync(LogEvent logEvent)
-        {
-            var reportProposed = new ReportProposed();
-            reportProposed.MergeFrom(logEvent);
-
-            _logger.LogInformation($"New report: {reportProposed}");
-
-            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
-                _configOptions.AccountPassword);
-            var txId = node.SendTransaction(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap[ContractName], "ConfirmReport", new ConfirmReportInput
-                {
-                    Token = _configOptions.TransmitContractAddress,
-                    RoundId = reportProposed.RoundId,
-                    Signature = SignHelper
-                        .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
-                });
-            _reportProvider.SetReport(_configOptions.TransmitContractAddress, reportProposed.RoundId, reportProposed.RawReport);
-            _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
-
-            return Task.CompletedTask;
-        }
+    public override async Task ProcessAsync(LogEvent logEvent)
+    {
+        // var reportProposed = new ReportProposed();
+        // reportProposed.MergeFrom(logEvent);
+        //
+        // _logger.LogInformation($"New report: {reportProposed}");
+        //
+        // var sendTxResult = await _reportService.ConfirmReportAsync(new ConfirmReportInput
+        // {
+        //     Token = _configOptions.TransmitContractAddress,
+        //     RoundId = reportProposed.RoundId,
+        //     Signature = SignHelper
+        //         .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
+        // });
+        // _reportProvider.SetReport(_configOptions.TransmitContractAddress, reportProposed.RoundId,
+        //     reportProposed.RawReport);
+        // _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
     }
 }

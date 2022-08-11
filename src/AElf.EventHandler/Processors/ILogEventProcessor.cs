@@ -6,7 +6,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    public interface ILogEventProcessor<T> : ITransientDependency, ILogEventProcessor where T : IEvent<T>
+    public interface ILogEventProcessor<T> : ITransientDependency, ILogEventProcessor
     {
 
     }

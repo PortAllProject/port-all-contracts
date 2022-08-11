@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AElf.Client.Core.Options;
 using AElf.Contracts.IntegerAggregator;
 using AElf.Types;
 using Common.Logging;
@@ -12,7 +13,7 @@ namespace AElf.EventHandler
     {
         private readonly ILogger<AggregateDataReceivedLogEventProcessor> _logger;
 
-        public AggregateDataReceivedLogEventProcessor(IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
+        public AggregateDataReceivedLogEventProcessor(IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
             ILogger<AggregateDataReceivedLogEventProcessor> logger) : base(contractAddressOptions)
         {
             _logger = logger;

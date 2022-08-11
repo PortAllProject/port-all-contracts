@@ -1,0 +1,84 @@
+<#@ template language="C#"#>
+<#@ output extension=".g.cs"#>
+<#@ import namespace="System.Collections.Generic" #>
+<#+
+    public string ContractName = "MerkleTreeContract";
+
+    public List<ContractActionMethodInfo> ContractActionMethodInfoList = new()
+    {
+        new ContractActionMethodInfo("CreateSpace"),
+
+    };
+    
+    public List<ContractViewMethodInfo> ContractViewMethodInfoList = new()
+    {
+        new ContractViewMethodInfo("GetLastLeafIndex", "Int64Value"),
+    };
+
+    public class ContractActionMethodInfo
+    {
+        public ContractActionMethodInfo(string methodName)
+        {
+            MethodName = methodName;
+        }
+
+        public ContractActionMethodInfo(string methodName, string parameterTypeName)
+        {
+            MethodName = methodName;
+            _parameterTypeName = parameterTypeName;
+        }
+
+        public string MethodName { get; set; }
+        private string _parameterTypeName;
+
+        public string ParameterTypeName
+        {
+            get => _parameterTypeName ?? $"{MethodName}Input";
+            set => _parameterTypeName = value;
+        }
+
+        public string InputName => ConvertMethodNameToInputName(MethodName);
+    }
+
+    public class ContractViewMethodInfo
+    {
+        public ContractViewMethodInfo(string methodName, string returnTypeName)
+        {
+            MethodName = methodName;
+            ReturnTypeName = returnTypeName;
+        }
+        
+        public string MethodName { get; set; }
+        public string ReturnTypeName { get; set; }
+        
+        private string _parameterTypeName;
+
+        public string ParameterTypeName
+        {
+            get => _parameterTypeName ?? $"{MethodName}Input";
+            set => _parameterTypeName = value;
+        }
+
+        public string InputName => ConvertMethodNameToInputName(MethodName);
+    }
+
+    /// <summary>
+    /// Generates text for a given sequence of items, automatically adding the necessary spacing
+    /// </summary>
+    public void GenerateTextForItems<T>(IReadOnlyList<T> items, Action<T> factory)
+    {
+        for (int i = 0; i < items.Count; i++)
+        {
+            // Insert a blank line after the first item
+            if (i > 0) WriteLine("");
+
+            // Invoke the factory with the current item
+            factory(items [i]);
+        }
+    }
+    
+    public static string ConvertMethodNameToInputName(string methodName)
+    {
+        return $"{char.ToLowerInvariant(methodName[0])}{methodName.Substring(1)}Input";
+    }
+#>

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AElf.Client.Core.Options;
 using AElf.Types;
 using AElf.WebApp.MessageQueue;
 using Google.Protobuf;
@@ -15,11 +16,11 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
     ISingletonDependency
 {
     private readonly IEnumerable<ILogEventProcessor> _logEventProcessors;
-    private readonly ContractAddressOptions _contractAddressOptions;
+    private readonly AElfContractOptions _contractAddressOptions;
     private readonly ILogger<TransactionResultListEventHandler> _logger;
 
     public TransactionResultListEventHandler(IEnumerable<ILogEventProcessor> logEventProcessors,
-        IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
+        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         ILogger<TransactionResultListEventHandler> logger)
     {
         _logEventProcessors = logEventProcessors;
@@ -30,7 +31,7 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
     public async Task HandleEventAsync(TransactionResultListEto eventData)
     {
         var usefulLogEventProcessors = _logEventProcessors.Where(p =>
-            _contractAddressOptions.ContractAddressMap.ContainsKey(p.ContractName)).ToList();
+            _contractAddressOptions.ContractAddressList.ContainsKey(p.ContractName)).ToList();
 
         foreach (var txResultEto in eventData.TransactionResults.Values.SelectMany(result => result))
         {

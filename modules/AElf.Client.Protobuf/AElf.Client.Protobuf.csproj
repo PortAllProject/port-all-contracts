@@ -1,0 +1,94 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <PackageId>AElf.Client.Protobuf</PackageId>
+        <PackageDescription>Protobuf using by AElf C# sdk.</PackageDescription>
+        <Company>AElf</Company>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AElf.Types" Version="1.0.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.19.4" />
+        <PackageReference Include="Grpc.Net.Client" Version="2.46.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.46.1" PrivateAssets="All" />
+        <PackageReference Include="Google.Api.CommonProtos" Version="2.5.0" />
+        <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Protobuf\aelf\options.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\kernel.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\transaction_fee.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\acs0.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\acs1.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\acs2.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\acs3.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\acs13.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\token_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\token_contract_impl.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\authority_info.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\aedpos_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\parliament_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\basic_contract_zero.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\nft_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\whitelist_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\receipt_maker.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\bridge_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\regiment_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\oracle_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\report_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\callback_input.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protobuf\merkle_tree_contract.proto" ProtoRoot="Protobuf">
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
+
+</Project>

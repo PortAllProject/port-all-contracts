@@ -1,8 +1,7 @@
-namespace AElf.EventHandler
+namespace AElf.EventHandler;
+
+public interface ILatestQueriedReceiptCountProvider
 {
-    public interface ILatestQueriedReceiptCountProvider
-    {
-        long Get(string symbol);
-        void Set(string symbol, long count);
-    }
+    long Get(string symbol);
+    void Set(string symbol, long count);
 }

@@ -1,0 +1,581 @@
+syntax = "proto3";
+
+package whitelist;
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "acs1.proto";
+
+option csharp_namespace = "AElf.Contracts.Whitelist";
+
+service WhitelistContract {
+    option (aelf.csharp_state) = "AElf.Contracts.Whitelist.WhitelistContractState";
+    option (aelf.base) = "acs1.proto";
+
+    rpc Initialize (google.protobuf.Empty) returns (google.protobuf.Empty) {
+    }
+
+    //For Managers.
+    //Create whitelist.
+    rpc CreateWhitelist (CreateWhitelistInput) returns (aelf.Hash){
+    }
+
+    //Add tag info or extraInfo.
+    rpc AddExtraInfo (AddExtraInfoInput) returns (aelf.Hash){
+    }
+    
+    //Add multiple addresses to an existing whitelist.
+    rpc AddAddressInfoListToWhitelist (AddAddressInfoListToWhitelistInput) returns (google.protobuf.Empty){
+    }
+    
+    //Remove multiple addresses from an existing whitelist.
+    rpc RemoveAddressInfoListFromWhitelist (RemoveAddressInfoListFromWhitelistInput) returns (google.protobuf.Empty){
+    }
+
+    //Remove tag info.
+    rpc RemoveTagInfo (RemoveTagInfoInput) returns (google.protobuf.Empty){
+    }
+    
+    //Disable whitelist according to the whitelist_id.
+    rpc DisableWhitelist (aelf.Hash) returns (google.protobuf.Empty){
+    }
+    
+    //Re-enable whitelist according to the whitelist_id.
+    rpc EnableWhitelist (aelf.Hash) returns (google.protobuf.Empty){
+    }
+    
+    //Update state: Whether the whitelist is allowed to be cloned.
+    rpc ChangeWhitelistCloneable(ChangeWhitelistCloneableInput) returns (google.protobuf.Empty){
+    }
+    
+    //Update whitelist extraInfo according to the whitelist_id and extraInfo.
+    rpc UpdateExtraInfo (UpdateExtraInfoInput) returns (google.protobuf.Empty){
+    }
+    
+    //Transfer Manager.
+    rpc TransferManager (TransferManagerInput) returns (google.protobuf.Empty){
+    }
+    
+    //Add manager.
+    rpc AddManagers (AddManagersInput) returns (google.protobuf.Empty){
+    }
+    
+    //Remove manager.
+    rpc RemoveManagers (RemoveManagersInput) returns (google.protobuf.Empty){
+    }
+    
+    //Reset whitelist according to the whitelist_id and project_id.
+    rpc ResetWhitelist (ResetWhitelistInput) returns (google.protobuf.Empty){
+    }
+
+    
+    //For Subscribers.
+    //Subscribe whitelist.
+    rpc SubscribeWhitelist (SubscribeWhitelistInput) returns (aelf.Hash){
+    }
+    
+    // Cancel subscribe according to the subscribe_id.
+    rpc UnsubscribeWhitelist (aelf.Hash) returns (google.protobuf.Empty){
+    }
+    
+    //After used,address and extra info will be added into the consumedList. 
+    rpc ConsumeWhitelist (ConsumeWhitelistInput) returns (google.protobuf.Empty){
+    }
+    
+    //Clone whitelist.
+    rpc CloneWhitelist (CloneWhitelistInput) returns (aelf.Hash){
+    }
+
+    //Add subscribe whitelist manager.
+    rpc AddSubscribeManagers (AddSubscribeManagersInput) returns (google.protobuf.Empty){
+    }
+
+    //Remove subscribe whitelist manager.
+    rpc RemoveSubscribeManagers (RemoveSubscribeManagersInput) returns (google.protobuf.Empty){
+    }
+    
+    
+    //Views.
+    //Get whitelist_id list according to the manager.
+    rpc GetWhitelistByManager (aelf.Address) returns (WhitelistIdList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get existing whitelist according to the whitelist_id.
+    rpc GetWhitelist (aelf.Hash) returns (WhitelistInfo){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get whitelist detail extraInfo according to the whitelist_id.
+    rpc GetWhitelistDetail (aelf.Hash) returns(ExtraInfoList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get whitelist id by project_id.
+    rpc GetWhitelistByProject(aelf.Hash) returns (WhitelistIdList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get extraInfo according to the tag_id.
+    rpc GetExtraInfoByTag (GetExtraInfoByTagInput) returns (ExtraInfo){
+        option (aelf.is_view) = true;
+    }
+
+    //Get tag info according to the tag_info_id.
+    rpc GetTagInfoByHash (aelf.Hash) returns (TagInfo){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get tagInfoId list according to the whitelist_id and project_id.
+    rpc GetExtraInfoIdList(GetExtraInfoIdListInput) returns (HashList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get tagId according to the whitelist_id and address.
+    rpc GetTagIdByAddress(GetTagIdByAddressInput) returns (aelf.Hash){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get TagInfo according to the address and whitelist_id.
+    rpc GetExtraInfoByAddress(GetExtraInfoByAddressInput) returns (TagInfo){
+        option (aelf.is_view) = true;
+    }
+    
+    //Whether the address exists in the whitelist according to the whitelist_id and address.
+    rpc GetAddressFromWhitelist(GetAddressFromWhitelistInput) returns (google.protobuf.BoolValue){
+        option (aelf.is_view) = true;
+    }
+
+    //Whether the extraInfo (address+TagInfoId) exists in the whitelist according to the whitelist_id and address.
+    rpc GetExtraInfoFromWhitelist(GetExtraInfoFromWhitelistInput) returns (google.protobuf.BoolValue){
+        option (aelf.is_view) = true;
+    }
+    
+    //Whether the tagInfo exists in the whitelist according to the whitelist_id,project_id,tagInfo(tagName,info).
+    rpc GetTagInfoFromWhitelist(GetTagInfoFromWhitelistInput) returns (google.protobuf.BoolValue){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get manager list according to the whitelist_id.
+    rpc GetManagerList(aelf.Hash) returns (AddressList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get subscribe manager list according to the subscribe_id.
+    rpc GetSubscribeManagerList(aelf.Hash) returns (AddressList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Whether manager exist in whitelist.
+    rpc GetManagerExistFromWhitelist(GetManagerExistFromWhitelistInput) returns (google.protobuf.BoolValue){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get subscribe whitelist info according to the subscribe_id.
+    rpc GetSubscribeWhitelist (aelf.Hash) returns (SubscribeWhitelistInfo){
+        option (aelf.is_view) = true;
+    }
+    
+    //Get subscribe_id list according to the manager.
+    rpc GetSubscribeIdByManager (aelf.Address) returns (HashList){
+        option (aelf.is_view) = true;
+    }
+
+    //Get consumed list according to the subscribe_id.
+    rpc GetConsumedList (aelf.Hash) returns (ConsumedList){
+        option (aelf.is_view) = true;
+    }
+    
+    //After consumed,get available whitelist according to the subscribe_id. 
+    rpc GetAvailableWhitelist (aelf.Hash) returns (ExtraInfoIdList){
+        option (aelf.is_view) = true;
+    }
+    
+    //Whether the extraInfo exist in the available whitelist.
+    rpc GetFromAvailableWhitelist (GetFromAvailableWhitelistInput) returns (google.protobuf.BoolValue){
+        option (aelf.is_view) = true;
+    }
+    
+    
+}
+
+//Structs.
+
+message WhitelistInfo {
+    //The whitelist id.
+    aelf.Hash whitelist_id = 1;
+    //The project id.
+    aelf.Hash project_id = 2;
+    //The list of address and extra info in this whitelist.
+    ExtraInfoIdList extra_info_id_list = 3;
+    //Whether the whitelist is available.
+    bool is_available = 4;
+    //Whether the whiteList can be cloned.
+    bool is_cloneable = 5;
+    string remark = 6;
+    aelf.Hash clone_from = 7;
+    aelf.Address creator = 8;
+    AddressList manager = 9;
+    StrategyType strategy_type = 10;
+}
+
+//Pricing strategy
+message PriceTag{
+    string symbol = 1;
+    int64 amount = 2;
+}
+
+enum StrategyType{
+    Basic = 0;
+    Price = 1;
+    Customize = 2;
+}
+
+message ExtraInfoIdList {
+    repeated ExtraInfoId value = 1;
+}
+
+message ExtraInfoId {
+    AddressList address_list = 1;
+    aelf.Hash id = 2;
+}
+
+message ExtraInfoList {
+    repeated ExtraInfo value = 1;
+}
+
+message ExtraInfo {
+    AddressList address_list = 1;
+    TagInfo info = 2;
+}
+
+message TagInfo {
+    string tag_name = 1;
+    bytes info = 2;
+}
+
+message TagInfoList{
+    repeated TagInfo value = 1;
+}
+
+message WhitelistIdList{
+    repeated aelf.Hash whitelist_id = 1;
+}
+
+message SubscribeWhitelistInfo {
+    //The subscribe id.
+    aelf.Hash subscribe_id = 1;
+    //The project id.
+    aelf.Hash project_id = 2;
+    //The whitelist id.
+    aelf.Hash whitelist_id = 3;
+    aelf.Address subscriber = 4;
+    //Manager list.
+    AddressList manager_list = 5;
+}
+
+message ConsumedList {
+    //The subscribe id.
+    aelf.Hash subscribe_id = 1;
+    //The whitelist id.
+    aelf.Hash whitelist_id = 2;
+    //The consumed address and extra info list in this whitelist.
+    ExtraInfoIdList extra_info_id_list = 3;
+}
+
+message AddressList {
+    repeated aelf.Address value = 1;
+}
+
+message HashList{
+    repeated aelf.Hash value = 1;
+}
+
+//Inputs.
+
+//message InitializeInput{
+//
+//}
+
+message CreateWhitelistInput {
+    ExtraInfoList extra_info_list = 1;
+    bool is_cloneable = 2;
+    string remark = 3;
+    aelf.Address creator = 4;
+    AddressList manager_list = 5;
+    aelf.Hash project_id = 6;
+    StrategyType strategy_type = 7;
+}
+
+message AddAddressInfoListToWhitelistInput {
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoIdList extra_info_id_list = 2;
+}
+
+message RemoveAddressInfoListFromWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoIdList extra_info_id_list = 2;
+}
+
+message ChangeWhitelistCloneableInput{
+    aelf.Hash whitelist_id = 1;
+    bool is_cloneable = 2;
+}
+
+message AddExtraInfoInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash project_id = 2;
+    TagInfo tag_info = 3;
+    AddressList address_list = 4;
+}
+
+message RemoveTagInfoInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash project_id = 2;
+    aelf.Hash tag_id = 3;
+}
+
+message UpdateExtraInfoInput{
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoId extra_info_list = 2;
+}
+
+message SubscribeWhitelistInput{
+    //The project id.
+    aelf.Hash project_id = 1;
+    //The whitelist id.
+    aelf.Hash whitelist_id = 2;
+    //Subscriber.
+    aelf.Address subscriber = 3;
+    //Manager list.
+    AddressList manager_list = 4;
+}
+
+message ConsumeWhitelistInput{
+    aelf.Hash subscribe_id = 1;
+    aelf.Hash whitelist_id = 2;
+    ExtraInfoId extra_info_id = 3;
+}
+
+message CloneWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Address creator = 2;
+    AddressList manager_list = 3;
+    aelf.Hash project_id = 4;
+}
+
+message TransferManagerInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Address manager = 2;
+}
+
+message GetFromAvailableWhitelistInput{
+    aelf.Hash subscribe_id = 1;
+    ExtraInfoId extra_info_id = 2;
+}
+
+message AddManagersInput{
+    aelf.Hash whitelist_id = 1;
+    AddressList manager_list = 2;
+}
+
+message AddSubscribeManagersInput{
+    aelf.Hash subscribe_id = 1;
+    AddressList manager_list = 2;
+}
+
+message RemoveManagersInput{
+    aelf.Hash whitelist_id = 1;
+    AddressList manager_list = 2;
+}
+
+message RemoveSubscribeManagersInput{
+    aelf.Hash subscribe_id = 1;
+    AddressList manager_list = 2;
+}
+
+message GetTagIdByAddressInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Address address = 2;
+}
+
+message GetExtraInfoByAddressInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Address address = 2;
+}
+
+message GetExtraInfoIdListInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash project_id = 2;
+}
+
+message GetExtraInfoByTagInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash tag_info_id = 2;
+}
+
+message GetAddressFromWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Address address = 2;
+}
+
+message GetExtraInfoFromWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoId extra_info_id = 2;
+}
+
+message GetTagInfoFromWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash project_id = 2;
+    TagInfo tag_info = 3;
+}
+
+message GetManagerExistFromWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Address manager = 2;
+}
+
+message ResetWhitelistInput{
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash project_id = 2;
+}
+
+//Events.
+
+message WhitelistCreated {
+    option (aelf.is_event) = true;
+    //The whitelist id.
+    aelf.Hash whitelist_id = 1;
+    //The list of address and extra info in this whitelist.
+    ExtraInfoIdList extra_info_id_list = 2;
+    //Whether the whitelist is available.
+    bool is_available = 3;
+    bool is_cloneable = 4;
+    string remark = 5;
+    aelf.Hash clone_from = 6;
+    aelf.Address creator = 7;
+    AddressList manager = 8;
+    aelf.Hash project_id = 9;
+    StrategyType strategy_type = 10;
+    
+}
+
+message WhitelistSubscribed {
+    option (aelf.is_event) = true;
+    //The subscribe id.
+    aelf.Hash subscribe_id = 1;
+    //The project id.
+    aelf.Hash project_id = 2;
+    //The whitelist id.
+    aelf.Hash whitelist_id = 3;
+    //Subscriber.
+    aelf.Address subscriber = 4;
+    //Manager list.
+    AddressList manager_list = 5;
+}
+
+message WhitelistUnsubscribed{
+    option (aelf.is_event) = true;
+    aelf.Hash subscribe_id = 1;
+    aelf.Hash project_id = 2;
+    aelf.Hash whitelist_id = 3;
+}
+
+message WhitelistAddressInfoAdded {
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoIdList extra_info_id_list = 2;
+}
+
+message WhitelistAddressInfoRemoved {
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoIdList extra_info_id_list = 2;
+}
+
+message WhitelistDisabled {
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    bool is_available = 2;
+}
+
+message WhitelistReenable{
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    bool is_available = 2;
+}
+
+message ConsumedListAdded {
+    option (aelf.is_event) = true;
+    aelf.Hash subscribe_id = 1;
+    aelf.Hash whitelist_id = 2;
+    ExtraInfoIdList extra_info_id_list = 3;
+}
+
+message IsCloneableChanged{
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    bool is_cloneable = 2;
+}
+
+message TagInfoAdded{
+    option (aelf.is_event) = true;
+    aelf.Hash tag_info_id = 1;
+    TagInfo tag_info = 2;
+    aelf.Hash project_id = 3;
+    aelf.Hash whitelist_id = 4;
+}
+
+message TagInfoRemoved{
+    option (aelf.is_event) = true;
+    aelf.Hash tag_info_id = 1;
+    TagInfo tag_info = 2;
+    aelf.Hash project_id = 3;
+    aelf.Hash whitelist_id = 4;
+}
+
+message ExtraInfoUpdated {
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    ExtraInfoId extra_info_id_before = 2;
+    ExtraInfoId extra_info_id_after = 3;
+}
+
+message ManagerTransferred{
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    aelf.Address transfer_from = 2;
+    aelf.Address transfer_to = 3;
+}
+
+message ManagerAdded{
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    AddressList manager_list = 2;
+}
+
+message ManagerRemoved{
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    AddressList manager_list = 2;
+}
+
+message WhitelistReset{
+    option (aelf.is_event) = true;
+    aelf.Hash whitelist_id = 1;
+    aelf.Hash project_id = 2;
+}
+
+message SubscribeManagerAdded{
+    option (aelf.is_event) = true;
+    aelf.Hash subscribe_id = 1;
+    AddressList manager_list = 2;
+}
+
+message SubscribeManagerRemoved{
+    option (aelf.is_event) = true;
+    aelf.Hash subscribe_id = 1;
+    AddressList manager_list = 2;
+}

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AElf.Client.Core.Options;
 using AElf.CSharp.Core;
 using AElf.Types;
 using Microsoft.Extensions.Options;
@@ -6,13 +7,13 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T> where T : IEvent<T>
+    public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T>
     {
-        private readonly ContractAddressOptions _contractAddressOptions;
+        private readonly AElfContractOptions _contractOptions;
 
-        public LogEventProcessorBase(IOptionsSnapshot<ContractAddressOptions> contractAddressOptions)
+        public LogEventProcessorBase(IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
         {
-            _contractAddressOptions = contractAddressOptions.Value;
+            _contractOptions = contractAddressOptions.Value;
         }
 
         public abstract string ContractName { get; }
@@ -21,7 +22,7 @@ namespace AElf.EventHandler
 
         public string GetContractAddress()
         {
-            return _contractAddressOptions.ContractAddressMap.TryGetValue(ContractName, out var contractAddress)
+            return _contractOptions.ContractAddressList.TryGetValue(ContractName, out var contractAddress)
                 ? contractAddress
                 : string.Empty;
         }
