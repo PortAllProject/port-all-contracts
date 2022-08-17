@@ -33,7 +33,12 @@ service RegimentContract {
     rpc GetConfig (google.protobuf.Empty) returns (RegimentContractConfig) {
         option (aelf.is_view) = true;
     }
-
+    rpc GetRegimentId(aelf.Address) returns(aelf.Hash){
+        option(aelf.is_view) = true;
+    }
+    rpc GetRegimentAddress(aelf.Hash) returns (aelf.Address){
+        option (aelf.is_view) = true;
+    }
     rpc GetRegimentInfo (aelf.Address) returns (RegimentInfo) {
         option (aelf.is_view) = true;
     }
@@ -129,6 +134,7 @@ message RegimentCreated {
     aelf.Address manager = 2;
     RegimentMemberList initial_member_list = 3;
     aelf.Address regiment_address = 4;
+    aelf.Hash regiment_id = 5;
 }
 
 message NewMemberApplied {
