@@ -8,7 +8,7 @@ namespace AElf.Nethereum.Core;
 
 public interface INethereumClientProvider
 {
-    Web3 GetClient(string clientAlias, string accountAlias);
+    Web3 GetClient(string clientAlias, string accountAlias = null);
 }
 
 public class NethereumClientProvider : ConcurrentDictionary<NethereumClientInfo, Web3>, INethereumClientProvider, ISingletonDependency
@@ -23,15 +23,23 @@ public class NethereumClientProvider : ConcurrentDictionary<NethereumClientInfo,
         _ethereumClientConfigOptions = ethereumClientConfigOptions.Value;
     }
 
-    public Web3 GetClient(string clientAlias, string accountAlias)
+    public Web3 GetClient(string clientAlias, string accountAlias = null)
     {
         var keys = Keys.Where(o => o.ClientAlias == clientAlias && o.AccountAlias == accountAlias).ToList();
         if (keys.Count == 0)
-        {
-            var account = _nethereumAccountProvider.GetAccount(accountAlias);
-            var clientConfig = _ethereumClientConfigOptions.ClientConfigList
+        {var clientConfig = _ethereumClientConfigOptions.ClientConfigList
                 .FirstOrDefault(o => o.Alias == clientAlias);
-            var client = new Web3(account, clientConfig.Url);
+            Web3 client;
+            if (string.IsNullOrWhiteSpace(accountAlias))
+            {
+                client = new Web3(clientConfig.Url);
+            }
+            else
+            {
+                var account = _nethereumAccountProvider.GetAccount(accountAlias);
+                client = new Web3(account, clientConfig.Url);
+            }
+            
             TryAdd(new NethereumClientInfo
             {
                 ClientAlias = clientAlias,

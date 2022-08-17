@@ -15,11 +15,7 @@ public abstract class ContractServiceBase
     public EthereumClientAccountMappingOptions EthereumClientAccountMappingOptions { get; set; }
     public EthereumContractOptions EthereumContractOptions { get; set; }
     protected abstract string SmartContractName { get; }
-    
-    protected ContractServiceBase()
-    {
-    }
-    
+
     protected Function GetFunction(string clientAlias, string methodName)
     {
         var accountAlias = EthereumClientAccountMappingOptions.Mapping[clientAlias];

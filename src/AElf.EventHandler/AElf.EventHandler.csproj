@@ -63,10 +63,12 @@
     <ItemGroup>
       <ProjectReference Include="..\..\contract\AElf.Contracts.IntegerAggregator\AElf.Contracts.IntegerAggregator.csproj" />
       <ProjectReference Include="..\..\contract\AElf.Contracts.OracleUser\AElf.Contracts.OracleUser.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.Bridge\AElf.Client.Bridge.csproj" />
       <ProjectReference Include="..\..\modules\AElf.Client.MerkleTree\AElf.Client.MerkleTree.csproj" />
       <ProjectReference Include="..\..\modules\AElf.Client.Oracle\AElf.Client.Oracle.csproj" />
       <ProjectReference Include="..\..\modules\AElf.Client.Protobuf\AElf.Client.Protobuf.csproj" />
       <ProjectReference Include="..\..\modules\AElf.Client.Report\AElf.Client.Report.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Nethereum.Bridge\AElf.Nethereum.Bridge.csproj" />
       <ProjectReference Include="..\..\modules\AElf.Nethereum.Core\AElf.Nethereum.Core.csproj" />
     </ItemGroup>
 

@@ -1,9 +1,12 @@
 using System;
 using System.Net.Security;
 using System.Security.Authentication;
+using AElf.Client.Bridge;
 using AElf.Client.Core;
+using AElf.Client.MerkleTree;
 using AElf.Client.Oracle;
 using AElf.Client.Report;
+using AElf.Nethereum.Bridge;
 using AElf.Nethereum.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,7 +24,9 @@ namespace AElf.EventHandler;
     typeof(AElfClientModule),
     typeof(AElfClientOracleModule),
     typeof(AElfClientReportModule),
-    typeof(AElfNethereumClientModule)
+    typeof(AElfClientBridgeModule),
+    typeof(AElfClientMerkleTreeModule),
+    typeof(AElfNethereumBridgeModule)
 )]
 public class EventHandlerAppModule : AbpModule
 {
