@@ -79,7 +79,7 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
         var nodeUrl = _configOptions.SwapConfigs.Single(c => Hash.LoadFromBase64(c.SpaceId) == spaceId).NodeUrl;
         var web3ManagerForLock = new Web3Manager(nodeUrl, lockMappingContractAddress,
             "", _lockAbi);
-
+        
         // TODO: Travel Bridge.Bridges config.
 
         var lockTimes = await web3ManagerForLock.GetFunction(lockMappingContractAddress, "receiptCount")

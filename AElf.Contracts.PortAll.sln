@@ -67,6 +67,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Nethereum.Core", "modu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Client.Bridge", "modules\AElf.Client.Bridge\AElf.Client.Bridge.csproj", "{ADD0EBAC-F957-4D59-AF43-C10D31DFB2DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AElf.Nethereum.Bridge", "modules\AElf.Nethereum.Bridge\AElf.Nethereum.Bridge.csproj", "{1AC48421-CF85-44B9-B79A-6D41F8C09FF8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -173,6 +175,10 @@ Global
 		{ADD0EBAC-F957-4D59-AF43-C10D31DFB2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADD0EBAC-F957-4D59-AF43-C10D31DFB2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADD0EBAC-F957-4D59-AF43-C10D31DFB2DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1AC48421-CF85-44B9-B79A-6D41F8C09FF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AC48421-CF85-44B9-B79A-6D41F8C09FF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AC48421-CF85-44B9-B79A-6D41F8C09FF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AC48421-CF85-44B9-B79A-6D41F8C09FF8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -203,6 +209,7 @@ Global
 		{538194EF-9329-4C90-8BD9-0E6EFDFEF691} = {FDE8EA32-0CD6-464B-A974-B6C3A3FB7039}
 		{4175F31E-5ED6-4B67-973C-51B0C44BE74B} = {FDE8EA32-0CD6-464B-A974-B6C3A3FB7039}
 		{ADD0EBAC-F957-4D59-AF43-C10D31DFB2DA} = {FDE8EA32-0CD6-464B-A974-B6C3A3FB7039}
+		{1AC48421-CF85-44B9-B79A-6D41F8C09FF8} = {FDE8EA32-0CD6-464B-A974-B6C3A3FB7039}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7426B41-E959-40E4-9ED8-ED8D9C50F133}

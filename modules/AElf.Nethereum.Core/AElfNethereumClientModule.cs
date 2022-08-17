@@ -19,5 +19,6 @@ public class AElfNethereumClientModule : AbpModule
         Configure<EthereumAccountOptions>(configuration.GetSection("EthereumAccount"));
         Configure<EthereumClientConfigOptions>(configuration.GetSection("EthereumClientConfig"));
         Configure<EthereumContractOptions>(configuration.GetSection("EthereumContract"));
+        Configure<EthereumClientAccountMappingOptions>(configuration.GetSection("EthereumClientAccountMapping"));
     }
 }
