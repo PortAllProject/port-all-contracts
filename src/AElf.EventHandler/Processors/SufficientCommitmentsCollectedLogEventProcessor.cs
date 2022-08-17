@@ -13,10 +13,9 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
     private readonly ISaltProvider _saltProvider;
     private readonly IDataProvider _dataProvider;
     private readonly AElfContractOptions _contractAddressOptions;
-    private readonly ConfigOptions _configOptions;
     private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
 
-    public SufficientCommitmentsCollectedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
+    public SufficientCommitmentsCollectedLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         ISaltProvider saltProvider, IDataProvider dataProvider,
         ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger) : base(contractAddressOptions)
@@ -24,7 +23,6 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         _saltProvider = saltProvider;
         _dataProvider = dataProvider;
         _logger = logger;
-        _configOptions = configOptions.Value;
         _contractAddressOptions = contractAddressOptions.Value;
     }
 

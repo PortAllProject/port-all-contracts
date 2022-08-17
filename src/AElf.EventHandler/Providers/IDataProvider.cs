@@ -25,21 +25,14 @@ public class DataProvider : IDataProvider, ISingletonDependency
 {
     private readonly Dictionary<Hash, string> _dictionary;
     private readonly ILogger<DataProvider> _logger;
-    private readonly AElfContractOptions _contractAddressOptions;
-    private readonly EthereumConfigOptions _ethereumConfigOptions;
-    private readonly ConfigOptions _configOptions;
     private readonly string _bridgeAbi;
 
     private Web3Manager _web3ManagerForLock;
 
-    public DataProvider(ILogger<DataProvider> logger, IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
-        IOptionsSnapshot<ConfigOptions> configOptions, IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
+    public DataProvider(ILogger<DataProvider> logger, IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
     {
         _logger = logger;
-        _contractAddressOptions = contractAddressOptions.Value;
-        _configOptions = configOptions.Value;
-        _ethereumConfigOptions = ethereumConfigOptions.Value;
         _dictionary = new Dictionary<Hash, string>();
         {
             var file = Path.Combine(ethereumContractOptions.Value.AbiFileDirectory,

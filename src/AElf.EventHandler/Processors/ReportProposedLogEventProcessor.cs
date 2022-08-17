@@ -13,7 +13,6 @@ namespace AElf.EventHandler;
 internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>
 {
     private readonly AElfContractOptions _contractAddressOptions;
-    private readonly ConfigOptions _configOptions;
     private readonly IReportProvider _reportProvider;
     private readonly IReportService _reportService;
     private readonly IAElfAccountProvider _accountProvider;
@@ -21,7 +20,7 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
     public override string ContractName => "Report";
     private readonly ILogger<ReportProposedLogEventProcessor> _logger;
 
-    public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
+    public ReportProposedLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         IReportProvider reportProvider,
         IReportService reportService,
@@ -29,7 +28,6 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
     {
         _logger = logger;
-        _configOptions = configOptions.Value;
         _contractAddressOptions = contractAddressOptions.Value;
         _reportProvider = reportProvider;
         _reportService = reportService;

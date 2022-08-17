@@ -20,21 +20,18 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
     private readonly ISignatureRecoverableInfoProvider _signaturesRecoverableInfoProvider;
     private readonly EthereumContractOptions _ethereumContractOptions;
     private readonly IReportProvider _reportProvider;
-    private readonly EthereumConfigOptions _ethereumConfigOptions;
     private readonly string _abi;
 
     public ReportConfirmedLogEventProcessor(ILogger<ReportConfirmedLogEventProcessor> logger,
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         IReportProvider reportProvider,
         ISignatureRecoverableInfoProvider signaturesRecoverableInfoProvider,
-        IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
         IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions) : base(contractAddressOptions)
     {
         _logger = logger;
         _signaturesRecoverableInfoProvider = signaturesRecoverableInfoProvider;
         _ethereumContractOptions = ethereumContractOptions.Value;
         _reportProvider = reportProvider;
-        _ethereumConfigOptions = ethereumConfigOptions.Value;
         var file = Path.Combine(_ethereumContractOptions.AbiFileDirectory,
             _ethereumContractOptions.ContractInfoList["Bridge"].AbiFileName);
         if (!string.IsNullOrEmpty(file))

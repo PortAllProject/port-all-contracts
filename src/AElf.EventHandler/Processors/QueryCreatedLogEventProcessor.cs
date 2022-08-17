@@ -13,11 +13,10 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
 {
     private readonly ISaltProvider _saltProvider;
     private readonly IDataProvider _dataProvider;
-    private readonly ConfigOptions _configOptions;
     public override string ContractName => "Oracle";
     private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
-    public QueryCreatedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
+    public QueryCreatedLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         ISaltProvider saltProvider, IDataProvider dataProvider, ILogger<QueryCreatedLogEventProcessor> logger) :
         base(contractAddressOptions)
@@ -25,7 +24,6 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         _saltProvider = saltProvider;
         _dataProvider = dataProvider;
         _logger = logger;
-        _configOptions = configOptions.Value;
     }
 
     public override async Task ProcessAsync(LogEvent logEvent)

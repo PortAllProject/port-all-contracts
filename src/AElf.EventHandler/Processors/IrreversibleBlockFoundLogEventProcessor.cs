@@ -17,8 +17,6 @@ namespace AElf.EventHandler;
 
 public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<IrreversibleBlockFound>
 {
-    private readonly ConfigOptions _configOptions;
-    private readonly EthereumConfigOptions _ethereumConfigOptions;
     private readonly AElfContractOptions _contractAddressOptions;
     private readonly EthereumContractOptions _ethereumContractOptions;
     private readonly ILatestQueriedReceiptCountProvider _latestQueriedReceiptCountProvider;
@@ -29,8 +27,6 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
 
     public IrreversibleBlockFoundLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
-        IOptionsSnapshot<ConfigOptions> configOptions,
-        IOptionsSnapshot<EthereumConfigOptions> ethereumConfigOptions,
         IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
         ILatestQueriedReceiptCountProvider latestQueriedReceiptCountProvider,
         IOracleService oracleService,
@@ -43,8 +39,6 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
         _merkleTreeContractService = merkleTreeContractService;
         _logger = logger;
 
-        _configOptions = configOptions.Value;
-        _ethereumConfigOptions = ethereumConfigOptions.Value;
         _contractAddressOptions = contractAddressOptions.Value;
 
         {
