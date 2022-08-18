@@ -1,61 +1,87 @@
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Volo.Abp.Caching;
+using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler;
 
 public interface ISignatureRecoverableInfoProvider
 {
-    void SetSignature(string ethereumContractAddress, long roundId, string recoverableInfo);
-    HashSet<string> GetSignature(string ethereumContractAddress, long roundId);
-    void RemoveSignature(string ethereumContractAddress, long roundId);
+    Task SetSignatureAsync(string ethereumContractAddress, long roundId, string recoverableInfo);
+    Task<HashSet<string>> GetSignatureAsync(string ethereumContractAddress, long roundId);
+    Task RemoveSignatureAsync(string ethereumContractAddress, long roundId);
 }
 
-public class SignatureRecoverableInfoProvider : ISignatureRecoverableInfoProvider, ISingletonDependency
+public class SignatureRecoverableInfoProvider : AbpRedisCache, ISignatureRecoverableInfoProvider, ITransientDependency
 {
-    private readonly Dictionary<string, Dictionary<long, HashSet<string>>> _signatureRecoverableInfoDictionary;
     private ILogger<SignatureRecoverableInfoProvider> _logger;
+    private readonly IDistributedCacheSerializer _serializer;
+    
+    private const string KeyPrefix = "ReportSignature";
 
-    public SignatureRecoverableInfoProvider(ILogger<SignatureRecoverableInfoProvider> logger)
+    public SignatureRecoverableInfoProvider(ILogger<SignatureRecoverableInfoProvider> logger,
+        IOptions<RedisCacheOptions> optionsAccessor, IDistributedCacheSerializer serializer) : base(optionsAccessor)
     {
-        _signatureRecoverableInfoDictionary = new Dictionary<string, Dictionary<long, HashSet<string>>>();
+        _serializer = serializer;
         _logger = logger;
     }
 
-    public void SetSignature(string ethereumContractAddress, long roundId, string recoverableInfo)
+    public async Task SetSignatureAsync(string ethereumContractAddress, long roundId, string recoverableInfo)
     {
-        if (!_signatureRecoverableInfoDictionary.TryGetValue(ethereumContractAddress, out var roundSignature))
+        var key = GetStoreKey(ethereumContractAddress, roundId);
+        var signatureBytes = await GetAsync(key);
+        ReportSignature signature;
+        if (signatureBytes == null)
         {
-            roundSignature = new Dictionary<long, HashSet<string>>();
-            _signatureRecoverableInfoDictionary[ethereumContractAddress] = roundSignature;
+            signature = new ReportSignature
+            {
+                Address = ethereumContractAddress,
+                RoundId = roundId,
+                Signatures = new HashSet<string>()
+            };
+        }
+        else
+        {
+            signature = _serializer.Deserialize<ReportSignature>(signatureBytes);
         }
 
-        if (!roundSignature.ContainsKey(roundId))
-            roundSignature[roundId] = new HashSet<string>();
-        roundSignature[roundId].Add(recoverableInfo);
-    }
+        signature.Signatures.Add(recoverableInfo);
 
-    public HashSet<string> GetSignature(string ethereumContractAddress, long roundId)
-    {
-        if (!_signatureRecoverableInfoDictionary.TryGetValue(ethereumContractAddress, out var roundSignature))
+        await SetAsync(key, _serializer.Serialize(signature), new DistributedCacheEntryOptions
         {
-            _logger.LogInformation($"Address: {ethereumContractAddress} report dose not exist");
-            return new HashSet<string>();
-        }
-
-        if (roundSignature.TryGetValue(roundId, out var recoverableInfo)) return recoverableInfo;
-        _logger.LogInformation($"Address: {ethereumContractAddress} RoundId: {roundId} report dose not exist");
-        return new HashSet<string>();
+            AbsoluteExpiration = DateTimeOffset.MaxValue
+        });
     }
 
-    public void RemoveSignature(string ethereumContractAddress, long roundId)
+    public async Task<HashSet<string>> GetSignatureAsync(string ethereumContractAddress, long roundId)
     {
-        if (!_signatureRecoverableInfoDictionary.TryGetValue(ethereumContractAddress, out var roundSignature))
-            return;
-        if (!roundSignature.TryGetValue(roundId, out _))
-            return;
-        roundSignature.Remove(roundId);
-        if (roundSignature.Count == 0)
-            _signatureRecoverableInfoDictionary.Remove(ethereumContractAddress);
+        var key = GetStoreKey(ethereumContractAddress, roundId);
+        var signatureBytes = await GetAsync(key);
+        var signature = _serializer.Deserialize<ReportSignature>(signatureBytes);
+        return signature.Signatures;
     }
+
+    public async Task RemoveSignatureAsync(string ethereumContractAddress, long roundId)
+    {
+        var key = GetStoreKey(ethereumContractAddress, roundId);
+        await RemoveAsync(key);
+    }
+
+    private string GetStoreKey(string ethereumContractAddress, long roundId)
+    {
+        return $"{KeyPrefix}-{ethereumContractAddress}-{roundId}";
+    }
+}
+
+public class ReportSignature
+{
+    public string Address { get; set; }
+    public long RoundId { get; set; }
+    public HashSet<string> Signatures { get; set; } = new();
 }

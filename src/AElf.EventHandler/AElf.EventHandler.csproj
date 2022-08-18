@@ -26,6 +26,7 @@
         <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" Version="5.2.2" />
         <PackageReference Include="Volo.Abp.Threading" Version="5.2.2" />
         <PackageReference Include="Nethereum.web3" Version="4.7.0" />
+        <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="5.2.2" />
     </ItemGroup>
 
     <ItemGroup>

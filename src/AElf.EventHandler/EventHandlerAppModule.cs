@@ -11,10 +11,13 @@ using AElf.Nethereum.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using Volo.Abp;
 using Volo.Abp.Autofac;
+using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Modularity;
 using Volo.Abp.RabbitMQ;
+using Volo.Abp.Threading;
 
 namespace AElf.EventHandler;
 
@@ -26,7 +29,8 @@ namespace AElf.EventHandler;
     typeof(AElfClientReportModule),
     typeof(AElfClientBridgeModule),
     typeof(AElfClientMerkleTreeModule),
-    typeof(AElfNethereumBridgeModule)
+    typeof(AElfNethereumBridgeModule),
+    typeof(AbpCachingStackExchangeRedisModule)
 )]
 public class EventHandlerAppModule : AbpModule
 {
@@ -71,5 +75,9 @@ public class EventHandlerAppModule : AbpModule
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
+    }
+
+    public override void OnApplicationInitialization(ApplicationInitializationContext context)
+    {
     }
 }

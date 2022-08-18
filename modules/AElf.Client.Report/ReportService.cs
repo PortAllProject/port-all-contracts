@@ -21,7 +21,7 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
     private readonly IAElfClientService _clientService;
     private readonly AElfClientConfigOptions _clientConfigOptions;
 
-    protected ReportService(IAElfClientService clientService,
+    public ReportService(IAElfClientService clientService,
         IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
         IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
         Address.FromBase58(contractOptions.Value.ContractAddressList["ReportContractAddress"]))

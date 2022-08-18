@@ -23,7 +23,7 @@ public class OracleService : ContractServiceBase, IOracleService, ITransientDepe
     private readonly IAElfClientService _clientService;
     private readonly AElfClientConfigOptions _clientConfigOptions;
 
-    protected OracleService(IAElfClientService clientService,
+    public OracleService(IAElfClientService clientService,
         IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
         IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
         Address.FromBase58(contractOptions.Value.ContractAddressList["OracleContractAddress"]))

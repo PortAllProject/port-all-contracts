@@ -20,7 +20,7 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
 
     private const string ContractName = "BridgeContractAddress";
 
-    protected BridgeService(IAElfClientService clientService,
+    public BridgeService(IAElfClientService clientService,
         IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
         IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
         Address.FromBase58(contractOptions.Value.ContractAddressList[ContractName]))

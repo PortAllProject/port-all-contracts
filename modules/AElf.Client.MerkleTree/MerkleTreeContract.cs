@@ -22,7 +22,7 @@ public class MerkleTreeContractService : ContractServiceBase, IMerkleTreeContrac
     private readonly AElfClientConfigOptions _clientConfigOptions;
     private readonly AElfContractOptions _contractOptions;
 
-    protected MerkleTreeContractService(IAElfClientService clientService,
+    public MerkleTreeContractService(IAElfClientService clientService,
         IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
         IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
         Address.FromBase58(contractOptions.Value.ContractAddressList[""]))
