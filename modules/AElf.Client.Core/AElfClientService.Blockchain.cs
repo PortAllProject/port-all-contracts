@@ -36,6 +36,12 @@ public partial class AElfClientService
         var aelfClient = _aelfClientProvider.GetClient(alias: clientAlias);
         return await aelfClient.GetChainStatusAsync();
     }
+    
+    public async Task<BlockDto?> GetBlockByHeightAsync(string clientAlias, long height)
+    {
+        var aelfClient = _aelfClientProvider.GetClient(alias: clientAlias);
+        return await aelfClient.GetBlockByHeightAsync(height);
+    }
 
     public async Task<MerklePath> GetMerklePathByTransactionIdAsync(string transactionId, string clientAlias)
     {

@@ -18,7 +18,7 @@ public interface ISignatureRecoverableInfoProvider
     Task RemoveSignatureAsync(string ethereumContractAddress, long roundId);
 }
 
-public class SignatureRecoverableInfoProvider : AbpRedisCache, ISignatureRecoverableInfoProvider, ITransientDependency
+public class SignatureRecoverableInfoProvider : AbpRedisCache, ISignatureRecoverableInfoProvider, ISingletonDependency
 {
     private ILogger<SignatureRecoverableInfoProvider> _logger;
     private readonly IDistributedCacheSerializer _serializer;

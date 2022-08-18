@@ -16,11 +16,10 @@ public abstract class ContractServiceBase
     public EthereumContractOptions EthereumContractOptions { get; set; }
     protected abstract string SmartContractName { get; }
 
-    protected Function GetFunction(string clientAlias, string methodName)
+    protected Function GetFunction(string clientAlias, string contractAddress, string methodName)
     {
         var accountAlias = EthereumClientAccountMappingOptions.Mapping[clientAlias];
         var client = NethereumClientProvider.GetClient(clientAlias, accountAlias);
-        var contractAddress = EthereumContractOptions.ContractInfoList[SmartContractName].ContractAddress;
         var contract = client.Eth.GetContract(GetAbi(), contractAddress);
         return contract.GetFunction(methodName);
     }

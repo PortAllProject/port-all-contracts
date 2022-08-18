@@ -75,6 +75,7 @@ public class EventHandlerAppModule : AbpModule
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
+        context.Services.AddSingleton<ITransmitTransactionProvider, TransmitTransactionProvider>();
     }
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)

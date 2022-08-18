@@ -21,5 +21,7 @@ public interface IAElfClientService
 
     Task<ChainStatusDto> GetChainStatusAsync(string clientAlias);
 
+    Task<BlockDto?> GetBlockByHeightAsync(string clientAlias, long height);
+
     Task<MerklePath> GetMerklePathByTransactionIdAsync(string transactionId, string clientAlias);
 }

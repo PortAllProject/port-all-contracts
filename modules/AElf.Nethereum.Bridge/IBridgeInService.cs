@@ -6,23 +6,22 @@ namespace AElf.Nethereum.Bridge;
 
 public interface IBridgeInService
 {
-    Task<TransactionReceipt> TransmitAsync(string clientAlias, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs);
+    Task<string> TransmitAsync(string clientAlias, string contractAddress, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs);
 }
 
-public class BridgeInService : ContractServiceBase,IBridgeInService,ITransientDependency
+public class BridgeInService : ContractServiceBase, IBridgeInService, ITransientDependency
 {
     protected override string SmartContractName { get; } = "BridgeIn";
 
-    public async Task<TransactionReceipt> TransmitAsync(string clientAlias, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs)
+    public async Task<string> TransmitAsync(string clientAlias, string contractAddress, byte[] report,
+        byte[][] rs, byte[][] ss, byte[] rawVs)
     {
-        var setValueFunction = GetFunction(clientAlias, "transmit");
+        var setValueFunction = GetFunction(clientAlias, contractAddress, "transmit");
         var sender = GetAccount(clientAlias).Address;
         var gas = await setValueFunction.EstimateGasAsync(sender, null, null, report, rs, ss, rawVs);
         var transactionResult =
-            await setValueFunction.SendTransactionAndWaitForReceiptAsync(sender, gas, null, null, report,
+            await setValueFunction.SendTransactionAsync(sender, gas, null, null, report,
                 rs, ss, rawVs);
         return transactionResult;
     }
-
-    
 }

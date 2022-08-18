@@ -8,6 +8,5 @@ public class EthereumContractOptions
 
 public class EthereumContractInfo
 {
-    public string ContractAddress { get; set; }
     public string AbiFileName { get; set; }
 }
