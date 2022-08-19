@@ -72,11 +72,10 @@ public class EventHandlerAppModule : AbpModule
             options.Connections.Default.Uri = new Uri(messageQueueConfig.GetSection("Uri").Value);
         });
 
-        // Configure<ConfigOptions>(configuration.GetSection("Config"));
-        // Configure<EthereumConfigOptions>(configuration.GetSection("Ethereum"));
         Configure<OracleOptions>(configuration.GetSection("Oracle"));
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
         Configure<AElfChainAliasOptions>(configuration.GetSection("AElfChainAlias"));
+        Configure<BlockConfirmationOptions>(configuration.GetSection("BlockConfirmation"));
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         context.Services.AddSingleton<ITransmitTransactionProvider, TransmitTransactionProvider>();

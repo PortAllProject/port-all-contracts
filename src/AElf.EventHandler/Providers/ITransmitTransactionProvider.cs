@@ -29,6 +29,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     private readonly AElfClientConfigOptions _aelfClientConfigOptions;
     private readonly IBridgeInService _bridgeInService;
     private readonly INethereumService _nethereumService;
+    private readonly BlockConfirmationOptions _blockConfirmationOptions;
 
     public ILogger<TransmitTransactionProvider> Logger { get; set; }
 
@@ -39,7 +40,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     public TransmitTransactionProvider(IOptions<RedisCacheOptions> optionsAccessor,
         IOptions<AElfClientConfigOptions> aelfClientConfigOptions,
         IDistributedCacheSerializer serializer, IAElfClientService aelfClientService, IBridgeInService bridgeInService,
-        INethereumService nethereumService)
+        INethereumService nethereumService, IOptions<BlockConfirmationOptions> blockConfirmationOptions)
         : base(optionsAccessor)
     {
         _serializer = serializer;
@@ -47,6 +48,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         _bridgeInService = bridgeInService;
         _nethereumService = nethereumService;
         _aelfClientConfigOptions = aelfClientConfigOptions.Value;
+        _blockConfirmationOptions = blockConfirmationOptions.Value;
     }
 
     public async Task EnqueueAsync(SendTransmitArgs args)
@@ -108,7 +110,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             }
 
             var currentHeight = await _nethereumService.GetBlockNumberAsync(item.TargetChainId);
-            if (receipt.BlockNumber.ToLong() >= currentHeight - 12)
+            if (receipt.BlockNumber.ToLong() >= currentHeight - _blockConfirmationOptions.ConfirmationCount[item.TargetChainId])
             {
                 break;
             }

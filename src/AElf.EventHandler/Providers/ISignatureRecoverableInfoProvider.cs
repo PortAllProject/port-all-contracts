@@ -13,16 +13,16 @@ namespace AElf.EventHandler;
 
 public interface ISignatureRecoverableInfoProvider
 {
-    Task SetSignatureAsync(string ethereumContractAddress, long roundId, string recoverableInfo);
-    Task<HashSet<string>> GetSignatureAsync(string ethereumContractAddress, long roundId);
-    Task RemoveSignatureAsync(string ethereumContractAddress, long roundId);
+    Task SetSignatureAsync(string chainId, string ethereumContractAddress, long roundId, string recoverableInfo);
+    Task<HashSet<string>> GetSignatureAsync(string chainId, string ethereumContractAddress, long roundId);
+    Task RemoveSignatureAsync(string chainId, string ethereumContractAddress, long roundId);
 }
 
 public class SignatureRecoverableInfoProvider : AbpRedisCache, ISignatureRecoverableInfoProvider, ISingletonDependency
 {
     private ILogger<SignatureRecoverableInfoProvider> _logger;
     private readonly IDistributedCacheSerializer _serializer;
-    
+
     private const string KeyPrefix = "ReportSignature";
 
     public SignatureRecoverableInfoProvider(ILogger<SignatureRecoverableInfoProvider> logger,
@@ -32,9 +32,10 @@ public class SignatureRecoverableInfoProvider : AbpRedisCache, ISignatureRecover
         _logger = logger;
     }
 
-    public async Task SetSignatureAsync(string ethereumContractAddress, long roundId, string recoverableInfo)
+    public async Task SetSignatureAsync(string chainId, string ethereumContractAddress, long roundId,
+        string recoverableInfo)
     {
-        var key = GetStoreKey(ethereumContractAddress, roundId);
+        var key = GetStoreKey(chainId, ethereumContractAddress, roundId);
         var signatureBytes = await GetAsync(key);
         ReportSignature signature;
         if (signatureBytes == null)
@@ -59,23 +60,23 @@ public class SignatureRecoverableInfoProvider : AbpRedisCache, ISignatureRecover
         });
     }
 
-    public async Task<HashSet<string>> GetSignatureAsync(string ethereumContractAddress, long roundId)
+    public async Task<HashSet<string>> GetSignatureAsync(string chainId, string ethereumContractAddress, long roundId)
     {
-        var key = GetStoreKey(ethereumContractAddress, roundId);
+        var key = GetStoreKey(chainId, ethereumContractAddress, roundId);
         var signatureBytes = await GetAsync(key);
         var signature = _serializer.Deserialize<ReportSignature>(signatureBytes);
         return signature.Signatures;
     }
 
-    public async Task RemoveSignatureAsync(string ethereumContractAddress, long roundId)
+    public async Task RemoveSignatureAsync(string chainId, string ethereumContractAddress, long roundId)
     {
-        var key = GetStoreKey(ethereumContractAddress, roundId);
+        var key = GetStoreKey(chainId, ethereumContractAddress, roundId);
         await RemoveAsync(key);
     }
 
-    private string GetStoreKey(string ethereumContractAddress, long roundId)
+    private string GetStoreKey(string chainId, string ethereumContractAddress, long roundId)
     {
-        return $"{KeyPrefix}-{ethereumContractAddress}-{roundId}";
+        return $"{KeyPrefix}-{chainId}-{ethereumContractAddress}-{roundId}";
     }
 }
 
