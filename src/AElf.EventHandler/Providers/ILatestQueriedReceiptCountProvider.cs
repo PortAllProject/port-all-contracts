@@ -2,6 +2,6 @@ namespace AElf.EventHandler;
 
 public interface ILatestQueriedReceiptCountProvider
 {
-    long Get(string symbol);
-    void Set(string symbol, long count);
+    long Get(string swapId);
+    void Set(string swapId, long count);
 }

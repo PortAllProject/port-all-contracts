@@ -6,8 +6,11 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AElf.Client.Bridge;
 using AElf.Client.Core.Options;
 using AElf.Contracts.Bridge;
+using AElf.Nethereum.Bridge;
+using AElf.Nethereum.Core;
 using AElf.Nethereum.Core.Options;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
@@ -26,13 +29,23 @@ public class DataProvider : IDataProvider, ISingletonDependency
     private readonly Dictionary<Hash, string> _dictionary;
     private readonly ILogger<DataProvider> _logger;
     private readonly string _bridgeAbi;
-
     private Web3Manager _web3ManagerForLock;
+    private BridgeOptions _bridgeOptions;
+    private BridgeService _bridgeService;
+    private IBridgeOutService _bridgeOutService;
 
-    public DataProvider(ILogger<DataProvider> logger, IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
-        IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
+    public DataProvider(
+        ILogger<DataProvider> logger, 
+        IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
+        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
+        IOptionsSnapshot<BridgeOptions> bridgeOptions,
+        BridgeService bridgeService,
+        BridgeOutService bridgeOutService)
     {
         _logger = logger;
+        _bridgeOptions = bridgeOptions.Value;
+        _bridgeService = bridgeService;
+        _bridgeOutService = bridgeOutService;
         _dictionary = new Dictionary<Hash, string>();
         {
             var file = Path.Combine(ethereumContractOptions.Value.AbiFileDirectory,
@@ -69,14 +82,12 @@ public class DataProvider : IDataProvider, ISingletonDependency
 
         if (title.StartsWith("record_receipts") && options.Count == 2)
         {
-            var symbol = title.Split('_').Last();
-            _logger.LogInformation($"Trying to query record receipt data of {symbol}");
-            var swapConfig = _configOptions.SwapConfigs.Single(c => c.TokenSymbol == symbol);
-            var spaceId = swapConfig.SpaceId;
-            var lockMappingAddress = swapConfig.LockMappingContractAddress;
+            var swapId = title.Split('_').Last();
+            _logger.LogInformation($"Trying to query record receipt data of {swapId}");
+            var swapConfig = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId);
             _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
             var recordReceiptHashInput =
-                await GetReceiptHashMap(Hash.LoadFromBase64(spaceId), lockMappingAddress, long.Parse(options[0]),
+                await GetReceiptHashMap(Hash.LoadFromBase64(swapId), swapConfig, long.Parse(options[0]),
                     long.Parse(options[1]));
             _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
             _dictionary[queryId] = recordReceiptHashInput;
@@ -121,77 +132,68 @@ public class DataProvider : IDataProvider, ISingletonDependency
         return result;
     }
 
-    private async Task<string> GetReceiptHashMap(Hash spaceId, string lockMappingAddress, long start, long end)
+    private async Task<string> GetReceiptHashMap(Hash swapId, BridgeItem bridgeItem, long start, long end)
     {
-        // var nodeUrl = _configOptions.SwapConfigs.Single(c => c.SpaceId == spaceId.ToHex()).NodeUrl;
-        // if (_web3ManagerForLock == null || _web3ManagerForLock.BaseUrl != nodeUrl)
-        // {
-        //     _web3ManagerForLock = new Web3Manager(nodeUrl,
-        //         lockMappingAddress, _ethereumConfigOptions.PrivateKey, _bridgeAbi);
-        // }
-        //
-        // var canTakeToken = _configOptions.SwapConfigs.Single(c => c.SpaceId == spaceId.ToHex()).CanTakeToken;
-        // var receiptInfos = await GetReceiptInfosAsync(lockMappingAddress, start, end, nodeUrl, canTakeToken);
-        // var receiptHashes = new List<Hash>();
-        // for (var i = 0; i <= end - start; i++)
-        // {
-        //     var amountHash = GetHashTokenAmountData(receiptInfos[i].Amount.ToString(), 32, true);
-        //     var targetAddressHash = HashHelper.ComputeFrom(receiptInfos[i].TargetAddress);
-        //     var receiptIdHash = HashHelper.ComputeFrom(i + start);
-        //     var hash = HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
-        //     receiptHashes.Add(hash);
-        // }
-        //
-        // var input = new ReceiptHashMap
-        // {
-        //     RecorderId = recorderId
-        // };
-        // for (var i = 0; i <= end - start; i++)
-        // {
-        //     var index = (int)(i + start);
-        //     input.Value.Add(index, receiptHashes[i].ToHex());
-        // }
-        //
-        // return input.ToString();
-        return "";
+        var token = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).OriginToken;
+        var receiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(bridgeItem.EthereumClientAlias,bridgeItem.EthereumBridgeOutContractAddress, token, start);
+        var receiptHashes = new List<Hash>();
+        for (var i = 0; i <= end - start; i++)
+        {
+            var amountHash = HashHelper.ComputeFrom(receiptInfos.Receipts[i].Amount.ToString());
+            var targetAddressHash = HashHelper.ComputeFrom(receiptInfos.Receipts[i].TargetAddress);
+            var receiptIdHash = HashHelper.ComputeFrom(receiptInfos.Receipts[i].ReceiptId);
+            var hash = HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
+            receiptHashes.Add(hash);
+        }
+        
+        var input = new ReceiptHashMap
+        {
+            SwapId = swapId.ToHex()
+        };
+        for (var i = 0; i <= end - start; i++)
+        {
+            input.Value.Add(receiptInfos.Receipts[(int)(i + start)].ReceiptId, receiptHashes[i].ToHex());
+        }
+        
+        return input.ToString();
     }
 
-    private Hash GetHashTokenAmountData(string stringAmount, int originTokenSizeInByte, bool isBigEndian)
-    {
-        var amount = decimal.Parse(stringAmount);
-        var preHolderSize = originTokenSizeInByte - 16;
-        int[] amountInIntegers;
-        if (isBigEndian)
-        {
-            amountInIntegers = decimal.GetBits(amount).Reverse().ToArray();
-            if (preHolderSize < 0)
-                amountInIntegers = amountInIntegers.TakeLast(originTokenSizeInByte / 4).ToArray();
-        }
-        else
-        {
-            amountInIntegers = decimal.GetBits(amount).ToArray();
-            if (preHolderSize < 0)
-                amountInIntegers = amountInIntegers.Take(originTokenSizeInByte / 4).ToArray();
-        }
-
-        var amountBytes = new List<byte>();
-
-        amountInIntegers.Aggregate(amountBytes, (cur, i) =>
-        {
-            cur.AddRange(i.ToBytes(isBigEndian));
-            return cur;
-        });
-
-        if (preHolderSize > 0)
-        {
-            var placeHolder = Enumerable.Repeat(new byte(), preHolderSize).ToArray();
-            amountBytes = isBigEndian
-                ? placeHolder.Concat(amountBytes).ToList()
-                : amountBytes.Concat(placeHolder).ToList();
-        }
-
-        return HashHelper.ComputeFrom(amountBytes.ToArray());
-    }
+    // private Hash GetHashTokenAmountData(string stringAmount, int originTokenSizeInByte, bool isBigEndian)
+    // {
+    //     var amount = decimal.Parse(stringAmount);
+    //     var preHolderSize = originTokenSizeInByte - 16;
+    //     int[] amountInIntegers;
+    //     if (isBigEndian)
+    //     {
+    //         amountInIntegers = decimal.GetBits(amount).Reverse().ToArray();
+    //         if (preHolderSize < 0)
+    //             amountInIntegers = amountInIntegers.TakeLast(originTokenSizeInByte / 4).ToArray();
+    //     }
+    //     else
+    //     {
+    //         amountInIntegers = decimal.GetBits(amount).ToArray();
+    //         if (preHolderSize < 0)
+    //             amountInIntegers = amountInIntegers.Take(originTokenSizeInByte / 4).ToArray();
+    //     }
+    //
+    //     var amountBytes = new List<byte>();
+    //
+    //     amountInIntegers.Aggregate(amountBytes, (cur, i) =>
+    //     {
+    //         cur.AddRange(i.ToBytes(isBigEndian));
+    //         return cur;
+    //     });
+    //
+    //     if (preHolderSize > 0)
+    //     {
+    //         var placeHolder = Enumerable.Repeat(new byte(), preHolderSize).ToArray();
+    //         amountBytes = isBigEndian
+    //             ? placeHolder.Concat(amountBytes).ToList()
+    //             : amountBytes.Concat(placeHolder).ToList();
+    //     }
+    //
+    //     return HashHelper.ComputeFrom(amountBytes.ToArray());
+    // }
 
     private string Aggregate(List<decimal> dataList)
     {

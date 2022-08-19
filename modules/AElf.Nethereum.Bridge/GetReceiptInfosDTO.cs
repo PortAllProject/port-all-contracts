@@ -13,8 +13,8 @@ public class GetReceiptInfosDTO: IFunctionOutputDTO
 [FunctionOutput]
 public class ReceiptDTO : IFunctionOutputDTO
 {
-    [Parameter("uint256", "receiptId", 1)]
-    public BigInteger ReceiptId { get; set; }
+    [Parameter("string", "receiptId", 1)]
+    public string ReceiptId { get; set; }
 
     [Parameter("address", "asset", 2)]
     public string Asset { get; set; }

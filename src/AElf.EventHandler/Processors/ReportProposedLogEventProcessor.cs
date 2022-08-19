@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AElf.Client.Core;
+using AElf.Client.Core.Extensions;
 using AElf.Client.Core.Options;
 using AElf.Client.Report;
 using AElf.Contracts.Report;
@@ -16,6 +17,8 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
     private readonly IReportProvider _reportProvider;
     private readonly IReportService _reportService;
     private readonly IAElfAccountProvider _accountProvider;
+    private readonly BridgeOptions _bridgeOptions;
+    private readonly AElfClientConfigOptions _aelfClientConfigOptions;
 
     public override string ContractName => "Report";
     private readonly ILogger<ReportProposedLogEventProcessor> _logger;
@@ -25,31 +28,37 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         IReportProvider reportProvider,
         IReportService reportService,
         IAElfAccountProvider accountProvider,
-        ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
+        ILogger<ReportProposedLogEventProcessor> logger,
+        IOptionsSnapshot<BridgeOptions> bridgeOptions,
+        IOptionsSnapshot<AElfClientConfigOptions> AElfConfigOptions) : base(contractAddressOptions)
     {
         _logger = logger;
         _contractAddressOptions = contractAddressOptions.Value;
         _reportProvider = reportProvider;
         _reportService = reportService;
         _accountProvider = accountProvider;
+        _bridgeOptions = bridgeOptions.Value;
+        _aelfClientConfigOptions = AElfConfigOptions.Value;
     }
 
     public override async Task ProcessAsync(LogEvent logEvent)
     {
-        // var reportProposed = new ReportProposed();
-        // reportProposed.MergeFrom(logEvent);
-        //
-        // _logger.LogInformation($"New report: {reportProposed}");
-        //
-        // var sendTxResult = await _reportService.ConfirmReportAsync(new ConfirmReportInput
-        // {
-        //     Token = _configOptions.TransmitContractAddress,
-        //     RoundId = reportProposed.RoundId,
-        //     Signature = SignHelper
-        //         .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
-        // });
-        // _reportProvider.SetReport(_configOptions.TransmitContractAddress, reportProposed.RoundId,
-        //     reportProposed.RawReport);
-        // _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
+        var reportProposed = new ReportProposed();
+        reportProposed.MergeFrom(logEvent);
+        
+        _logger.LogInformation($"New report: {reportProposed}");
+        
+        var privateKey = _accountProvider.GetPrivateKey(_aelfClientConfigOptions.AccountAlias);
+        
+        var sendTxResult = await _reportService.ConfirmReportAsync(new ConfirmReportInput
+        {
+            Token = reportProposed.Token,
+            RoundId = reportProposed.RoundId,
+            Signature = SignHelper
+                .GetSignature(reportProposed.RawReport, privateKey).RecoverInfo
+        });
+        _reportProvider.SetReport(reportProposed.Token, reportProposed.RoundId,
+            reportProposed.RawReport);
+        _logger.LogInformation($"[ConfirmReport] Tx ： {sendTxResult}");
     }
 }
