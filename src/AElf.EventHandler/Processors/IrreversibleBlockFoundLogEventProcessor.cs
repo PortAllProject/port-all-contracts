@@ -79,7 +79,7 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
 
     public override string ContractName => "Consensus";
 
-    public override async Task ProcessAsync(LogEvent logEvent)
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var libFound = new IrreversibleBlockFound();
         libFound.MergeFrom(logEvent);

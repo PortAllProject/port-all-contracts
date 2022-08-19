@@ -38,7 +38,7 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
             _abi = JsonHelper.ReadJson(file, "abi");
     }
 
-    public override async Task ProcessAsync(LogEvent logEvent)
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         // var reportConfirmed = new ReportConfirmed();
         // reportConfirmed.MergeFrom(logEvent);

@@ -18,7 +18,7 @@ namespace AElf.EventHandler
 
         public abstract string ContractName { get; }
 
-        public abstract Task ProcessAsync(LogEvent logEvent);
+        public abstract Task ProcessAsync(LogEvent logEvent, EventContext context);
 
         public string GetContractAddress()
         {
@@ -37,5 +37,10 @@ namespace AElf.EventHandler
 
             return actualContractAddress == contractAddress && logEventName == typeof(T).Name;
         }
+    }
+    
+    public class EventContext
+    {
+        public int ChainId { get; set; }
     }
 }

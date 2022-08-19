@@ -41,7 +41,7 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         _aelfClientConfigOptions = AElfConfigOptions.Value;
     }
 
-    public override async Task ProcessAsync(LogEvent logEvent)
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var reportProposed = new ReportProposed();
         reportProposed.MergeFrom(logEvent);

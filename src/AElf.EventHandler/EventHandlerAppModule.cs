@@ -6,6 +6,7 @@ using AElf.Client.Core;
 using AElf.Client.MerkleTree;
 using AElf.Client.Oracle;
 using AElf.Client.Report;
+using AElf.EventHandler.Workers;
 using AElf.Nethereum.Bridge;
 using AElf.Nethereum.Core;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using Volo.Abp;
 using Volo.Abp.Autofac;
+using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.EventBus.RabbitMq;
 using Volo.Abp.Modularity;
@@ -30,7 +32,8 @@ namespace AElf.EventHandler;
     typeof(AElfClientBridgeModule),
     typeof(AElfClientMerkleTreeModule),
     typeof(AElfNethereumBridgeModule),
-    typeof(AbpCachingStackExchangeRedisModule)
+    typeof(AbpCachingStackExchangeRedisModule),
+    typeof(AbpBackgroundWorkersModule)
 )]
 public class EventHandlerAppModule : AbpModule
 {
@@ -73,6 +76,7 @@ public class EventHandlerAppModule : AbpModule
         // Configure<EthereumConfigOptions>(configuration.GetSection("Ethereum"));
         Configure<OracleOptions>(configuration.GetSection("Oracle"));
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
+        Configure<AElfChainAliasOptions>(configuration.GetSection("AElfChainAlias"));
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         context.Services.AddSingleton<ITransmitTransactionProvider, TransmitTransactionProvider>();
@@ -80,5 +84,7 @@ public class EventHandlerAppModule : AbpModule
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
+        //context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
+        //context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
     }
 }

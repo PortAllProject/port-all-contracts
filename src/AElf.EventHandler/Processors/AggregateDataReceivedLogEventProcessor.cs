@@ -21,7 +21,7 @@ namespace AElf.EventHandler
 
         public override string ContractName => "IntegerAggregator";
 
-        public override Task ProcessAsync(LogEvent logEvent)
+        public override Task ProcessAsync(LogEvent logEvent, EventContext context)
         {
             var aggregateDataReceived = new AggregateDataReceived();
             aggregateDataReceived.MergeFrom(logEvent);

@@ -36,7 +36,7 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
 
     public override string ContractName => "Oracle";
 
-    public override async Task ProcessAsync(LogEvent logEvent)
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var collected = new SufficientCommitmentsCollected();
         collected.MergeFrom(logEvent);

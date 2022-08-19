@@ -20,7 +20,7 @@ internal class QueryCompletedLogEventProcessor : LogEventProcessorBase<QueryComp
         _logger = logger;
     }
 
-    public override Task ProcessAsync(LogEvent logEvent)
+    public override Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var completed = new QueryCompletedWithAggregation();
         completed.MergeFrom(logEvent);

@@ -39,7 +39,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         _oracleService = oracleService;
     }
 
-    public override async Task ProcessAsync(LogEvent logEvent)
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var queryCreated = new QueryCreated();
         queryCreated.MergeFrom(logEvent);

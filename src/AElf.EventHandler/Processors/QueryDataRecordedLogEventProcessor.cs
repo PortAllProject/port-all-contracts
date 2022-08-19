@@ -20,7 +20,7 @@ internal class QueryDataRecordedLogEventProcessor : LogEventProcessorBase<QueryD
 
     public override string ContractName => "OracleUser";
 
-    public override Task ProcessAsync(LogEvent logEvent)
+    public override Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var queryDataRecorded = new QueryDataRecorded();
         queryDataRecorded.MergeFrom(logEvent);

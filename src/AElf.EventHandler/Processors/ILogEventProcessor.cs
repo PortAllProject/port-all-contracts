@@ -14,7 +14,7 @@ namespace AElf.EventHandler
     public interface ILogEventProcessor
     {
         string ContractName { get; }
-        Task ProcessAsync(LogEvent logEvent);
+        Task ProcessAsync(LogEvent logEvent, EventContext context);
         bool IsMatch(string contractAddress, string logEventName);
     }
 }

@@ -19,7 +19,7 @@ internal class ContractDeployedLogEventProcessor : LogEventProcessorBase<Contrac
         _logger = logger;
     }
 
-    public override Task ProcessAsync(LogEvent logEvent)
+    public override Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
         var contractDeployed = new ContractDeployed();
         contractDeployed.MergeFrom(logEvent);

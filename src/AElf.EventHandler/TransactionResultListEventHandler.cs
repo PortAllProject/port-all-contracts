@@ -47,6 +47,9 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
                         {
                             Indexed = { eventLog.Indexed.Select(ByteString.FromBase64) },
                             NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
+                        }, new EventContext
+                        {
+                            ChainId = eventData.ChainId
                         });
                     }
                 }
