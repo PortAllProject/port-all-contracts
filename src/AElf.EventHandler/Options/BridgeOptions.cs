@@ -13,7 +13,6 @@ public class BridgeOptions
 
 public class BridgeItem
 {
-    //public string FromChainId { get; set; }
     public string EthereumClientAlias { get; set; }
     public string EthereumBridgeInContractAddress { get; set; }
     public string OriginToken { get; set; }
@@ -23,7 +22,5 @@ public class BridgeItem
     public string MaximumLeafCount { get; set; }
     public string EthereumSwapId { get; set; }
     public string TargetChainId { get; set; }
-
     
-
 }
