@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AElf.Client.Core.Extensions;
 using AElf.Client.Core.Options;
 using AElf.Contracts.Report;
 using AElf.Nethereum.Core.Options;
@@ -21,15 +22,18 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
     private readonly EthereumContractOptions _ethereumContractOptions;
     private readonly IReportProvider _reportProvider;
     private readonly string _abi;
+    private readonly ITransmitTransactionProvider _transmitTransactionProvider;
 
     public ReportConfirmedLogEventProcessor(ILogger<ReportConfirmedLogEventProcessor> logger,
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         IReportProvider reportProvider,
         ISignatureRecoverableInfoProvider signaturesRecoverableInfoProvider,
-        IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions) : base(contractAddressOptions)
+        IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
+        ITransmitTransactionProvider transmitTransactionProvider) : base(contractAddressOptions)
     {
         _logger = logger;
         _signaturesRecoverableInfoProvider = signaturesRecoverableInfoProvider;
+        _transmitTransactionProvider = transmitTransactionProvider;
         _ethereumContractOptions = ethereumContractOptions.Value;
         _reportProvider = reportProvider;
         var file = Path.Combine(_ethereumContractOptions.AbiFileDirectory,
@@ -40,46 +44,35 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {
-        // var reportConfirmed = new ReportConfirmed();
-        // reportConfirmed.MergeFrom(logEvent);
-        // _logger.LogInformation(reportConfirmed.ToString());
-        // var ethereumContractAddress = reportConfirmed.Token;
-        // var roundId = reportConfirmed.RoundId;
-        // _signaturesRecoverableInfoProvider.SetSignature(ethereumContractAddress, roundId,
-        //     reportConfirmed.Signature);
-        // if (reportConfirmed.IsAllNodeConfirmed)
-        // {
-        //     if (_ethereumConfigOptions.IsEnable)
-        //     {
-        //         var report =
-        //             _reportProvider.GetReport(ethereumContractAddress, roundId);
-        //         var signatureRecoverableInfos =
-        //             _signaturesRecoverableInfoProvider.GetSignature(ethereumContractAddress, roundId);
-        //         var (reportBytes, rs, ss, vs) = TransferToEthereumParameter(report, signatureRecoverableInfos);
-        //         var web3Manager = new Web3Manager(_ethereumConfigOptions.Url, _ethereumConfigOptions.Address,
-        //             _ethereumConfigOptions.PrivateKey, _abi);
-        //         try
-        //         {
-        //             _logger.LogInformation(
-        //                 $"Try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
-        //             var transactionReceipt =
-        //                 await web3Manager.TransmitDataOnEthereumWithReceipt(ethereumContractAddress, reportBytes,
-        //                     rs, ss, vs);
-        //             if (transactionReceipt.HasErrors().Value)
-        //             {
-        //                 _logger.LogInformation("Failed to transmit data.");
-        //             }
-        //         }
-        //         catch (Exception ex)
-        //         {
-        //             _logger.LogInformation("Failed to transmit data:");
-        //             _logger.LogInformation(ex.Message);
-        //         }
-        //     }
-        //
-        //     _signaturesRecoverableInfoProvider.RemoveSignature(ethereumContractAddress, roundId);
-        //     _reportProvider.RemoveReport(ethereumContractAddress, roundId);
-        // }
+        var reportConfirmed = new ReportConfirmed();
+        reportConfirmed.MergeFrom(logEvent);
+        _logger.LogInformation(reportConfirmed.ToString());
+        var ethereumContractAddress = reportConfirmed.Token;
+        var roundId = reportConfirmed.RoundId;
+        await _signaturesRecoverableInfoProvider.SetSignatureAsync(context.ChainId.ToString(),ethereumContractAddress, roundId,
+            reportConfirmed.Signature);
+        if (reportConfirmed.IsAllNodeConfirmed)
+        {
+            var report =
+                _reportProvider.GetReport(ethereumContractAddress, roundId);
+            var signatureRecoverableInfos =
+                await _signaturesRecoverableInfoProvider.GetSignatureAsync(context.ChainId.ToString(),ethereumContractAddress, roundId);
+            var (reportBytes, rs, ss, vs) = TransferToEthereumParameter(report, signatureRecoverableInfos);
+
+            _logger.LogInformation(
+                $"Try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
+
+            await _transmitTransactionProvider.EnqueueAsync(new SendTransmitArgs
+            {
+                Report = reportBytes,
+                Rs = rs,
+                Ss = ss,
+                RawVs = vs,
+            });
+            
+            await _signaturesRecoverableInfoProvider.RemoveSignatureAsync(context.ChainId.ToString(),ethereumContractAddress, roundId);
+            _reportProvider.RemoveReport(ethereumContractAddress, roundId);
+        }
     }
 
     public (byte[], byte[][], byte[][], byte[]) TransferToEthereumParameter(string report,

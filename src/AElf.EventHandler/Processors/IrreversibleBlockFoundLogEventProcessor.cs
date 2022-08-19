@@ -36,6 +36,7 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
     private readonly IMerkleTreeContractService _merkleTreeContractService;
     private readonly ILogger<IrreversibleBlockFoundLogEventProcessor> _logger;
     private readonly string _lockAbi;
+    private readonly AElfChainAliasOptions _aelfChainAliasOptions;
 
     public IrreversibleBlockFoundLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
@@ -48,7 +49,8 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
         BridgeService bridgeService,
         IMerkleTreeContractService merkleTreeContractService,
         INethereumService nethereumService,
-        ILogger<IrreversibleBlockFoundLogEventProcessor> logger) : base(contractAddressOptions)
+        ILogger<IrreversibleBlockFoundLogEventProcessor> logger,
+        IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOptions) : base(contractAddressOptions)
     {
         _ethereumContractOptions = ethereumContractOptions.Value;
         _latestQueriedReceiptCountProvider = latestQueriedReceiptCountProvider;
@@ -61,6 +63,7 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
         _contractAddressOptions = contractAddressOptions.Value;
         _bridgeContractService = bridgeService;
         _nethereumService = nethereumService;
+        _aelfChainAliasOptions = aelfChainAliasOptions.Value;
 
         {
             var file = Path.Combine(_ethereumContractOptions.AbiFileDirectory,
@@ -101,8 +104,6 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
             var sendReceiptIndexDto = await _bridgeOutService.GetTransferReceiptIndexAsync(aliasAddress.Item1,aliasAddress.Item2,tokenList,targetChainIdList);
             for (var i = 0; i < tokenList.Count; i++)
             {
-                var ethereumBlockNumber = await _nethereumService.GetBlockNumberAsync(aliasAddress.Item1);
-                if (ethereumBlockNumber - sendReceiptIndexDto.BlockTimes[i] <= 12) continue;
                 tokenIndex[tokenList[i]] = sendReceiptIndexDto.Indexes[i];
                 sendQueryList[item[i].SwapId] = item[i];
             }
@@ -110,21 +111,22 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
 
         foreach (var (swapId,item) in sendQueryList)
         {
-            await SendQueryAsync(item,tokenIndex[item.OriginToken]);
+            await SendQueryAsync(context.ChainId.ToString(),item,tokenIndex[item.OriginToken]);
         }
 
 
     }
 
-    private async Task QueryEthereumReceiptIndex(IGrouping<string,BridgeItem> item)
-    {
-    }
-    private async Task SendQueryAsync(BridgeItem bridgeItem, BigInteger tokenIndex)
+    // private async Task QueryEthereumReceiptIndex(IGrouping<string,BridgeItem> item)
+    // {
+    // }
+    private async Task SendQueryAsync(string chainId,BridgeItem bridgeItem, BigInteger tokenIndex)
     {
         var swapId = bridgeItem.SwapId;
-        var spaceId = await _bridgeContractService.GetSpaceIdBySwapIdAsync(Hash.LoadFromBase64(swapId));
+        var clientAlias = _aelfChainAliasOptions.Mapping[chainId];
+        var spaceId = await _bridgeContractService.GetSpaceIdBySwapIdAsync(clientAlias,Hash.LoadFromBase64(swapId));
         var lastRecordedLeafIndex = (await _merkleTreeContractService.GetLastLeafIndexAsync(
-            new GetLastLeafIndexInput
+            clientAlias,new GetLastLeafIndexInput
             {
                 SpaceId = spaceId
             })).Value;
@@ -170,58 +172,11 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
 
             _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
 
-            var sendTxResult = await _oracleService.QueryAsync(queryInput);
+            var sendTxResult = await _oracleService.QueryAsync(clientAlias,queryInput);
             _logger.LogInformation($"Query tx id: {sendTxResult.Transaction.GetHash()}");
             _latestQueriedReceiptCountProvider.Set(swapId, (int) tokenIndex + 1);
             _logger.LogInformation(
                 $"Latest queried receipt count: {_latestQueriedReceiptCountProvider.Get(swapId)}");
         }
-
-        //Format Bridge Config => {ethereum contract address -> alias -> {token[],targetChainId[]}}
-        // var bridgeGroup = _bridgeOptions.Bridges.GroupBy(e => e.EthereumBridgeInContractAddress).ToList();
-        // foreach (var bridge in bridgeGroup)
-        // {
-        //     _logger.LogInformation($"Querying ethereum contract address : {bridge.Key}.");
-        //     var bridgeGroupByAlias = bridge.GroupBy(e => e.EthereumClientAlias);
-        //     foreach (var item in bridgeGroupByAlias)
-        //     {
-        //         var ethereumClientAlias = item.Key;
-        //         var tokenList = item.Select(e => e.OriginToken).ToList();
-        //         var targetChainIdList = item.Select(e => e.TargetChainId).ToList();
-        //         var sendReceiptIndexDto = await _bridgeOutService.GetTransferReceiptIndexAsync(ethereumClientAlias,tokenList,targetChainIdList);
-        //         
-        //         var swapTokenMap = new Dictionary<string, BridgeItem>();
-        //         foreach (var bridgeItem in item)
-        //         {
-        //             swapTokenMap[bridgeItem.SwapId] = bridgeItem;
-        //         }
-        //         var tokenIndex = new Dictionary<string, BigInteger>();
-        //         var blockNumber = new Dictionary<string, BigInteger>();
-        //         for (var i = 0; i < tokenList.Count; i++)
-        //         {
-        //             tokenIndex[tokenList[i]] = sendReceiptIndexDto.Indexes[i];
-        //             blockNumber[tokenList[i]] = sendReceiptIndexDto.BlockTimes[i];
-        //         }
-        //         
-        //         for (var i = 0; i < tokenList.Count; i++)
-        //         {
-        //             var ethereumBlockNumber = await _nethereumService.GetBlockNumberAsync(ethereumClientAlias);
-        //             if (ethereumBlockNumber - blockNumber[tokenList[i]] < 12)
-        //             {
-        //                 tokenList.Remove(tokenList[i]);
-        //             }
-        //         }
-        //         var swapTokenMapSend = swapTokenMap.Select(pair => tokenList.Contains(pair.Value.OriginToken) ? pair : default).ToList();
-        //         foreach (var (swapId, value) in swapTokenMapSend)
-        //         {
-        //             var index  = tokenIndex[value.OriginToken];
-        //             
-        //
-        //            
-        //
-        //         }
-        //         
-        //     }
-        // }
     }
 }

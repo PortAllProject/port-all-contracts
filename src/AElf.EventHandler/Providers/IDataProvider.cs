@@ -84,10 +84,10 @@ public class DataProvider : IDataProvider, ISingletonDependency
         {
             var swapId = title.Split('_').Last();
             _logger.LogInformation($"Trying to query record receipt data of {swapId}");
-            var swapConfig = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId);
+            var bridgeItem = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId);
             _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
             var recordReceiptHashInput =
-                await GetReceiptHashMap(Hash.LoadFromBase64(swapId), swapConfig, long.Parse(options[0]),
+                await GetReceiptHashMap(Hash.LoadFromBase64(swapId), bridgeItem, long.Parse(options[0]),
                     long.Parse(options[1]));
             _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
             _dictionary[queryId] = recordReceiptHashInput;
@@ -135,7 +135,8 @@ public class DataProvider : IDataProvider, ISingletonDependency
     private async Task<string> GetReceiptHashMap(Hash swapId, BridgeItem bridgeItem, long start, long end)
     {
         var token = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).OriginToken;
-        var receiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(bridgeItem.EthereumClientAlias,bridgeItem.EthereumBridgeOutContractAddress, token, start);
+        var chainId = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).TargetChainId;
+        var receiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(bridgeItem.EthereumClientAlias,bridgeItem.EthereumBridgeOutContractAddress, token, chainId,start,end);
         var receiptHashes = new List<Hash>();
         for (var i = 0; i <= end - start; i++)
         {

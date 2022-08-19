@@ -18,6 +18,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
     private readonly BridgeOptions _bridgeOptions;
     private readonly OracleOptions _oracleOptions;
     private readonly IOracleService _oracleService;
+    private readonly AElfChainAliasOptions _aElfClientConfigOptions;
     public override string ContractName => "Oracle";
     private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
@@ -28,6 +29,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         ILogger<QueryCreatedLogEventProcessor> logger,
         IOptionsSnapshot<BridgeOptions> bridgeOptions,
         IOptionsSnapshot<OracleOptions> oracleOptions,
+        IOptionsSnapshot<AElfChainAliasOptions> aelfClientConfigOptions,
         IOracleService oracleService) :
         base(contractAddressOptions)
     {
@@ -37,6 +39,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         _bridgeOptions = bridgeOptions.Value;
         _oracleOptions = oracleOptions.Value;
         _oracleService = oracleService;
+        _aElfClientConfigOptions = aelfClientConfigOptions.Value;
     }
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
@@ -44,6 +47,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         var queryCreated = new QueryCreated();
         queryCreated.MergeFrom(logEvent);
         _logger.LogInformation(queryCreated.ToString());
+        
         
         var nodeAddress = Address.FromBase58(_bridgeOptions.AccountAddress);
         var firstDesignatedNodeAddress = queryCreated.DesignatedNodeList.Value.First();
@@ -62,7 +66,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
                 return;
             }
         
-            var salt = _saltProvider.GetSalt(queryCreated.QueryId);
+            var salt = _saltProvider.GetSalt(context.ChainId.ToString(),queryCreated.QueryId);
             _logger.LogInformation($"Queried data: {data}, salt: {salt}");
             var commitInput = new CommitInput
             {
@@ -71,8 +75,9 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
                     HashHelper.ComputeFrom(data),
                     HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_bridgeOptions.AccountAddress)))
             };
+            var clientAlias = _aElfClientConfigOptions.Mapping[context.ChainId.ToString()];
             _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
-            var transactionResult = await _oracleService.CommitAsync(commitInput);
+            var transactionResult = await _oracleService.CommitAsync(clientAlias,commitInput);
             _logger.LogInformation($"[Commit] Tx id {transactionResult.TransactionResult}");
         }
     }

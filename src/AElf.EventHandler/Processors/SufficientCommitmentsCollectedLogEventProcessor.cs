@@ -18,13 +18,15 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
     private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
     private readonly OracleOptions _oracleOptions;
     private readonly IOracleService _oracleService;
+    private readonly AElfChainAliasOptions _aelfChainAliasOptions;
 
     public SufficientCommitmentsCollectedLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         ISaltProvider saltProvider, IDataProvider dataProvider,
         ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger,
         IOptionsSnapshot<OracleOptions> oracleOptions,
-        IOracleService oracleService) : base(contractAddressOptions)
+        IOracleService oracleService,
+        IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOptions) : base(contractAddressOptions)
     {
         _saltProvider = saltProvider;
         _dataProvider = dataProvider;
@@ -32,6 +34,7 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         _contractAddressOptions = contractAddressOptions.Value;
         _oracleOptions = oracleOptions.Value;
         _oracleService = oracleService;
+        _aelfChainAliasOptions = aelfChainAliasOptions.Value;
     }
 
     public override string ContractName => "Oracle";
@@ -48,16 +51,14 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         }
         
         _logger.LogInformation($"Get data for revealing: {data}");
-        // var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
-        //     _configOptions.AccountPassword);
         var revealInput = new RevealInput
         {
             QueryId = collected.QueryId,
             Data = data,
-            Salt = _saltProvider.GetSalt(collected.QueryId)
+            Salt = _saltProvider.GetSalt(context.ChainId.ToString(),collected.QueryId)
         };
         _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");
-        var transaction = await _oracleService.RevealAsync(revealInput);
+        var transaction = await _oracleService.RevealAsync(_aelfChainAliasOptions.Mapping[context.ChainId.ToString()],revealInput);
         _logger.LogInformation($"[Reveal] Transaction : {transaction}");
     }
 }
