@@ -11,43 +11,40 @@ namespace AElf.Client.MerkleTreeContract;
 
 public interface IMerkleTreeContractService
 {
-    Task<SendTransactionResult> CreateSpaceAsync(CreateSpaceInput createSpaceInput);
+    Task<SendTransactionResult> CreateSpaceAsync(string clientAlias, CreateSpaceInput createSpaceInput);
 
-    Task<Int64Value> GetLastLeafIndexAsync(GetLastLeafIndexInput getLastLeafIndexInput);
+    Task<Int64Value> GetLastLeafIndexAsync(string clientAlias, GetLastLeafIndexInput getLastLeafIndexInput);
 }
 
 public class MerkleTreeContractService : ContractServiceBase, IMerkleTreeContractService, ITransientDependency
 {
     private readonly IAElfClientService _clientService;
-    private readonly AElfClientConfigOptions _clientConfigOptions;
     private readonly AElfContractOptions _contractOptions;
+    
+    private const string ContractName = "MerkleTreeContractAddress";
 
     public MerkleTreeContractService(IAElfClientService clientService,
-        IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
         IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
-        Address.FromBase58(contractOptions.Value.ContractAddressList[""]))
+        Address.FromBase58(contractOptions.Value.ContractAddressList[ContractName]))
     {
         _clientService = clientService;
-        _clientConfigOptions = clientConfigOptions.Value;
         _contractOptions = contractOptions.Value;
     }
 
-    public async Task<SendTransactionResult> CreateSpaceAsync(CreateSpaceInput createSpaceInput)
+    public async Task<SendTransactionResult> CreateSpaceAsync(string clientAlias, CreateSpaceInput createSpaceInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("CreateSpace", createSpaceInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("CreateSpace", createSpaceInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 
-    public async Task<Int64Value> GetLastLeafIndexAsync(GetLastLeafIndexInput getLastLeafIndexInput)
+    public async Task<Int64Value> GetLastLeafIndexAsync(string clientAlias, GetLastLeafIndexInput getLastLeafIndexInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var result = await _clientService.ViewAsync(_contractOptions.ContractAddressList[""], "GetLastLeafIndex",
-            getLastLeafIndexInput, useClientAlias);
+        var result = await _clientService.ViewAsync(_contractOptions.ContractAddressList[ContractName], "GetLastLeafIndex",
+            getLastLeafIndexInput, clientAlias);
         var actualResult = new Int64Value();
         actualResult.MergeFrom(result);
         return actualResult;

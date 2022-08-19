@@ -9,11 +9,11 @@ namespace AElf.Client.Report;
 
 public interface IReportService
 {
-    Task<SendTransactionResult> ProposeReportAsync(CallbackInput proposeReportInput);
+    Task<SendTransactionResult> ProposeReportAsync(string clientAlias, CallbackInput proposeReportInput);
 
-    Task<SendTransactionResult> ConfirmReportAsync(ConfirmReportInput confirmReportInput);
+    Task<SendTransactionResult> ConfirmReportAsync(string clientAlias, ConfirmReportInput confirmReportInput);
 
-    Task<SendTransactionResult> RejectReportAsync(RejectReportInput rejectReportInput);
+    Task<SendTransactionResult> RejectReportAsync(string clientAlias, RejectReportInput rejectReportInput);
 }
 
 public class ReportService : ContractServiceBase, IReportService, ITransientDependency
@@ -30,7 +30,7 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
         _clientConfigOptions = clientConfigOptions.Value;
     }
 
-    public async Task<SendTransactionResult> ProposeReportAsync(CallbackInput proposeReportInput)
+    public async Task<SendTransactionResult> ProposeReportAsync(string clientAlias, CallbackInput proposeReportInput)
     {
         var useClientAlias = _clientConfigOptions.ClientAlias;
         var tx = await PerformSendTransactionAsync("ProposeReport", proposeReportInput, useClientAlias);
@@ -41,7 +41,7 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
         };
     }
 
-    public async Task<SendTransactionResult> ConfirmReportAsync(ConfirmReportInput confirmReportInput)
+    public async Task<SendTransactionResult> ConfirmReportAsync(string clientAlias, ConfirmReportInput confirmReportInput)
     {
         var useClientAlias = _clientConfigOptions.ClientAlias;
         var tx = await PerformSendTransactionAsync("ConfirmReport", confirmReportInput, useClientAlias);
@@ -52,7 +52,7 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
         };
     }
 
-    public async Task<SendTransactionResult> RejectReportAsync(RejectReportInput rejectReportInput)
+    public async Task<SendTransactionResult> RejectReportAsync(string clientAlias, RejectReportInput rejectReportInput)
     {
         var useClientAlias = _clientConfigOptions.ClientAlias;
         var tx = await PerformSendTransactionAsync("RejectReport", rejectReportInput, useClientAlias);

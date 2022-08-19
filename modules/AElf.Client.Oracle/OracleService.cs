@@ -9,13 +9,13 @@ namespace AElf.Client.Oracle;
 
 public interface IOracleService
 {
-    Task<SendTransactionResult> QueryAsync(QueryInput queryInput);
+    Task<SendTransactionResult> QueryAsync(string clientAlias, QueryInput queryInput);
 
-    Task<SendTransactionResult> CommitAsync(CommitInput commitInput);
+    Task<SendTransactionResult> CommitAsync(string clientAlias, CommitInput commitInput);
 
-    Task<SendTransactionResult> RevealAsync(RevealInput revealInput);
+    Task<SendTransactionResult> RevealAsync(string clientAlias, RevealInput revealInput);
 
-    Task<SendTransactionResult> CancelQueryAsync(Hash cancelQueryInput);
+    Task<SendTransactionResult> CancelQueryAsync(string clientAlias, Hash cancelQueryInput);
 }
 
 public class OracleService : ContractServiceBase, IOracleService, ITransientDependency
@@ -32,47 +32,43 @@ public class OracleService : ContractServiceBase, IOracleService, ITransientDepe
         _clientConfigOptions = clientConfigOptions.Value;
     }
 
-    public async Task<SendTransactionResult> QueryAsync(QueryInput queryInput)
+    public async Task<SendTransactionResult> QueryAsync(string clientAlias, QueryInput queryInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("Query", queryInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("Query", queryInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 
-    public async Task<SendTransactionResult> CommitAsync(CommitInput commitInput)
+    public async Task<SendTransactionResult> CommitAsync(string clientAlias, CommitInput commitInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("Commit", commitInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("Commit", commitInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 
-    public async Task<SendTransactionResult> RevealAsync(RevealInput revealInput)
+    public async Task<SendTransactionResult> RevealAsync(string clientAlias, RevealInput revealInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("Reveal", revealInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("Reveal", revealInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 
-    public async Task<SendTransactionResult> CancelQueryAsync(Hash cancelQueryInput)
+    public async Task<SendTransactionResult> CancelQueryAsync(string clientAlias, Hash cancelQueryInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("CancelQuery", cancelQueryInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("CancelQuery", cancelQueryInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 }

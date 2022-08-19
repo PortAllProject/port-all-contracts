@@ -9,33 +9,28 @@ namespace AElf.Client.Bridge;
 
 public interface IBridgeService
 {
-    Task<Hash> GetSpaceIdBySwapIdAsync(Hash swapId);
+    Task<Hash> GetSpaceIdBySwapIdAsync(string clientAlias, Hash swapId);
 }
 
 public class BridgeService : ContractServiceBase, IBridgeService, ITransientDependency
 {
     private readonly IAElfClientService _clientService;
-    private readonly AElfClientConfigOptions _clientConfigOptions;
     private readonly AElfContractOptions _contractOptions;
 
     private const string ContractName = "BridgeContractAddress";
 
     public BridgeService(IAElfClientService clientService,
-        IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
         IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
         Address.FromBase58(contractOptions.Value.ContractAddressList[ContractName]))
     {
         _clientService = clientService;
-        _clientConfigOptions = clientConfigOptions.Value;
         _contractOptions = contractOptions.Value;
     }
 
-    public async Task<Hash> GetSpaceIdBySwapIdAsync(Hash swapId)
+    public async Task<Hash> GetSpaceIdBySwapIdAsync(string clientAlias, Hash swapId)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-
         var result = await _clientService.ViewAsync(_contractOptions.ContractAddressList["ContractName"], "GetSpaceIdBySwapId",
-            swapId, useClientAlias);
+            swapId, clientAlias);
 
         return Hash.LoadFromByteArray(result);
     }
