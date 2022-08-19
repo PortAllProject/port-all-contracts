@@ -17,8 +17,9 @@ namespace AElf.EventHandler;
 
 public interface ITransmitTransactionProvider
 {
-    Task SendByLibAsync(string libHash, long libHeight);
-    Task UpdateStatusAsync();
+    Task EnqueueAsync(SendTransmitArgs args);
+    Task SendByLibAsync(string chainId, string libHash, long libHeight);
+    Task UpdateQueueAsync();
 }
 
 public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionProvider, ISingletonDependency
@@ -53,7 +54,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         await EnqueueAsync(TransmitSendingQueue, args);
     }
 
-    public async Task SendByLibAsync(string libHash, long libHeight)
+    public async Task SendByLibAsync(string chainId, string libHash, long libHeight)
     {
         var item = await GetFirstItemAsync(TransmitSendingQueue);
         while (item != null)
@@ -92,7 +93,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         }
     }
 
-    public async Task UpdateStatusAsync()
+    public async Task UpdateQueueAsync()
     {
         var item = await GetFirstItemAsync(TransmitCheckingQueue);
         while (item != null)

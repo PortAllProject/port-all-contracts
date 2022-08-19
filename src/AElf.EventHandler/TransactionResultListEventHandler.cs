@@ -49,7 +49,11 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
                             NonIndexed = ByteString.FromBase64(eventLog.NonIndexed)
                         }, new EventContext
                         {
-                            ChainId = eventData.ChainId
+                            ChainId = eventData.ChainId,
+                            BlockNumber = txResultEto.BlockNumber,
+                            BlockHash = txResultEto.BlockHash,
+                            BlockTime = txResultEto.BlockTime,
+                            TransactionId = txResultEto.TransactionId
                         });
                     }
                 }

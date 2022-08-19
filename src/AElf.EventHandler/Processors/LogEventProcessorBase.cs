@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AElf.Client.Core.Options;
 using AElf.CSharp.Core;
@@ -42,5 +43,9 @@ namespace AElf.EventHandler
     public class EventContext
     {
         public int ChainId { get; set; }
+        public long BlockNumber { get; set; }
+        public string BlockHash { get; set; }
+        public DateTime BlockTime { get; set; }
+        public string TransactionId { get; set; }
     }
 }

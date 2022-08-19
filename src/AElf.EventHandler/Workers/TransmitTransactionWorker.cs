@@ -19,6 +19,6 @@ public class TransmitTransactionWorker : AsyncPeriodicBackgroundWorkerBase
 
     protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
     {
-        await _transmitTransactionProvider.UpdateStatusAsync();
+        await _transmitTransactionProvider.UpdateQueueAsync();
     }
 }
