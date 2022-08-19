@@ -6,7 +6,7 @@ namespace AElf.Nethereum.Bridge;
 
 public interface IBridgeOutService
 {
-    Task<GetReceiptInfosDTO> GetSendReceiptInfosAsync(string clientAlias, string contractAddress, string token, long fromIndex);
+    Task<GetReceiptInfosDTO> GetSendReceiptInfosAsync(string clientAlias, string contractAddress, string token, string targetChainId, long fromIndex);
 
     Task<GetSendReceiptIndexDTO> GetTransferReceiptIndexAsync(string clientAlias, string contractAddress, List<string> tokens,
         List<string> targetChainIds);
@@ -17,11 +17,12 @@ public class BridgeOutService : ContractServiceBase, IBridgeOutService, ITransie
     protected override string SmartContractName { get; } = "BridgeOut";
 
     public async Task<GetReceiptInfosDTO> GetSendReceiptInfosAsync(string clientAlias, string contractAddress,
-        string token, long fromIndex)
+        string token, string targetChainId, long fromIndex)
     {
         var function = GetFunction(clientAlias, contractAddress, "getSendReceiptInfos");
 
-        var evmGetReceiptInfos = await function.CallDeserializingToObjectAsync<GetReceiptInfosDTO>(token, fromIndex);
+        var evmGetReceiptInfos =
+            await function.CallDeserializingToObjectAsync<GetReceiptInfosDTO>(token, targetChainId, fromIndex);
         return evmGetReceiptInfos;
     }
 

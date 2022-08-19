@@ -19,7 +19,7 @@ public interface ITransmitTransactionProvider
 {
     Task EnqueueAsync(SendTransmitArgs args);
     Task SendByLibAsync(string chainId, string libHash, long libHeight);
-    Task UpdateQueueAsync();
+    Task UpdateQueueAsync(string chainId);
 }
 
 public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionProvider, ISingletonDependency
@@ -51,12 +51,12 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
 
     public async Task EnqueueAsync(SendTransmitArgs args)
     {
-        await EnqueueAsync(TransmitSendingQueue, args);
+        await EnqueueAsync(GetQueueName(TransmitSendingQueue,args.ChainId), args);
     }
 
     public async Task SendByLibAsync(string chainId, string libHash, long libHeight)
     {
-        var item = await GetFirstItemAsync(TransmitSendingQueue);
+        var item = await GetFirstItemAsync(GetQueueName(TransmitSendingQueue, chainId));
         while (item != null)
         {
             if (item.BlockHeight > libHeight)
@@ -70,7 +70,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 if (item.RetryTimes > 3)
                 {
                     Logger.LogError($"Transmit transaction failed after retry {item.RetryTimes-1} times. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");
-                    await EnqueueAsync(TransmitFailedQueue, item);
+                    await EnqueueAsync(GetQueueName(TransmitFailedQueue, item.ChainId), item);
                 }
                 else
                 {
@@ -84,18 +84,18 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                     }
 
                     item.TransactionId = sendResult;
-                    await EnqueueAsync(TransmitCheckingQueue, item);
+                    await EnqueueAsync(GetQueueName(TransmitCheckingQueue,item.ChainId), item);
                 }
             }
             
-            await DequeueAsync(TransmitSendingQueue);
-            item = await GetFirstItemAsync(TransmitSendingQueue);
+            await DequeueAsync(GetQueueName(TransmitSendingQueue, chainId));
+            item = await GetFirstItemAsync(GetQueueName(TransmitSendingQueue, chainId));
         }
     }
 
-    public async Task UpdateQueueAsync()
+    public async Task UpdateQueueAsync(string chainId)
     {
-        var item = await GetFirstItemAsync(TransmitCheckingQueue);
+        var item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
         while (item != null)
         {
             var receipt = await _nethereumService.GetTransactionReceiptAsync(item.TargetChainId, item.TransactionId);
@@ -104,7 +104,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             {
                 Logger.LogError($"Transmit transaction failed. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");
                 item.RetryTimes += 1;
-                await EnqueueAsync(TransmitSendingQueue, item);
+                await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
             }
 
             var currentHeight = await _nethereumService.GetBlockNumberAsync(item.TargetChainId);
@@ -118,12 +118,17 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             {
                 Logger.LogError($"Transmit transaction forked. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");
                 item.RetryTimes += 1;
-                await EnqueueAsync(TransmitSendingQueue, item);
+                await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
             }
             
-            await DequeueAsync(TransmitCheckingQueue);
-            item = await GetFirstItemAsync(TransmitCheckingQueue);
+            await DequeueAsync(GetQueueName(TransmitCheckingQueue,chainId));
+            item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
         }
+    }
+
+    private string GetQueueName(string queue, string chainId)
+    {
+        return $"{queue}-{chainId}";
     }
 
     private async Task EnqueueAsync(string queueName, SendTransmitArgs item)
