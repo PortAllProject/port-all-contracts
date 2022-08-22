@@ -10,7 +10,6 @@
         <PackageReference Include="AElf.Kernel.Types" Version="1.2.0" />
         <PackageReference Include="AElf.Types" Version="1.2.0" />
         <PackageReference Include="AElf.Core" Version="1.2.0" />
-        <PackageReference Include="AElf.Client" Version="1.1.0" />
         <PackageReference Include="AElf.CSharp.Core" Version="1.2.0" />
         <PackageReference Include="Nethereum.KeyStore" Version="4.7.0" />
     </ItemGroup>

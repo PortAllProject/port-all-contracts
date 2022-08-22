@@ -32,34 +32,31 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
 
     public async Task<SendTransactionResult> ProposeReportAsync(string clientAlias, CallbackInput proposeReportInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("ProposeReport", proposeReportInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("ProposeReport", proposeReportInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 
     public async Task<SendTransactionResult> ConfirmReportAsync(string clientAlias, ConfirmReportInput confirmReportInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("ConfirmReport", confirmReportInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("ConfirmReport", confirmReportInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 
     public async Task<SendTransactionResult> RejectReportAsync(string clientAlias, RejectReportInput rejectReportInput)
     {
-        var useClientAlias = _clientConfigOptions.ClientAlias;
-        var tx = await PerformSendTransactionAsync("RejectReport", rejectReportInput, useClientAlias);
+        var tx = await PerformSendTransactionAsync("RejectReport", rejectReportInput, clientAlias);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
 }

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using AElf.Client.Dto;
-using AElf.Client.MultiToken;
+using AElf.Contracts.MultiToken;
 using AElf.Types;
 using Google.Protobuf;
 

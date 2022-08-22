@@ -50,10 +50,10 @@ service BridgeContract {
     rpc GetGasFee(google.protobuf.StringValue) returns (google.protobuf.Int64Value){
         option (aelf.is_view) = true;
     }
-    rpc GetGasPrice(google.protobuf.StringValue) returns(google.protobuf.Int64Value){
+    rpc GetGasPrice(google.protobuf.StringValue) returns(google.protobuf.StringValue){
         option (aelf.is_view) = true;
     }
-    rpc GetPriceRatio(google.protobuf.StringValue) returns (google.protobuf.DoubleValue){
+    rpc GetPriceRatio(google.protobuf.StringValue) returns (google.protobuf.StringValue){
         option (aelf.is_view) = true;
     }
     
@@ -222,23 +222,7 @@ message Receipt{
     aelf.Address owner = 2;
     string targetAddress = 3;
     int64 amount = 4;
-}
-
-message GasPrice{
-    string chain_id = 1;
-    int64 gas_price = 2;
-}
-
-message GasFee{
-    string chain_id = 1;
-    int64 gas_fee = 2;
-}
-
-message PriceRatio{
-    string target_chain_id = 1;
-    double price_ratio = 2;
-}
-
+} 
 message ReceiptList{
     repeated Receipt value = 1;
 }
@@ -270,8 +254,22 @@ message SetGasPriceInput{
     repeated GasPrice gas_price_list = 1;
 }
 
+message GasPrice{
+    string chain_id = 1;
+    int64 gas_price = 2;
+}
+
+message GasFee{
+    string chain_id = 1;
+    int64 gas_fee = 2;
+}
+
 message SetPriceRatioInput{
     repeated PriceRatio value = 1;
+}
+message PriceRatio{
+    string target_chain_id = 1;
+    int64 price_ratio = 2;
 }
 
  

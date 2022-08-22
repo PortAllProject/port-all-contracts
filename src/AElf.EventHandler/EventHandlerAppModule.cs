@@ -80,10 +80,9 @@ public class EventHandlerAppModule : AbpModule
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         context.Services.AddSingleton<ITransmitTransactionProvider, TransmitTransactionProvider>();
     }
-
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        //context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
+        context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
         //context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
     }
 }

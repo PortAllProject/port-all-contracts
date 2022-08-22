@@ -4,7 +4,6 @@ using System.Numerics;
 using System.Threading.Tasks;
 using AElf.Client.Bridge;
 using AElf.Client.Core.Options;
-using AElf.Client.Election;
 using AElf.Client.MerkleTreeContract;
 using AElf.Client.Oracle;
 using AElf.Contracts.MerkleTreeContract;
