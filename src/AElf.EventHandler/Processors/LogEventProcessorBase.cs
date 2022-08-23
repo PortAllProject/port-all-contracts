@@ -12,7 +12,7 @@ namespace AElf.EventHandler
     {
         private readonly AElfContractOptions _contractOptions;
 
-        public LogEventProcessorBase(IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
+        protected LogEventProcessorBase(IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
         {
             _contractOptions = contractAddressOptions.Value;
         }
