@@ -59,6 +59,6 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         };
         _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");
         var transaction = await _oracleService.RevealAsync(_aelfChainAliasOptions.Mapping[context.ChainId.ToString()],revealInput);
-        _logger.LogInformation($"[Reveal] Transaction : {transaction}");
+        _logger.LogInformation($"[Reveal] Transaction id  : {transaction.TransactionResult.TransactionId}");
     }
 }

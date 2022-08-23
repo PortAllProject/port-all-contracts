@@ -78,7 +78,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
             var clientAlias = _aElfClientConfigOptions.Mapping[context.ChainId.ToString()];
             _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
             var transactionResult = await _oracleService.CommitAsync(clientAlias,commitInput);
-            _logger.LogInformation($"[Commit] Tx id {transactionResult.TransactionResult}");
+            _logger.LogInformation($"[Commit] Transaction id {transactionResult.TransactionResult.TransactionId}");
         }
     }
 }

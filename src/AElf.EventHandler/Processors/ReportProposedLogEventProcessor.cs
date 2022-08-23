@@ -25,11 +25,11 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
     private readonly ILogger<ReportProposedLogEventProcessor> _logger;
 
     public ReportProposedLogEventProcessor(
-        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         IReportProvider reportProvider,
         IReportService reportService,
         IAElfAccountProvider accountProvider,
         ILogger<ReportProposedLogEventProcessor> logger,
+        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         IOptionsSnapshot<BridgeOptions> bridgeOptions,
         IOptionsSnapshot<AElfClientConfigOptions> aelfConfigOptions,
         IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOptions) : base(contractAddressOptions)
@@ -62,6 +62,6 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         });
         _reportProvider.SetReport(reportProposed.Token, reportProposed.RoundId,
             reportProposed.RawReport);
-        _logger.LogInformation($"[ConfirmReport] Tx ： {sendTxResult}");
+        _logger.LogInformation($"[ConfirmReport] Transaction id ： {sendTxResult.TransactionResult.TransactionId}");
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AElf.Client.Core.Extensions;
 using AElf.Client.Core.Options;
+using AElf.Client.Report;
 using AElf.Contracts.Report;
 using AElf.Nethereum.Core.Options;
 using AElf.Types;
@@ -31,7 +32,8 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
         ISignatureRecoverableInfoProvider signaturesRecoverableInfoProvider,
         IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
         ITransmitTransactionProvider transmitTransactionProvider,
-        IOptionsSnapshot<BridgeOptions> bridgeOptions) : base(contractAddressOptions)
+        IOptionsSnapshot<BridgeOptions> bridgeOptions,
+        IReportService reportContractService) : base(contractAddressOptions)
     {
         _logger = logger;
         _signaturesRecoverableInfoProvider = signaturesRecoverableInfoProvider;
@@ -66,10 +68,13 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                 var (reportBytes, rs, ss, vs) = TransferToEthereumParameter(report, signatureRecoverableInfos);
 
                 _logger.LogInformation(
-                    $"Try to transmit data to Ethereum, Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
-
+                    $"Try to transmit data, TargetChainId: {reportConfirmed.TargetChainId} Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
+                
                 await _transmitTransactionProvider.EnqueueAsync(new SendTransmitArgs
                 {
+                    ChainId = context.ChainId.ToString(),
+                    TargetContractAddress = ethereumContractAddress,
+                    TargetChainId = reportConfirmed.TargetChainId,
                     Report = reportBytes,
                     Rs = rs,
                     Ss = ss,
