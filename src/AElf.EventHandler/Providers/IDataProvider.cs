@@ -83,7 +83,7 @@ public class DataProvider : IDataProvider, ISingletonDependency
         if (title.StartsWith("record_receipts") && options.Count == 2)
         {
             var swapId = title.Split('_').Last();
-            _logger.LogInformation($"Trying to query record receipt data of {swapId}");
+            _logger.LogInformation($"Trying to query record receipt data. Swap id: {swapId}");
             var bridgeItem = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId);
             _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
             var recordReceiptHashInput =
@@ -158,43 +158,6 @@ public class DataProvider : IDataProvider, ISingletonDependency
         
         return input.ToString();
     }
-
-    // private Hash GetHashTokenAmountData(string stringAmount, int originTokenSizeInByte, bool isBigEndian)
-    // {
-    //     var amount = decimal.Parse(stringAmount);
-    //     var preHolderSize = originTokenSizeInByte - 16;
-    //     int[] amountInIntegers;
-    //     if (isBigEndian)
-    //     {
-    //         amountInIntegers = decimal.GetBits(amount).Reverse().ToArray();
-    //         if (preHolderSize < 0)
-    //             amountInIntegers = amountInIntegers.TakeLast(originTokenSizeInByte / 4).ToArray();
-    //     }
-    //     else
-    //     {
-    //         amountInIntegers = decimal.GetBits(amount).ToArray();
-    //         if (preHolderSize < 0)
-    //             amountInIntegers = amountInIntegers.Take(originTokenSizeInByte / 4).ToArray();
-    //     }
-    //
-    //     var amountBytes = new List<byte>();
-    //
-    //     amountInIntegers.Aggregate(amountBytes, (cur, i) =>
-    //     {
-    //         cur.AddRange(i.ToBytes(isBigEndian));
-    //         return cur;
-    //     });
-    //
-    //     if (preHolderSize > 0)
-    //     {
-    //         var placeHolder = Enumerable.Repeat(new byte(), preHolderSize).ToArray();
-    //         amountBytes = isBigEndian
-    //             ? placeHolder.Concat(amountBytes).ToList()
-    //             : amountBytes.Concat(placeHolder).ToList();
-    //     }
-    //
-    //     return HashHelper.ComputeFrom(amountBytes.ToArray());
-    // }
 
     private string Aggregate(List<decimal> dataList)
     {
@@ -297,29 +260,5 @@ public class DataProvider : IDataProvider, ISingletonDependency
         }
 
         return data;
-    }
-
-    private async Task<List<ReceiptInfo>> GetReceiptInfosAsync(string lockMappingContractAddress, long start,
-        long end, string nodeUrl, bool canTakeToken)
-    {
-        var receiptInfoList = new List<ReceiptInfo>();
-        // var usingAbi = canTakeToken ? _lockWithTakeTokenAbi : _bridgeAbi;
-        // if (_web3ManagerForLock == null)
-        // {
-        //     _web3ManagerForLock = new Web3Manager(nodeUrl,
-        //         _ethereumConfigOptions.Address,
-        //         _ethereumConfigOptions.PrivateKey, usingAbi);
-        // }
-        //
-        // var receiptInfoFunction =
-        //     _web3ManagerForLock.GetFunction(lockMappingContractAddress, "getReceiptInfo");
-        // for (var i = start; i <= end; i++)
-        // {
-        //     var receiptInfo = await receiptInfoFunction.CallDeserializingToObjectAsync<ReceiptInfo>(i);
-        //     _logger.LogInformation($"Got receipt info of id {i}: {receiptInfo}");
-        //     receiptInfoList.Add(receiptInfo);
-        // }
-
-        return receiptInfoList;
     }
 }

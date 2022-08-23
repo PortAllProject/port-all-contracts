@@ -39,14 +39,15 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         IOptionsSnapshot<BridgeOptions> bridgeOptions,
         IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOption,
         IOptionsSnapshot<BlockConfirmationOptions> blockConfirmation,
+        IOptionsSnapshot<AElfContractOptions> contractOptions,
         BridgeOutService bridgeOutService,
         NethereumService nethereumService,
         OracleService oracleService,
         BridgeService bridgeService,
         IMerkleTreeContractService merkleTreeContractService,
         ILatestQueriedReceiptCountProvider latestQueriedReceiptCountProvider,
-        ILogger<ReceiptSyncWorker> logger,
-        AElfContractOptions contractOptions) : base(timer,
+        ILogger<ReceiptSyncWorker> logger
+        ) : base(timer,
         serviceScopeFactory)
     {
         Timer.Period = 1000 * 60;
@@ -59,7 +60,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         _aelfChainAliasOptions = aelfChainAliasOption.Value;
         _latestQueriedReceiptCountProvider = latestQueriedReceiptCountProvider;
         _logger = logger;
-        _contractOptions = contractOptions;
+        _contractOptions = contractOptions.Value;
         _blockConfirmationOptions = blockConfirmation.Value;
     }
 
@@ -113,43 +114,46 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
 
         if (_latestQueriedReceiptCountProvider.Get(swapId) == 0)
         {
-            _latestQueriedReceiptCountProvider.Set(swapId, lastRecordedLeafIndex);
+            _latestQueriedReceiptCountProvider.Set(swapId, lastRecordedLeafIndex + 1);
         }
 
         _logger.LogInformation($"Last recorded leaf index : {lastRecordedLeafIndex}.");
-        if (tokenIndex <= _latestQueriedReceiptCountProvider.Get(swapId))
+        var tokenLeafIndex = tokenIndex - 1;
+        if (tokenLeafIndex < _latestQueriedReceiptCountProvider.Get(swapId))
         {
             return;
         }
-        
-        if (tokenIndex - lastRecordedLeafIndex > 0)
+
+        var notRecordTokenNumber = tokenLeafIndex - lastRecordedLeafIndex;
+        if (notRecordTokenNumber > 0)
         {
             var blockNumber = await _nethereumService.GetBlockNumberAsync(bridgeItem.EthereumClientAlias);
             var getReceiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(_aelfChainAliasOptions.Mapping[chainId],
                 bridgeItem.EthereumBridgeOutContractAddress, bridgeItem.OriginToken, bridgeItem.TargetChainId,
-                lastRecordedLeafIndex + 1,(long)tokenIndex);
-            var lastTokenIndexConfirm = lastRecordedLeafIndex;
-            for (var i = 0; i < lastRecordedLeafIndex - tokenIndex; i++)
+                lastRecordedLeafIndex+2,(long)tokenIndex);
+            var lastLeafIndexConfirm = lastRecordedLeafIndex;
+            for (var i = 0; i < tokenLeafIndex - lastRecordedLeafIndex; i++)
             {
                 var blockHeight = getReceiptInfos.Receipts[i].BlockHeight;
                 var blockConfirmationCount = _blockConfirmationOptions.ConfirmationCount[bridgeItem.EthereumClientAlias];
                 if (blockNumber - blockHeight > blockConfirmationCount) continue;
-                lastTokenIndexConfirm += (i+1);
+                lastLeafIndexConfirm += (i+1);
                 break;
             }
+            _logger.LogInformation($"Last confirmed token index:{lastLeafIndexConfirm+1}");
 
-            if (lastTokenIndexConfirm - lastRecordedLeafIndex > 0)
+            if (lastLeafIndexConfirm - lastRecordedLeafIndex > 0)
             {
+                _logger.LogInformation($"Start to query token : from index {lastRecordedLeafIndex + 2},end index {lastLeafIndexConfirm + 1}");
                 var queryInput = new QueryInput
                 {
                     Payment = _bridgeOptions.QueryPayment,
                     QueryInfo = new QueryInfo
                     {
                         Title = $"record_receipt_{swapId}",
-                        Options = {(lastRecordedLeafIndex + 1).ToString(), lastTokenIndexConfirm.ToString()}
+                        Options = {(lastRecordedLeafIndex + 2).ToString(), (lastLeafIndexConfirm+1).ToString()}
                     },
-                    AggregatorContractAddress = _contractOptions.ContractAddressList[chainId]["StringAggregatorContract"]
-                        .ConvertAddress(),
+                    AggregatorContractAddress = _contractOptions.ContractAddressList[chainId]["StringAggregatorContract"].ConvertAddress(),
                     CallbackInfo = new CallbackInfo
                     {
                         ContractAddress =
@@ -165,10 +169,10 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
                 _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
 
                 var sendTxResult = await _oracleService.QueryAsync(clientAlias, queryInput);
-                _logger.LogInformation($"Query tx id: {sendTxResult.Transaction.GetHash()}");
-                _latestQueriedReceiptCountProvider.Set(swapId, (int) tokenIndex + 1);
+                _logger.LogInformation($"Query transaction id : {sendTxResult.TransactionResult.TransactionId}");
+                _latestQueriedReceiptCountProvider.Set(swapId,  lastLeafIndexConfirm + 2);
                 _logger.LogInformation(
-                    $"Latest queried receipt count: {_latestQueriedReceiptCountProvider.Get(swapId)}");
+                    $"Next token index should start with tokenindex:{_latestQueriedReceiptCountProvider.Get(swapId)}");
             }
             
         }
