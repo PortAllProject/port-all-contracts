@@ -23,10 +23,11 @@ public class OracleService : ContractServiceBase, IOracleService, ITransientDepe
     private readonly IAElfClientService _clientService;
     private readonly AElfClientConfigOptions _clientConfigOptions;
 
+    protected override string SmartContractName { get; } = "OracleContract";
+
     public OracleService(IAElfClientService clientService,
         IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
-        IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
-        Address.FromBase58(contractOptions.Value.ContractAddressList["OracleContractAddress"]))
+        IOptionsSnapshot<AElfContractOptions> contractOptions) 
     {
         _clientService = clientService;
         _clientConfigOptions = clientConfigOptions.Value;
@@ -71,4 +72,5 @@ public class OracleService : ContractServiceBase, IOracleService, ITransientDepe
             TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
+    
 }

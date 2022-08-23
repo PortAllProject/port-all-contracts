@@ -19,7 +19,7 @@ namespace AElf.EventHandler
             _logger = logger;
         }
 
-        public override string ContractName => "IntegerAggregator";
+        public override string ContractName => "IntegerAggregatorContract";
 
         public override Task ProcessAsync(LogEvent logEvent, EventContext context)
         {

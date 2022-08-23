@@ -21,16 +21,23 @@ namespace AElf.EventHandler
 
         public abstract Task ProcessAsync(LogEvent logEvent, EventContext context);
 
-        public string GetContractAddress()
+        public string GetContractAddress(int chainId)
         {
-            return _contractOptions.ContractAddressList.TryGetValue(ContractName, out var contractAddress)
-                ? contractAddress
-                : string.Empty;
+            if (_contractOptions.ContractAddressList.TryGetValue(ChainHelper.ConvertChainIdToBase58(chainId),
+                    out var contractAddresses))
+            {
+                if (contractAddresses.TryGetValue(ContractName, out var contractAddress))
+                {
+                    return contractAddress;
+                }
+            }
+
+            return string.Empty;
         }
 
-        public bool IsMatch(string contractAddress, string logEventName)
+        public bool IsMatch(int chainId, string contractAddress, string logEventName)
         {
-            var actualContractAddress = GetContractAddress();
+            var actualContractAddress = GetContractAddress(chainId);
             if (actualContractAddress == string.Empty)
             {
                 return false;

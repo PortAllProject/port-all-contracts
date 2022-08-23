@@ -21,11 +21,10 @@ public class MerkleTreeContractService : ContractServiceBase, IMerkleTreeContrac
     private readonly IAElfClientService _clientService;
     private readonly AElfContractOptions _contractOptions;
     
-    private const string ContractName = "MerkleTreeContractAddress";
+    protected override string SmartContractName { get; } = "MerkleTreeContract";
 
     public MerkleTreeContractService(IAElfClientService clientService,
-        IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
-        Address.FromBase58(contractOptions.Value.ContractAddressList[ContractName]))
+        IOptionsSnapshot<AElfContractOptions> contractOptions) 
     {
         _clientService = clientService;
         _contractOptions = contractOptions.Value;
@@ -43,7 +42,7 @@ public class MerkleTreeContractService : ContractServiceBase, IMerkleTreeContrac
 
     public async Task<Int64Value> GetLastLeafIndexAsync(string clientAlias, GetLastLeafIndexInput getLastLeafIndexInput)
     {
-        var result = await _clientService.ViewAsync(_contractOptions.ContractAddressList[ContractName], "GetLastLeafIndex",
+        var result = await _clientService.ViewAsync(GetContractAddress(clientAlias), "GetLastLeafIndex",
             getLastLeafIndexInput, clientAlias);
         var actualResult = new Int64Value();
         actualResult.MergeFrom(result);

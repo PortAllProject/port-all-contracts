@@ -37,7 +37,7 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         _aelfChainAliasOptions = aelfChainAliasOptions.Value;
     }
 
-    public override string ContractName => "Oracle";
+    public override string ContractName => "OracleContract";
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
     {

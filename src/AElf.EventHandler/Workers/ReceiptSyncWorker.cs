@@ -148,12 +148,12 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
                         Title = $"record_receipt_{swapId}",
                         Options = {(lastRecordedLeafIndex + 1).ToString(), lastTokenIndexConfirm.ToString()}
                     },
-                    AggregatorContractAddress = _contractOptions.ContractAddressList["StringAggregator"]
+                    AggregatorContractAddress = _contractOptions.ContractAddressList[chainId]["StringAggregatorContract"]
                         .ConvertAddress(),
                     CallbackInfo = new CallbackInfo
                     {
                         ContractAddress =
-                            _contractOptions.ContractAddressList["Bridge"].ConvertAddress(),
+                            _contractOptions.ContractAddressList[chainId]["BridgeContract"].ConvertAddress(),
                         MethodName = "RecordReceiptHash"
                     },
                     DesignatedNodeList = new AddressList

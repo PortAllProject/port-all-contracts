@@ -19,7 +19,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
     private readonly OracleOptions _oracleOptions;
     private readonly IOracleService _oracleService;
     private readonly AElfChainAliasOptions _aElfClientConfigOptions;
-    public override string ContractName => "Oracle";
+    public override string ContractName => "OracleContract";
     private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
     public QueryCreatedLogEventProcessor(

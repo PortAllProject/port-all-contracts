@@ -20,11 +20,10 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
     private readonly IAElfClientService _clientService;
     private readonly AElfContractOptions _contractOptions;
 
-    private const string ContractName = "BridgeContractAddress";
+    protected override string SmartContractName { get; }= "BridgeContractAddress";
 
     public BridgeService(IAElfClientService clientService,
-        IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
-        Address.FromBase58(contractOptions.Value.ContractAddressList[ContractName]))
+        IOptionsSnapshot<AElfContractOptions> contractOptions)
     {
         _clientService = clientService;
         _contractOptions = contractOptions.Value;
@@ -32,7 +31,7 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
 
     public async Task<Hash> GetSpaceIdBySwapIdAsync(string clientAlias, Hash swapId)
     {
-        var result = await _clientService.ViewAsync(_contractOptions.ContractAddressList["ContractName"], "GetSpaceIdBySwapId",
+        var result = await _clientService.ViewAsync(GetContractAddress(clientAlias), "GetSpaceIdBySwapId",
             swapId, clientAlias);
 
         return Hash.LoadFromByteArray(result);
@@ -57,4 +56,6 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
             TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
+
+    
 }

@@ -11,7 +11,7 @@ namespace AElf.EventHandler;
 
 internal class QueryCompletedLogEventProcessor : LogEventProcessorBase<QueryCompletedWithAggregation>
 {
-    public override string ContractName => "Oracle";
+    public override string ContractName => "OracleContract";
     private readonly ILogger<QueryCompletedLogEventProcessor> _logger;
 
     public QueryCompletedLogEventProcessor(ILogger<QueryCompletedLogEventProcessor> logger,

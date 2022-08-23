@@ -30,8 +30,14 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
 
     public async Task HandleEventAsync(TransactionResultListEto eventData)
     {
+        if (!_contractAddressOptions.ContractAddressList.TryGetValue(
+                ChainHelper.ConvertChainIdToBase58(eventData.ChainId), out var contractAddresses))
+        {
+            return;
+        }
+
         var usefulLogEventProcessors = _logEventProcessors.Where(p =>
-            _contractAddressOptions.ContractAddressList.ContainsKey(p.ContractName)).ToList();
+            contractAddresses.ContainsKey(p.ContractName)).ToList();
 
         foreach (var txResultEto in eventData.TransactionResults.Values.SelectMany(result => result))
         {
@@ -40,7 +46,7 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
                 _logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
                 foreach (var logEventProcessor in usefulLogEventProcessors)
                 {
-                    if (logEventProcessor.IsMatch(eventLog.Address, eventLog.Name))
+                    if (logEventProcessor.IsMatch(eventData.ChainId, eventLog.Address, eventLog.Name))
                     {
                         _logger.LogInformation("Pushing aforementioned event log to processor.");
                         await logEventProcessor.ProcessAsync(new LogEvent

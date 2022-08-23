@@ -21,7 +21,7 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
     private readonly AElfClientConfigOptions _aelfClientConfigOptions;
     private readonly AElfChainAliasOptions _aelfChainAliasOptions;
 
-    public override string ContractName => "Report";
+    public override string ContractName => "ReportContract";
     private readonly ILogger<ReportProposedLogEventProcessor> _logger;
 
     public ReportProposedLogEventProcessor(

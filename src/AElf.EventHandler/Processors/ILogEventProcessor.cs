@@ -15,6 +15,6 @@ namespace AElf.EventHandler
     {
         string ContractName { get; }
         Task ProcessAsync(LogEvent logEvent, EventContext context);
-        bool IsMatch(string contractAddress, string logEventName);
+        bool IsMatch(int chainId, string contractAddress, string logEventName);
     }
 }

@@ -21,10 +21,11 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
     private readonly IAElfClientService _clientService;
     private readonly AElfClientConfigOptions _clientConfigOptions;
 
+    protected override string SmartContractName { get; } = "ReportContract";
+
     public ReportService(IAElfClientService clientService,
         IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
-        IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
-        Address.FromBase58(contractOptions.Value.ContractAddressList["ReportContractAddress"]))
+        IOptionsSnapshot<AElfContractOptions> contractOptions)
     {
         _clientService = clientService;
         _clientConfigOptions = clientConfigOptions.Value;
@@ -59,4 +60,6 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
             TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
         };
     }
+
+    
 }

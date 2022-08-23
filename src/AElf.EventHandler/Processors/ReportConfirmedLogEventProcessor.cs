@@ -16,7 +16,7 @@ namespace AElf.EventHandler;
 
 internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportConfirmed>
 {
-    public override string ContractName => "Report";
+    public override string ContractName => "ReportContract";
     private readonly ILogger<ReportConfirmedLogEventProcessor> _logger;
     private readonly ISignatureRecoverableInfoProvider _signaturesRecoverableInfoProvider;
     private readonly EthereumContractOptions _ethereumContractOptions;
