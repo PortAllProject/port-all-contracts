@@ -13,21 +13,22 @@ public interface INethereumClientProvider
 
 public class NethereumClientProvider : ConcurrentDictionary<NethereumClientInfo, Web3>, INethereumClientProvider, ISingletonDependency
 {
-    private readonly EthereumClientConfigOptions _ethereumClientConfigOptions;
+    private readonly EthereumClientOptions _ethereumClientOptions;
     private readonly INethereumAccountProvider _nethereumAccountProvider;
 
-    public NethereumClientProvider(IOptionsSnapshot<EthereumClientConfigOptions> ethereumClientConfigOptions,
+    public NethereumClientProvider(IOptionsSnapshot<EthereumClientOptions> ethereumClientOptions,
         INethereumAccountProvider nethereumAccountProvider)
     {
         _nethereumAccountProvider = nethereumAccountProvider;
-        _ethereumClientConfigOptions = ethereumClientConfigOptions.Value;
+        _ethereumClientOptions = ethereumClientOptions.Value;
     }
 
     public Web3 GetClient(string clientAlias, string accountAlias = null)
     {
         var keys = Keys.Where(o => o.ClientAlias == clientAlias && o.AccountAlias == accountAlias).ToList();
         if (keys.Count == 0)
-        {var clientConfig = _ethereumClientConfigOptions.ClientConfigList
+        {
+            var clientConfig = _ethereumClientOptions.ClientConfigList
                 .FirstOrDefault(o => o.Alias == clientAlias);
             Web3 client;
             if (string.IsNullOrWhiteSpace(accountAlias))

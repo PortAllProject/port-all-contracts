@@ -21,6 +21,7 @@ public class AElfClientModule : AbpModule
         Configure<AElfClientConfigOptions>(options => { configuration.GetSection("AElfClientConfig").Bind(options); });
         Configure<AElfMinerAccountOptions>(options => { configuration.GetSection("AElfMinerAccount").Bind(options); });
         Configure<AElfContractOptions>(options => { configuration.GetSection("AElfContract").Bind(options); });
+        Configure<AElfChainAliasOptions>(options => { configuration.GetSection("AElfChainAlias").Bind(options); });
 
         context.Services.AddSingleton<IAElfClientProvider, AElfClientProvider>();
         

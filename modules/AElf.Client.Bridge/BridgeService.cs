@@ -10,9 +10,9 @@ namespace AElf.Client.Bridge;
 
 public interface IBridgeService
 {
-    Task<Hash> GetSpaceIdBySwapIdAsync(string clientAlias, Hash swapId);
-    Task<SendTransactionResult> SetGasPriceAsync(string clientAlias, SetGasPriceInput input);
-    Task<SendTransactionResult> SetPriceRatioAsync(string clientAlias, SetPriceRatioInput input);
+    Task<Hash> GetSpaceIdBySwapIdAsync(string chainId, Hash swapId);
+    Task<SendTransactionResult> SetGasPriceAsync(string chainId, SetGasPriceInput input);
+    Task<SendTransactionResult> SetPriceRatioAsync(string chainId, SetPriceRatioInput input);
 }
 
 public class BridgeService : ContractServiceBase, IBridgeService, ITransientDependency
@@ -29,33 +29,31 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
         _contractOptions = contractOptions.Value;
     }
 
-    public async Task<Hash> GetSpaceIdBySwapIdAsync(string clientAlias, Hash swapId)
+    public async Task<Hash> GetSpaceIdBySwapIdAsync(string chainId, Hash swapId)
     {
-        var result = await _clientService.ViewAsync(GetContractAddress(clientAlias), "GetSpaceIdBySwapId",
-            swapId, clientAlias);
+        var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetSpaceIdBySwapId",
+            swapId, chainId);
 
         return Hash.LoadFromByteArray(result);
     }
 
-    public async Task<SendTransactionResult> SetGasPriceAsync(string clientAlias, SetGasPriceInput input)
+    public async Task<SendTransactionResult> SetGasPriceAsync(string chainId, SetGasPriceInput input)
     {
-        var tx = await PerformSendTransactionAsync("SetGasPrice", input, clientAlias);
+        var tx = await PerformSendTransactionAsync("SetGasPrice", input, chainId);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), chainId)
         };
     }
     
-    public async Task<SendTransactionResult> SetPriceRatioAsync(string clientAlias, SetPriceRatioInput input)
+    public async Task<SendTransactionResult> SetPriceRatioAsync(string chainId, SetPriceRatioInput input)
     {
-        var tx = await PerformSendTransactionAsync("SetPriceRatio", input, clientAlias);
+        var tx = await PerformSendTransactionAsync("SetPriceRatio", input, chainId);
         return new SendTransactionResult
         {
             Transaction = tx,
-            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), clientAlias)
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), chainId)
         };
     }
-
-    
 }

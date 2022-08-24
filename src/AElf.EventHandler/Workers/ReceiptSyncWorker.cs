@@ -72,7 +72,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         var tokenIndex = new Dictionary<string, BigInteger>();
         foreach (var bridgeItem in _bridgeOptions.Bridges)
         {
-            bridgeItemsMap[(bridgeItem.EthereumClientAlias, bridgeItem.EthereumBridgeOutContractAddress)]
+            bridgeItemsMap[(bridgeItem.ChainId, bridgeItem.EthereumBridgeOutContractAddress)]
                 .Add(bridgeItem);
         }
 
@@ -99,10 +99,9 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
     private async Task SendQueryAsync(string chainId, BridgeItem bridgeItem, BigInteger tokenIndex)
     {
         var swapId = bridgeItem.SwapId;
-        var clientAlias = _aelfChainAliasOptions.Mapping[chainId];
-        var spaceId = await _bridgeContractService.GetSpaceIdBySwapIdAsync(clientAlias, Hash.LoadFromBase64(swapId));
+        var spaceId = await _bridgeContractService.GetSpaceIdBySwapIdAsync(chainId, Hash.LoadFromBase64(swapId));
         var lastRecordedLeafIndex = (await _merkleTreeContractService.GetLastLeafIndexAsync(
-            clientAlias, new GetLastLeafIndexInput
+            chainId, new GetLastLeafIndexInput
             {
                 SpaceId = spaceId
             })).Value;
@@ -127,15 +126,15 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         var notRecordTokenNumber = tokenLeafIndex - lastRecordedLeafIndex;
         if (notRecordTokenNumber > 0)
         {
-            var blockNumber = await _nethereumService.GetBlockNumberAsync(bridgeItem.EthereumClientAlias);
-            var getReceiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(_aelfChainAliasOptions.Mapping[chainId],
+            var blockNumber = await _nethereumService.GetBlockNumberAsync(bridgeItem.ChainId);
+            var getReceiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(bridgeItem.ChainId,
                 bridgeItem.EthereumBridgeOutContractAddress, bridgeItem.OriginToken, bridgeItem.TargetChainId,
                 lastRecordedLeafIndex+2,(long)tokenIndex);
             var lastLeafIndexConfirm = lastRecordedLeafIndex;
             for (var i = 0; i < tokenLeafIndex - lastRecordedLeafIndex; i++)
             {
                 var blockHeight = getReceiptInfos.Receipts[i].BlockHeight;
-                var blockConfirmationCount = _blockConfirmationOptions.ConfirmationCount[bridgeItem.EthereumClientAlias];
+                var blockConfirmationCount = _blockConfirmationOptions.ConfirmationCount[bridgeItem.ChainId];
                 if (blockNumber - blockHeight > blockConfirmationCount) continue;
                 lastLeafIndexConfirm += (i+1);
                 break;
@@ -168,7 +167,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
 
                 _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
 
-                var sendTxResult = await _oracleService.QueryAsync(clientAlias, queryInput);
+                var sendTxResult = await _oracleService.QueryAsync(chainId, queryInput);
                 _logger.LogInformation($"Query transaction id : {sendTxResult.TransactionResult.TransactionId}");
                 _latestQueriedReceiptCountProvider.Set(swapId,  lastLeafIndexConfirm + 2);
                 _logger.LogInformation(

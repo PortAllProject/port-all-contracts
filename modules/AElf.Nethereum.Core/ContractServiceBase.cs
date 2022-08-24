@@ -12,28 +12,29 @@ public abstract class ContractServiceBase
 {
     public INethereumClientProvider NethereumClientProvider { get; set; }
     public INethereumAccountProvider NethereumAccountProvider { get; set; }
-    public EthereumClientAccountMappingOptions EthereumClientAccountMappingOptions { get; set; }
-    public EthereumContractOptions EthereumContractOptions { get; set; }
+    public IOptionsSnapshot<EthereumContractOptions> EthereumContractOptions { get; set; }
+    public IOptionsSnapshot<EthereumClientConfigOptions> EthereumClientConfigOptions { get; set; }
+    public IOptionsSnapshot<EthereumAElfChainAliasOptions> EthereumAElfChainAliasOptions { get; set; }
     protected abstract string SmartContractName { get; }
 
-    protected Function GetFunction(string clientAlias, string contractAddress, string methodName)
+    protected Function GetFunction(string chainId, string contractAddress, string methodName)
     {
-        var accountAlias = EthereumClientAccountMappingOptions.Mapping[clientAlias];
+        var clientAlias = EthereumAElfChainAliasOptions.Value.Mapping[chainId];
+        var accountAlias = EthereumClientConfigOptions.Value.AccountAlias;
         var client = NethereumClientProvider.GetClient(clientAlias, accountAlias);
         var contract = client.Eth.GetContract(GetAbi(), contractAddress);
         return contract.GetFunction(methodName);
     }
 
-    protected Account GetAccount(string clientAlias)
+    protected Account GetAccount()
     {
-        var accountAlias = EthereumClientAccountMappingOptions.Mapping[clientAlias];
-        return NethereumAccountProvider.GetAccount(accountAlias);
+        return NethereumAccountProvider.GetAccount(EthereumClientConfigOptions.Value.AccountAlias);
     }
 
     private string GetAbi()
     {
-        var path = Path.Combine(EthereumContractOptions.AbiFileDirectory,
-            EthereumContractOptions.ContractInfoList[SmartContractName].AbiFileName);
+        var path = Path.Combine(EthereumContractOptions.Value.AbiFileDirectory,
+            EthereumContractOptions.Value.ContractInfoList[SmartContractName].AbiFileName);
         
         using var file = System.IO.File.OpenText(path);
         using var reader = new JsonTextReader(file);

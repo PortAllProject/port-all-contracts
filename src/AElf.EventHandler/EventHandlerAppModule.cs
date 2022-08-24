@@ -3,6 +3,7 @@ using System.Net.Security;
 using System.Security.Authentication;
 using AElf.Client.Bridge;
 using AElf.Client.Core;
+using AElf.Client.Core.Options;
 using AElf.Client.MerkleTree;
 using AElf.Client.Oracle;
 using AElf.Client.Report;
@@ -74,7 +75,6 @@ public class EventHandlerAppModule : AbpModule
 
         Configure<OracleOptions>(configuration.GetSection("Oracle"));
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
-        Configure<AElfChainAliasOptions>(configuration.GetSection("AElfChainAlias"));
         Configure<BlockConfirmationOptions>(configuration.GetSection("BlockConfirmation"));
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));

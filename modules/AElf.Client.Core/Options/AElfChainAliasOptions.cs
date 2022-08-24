@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace AElf.EventHandler;
+namespace AElf.Client.Core.Options;
 
 public class AElfChainAliasOptions
 {

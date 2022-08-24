@@ -13,13 +13,10 @@ namespace AElf.EventHandler;
 
 internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>
 {
-    private readonly AElfContractOptions _contractAddressOptions;
     private readonly IReportProvider _reportProvider;
     private readonly IReportService _reportService;
     private readonly IAElfAccountProvider _accountProvider;
-    private readonly BridgeOptions _bridgeOptions;
     private readonly AElfClientConfigOptions _aelfClientConfigOptions;
-    private readonly AElfChainAliasOptions _aelfChainAliasOptions;
 
     public override string ContractName => "ReportContract";
     private readonly ILogger<ReportProposedLogEventProcessor> _logger;
@@ -30,18 +27,13 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         IAElfAccountProvider accountProvider,
         ILogger<ReportProposedLogEventProcessor> logger,
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
-        IOptionsSnapshot<BridgeOptions> bridgeOptions,
-        IOptionsSnapshot<AElfClientConfigOptions> aelfConfigOptions,
-        IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOptions) : base(contractAddressOptions)
+        IOptionsSnapshot<AElfClientConfigOptions> aelfConfigOptions) : base(contractAddressOptions)
     {
         _logger = logger;
-        _contractAddressOptions = contractAddressOptions.Value;
         _reportProvider = reportProvider;
         _reportService = reportService;
         _accountProvider = accountProvider;
-        _bridgeOptions = bridgeOptions.Value;
         _aelfClientConfigOptions = aelfConfigOptions.Value;
-        _aelfChainAliasOptions = aelfChainAliasOptions.Value;
     }
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
@@ -53,7 +45,7 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         
         var privateKey = _accountProvider.GetPrivateKey(_aelfClientConfigOptions.AccountAlias);
         
-        var sendTxResult = await _reportService.ConfirmReportAsync(_aelfChainAliasOptions.Mapping[context.ChainId.ToString()],new ConfirmReportInput
+        var sendTxResult = await _reportService.ConfirmReportAsync(ChainHelper.ConvertChainIdToBase58(context.ChainId),new ConfirmReportInput
         {
             Token = reportProposed.Token,
             RoundId = reportProposed.RoundId,

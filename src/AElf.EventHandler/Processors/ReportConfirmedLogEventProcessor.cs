@@ -22,7 +22,6 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
     private readonly ISignatureRecoverableInfoProvider _signaturesRecoverableInfoProvider;
     private readonly EthereumContractOptions _ethereumContractOptions;
     private readonly IReportProvider _reportProvider;
-    private readonly string _abi;
     private readonly ITransmitTransactionProvider _transmitTransactionProvider;
     private readonly BridgeOptions _bridgeOptions;
 
@@ -32,8 +31,7 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
         ISignatureRecoverableInfoProvider signaturesRecoverableInfoProvider,
         IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
         ITransmitTransactionProvider transmitTransactionProvider,
-        IOptionsSnapshot<BridgeOptions> bridgeOptions,
-        IReportService reportContractService) : base(contractAddressOptions)
+        IOptionsSnapshot<BridgeOptions> bridgeOptions) : base(contractAddressOptions)
     {
         _logger = logger;
         _signaturesRecoverableInfoProvider = signaturesRecoverableInfoProvider;
@@ -41,10 +39,6 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
         _ethereumContractOptions = ethereumContractOptions.Value;
         _reportProvider = reportProvider;
         _bridgeOptions = bridgeOptions.Value;
-        var file = Path.Combine(_ethereumContractOptions.AbiFileDirectory,
-            _ethereumContractOptions.ContractInfoList["Bridge"].AbiFileName);
-        if (!string.IsNullOrEmpty(file))
-            _abi = JsonHelper.ReadJson(file, "abi");
     }
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)

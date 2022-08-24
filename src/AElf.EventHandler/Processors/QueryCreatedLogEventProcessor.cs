@@ -18,7 +18,6 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
     private readonly BridgeOptions _bridgeOptions;
     private readonly OracleOptions _oracleOptions;
     private readonly IOracleService _oracleService;
-    private readonly AElfChainAliasOptions _aElfClientConfigOptions;
     public override string ContractName => "OracleContract";
     private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
@@ -29,7 +28,6 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         ILogger<QueryCreatedLogEventProcessor> logger,
         IOptionsSnapshot<BridgeOptions> bridgeOptions,
         IOptionsSnapshot<OracleOptions> oracleOptions,
-        IOptionsSnapshot<AElfChainAliasOptions> aelfClientConfigOptions,
         IOracleService oracleService) :
         base(contractAddressOptions)
     {
@@ -39,7 +37,6 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         _bridgeOptions = bridgeOptions.Value;
         _oracleOptions = oracleOptions.Value;
         _oracleService = oracleService;
-        _aElfClientConfigOptions = aelfClientConfigOptions.Value;
     }
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
@@ -75,9 +72,8 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
                     HashHelper.ComputeFrom(data),
                     HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_bridgeOptions.AccountAddress)))
             };
-            var clientAlias = _aElfClientConfigOptions.Mapping[context.ChainId.ToString()];
             _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
-            var transactionResult = await _oracleService.CommitAsync(clientAlias,commitInput);
+            var transactionResult = await _oracleService.CommitAsync(ChainHelper.ConvertChainIdToBase58(context.ChainId),commitInput);
             _logger.LogInformation($"[Commit] Transaction id {transactionResult.TransactionResult.TransactionId}");
         }
     }
