@@ -31,35 +31,17 @@ public class DataProvider : IDataProvider, ISingletonDependency
     private readonly string _bridgeAbi;
     private Web3Manager _web3ManagerForLock;
     private BridgeOptions _bridgeOptions;
-    private BridgeService _bridgeService;
-    private IBridgeOutService _bridgeOutService;
+    private IBridgeInService _bridgeInService;
 
     public DataProvider(
         ILogger<DataProvider> logger, 
-        IOptionsSnapshot<EthereumContractOptions> ethereumContractOptions,
-        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         IOptionsSnapshot<BridgeOptions> bridgeOptions,
-        BridgeService bridgeService,
-        BridgeOutService bridgeOutService)
+        IBridgeInService bridgeInService)
     {
         _logger = logger;
         _bridgeOptions = bridgeOptions.Value;
-        _bridgeService = bridgeService;
-        _bridgeOutService = bridgeOutService;
+        _bridgeInService = bridgeInService;
         _dictionary = new Dictionary<Hash, string>();
-        {
-            var file = Path.Combine(ethereumContractOptions.Value.AbiFileDirectory,
-                ethereumContractOptions.Value.ContractInfoList["Bridge"].AbiFileName);
-            if (!string.IsNullOrEmpty(file))
-            {
-                if (!File.Exists(file))
-                {
-                    _logger.LogError($"Cannot found file {file}");
-                }
-
-                _bridgeAbi = JsonHelper.ReadJson(file, "abi");
-            }
-        }
     }
 
     public async Task<string> GetDataAsync(Hash queryId, string title = null, List<string> options = null)
@@ -136,7 +118,7 @@ public class DataProvider : IDataProvider, ISingletonDependency
     {
         var token = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).OriginToken;
         var chainId = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).TargetChainId;
-        var receiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(bridgeItem.ChainId,bridgeItem.EthereumBridgeOutContractAddress, token, chainId,start,end);
+        var receiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,bridgeItem.EthereumBridgeOutContractAddress, token, chainId,start,end);
         var receiptHashes = new List<Hash>();
         for (var i = 0; i <= end - start; i++)
         {

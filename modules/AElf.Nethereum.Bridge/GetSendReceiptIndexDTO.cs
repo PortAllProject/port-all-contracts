@@ -6,5 +6,6 @@ namespace AElf.Nethereum.Bridge;
 [FunctionOutput]
 public class GetSendReceiptIndexDTO : IFunctionOutputDTO
 {
-    [Parameter("tuple[]", "indexes", 1)] public List<BigInteger> Indexes { get; set; }
+    [Parameter("uint256[]", "indexes", 1)] 
+    public List<BigInteger> Indexes { get; set; }
 }

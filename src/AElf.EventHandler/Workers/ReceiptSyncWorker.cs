@@ -23,7 +23,7 @@ namespace AElf.EventHandler.Workers;
 public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
 {
     private readonly BridgeOptions _bridgeOptions;
-    private readonly BridgeOutService _bridgeOutService;
+    private readonly BridgeInService _bridgeInService;
     private readonly NethereumService _nethereumService;
     private readonly OracleService _oracleService;
     private readonly AElfChainAliasOptions _aelfChainAliasOptions;
@@ -40,7 +40,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOption,
         IOptionsSnapshot<BlockConfirmationOptions> blockConfirmation,
         IOptionsSnapshot<AElfContractOptions> contractOptions,
-        BridgeOutService bridgeOutService,
+        BridgeInService bridgeInService,
         NethereumService nethereumService,
         OracleService oracleService,
         BridgeService bridgeService,
@@ -52,7 +52,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
     {
         Timer.Period = 1000 * 60;
         _bridgeOptions = bridgeOptions.Value;
-        _bridgeOutService = bridgeOutService;
+        _bridgeInService = bridgeInService;
         _nethereumService = nethereumService;
         _oracleService = oracleService;
         _bridgeContractService = bridgeService;
@@ -80,7 +80,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         {
             var tokenList = item.Select(i => i.OriginToken).ToList();
             var targetChainIdList = item.Select(i => i.TargetChainId).ToList();
-            var sendReceiptIndexDto = await _bridgeOutService.GetTransferReceiptIndexAsync(aliasAddress.Item1,
+            var sendReceiptIndexDto = await _bridgeInService.GetTransferReceiptIndexAsync(aliasAddress.Item1,
                 aliasAddress.Item2, tokenList, targetChainIdList);
             for (var i = 0; i < tokenList.Count; i++)
             {
@@ -127,7 +127,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         if (notRecordTokenNumber > 0)
         {
             var blockNumber = await _nethereumService.GetBlockNumberAsync(bridgeItem.ChainId);
-            var getReceiptInfos = await _bridgeOutService.GetSendReceiptInfosAsync(bridgeItem.ChainId,
+            var getReceiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,
                 bridgeItem.EthereumBridgeOutContractAddress, bridgeItem.OriginToken, bridgeItem.TargetChainId,
                 lastRecordedLeafIndex+2,(long)tokenIndex);
             var lastLeafIndexConfirm = lastRecordedLeafIndex;

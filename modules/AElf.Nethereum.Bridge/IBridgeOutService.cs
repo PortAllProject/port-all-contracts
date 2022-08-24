@@ -6,33 +6,22 @@ namespace AElf.Nethereum.Bridge;
 
 public interface IBridgeOutService
 {
-    Task<GetReceiptInfosDTO> GetSendReceiptInfosAsync(string chainId, string contractAddress, string token, string targetChainId, long fromIndex,long endIndex);
-
-    Task<GetSendReceiptIndexDTO> GetTransferReceiptIndexAsync(string chainId, string contractAddress, List<string> tokens,
-        List<string> targetChainIds);
+    Task<string> TransmitAsync(string chainId, string contractAddress, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs);
 }
 
 public class BridgeOutService : ContractServiceBase, IBridgeOutService, ITransientDependency
 {
     protected override string SmartContractName { get; } = "BridgeOut";
-
-    public async Task<GetReceiptInfosDTO> GetSendReceiptInfosAsync(string chainId, string contractAddress,
-        string token, string targetChainId, long fromIndex,long endIndex)
+    
+    public async Task<string> TransmitAsync(string chainId, string contractAddress, byte[] report,
+        byte[][] rs, byte[][] ss, byte[] rawVs)
     {
-        var function = GetFunction(chainId, contractAddress, "getSendReceiptInfos");
-
-        var evmGetReceiptInfos =
-            await function.CallDeserializingToObjectAsync<GetReceiptInfosDTO>(token, targetChainId, fromIndex,endIndex);
-        return evmGetReceiptInfos;
-    }
-
-    public async Task<GetSendReceiptIndexDTO> GetTransferReceiptIndexAsync(string chainId, string contractAddress,
-        List<string> tokens, List<string> targetChainIds)
-    {
-        var function = GetFunction(chainId, contractAddress, "getSendReceiptIndex");
-
-        var evmGetReceiptInfos =
-            await function.CallDeserializingToObjectAsync<GetSendReceiptIndexDTO>(tokens, targetChainIds);
-        return evmGetReceiptInfos;
+        var setValueFunction = GetFunction(chainId, contractAddress, "transmit");
+        var sender = GetAccount().Address;
+        var gas = await setValueFunction.EstimateGasAsync(sender, null, null, report, rs, ss, rawVs);
+        var transactionResult =
+            await setValueFunction.SendTransactionAsync(sender, gas, null, null, report,
+                rs, ss, rawVs);
+        return transactionResult;
     }
 }

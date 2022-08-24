@@ -27,7 +27,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     private readonly IDistributedCacheSerializer _serializer;
     private readonly IAElfClientService _aelfClientService;
     private readonly AElfClientConfigOptions _aelfClientConfigOptions;
-    private readonly IBridgeInService _bridgeInService;
+    private readonly IBridgeOutService _bridgeOutService;
     private readonly INethereumService _nethereumService;
     private readonly BlockConfirmationOptions _blockConfirmationOptions;
 
@@ -39,13 +39,13 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
 
     public TransmitTransactionProvider(IOptions<RedisCacheOptions> optionsAccessor,
         IOptions<AElfClientConfigOptions> aelfClientConfigOptions,
-        IDistributedCacheSerializer serializer, IAElfClientService aelfClientService, IBridgeInService bridgeInService,
+        IDistributedCacheSerializer serializer, IAElfClientService aelfClientService, IBridgeOutService bridgeOutService,
         INethereumService nethereumService, IOptions<BlockConfirmationOptions> blockConfirmationOptions)
         : base(optionsAccessor)
     {
         _serializer = serializer;
         _aelfClientService = aelfClientService;
-        _bridgeInService = bridgeInService;
+        _bridgeOutService = bridgeOutService;
         _nethereumService = nethereumService;
         _aelfClientConfigOptions = aelfClientConfigOptions.Value;
         _blockConfirmationOptions = blockConfirmationOptions.Value;
@@ -76,7 +76,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 }
                 else
                 {
-                    var sendResult = await _bridgeInService.TransmitAsync(item.TargetChainId,
+                    var sendResult = await _bridgeOutService.TransmitAsync(item.TargetChainId,
                         item.TargetContractAddress,
                         item.Report, item.Rs, item.Ss, item.RawVs);
                     if (string.IsNullOrWhiteSpace(sendResult))

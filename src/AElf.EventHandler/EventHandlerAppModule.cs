@@ -79,10 +79,11 @@ public class EventHandlerAppModule : AbpModule
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         context.Services.AddSingleton<ITransmitTransactionProvider, TransmitTransactionProvider>();
+        context.Services.AddSingleton<ISignatureRecoverableInfoProvider, SignatureRecoverableInfoProvider>();
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
+        //context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
         //context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
     }
 }
