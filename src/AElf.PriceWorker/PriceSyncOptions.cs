@@ -4,6 +4,12 @@ namespace AElf.PriceWorker;
 
 public class PriceSyncOptions
 {
-    public List<string> SourceChains { get; set; } = new();
+    public List<ChainItem> SourceChains { get; set; } = new();
     public List<string> TargetChains { get; set; } = new();
+}
+
+public class ChainItem
+{
+    public string ChainId { get; set; }
+    public string NativeToken { get; set; }
 }

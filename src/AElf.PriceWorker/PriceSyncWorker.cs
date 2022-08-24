@@ -4,6 +4,7 @@ using AElf.BlockchainTransactionFee;
 using AElf.Client.Bridge;
 using AElf.Contracts.Bridge;
 using AElf.TokenPrice;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Volo.Abp.BackgroundWorkers;
@@ -37,25 +38,49 @@ public class PriceSyncWorker : AsyncPeriodicBackgroundWorkerBase
         var setPriceRatioInput = new SetPriceRatioInput();
         
         var elfPrice = await _tokenPriceService.GetPriceAsync("ELF");
-        var ethPrice = await _tokenPriceService.GetPriceAsync("ETH");
-        var ratio = (long)(ethPrice * (decimal)Math.Pow(10, 8) / elfPrice);
         
         foreach (var item in _priceSyncOptions.SourceChains)
         {
-            var gasFee = await _blockchainTransactionFeeService.GetTransactionFeeAsync(item);
+            var gasFee = await _blockchainTransactionFeeService.GetTransactionFeeAsync(item.ChainId);
             var feeWei = (long)(gasFee.Fee * (decimal)Math.Pow(10, 9));
             setGasPriceInput.GasPriceList.Add(new GasPrice
             {
-                ChainId = item,
+                ChainId = item.ChainId,
                 GasPrice_ = feeWei
             });
-
+        
+            decimal nativePrice = await _tokenPriceService.GetPriceAsync(item.NativeToken);
+            var ratio = (long)(nativePrice * (decimal)Math.Pow(10, 8) / elfPrice);
             setPriceRatioInput.Value.Add(new PriceRatio
             {
-                TargetChainId = item,
+                TargetChainId = item.ChainId,
                 PriceRatio_ = ratio
             });
         }
+        //
+        // setGasPriceInput.GasPriceList.Add(new GasPrice
+        // {
+        //     ChainId = "Ethereum",
+        //     GasPrice_ = 56120000000
+        // });
+        //
+        // setGasPriceInput.GasPriceList.Add(new GasPrice
+        // {
+        //     ChainId = "BSC",
+        //     GasPrice_ = 16120000000
+        // });
+        //
+        // setPriceRatioInput.Value.Add(new PriceRatio
+        // {
+        //     TargetChainId = "Ethereum",
+        //     PriceRatio_ = 135475890000
+        // });
+        //
+        // setPriceRatioInput.Value.Add(new PriceRatio
+        // {
+        //     TargetChainId = "BSC",
+        //     PriceRatio_ = 2475890000
+        // });
 
         foreach (var item in _priceSyncOptions.TargetChains)
         {

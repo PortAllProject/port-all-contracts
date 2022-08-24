@@ -3,6 +3,8 @@ using AElf.Client.Core.Options;
 using AElf.Contracts.Bridge;
 using AElf.Contracts.Report;
 using AElf.Types;
+using Google.Protobuf;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
@@ -13,6 +15,8 @@ public interface IBridgeService
     Task<Hash> GetSpaceIdBySwapIdAsync(string chainId, Hash swapId);
     Task<SendTransactionResult> SetGasPriceAsync(string chainId, SetGasPriceInput input);
     Task<SendTransactionResult> SetPriceRatioAsync(string chainId, SetPriceRatioInput input);
+    Task<StringValue> GetGasPriceAsync(string chainId, StringValue input);
+    Task<StringValue> GetPriceRatioAsync(string chainId, StringValue input);
 }
 
 public class BridgeService : ContractServiceBase, IBridgeService, ITransientDependency
@@ -20,7 +24,7 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
     private readonly IAElfClientService _clientService;
     private readonly AElfContractOptions _contractOptions;
 
-    protected override string SmartContractName { get; }= "BridgeContractAddress";
+    protected override string SmartContractName { get; }= "BridgeContract";
 
     public BridgeService(IAElfClientService clientService,
         IOptionsSnapshot<AElfContractOptions> contractOptions)
@@ -55,5 +59,23 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
             Transaction = tx,
             TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), chainId)
         };
+    }
+
+    public async Task<StringValue> GetGasPriceAsync(string chainId, StringValue input)
+    {
+        var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetGasPrice",
+            input, AElfChainAliasOptions.Value.Mapping[chainId]);
+        var actualResult = new StringValue();
+        actualResult.MergeFrom(result);
+        return actualResult;
+    }
+
+    public async Task<StringValue> GetPriceRatioAsync(string chainId, StringValue input)
+    {
+        var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetPriceRatio",
+            input, AElfChainAliasOptions.Value.Mapping[chainId]);
+        var actualResult = new StringValue();
+        actualResult.MergeFrom(result);
+        return actualResult;
     }
 }

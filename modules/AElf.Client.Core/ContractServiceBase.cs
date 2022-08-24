@@ -12,13 +12,13 @@ public abstract class ContractServiceBase
     public IOptionsSnapshot<AElfContractOptions> ContractOptions { get; set; }
     protected abstract string SmartContractName { get; }
     public ILogger<ContractServiceBase> Logger { get; set; }
-    public IOptionsSnapshot<AElfChainAliasOptions> _aelfChainAliasOptions { get; set; }
+    public IOptionsSnapshot<AElfChainAliasOptions> AElfChainAliasOptions { get; set; }
 
     protected async Task<Transaction> PerformSendTransactionAsync(string methodName, IMessage parameter,
         string chainId)
     {
         var contractAddress = GetContractAddress(chainId);
-        var clientAlias = _aelfChainAliasOptions.Value.Mapping[chainId];
+        var clientAlias = AElfChainAliasOptions.Value.Mapping[chainId];
         return await ClientService.SendAsync(contractAddress, methodName, parameter, clientAlias);
     }
 
@@ -26,7 +26,7 @@ public abstract class ContractServiceBase
         string chainId)
     {
         TransactionResult txResult;
-        var clientAlias = _aelfChainAliasOptions.Value.Mapping[chainId];
+        var clientAlias = AElfChainAliasOptions.Value.Mapping[chainId];
         do
         {
             txResult = await ClientService.GetTransactionResultAsync(transactionId, clientAlias);

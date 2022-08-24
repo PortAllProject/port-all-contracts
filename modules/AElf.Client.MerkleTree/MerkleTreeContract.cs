@@ -39,8 +39,9 @@ public class MerkleTreeContractService : ContractServiceBase, IMerkleTreeContrac
 
     public async Task<Int64Value> GetLastLeafIndexAsync(string chainId, GetLastLeafIndexInput getLastLeafIndexInput)
     {
+        var clientAlias = AElfChainAliasOptions.Value.Mapping[chainId];
         var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetLastLeafIndex",
-            getLastLeafIndexInput, chainId);
+            getLastLeafIndexInput, clientAlias);
         var actualResult = new Int64Value();
         actualResult.MergeFrom(result);
         return actualResult;
