@@ -13,27 +13,20 @@ public class GetReceiptInfosDTO: IFunctionOutputDTO
 [FunctionOutput]
 public class ReceiptDTO : IFunctionOutputDTO
 {
-    [Parameter("string", "receiptId", 1)]
-    public string ReceiptId { get; set; }
-
-    [Parameter("address", "asset", 2)]
+    [Parameter("address", "asset", 1)]
     public string Asset { get; set; }
-    
-    [Parameter("address", "owner", 3)]
+    [Parameter("address", "owner", 2)]
     public string Owner { get; set; }
-    
-    [Parameter("string", "targetChainId", 4)]
-    public string TargetChainId { get; set; }
-    
-    [Parameter("string", "targetAddress", 5)]
-    public string TargetAddress { get; set; }
-
-    [Parameter("uint256", "amount", 6)]
+    [Parameter("uint256", "amount", 3)]
     public BigInteger Amount { get; set; }
-    
-    [Parameter("uint256", "blockHeight", 7)]
+    [Parameter("uint256", "blockHeight", 4)]
     public BigInteger BlockHeight { get; set; }
-    
-    [Parameter("uint256", "blockTime", 8)]
+    [Parameter("uint256", "blockTime", 5)]
     public BigInteger BlockTime { get; set; }
+    [Parameter("string", "targetChainId", 6)]
+    public string TargetChainId { get; set; }
+    [Parameter("string", "targetAddress", 7)]
+    public string TargetAddress { get; set; }
+    [Parameter("string", "receiptId", 8)]
+    public string ReceiptId { get; set; }
 }
