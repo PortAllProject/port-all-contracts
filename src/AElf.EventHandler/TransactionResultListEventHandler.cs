@@ -18,20 +18,22 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
     private readonly IEnumerable<ILogEventProcessor> _logEventProcessors;
     private readonly AElfContractOptions _contractAddressOptions;
     private readonly ILogger<TransactionResultListEventHandler> _logger;
+    private readonly IChainIdProvider _chainIdProvider;
 
     public TransactionResultListEventHandler(IEnumerable<ILogEventProcessor> logEventProcessors,
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
-        ILogger<TransactionResultListEventHandler> logger)
+        ILogger<TransactionResultListEventHandler> logger, IChainIdProvider chainIdProvider)
     {
         _logEventProcessors = logEventProcessors;
         _logger = logger;
+        _chainIdProvider = chainIdProvider;
         _contractAddressOptions = contractAddressOptions.Value;
     }
 
     public async Task HandleEventAsync(TransactionResultListEto eventData)
     {
-        if (!_contractAddressOptions.ContractAddressList.TryGetValue(
-                ChainHelper.ConvertChainIdToBase58(eventData.ChainId), out var contractAddresses))
+        var chainId = _chainIdProvider.GetChainId(eventData.ChainId);
+        if (!_contractAddressOptions.ContractAddressList.TryGetValue(chainId, out var contractAddresses))
         {
             return;
         }
