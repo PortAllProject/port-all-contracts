@@ -18,6 +18,8 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
     private readonly BridgeOptions _bridgeOptions;
     private readonly OracleOptions _oracleOptions;
     private readonly IOracleService _oracleService;
+    private readonly IChainIdProvider _chainIdProvider;
+
     public override string ContractName => "OracleContract";
     private readonly ILogger<QueryCreatedLogEventProcessor> _logger;
 
@@ -28,7 +30,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         ILogger<QueryCreatedLogEventProcessor> logger,
         IOptionsSnapshot<BridgeOptions> bridgeOptions,
         IOptionsSnapshot<OracleOptions> oracleOptions,
-        IOracleService oracleService) :
+        IOracleService oracleService, IChainIdProvider chainIdProvider) :
         base(contractAddressOptions)
     {
         _saltProvider = saltProvider;
@@ -37,6 +39,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         _bridgeOptions = bridgeOptions.Value;
         _oracleOptions = oracleOptions.Value;
         _oracleService = oracleService;
+        _chainIdProvider = chainIdProvider;
     }
 
     public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
@@ -44,7 +47,8 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
         var queryCreated = new QueryCreated();
         queryCreated.MergeFrom(logEvent);
         _logger.LogInformation(queryCreated.ToString());
-        
+
+        var chainId = _chainIdProvider.GetChainId(context.ChainId);
         
         var nodeAddress = Address.FromBase58(_bridgeOptions.AccountAddress);
         var firstDesignatedNodeAddress = queryCreated.DesignatedNodeList.Value.First();
@@ -63,7 +67,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
                 return;
             }
         
-            var salt = _saltProvider.GetSalt(context.ChainId.ToString(),queryCreated.QueryId);
+            var salt = _saltProvider.GetSalt(chainId, queryCreated.QueryId);
             _logger.LogInformation($"Queried data: {data}, salt: {salt}");
             var commitInput = new CommitInput
             {
@@ -73,7 +77,7 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
                     HashHelper.ConcatAndCompute(salt, HashHelper.ComputeFrom(_bridgeOptions.AccountAddress)))
             };
             _logger.LogInformation($"Sending Commit tx with input: {commitInput}");
-            var transactionResult = await _oracleService.CommitAsync(ChainHelper.ConvertChainIdToBase58(context.ChainId),commitInput);
+            var transactionResult = await _oracleService.CommitAsync(chainId, commitInput);
             _logger.LogInformation($"[Commit] Transaction id {transactionResult.TransactionResult.TransactionId}");
         }
     }

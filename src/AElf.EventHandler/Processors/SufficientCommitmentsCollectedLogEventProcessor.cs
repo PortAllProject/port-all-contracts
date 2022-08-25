@@ -16,17 +16,19 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
     private readonly IDataProvider _dataProvider;
     private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
     private readonly IOracleService _oracleService;
+    private readonly IChainIdProvider _chainIdProvider;
 
     public SufficientCommitmentsCollectedLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         ISaltProvider saltProvider, IDataProvider dataProvider,
         ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger,
-        IOracleService oracleService) : base(contractAddressOptions)
+        IOracleService oracleService, IChainIdProvider chainIdProvider) : base(contractAddressOptions)
     {
         _saltProvider = saltProvider;
         _dataProvider = dataProvider;
         _logger = logger;
         _oracleService = oracleService;
+        _chainIdProvider = chainIdProvider;
     }
 
     public override string ContractName => "OracleContract";
@@ -35,6 +37,8 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
     {
         var collected = new SufficientCommitmentsCollected();
         collected.MergeFrom(logEvent);
+
+        var chainId = _chainIdProvider.GetChainId(context.ChainId);
         var data = await _dataProvider.GetDataAsync(collected.QueryId);
         if (string.IsNullOrEmpty(data))
         {
@@ -47,10 +51,10 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         {
             QueryId = collected.QueryId,
             Data = data,
-            Salt = _saltProvider.GetSalt(context.ChainId.ToString(),collected.QueryId)
+            Salt = _saltProvider.GetSalt(chainId,collected.QueryId)
         };
         _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");
-        var transaction = await _oracleService.RevealAsync(ChainHelper.ConvertChainIdToBase58(context.ChainId),revealInput);
+        var transaction = await _oracleService.RevealAsync(chainId,revealInput);
         _logger.LogInformation($"[Reveal] Transaction id  : {transaction.TransactionResult.TransactionId}");
     }
 }

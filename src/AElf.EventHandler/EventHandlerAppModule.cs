@@ -76,6 +76,8 @@ public class EventHandlerAppModule : AbpModule
         Configure<OracleOptions>(configuration.GetSection("Oracle"));
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
         Configure<BlockConfirmationOptions>(configuration.GetSection("BlockConfirmation"));
+        Configure<ChainIdMappingOptions>(configuration.GetSection("ChainIdMapping"));
+        
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
         context.Services.AddSingleton<ITransmitTransactionProvider, TransmitTransactionProvider>();
