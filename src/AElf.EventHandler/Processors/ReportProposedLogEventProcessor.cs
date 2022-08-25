@@ -17,7 +17,6 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
     private readonly IReportService _reportService;
     private readonly IAElfAccountProvider _accountProvider;
     private readonly AElfClientConfigOptions _aelfClientConfigOptions;
-    private readonly IChainIdProvider _chainIdProvider;
 
     public override string ContractName => "ReportContract";
     private readonly ILogger<ReportProposedLogEventProcessor> _logger;
@@ -32,7 +31,6 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         contractAddressOptions)
     {
         _logger = logger;
-        _chainIdProvider = chainIdProvider;
         _reportProvider = reportProvider;
         _reportService = reportService;
         _accountProvider = accountProvider;
@@ -46,7 +44,7 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
 
         _logger.LogInformation($"New report: {reportProposed}");
 
-        var chainId = _chainIdProvider.GetChainId(context.ChainId);
+        var chainId = ChainIdProvider.GetChainId(context.ChainId);
         var privateKey = _accountProvider.GetPrivateKey(_aelfClientConfigOptions.AccountAlias);
         
         var sendTxResult = await _reportService.ConfirmReportAsync(chainId,new ConfirmReportInput

@@ -11,11 +11,10 @@ namespace AElf.EventHandler
     public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T>
     {
         private readonly AElfContractOptions _contractOptions;
-        private readonly IChainIdProvider _chainIdProvider;
+        public IChainIdProvider ChainIdProvider { get; set; }
 
-        protected LogEventProcessorBase(IOptionsSnapshot<AElfContractOptions> contractAddressOptions, IChainIdProvider chainIdProvider)
+        protected LogEventProcessorBase(IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
         {
-            _chainIdProvider = chainIdProvider;
             _contractOptions = contractAddressOptions.Value;
         }
 
@@ -25,7 +24,7 @@ namespace AElf.EventHandler
 
         public string GetContractAddress(int chainId)
         {
-            var id = _chainIdProvider.GetChainId(chainId);
+            var id = ChainIdProvider.GetChainId(chainId);
             if (_contractOptions.ContractAddressList.TryGetValue(id,
                     out var contractAddresses))
             {

@@ -16,19 +16,17 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
     private readonly IDataProvider _dataProvider;
     private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
     private readonly IOracleService _oracleService;
-    private readonly IChainIdProvider _chainIdProvider;
 
     public SufficientCommitmentsCollectedLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
         ISaltProvider saltProvider, IDataProvider dataProvider,
         ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger,
-        IOracleService oracleService, IChainIdProvider chainIdProvider) : base(contractAddressOptions)
+        IOracleService oracleService) : base(contractAddressOptions)
     {
         _saltProvider = saltProvider;
         _dataProvider = dataProvider;
         _logger = logger;
         _oracleService = oracleService;
-        _chainIdProvider = chainIdProvider;
     }
 
     public override string ContractName => "OracleContract";
@@ -38,7 +36,7 @@ internal class SufficientCommitmentsCollectedLogEventProcessor :
         var collected = new SufficientCommitmentsCollected();
         collected.MergeFrom(logEvent);
 
-        var chainId = _chainIdProvider.GetChainId(context.ChainId);
+        var chainId = ChainIdProvider.GetChainId(context.ChainId);
         var data = await _dataProvider.GetDataAsync(collected.QueryId);
         if (string.IsNullOrEmpty(data))
         {

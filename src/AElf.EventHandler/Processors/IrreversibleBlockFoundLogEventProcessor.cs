@@ -14,18 +14,15 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
 {
     private readonly ITransmitTransactionProvider _transmitTransactionProvider;
     private readonly IAElfClientService _aelfClientService;
-    private readonly IChainIdProvider _chainIdProvider;
     public ILogger<IrreversibleBlockFoundLogEventProcessor> Logger { get; set; }
 
     public IrreversibleBlockFoundLogEventProcessor(
         IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
-        ITransmitTransactionProvider transmitTransactionProvider, IAElfClientService aelfClientService,
-        IChainIdProvider chainIdProvider) : base(
+        ITransmitTransactionProvider transmitTransactionProvider, IAElfClientService aelfClientService) : base(
         contractAddressOptions)
     {
         _transmitTransactionProvider = transmitTransactionProvider;
         _aelfClientService = aelfClientService;
-        _chainIdProvider = chainIdProvider;
 
         Logger = NullLogger<IrreversibleBlockFoundLogEventProcessor>.Instance;
     }
@@ -38,7 +35,7 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
         libFound.MergeFrom(logEvent);
         Logger.LogInformation($"IrreversibleBlockFound: {libFound}");
 
-        var chainId = _chainIdProvider.GetChainId(context.ChainId);
+        var chainId = ChainIdProvider.GetChainId(context.ChainId);
         var block = await _aelfClientService.GetBlockByHeightAsync(chainId,libFound.IrreversibleBlockHeight);
         await _transmitTransactionProvider.SendByLibAsync(chainId, block.BlockHash, block.Header.Height);
     }
