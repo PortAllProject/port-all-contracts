@@ -97,12 +97,11 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                     ChainId = chainId,
                     TargetContractAddress = ethereumContractAddress,
                     TargetChainId = reportConfirmed.TargetChainId,
-                    //TODO: SwapHashId = 
                     Report = reportBytes,
                     Rs = rs,
                     Ss = ss,
                     RawVs = vs,
-                    swapHashId = swapHashId
+                    SwapHashId = swapHashId
                 });
 
                 await _signaturesRecoverableInfoProvider.RemoveSignatureAsync(chainId,
