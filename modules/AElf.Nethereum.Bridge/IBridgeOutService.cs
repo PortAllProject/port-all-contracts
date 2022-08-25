@@ -6,21 +6,21 @@ namespace AElf.Nethereum.Bridge;
 
 public interface IBridgeOutService
 {
-    Task<string> TransmitAsync(string chainId, string contractAddress, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs);
+    Task<string> TransmitAsync(string chainId, string contractAddress, byte[] swapHashId, byte[] report, byte[][] rs, byte[][] ss, byte[] rawVs);
 }
 
 public class BridgeOutService : ContractServiceBase, IBridgeOutService, ITransientDependency
 {
     protected override string SmartContractName { get; } = "BridgeOut";
     
-    public async Task<string> TransmitAsync(string chainId, string contractAddress, byte[] report,
+    public async Task<string> TransmitAsync(string chainId, string contractAddress, byte[] swapHashId, byte[] report,
         byte[][] rs, byte[][] ss, byte[] rawVs)
     {
         var setValueFunction = GetFunction(chainId, contractAddress, "transmit");
         var sender = GetAccount().Address;
-        var gas = await setValueFunction.EstimateGasAsync(sender, null, null, report, rs, ss, rawVs);
+        var gas = await setValueFunction.EstimateGasAsync(sender, null, null, swapHashId, report, rs, ss, rawVs);
         var transactionResult =
-            await setValueFunction.SendTransactionAsync(sender, gas, null, null, report,
+            await setValueFunction.SendTransactionAsync(sender, gas, null, null, swapHashId, report,
                 rs, ss, rawVs);
         return transactionResult;
     }

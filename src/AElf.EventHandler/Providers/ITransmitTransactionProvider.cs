@@ -77,7 +77,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 else
                 {
                     var sendResult = await _bridgeOutService.TransmitAsync(item.TargetChainId,
-                        item.TargetContractAddress,
+                        item.TargetContractAddress,item.SwapHashId,
                         item.Report, item.Rs, item.Ss, item.RawVs);
                     if (string.IsNullOrWhiteSpace(sendResult))
                     {
@@ -165,6 +165,7 @@ public class SendTransmitArgs
     public string TargetChainId { get; set; }
     public string TargetContractAddress { get; set; }
     public string TransactionId { get; set; }
+    public byte[] SwapHashId { get; set; }
     public byte[] Report { get; set; }
     public byte[][] Rs { get; set; }
     public byte[][] Ss{ get; set; }
