@@ -19,6 +19,6 @@ public class ChainIdProvider : IChainIdProvider, ITransientDependency
 
     public string GetChainId(int chainId)
     {
-        return _chainIdMappingOptions.Mapping[chainId];
+        return _chainIdMappingOptions.Mapping[chainId.ToString()];
     }
 }

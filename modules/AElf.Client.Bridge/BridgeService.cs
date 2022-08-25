@@ -17,6 +17,7 @@ public interface IBridgeService
     Task<SendTransactionResult> SetPriceRatioAsync(string chainId, SetPriceRatioInput input);
     Task<StringValue> GetGasPriceAsync(string chainId, StringValue input);
     Task<StringValue> GetPriceRatioAsync(string chainId, StringValue input);
+    Task<ReceiptIdInfo> GetReceiptIdInfoAsync(string chainId, Hash receiptIdHash);
 }
 
 public class BridgeService : ContractServiceBase, IBridgeService, ITransientDependency
@@ -75,6 +76,15 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
         var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetPriceRatio",
             input, AElfChainAliasOptions.Value.Mapping[chainId]);
         var actualResult = new StringValue();
+        actualResult.MergeFrom(result);
+        return actualResult;
+    }
+
+    public async Task<ReceiptIdInfo> GetReceiptIdInfoAsync(string chainId, Hash receiptIdHash)
+    {
+        var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetReceiptIdInfo",
+            receiptIdHash, AElfChainAliasOptions.Value.Mapping[chainId]);
+        var actualResult = new ReceiptIdInfo();
         actualResult.MergeFrom(result);
         return actualResult;
     }

@@ -27,7 +27,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
     private readonly NethereumService _nethereumService;
     private readonly OracleService _oracleService;
     private readonly AElfChainAliasOptions _aelfChainAliasOptions;
-    private readonly BridgeService _bridgeContractService;
+    private readonly IBridgeService _bridgeContractService;
     private readonly IMerkleTreeContractService _merkleTreeContractService;
     private readonly ILatestQueriedReceiptCountProvider _latestQueriedReceiptCountProvider;
     private readonly ILogger<ReceiptSyncWorker> _logger;
@@ -43,7 +43,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         BridgeInService bridgeInService,
         NethereumService nethereumService,
         OracleService oracleService,
-        BridgeService bridgeService,
+        IBridgeService bridgeService,
         IMerkleTreeContractService merkleTreeContractService,
         ILatestQueriedReceiptCountProvider latestQueriedReceiptCountProvider,
         ILogger<ReceiptSyncWorker> logger
@@ -72,7 +72,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         var tokenIndex = new Dictionary<string, BigInteger>();
         foreach (var bridgeItem in _bridgeOptions.Bridges)
         {
-            bridgeItemsMap[(bridgeItem.ChainId, bridgeItem.EthereumBridgeOutContractAddress)]
+            bridgeItemsMap[(bridgeItem.ChainId, bridgeItem.EthereumBridgeInContractAddress)]
                 .Add(bridgeItem);
         }
 
@@ -128,7 +128,7 @@ public class ReceiptSyncWorker : AsyncPeriodicBackgroundWorkerBase
         {
             var blockNumber = await _nethereumService.GetBlockNumberAsync(bridgeItem.ChainId);
             var getReceiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,
-                bridgeItem.EthereumBridgeOutContractAddress, bridgeItem.OriginToken, bridgeItem.TargetChainId,
+                bridgeItem.EthereumBridgeInContractAddress, bridgeItem.OriginToken, bridgeItem.TargetChainId,
                 lastRecordedLeafIndex+2,(long)tokenIndex);
             var lastLeafIndexConfirm = lastRecordedLeafIndex;
             for (var i = 0; i < tokenLeafIndex - lastRecordedLeafIndex; i++)

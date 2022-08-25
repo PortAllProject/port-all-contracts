@@ -118,7 +118,7 @@ public class DataProvider : IDataProvider, ISingletonDependency
     {
         var token = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).OriginToken;
         var chainId = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).TargetChainId;
-        var receiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,bridgeItem.EthereumBridgeOutContractAddress, token, chainId,start,end);
+        var receiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,bridgeItem.EthereumBridgeInContractAddress, token, chainId,start,end);
         var receiptHashes = new List<Hash>();
         for (var i = 0; i <= end - start; i++)
         {

@@ -4,5 +4,5 @@ namespace AElf.EventHandler;
 
 public class ChainIdMappingOptions
 {
-    public Dictionary<int, string> Mapping { get; set; }
+    public Dictionary<string, string> Mapping { get; set; }
 }

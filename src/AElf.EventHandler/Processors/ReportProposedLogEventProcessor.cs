@@ -54,8 +54,6 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
             Signature = SignHelper
                 .GetSignature(reportProposed.RawReport, privateKey).RecoverInfo
         });
-        _reportProvider.SetReport(reportProposed.Token, reportProposed.RoundId,
-            reportProposed.RawReport);
         _logger.LogInformation($"[ConfirmReport] Transaction id ： {sendTxResult.TransactionResult.TransactionId}");
     }
 }

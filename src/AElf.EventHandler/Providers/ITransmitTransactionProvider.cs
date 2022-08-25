@@ -170,4 +170,6 @@ public class SendTransmitArgs
     public byte[][] Ss{ get; set; }
     public byte[] RawVs { get; set; }
     public int RetryTimes { get; set; }
+    
+    public byte[] swapHashId { get; set; }
 }
