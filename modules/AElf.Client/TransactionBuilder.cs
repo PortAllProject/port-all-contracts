@@ -1,5 +1,6 @@
 using AElf.Cryptography;
 using Google.Protobuf;
+using Volo.Abp.Threading;
 
 namespace AElf.Client;
 
@@ -53,7 +54,8 @@ public class TransactionBuilder
     {
         var keyPair = CryptoHelper.FromPrivateKey(PrivateKey);
         var from = Address.FromPublicKey(keyPair.PublicKey).ToBase58();
-        var unsignedTx = _aelfClient.GenerateTransactionAsync(from, ContractAddress, MethodName, Parameter).Result;
+        var unsignedTx = AsyncHelper.RunSync(async () =>
+            await _aelfClient.GenerateTransactionAsync(from, ContractAddress, MethodName, Parameter));
         var signedTx = _aelfClient.SignTransaction(PrivateKey, unsignedTx);
         return signedTx;
     }

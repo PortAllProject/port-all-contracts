@@ -37,9 +37,9 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
     public async Task<Hash> GetSpaceIdBySwapIdAsync(string chainId, Hash swapId)
     {
         var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetSpaceIdBySwapId",
-            swapId, chainId);
+            swapId, AElfChainAliasOptions.Value.Mapping[chainId]);
 
-        return Hash.LoadFromByteArray(result);
+        return Hash.Parser.ParseFrom(result);
     }
 
     public async Task<SendTransactionResult> SetGasPriceAsync(string chainId, SetGasPriceInput input)
