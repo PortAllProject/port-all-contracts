@@ -14,7 +14,7 @@ public abstract class ContractServiceBase
     public INethereumAccountProvider NethereumAccountProvider { get; set; }
     public IOptionsSnapshot<EthereumContractOptions> EthereumContractOptions { get; set; }
     public IOptionsSnapshot<EthereumClientConfigOptions> EthereumClientConfigOptions { get; set; }
-    public IOptionsSnapshot<EthereumAElfChainAliasOptions> EthereumAElfChainAliasOptions { get; set; }
+    public IOptionsSnapshot<EthereumChainAliasOptions> EthereumAElfChainAliasOptions { get; set; }
     protected abstract string SmartContractName { get; }
 
     protected Function GetFunction(string chainId, string contractAddress, string methodName)

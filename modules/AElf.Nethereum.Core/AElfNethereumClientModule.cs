@@ -19,7 +19,7 @@ public class AElfNethereumClientModule : AbpModule
         Configure<EthereumAccountOptions>(configuration.GetSection("EthereumAccount"));
         Configure<EthereumClientConfigOptions>(configuration.GetSection("EthereumClientConfig"));
         Configure<EthereumContractOptions>(configuration.GetSection("EthereumContract"));
-        Configure<EthereumAElfChainAliasOptions>(configuration.GetSection("EthereumAElfChainAlias"));
+        Configure<EthereumChainAliasOptions>(configuration.GetSection("EthereumChainAlias"));
         Configure<EthereumClientOptions>(configuration.GetSection("EthereumClient"));
     }
 }
