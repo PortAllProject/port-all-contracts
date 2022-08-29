@@ -73,13 +73,13 @@ service ReportContract {
   rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
     option (aelf.is_view) = true;
   }
-  rpc GetOffChainAggregationInfo (google.protobuf.StringValue) returns (OffChainAggregationInfo) {
+  rpc GetOffChainAggregationInfo (GetOffChainAggregationInfoInput) returns (OffChainAggregationInfo) {
     option (aelf.is_view) = true;
   }
   rpc GetReportQueryRecord (aelf.Hash) returns (ReportQueryRecord) {
     option (aelf.is_view) = true;
   }
-  rpc GetCurrentRoundId (google.protobuf.StringValue) returns (google.protobuf.Int64Value) {
+  rpc GetCurrentRoundId (GetCurrentRoundIdInput) returns (google.protobuf.Int64Value) {
     option (aelf.is_view) = true;
   }
   rpc GetRawReport (GetRawReportInput) returns (google.protobuf.StringValue) {
@@ -103,7 +103,10 @@ service ReportContract {
   rpc GetObserverList (aelf.Address) returns (ObserverList) {
     option (aelf.is_view) = true;
   }
-  rpc GetSkipMemberList(google.protobuf.StringValue) returns (MemberList){
+  rpc GetSkipMemberList(GetSkipMemberListInput) returns (MemberList){
+    option (aelf.is_view) = true;
+  }
+  rpc GetTokenByChainId(google.protobuf.StringValue) returns (google.protobuf.StringValue){
     option (aelf.is_view) = true;
   }
 }
@@ -129,12 +132,14 @@ message ConfirmReportInput {
   string token = 1;
   int64 round_id = 2;
   string signature = 3;
+  string chain_id = 4;
 }
 
 message RejectReportInput {
   string token = 1;
   int64 round_id = 2;
   repeated aelf.Address accusing_nodes = 3;
+  string chain_id = 4;
 }
 
 message Report {
@@ -170,11 +175,13 @@ message GetSignatureInput {
   string token = 1;
   int64 round_id = 2;
   aelf.Address address = 3;
+  string chain_id = 4;
 }
 
 message GetSignatureMapInput {
   string token = 1;
   int64 round_id = 2;
+  string chain_id = 3;
 }
 
 message SignatureMap {
@@ -183,6 +190,11 @@ message SignatureMap {
 
 message MemberList{
   repeated aelf.Address value = 1;
+}
+
+message GetOffChainAggregationInfoInput{
+  string chain_id = 1;
+  string token = 2;
 }
 
 message OffChainAggregationInfo {
@@ -224,17 +236,25 @@ message OffChainQueryInfo {
 message GetReportInput {
   string token = 1;
   int64 round_id = 2;
+  string chain_id = 3;
 }
 
 message GetMerklePathInput {
   string token = 1;
   int64 round_id = 2;
   int32 node_index = 3;
+  string chain_id = 4;
 }
 
 message GetRawReportInput{
   string token = 1;
   int64 round_id = 2;
+  string chain_id = 3;
+}
+
+message GetCurrentRoundIdInput{
+  string chain_id = 1;
+  string token = 2;
 }
 
 message GenerateRawReportInput{
@@ -249,17 +269,20 @@ message OffChainQueryInfoList {
 
 message AddOffChainQueryInfoInput {
   string token = 1;
-  OffChainQueryInfo off_chain_query_info = 2;
+  string chain_id = 2;
+  OffChainQueryInfo off_chain_query_info = 3;
 }
 
 message RemoveOffChainQueryInfoInput {
   string token = 1;
-  int32 remove_node_index = 2;
+  string chain_id = 2;
+  int32 remove_node_index = 3;
 }
 
 message ChangeOffChainQueryInfoInput {
   string token = 1;
-  OffChainQueryInfo new_off_chain_query_info = 2;
+  string chain_id = 2;
+  OffChainQueryInfo new_off_chain_query_info = 3;
 }
 
 message ApplyObserverInput {
@@ -278,6 +301,12 @@ message IsObserverInput {
 message SetSkipMemberListInput{
   string token = 1;
   MemberList value = 2;
+  string chain_id = 3;
+}
+
+message GetSkipMemberListInput{
+  string token = 1;
+  string chain_id = 2;
 }
 
 // Events

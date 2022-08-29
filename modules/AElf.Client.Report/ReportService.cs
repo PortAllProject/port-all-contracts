@@ -66,7 +66,7 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
     {
         var result =
             await _clientService.ViewAsync(GetContractAddress(chainId), "GetRawReport",
-                getRawReportInput, chainId);
+                getRawReportInput, AElfChainAliasOptions.Value.Mapping[chainId]);
         var actualResult = new StringValue();
         actualResult.MergeFrom(result);
         return actualResult;
@@ -76,7 +76,7 @@ public class ReportService : ContractServiceBase, IReportService, ITransientDepe
     {
         var result =
             await _clientService.ViewAsync(GetContractAddress(chainId), "GetReport",
-                getReportInput, chainId);
+                getReportInput, AElfChainAliasOptions.Value.Mapping[chainId]);
         var actualResult = new Contracts.Report.Report();
         actualResult.MergeFrom(result);
         return actualResult;

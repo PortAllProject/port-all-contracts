@@ -3,6 +3,7 @@ using AElf.Client.Core;
 using AElf.Client.Core.Options;
 using AElf.Nethereum.Bridge;
 using AElf.Nethereum.Core;
+using AElf.Nethereum.Core.Options;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -30,7 +31,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     private readonly INethereumService _nethereumService;
     private readonly BlockConfirmationOptions _blockConfirmationOptions;
     private readonly AElfChainAliasOptions _aelfChainAliasOption;
-
+    public EthereumChainAliasOptions _ethereumAElfChainAliasOptions;
     public ILogger<TransmitTransactionProvider> Logger { get; set; }
 
     private const string TransmitSendingQueue = "TransmitSendingQueue";
@@ -38,6 +39,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     private const string TransmitFailedQueue = "TransmitFailedQueue";
 
     public TransmitTransactionProvider(IOptions<RedisCacheOptions> optionsAccessor,
+        IOptionsSnapshot<EthereumChainAliasOptions> ethereumAElfChainAliasOptions,
         IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOption,
         IDistributedCacheSerializer serializer, IAElfClientService aelfClientService, IBridgeOutService bridgeOutService,
         INethereumService nethereumService, IOptions<BlockConfirmationOptions> blockConfirmationOptions)
@@ -49,6 +51,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         _nethereumService = nethereumService;
         _blockConfirmationOptions = blockConfirmationOptions.Value;
         _aelfChainAliasOption = aelfChainAliasOption.Value;
+        _ethereumAElfChainAliasOptions = ethereumAElfChainAliasOptions.Value;
     }
 
     public async Task EnqueueAsync(SendTransmitArgs args)
@@ -101,7 +104,8 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         var item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
         while (item != null)
         {
-            var receipt = await _nethereumService.GetTransactionReceiptAsync(item.TargetChainId, item.TransactionId);
+            var ethAlias = _ethereumAElfChainAliasOptions.Mapping[item.TargetChainId];
+            var receipt = await _nethereumService.GetTransactionReceiptAsync(ethAlias, item.TransactionId);
 
             if (receipt.Status.Value != 1)
             {
@@ -110,13 +114,13 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
             }
 
-            var currentHeight = await _nethereumService.GetBlockNumberAsync(item.TargetChainId);
+            var currentHeight = await _nethereumService.GetBlockNumberAsync(ethAlias);
             if (receipt.BlockNumber.ToLong() >= currentHeight - _blockConfirmationOptions.ConfirmationCount[item.TargetChainId])
             {
                 break;
             }
 
-            var block = await _nethereumService.GetBlockByNumberAsync(item.TargetChainId, receipt.BlockNumber);
+            var block = await _nethereumService.GetBlockByNumberAsync(ethAlias, receipt.BlockNumber);
             if (block.BlockHash != receipt.BlockHash)
             {
                 Logger.LogError($"Transmit transaction forked. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");

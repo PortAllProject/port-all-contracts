@@ -36,7 +36,7 @@ public class IrreversibleBlockFoundLogEventProcessor : LogEventProcessorBase<Irr
     {
         var libFound = new IrreversibleBlockFound();
         libFound.MergeFrom(logEvent);
-        Logger.LogInformation($"IrreversibleBlockFound: {libFound}");
+        //Logger.LogInformation($"IrreversibleBlockFound: {libFound}");
 
         var chainId = ChainIdProvider.GetChainId(context.ChainId);
         var clientAlias = _chainAliasOptions.Mapping[chainId];

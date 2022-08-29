@@ -49,6 +49,7 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         
         var sendTxResult = await _reportService.ConfirmReportAsync(chainId,new ConfirmReportInput
         {
+            ChainId = reportProposed.TargetChainId,
             Token = reportProposed.Token,
             RoundId = reportProposed.RoundId,
             Signature = SignHelper

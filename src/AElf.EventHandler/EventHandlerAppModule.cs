@@ -1,6 +1,7 @@
 using System;
 using System.Net.Security;
 using System.Security.Authentication;
+using System.Xml;
 using AElf.Client.Bridge;
 using AElf.Client.Core;
 using AElf.Client.Core.Options;
@@ -85,7 +86,11 @@ public class EventHandlerAppModule : AbpModule
     }
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        //context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
+        context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
         //context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
+        // var service = context.ServiceProvider.GetRequiredService<IReceiptProvider>();
+        // AsyncHelper.RunSync(service.ExecuteAsync);
+        // var service = context.ServiceProvider.GetRequiredService<IAElfClientService>();
+        // var status = AsyncHelper.RunSync(async () => await service.GetChainStatusAsync("AELF-Test"));
     }
 }

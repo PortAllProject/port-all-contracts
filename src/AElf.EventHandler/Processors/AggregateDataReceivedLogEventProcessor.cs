@@ -25,7 +25,7 @@ namespace AElf.EventHandler
         {
             var aggregateDataReceived = new AggregateDataReceived();
             aggregateDataReceived.MergeFrom(logEvent);
-            _logger.LogInformation($"AggregateDataReceived: {aggregateDataReceived}");
+            //_logger.LogInformation($"AggregateDataReceived: {aggregateDataReceived}");
 
             return Task.CompletedTask;
         }

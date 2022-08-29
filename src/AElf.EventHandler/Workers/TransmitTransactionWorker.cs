@@ -26,7 +26,7 @@ public class TransmitTransactionWorker : AsyncPeriodicBackgroundWorkerBase
     {
         foreach (var item in _chainAliasOptions.Mapping)
         {
-            await _transmitTransactionProvider.UpdateQueueAsync(item.Value);
+            await _transmitTransactionProvider.UpdateQueueAsync(item.Key);
         }
     }
 }

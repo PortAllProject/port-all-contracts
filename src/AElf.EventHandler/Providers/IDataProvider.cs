@@ -66,11 +66,11 @@ public class DataProvider : IDataProvider, ISingletonDependency
         {
             var swapId = title.Split('_').Last();
             _logger.LogInformation($"Trying to query record receipt data. Swap id: {swapId}");
-            var bridgeItem = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId);
+            var bridgeItem = _bridgeOptions.BridgesIn.Single(c => c.SwapId == swapId);
             _logger.LogInformation("About to handle record receipt hashes for swapping tokens.");
             var recordReceiptHashInput =
-                await GetReceiptHashMap(Hash.LoadFromBase64(swapId), bridgeItem, long.Parse(options[0]),
-                    long.Parse(options[1]));
+                await GetReceiptHashMap(Hash.LoadFromHex(swapId), bridgeItem, long.Parse(options[0].Split(".").Last()),
+                    long.Parse(options[1].Split(".").Last()));
             _logger.LogInformation($"RecordReceiptHashInput: {recordReceiptHashInput}");
             _dictionary[queryId] = recordReceiptHashInput;
             return recordReceiptHashInput;
@@ -114,10 +114,10 @@ public class DataProvider : IDataProvider, ISingletonDependency
         return result;
     }
 
-    private async Task<string> GetReceiptHashMap(Hash swapId, BridgeItem bridgeItem, long start, long end)
+    private async Task<string> GetReceiptHashMap(Hash swapId, BridgeItemIn bridgeItem, long start, long end)
     {
-        var token = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).OriginToken;
-        var chainId = _bridgeOptions.Bridges.Single(c => c.SwapId == swapId.ToHex()).TargetChainId;
+        var token = _bridgeOptions.BridgesIn.Single(c => c.SwapId == swapId.ToHex()).OriginToken;
+        var chainId = _bridgeOptions.BridgesIn.Single(c => c.SwapId == swapId.ToHex()).TargetChainId;
         var receiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,bridgeItem.EthereumBridgeInContractAddress, token, chainId,start,end);
         var receiptHashes = new List<Hash>();
         for (var i = 0; i <= end - start; i++)
@@ -135,7 +135,7 @@ public class DataProvider : IDataProvider, ISingletonDependency
         };
         for (var i = 0; i <= end - start; i++)
         {
-            input.Value.Add(receiptInfos.Receipts[(int)(i + start)].ReceiptId, receiptHashes[i].ToHex());
+            input.Value.Add(receiptInfos.Receipts[i].ReceiptId, receiptHashes[i].ToHex());
         }
         
         return input.ToString();

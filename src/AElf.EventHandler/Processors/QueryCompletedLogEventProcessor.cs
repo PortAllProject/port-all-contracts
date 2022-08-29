@@ -24,7 +24,7 @@ internal class QueryCompletedLogEventProcessor : LogEventProcessorBase<QueryComp
     {
         var completed = new QueryCompletedWithAggregation();
         completed.MergeFrom(logEvent);
-        _logger.LogInformation(logEvent.ToString());
+        //_logger.LogInformation(logEvent.ToString());
 
         return Task.CompletedTask;
     }

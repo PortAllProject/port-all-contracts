@@ -53,6 +53,7 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
         reportConfirmed.MergeFrom(logEvent);
         _logger.LogInformation(reportConfirmed.ToString());
         var chainId = ChainIdProvider.GetChainId(context.ChainId);
+        var targetChainId = reportConfirmed.TargetChainId;
         var ethereumContractAddress = reportConfirmed.Token;
         var roundId = reportConfirmed.RoundId;
         await _signaturesRecoverableInfoProvider.SetSignatureAsync(chainId, ethereumContractAddress, roundId,
@@ -65,25 +66,27 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                 //     _reportProvider.GetReport(ethereumContractAddress, roundId);
                 var report = await _reportService.GetRawReportAsync(chainId, new GetRawReportInput
                 {
+                    ChainId = targetChainId,
                     Token = ethereumContractAddress,
                     RoundId = roundId
                 });
+                _logger.LogInformation($"Confirm raw report:{report.Value}");
                 var signatureRecoverableInfos =
                     await _signaturesRecoverableInfoProvider.GetSignatureAsync(chainId,
                         ethereumContractAddress, roundId);
 
                 //GetSwapId
-                var targetChainId = reportConfirmed.TargetChainId;
                 var receiptId = (await _reportService.GetReportAsync(chainId, new GetReportInput
                 {
+                    ChainId = targetChainId,
                     Token = ethereumContractAddress,
                     RoundId = roundId
                 })).Observations.Value.First().Key;
                 var receiptIdTokenHash = receiptId.Split(".").First();
                 var symbol = (await _bridgeService.GetReceiptIdInfoAsync(chainId,
-                    Hash.LoadFromHex(receiptIdTokenHash.Substring(1, receiptIdTokenHash.Length - 2)))).Symbol;
+                    Hash.LoadFromHex(receiptIdTokenHash))).Symbol;
                 var ethereumSwapId =
-                    (_bridgeOptions.Bridges.Single(i => i.TargetChainId == targetChainId && i.OriginToken == symbol))
+                    (_bridgeOptions.BridgesOut.Single(i => i.TargetChainId == targetChainId && i.OriginToken == symbol))
                     .EthereumSwapId;
 
                 var (swapHashId, reportBytes, rs, ss, vs) =
@@ -101,7 +104,9 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                     Rs = rs,
                     Ss = ss,
                     RawVs = vs,
-                    SwapHashId = swapHashId
+                    SwapHashId = swapHashId,
+                    BlockHash = context.BlockHash,
+                    BlockHeight = context.BlockNumber
                 });
 
                 await _signaturesRecoverableInfoProvider.RemoveSignatureAsync(chainId,
@@ -126,6 +131,11 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
             v[index] = recoverableInfoBytes.Last();
             index++;
         }
+
+        var r1 = r[0].ToHex();
+        var s1 = s[0].ToHex();
+        var v1 = v.ToHex();
+        
 
         return (ByteStringHelper.FromHexString(swapId).ToByteArray(),
             ByteStringHelper.FromHexString(report).ToByteArray(), r, s, v);

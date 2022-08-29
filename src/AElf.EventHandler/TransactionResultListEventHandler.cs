@@ -45,12 +45,12 @@ public class TransactionResultListEventHandler : IDistributedEventHandler<Transa
         {
             foreach (var eventLog in txResultEto.Logs)
             {
-                _logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
+                //_logger.LogInformation($"Received event log {eventLog.Name} of contract {eventLog.Address}");
                 foreach (var logEventProcessor in usefulLogEventProcessors)
                 {
                     if (logEventProcessor.IsMatch(eventData.ChainId, eventLog.Address, eventLog.Name))
                     {
-                        _logger.LogInformation("Pushing aforementioned event log to processor.");
+                        //_logger.LogInformation("Pushing aforementioned event log to processor.");
                         await logEventProcessor.ProcessAsync(new LogEvent
                         {
                             Indexed = { eventLog.Indexed.Select(ByteString.FromBase64) },

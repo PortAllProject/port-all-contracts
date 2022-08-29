@@ -24,7 +24,7 @@ internal class ContractDeployedLogEventProcessor : LogEventProcessorBase<Contrac
         var contractDeployed = new ContractDeployed();
         contractDeployed.MergeFrom(logEvent);
 
-        _logger.LogInformation($"New contract deployed: {contractDeployed}");
+        //_logger.LogInformation($"New contract deployed: {contractDeployed}");
 
         return Task.CompletedTask;
     }
