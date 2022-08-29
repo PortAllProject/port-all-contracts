@@ -26,10 +26,10 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
 {
     private readonly IDistributedCacheSerializer _serializer;
     private readonly IAElfClientService _aelfClientService;
-    private readonly AElfClientConfigOptions _aelfClientConfigOptions;
     private readonly IBridgeOutService _bridgeOutService;
     private readonly INethereumService _nethereumService;
     private readonly BlockConfirmationOptions _blockConfirmationOptions;
+    private readonly AElfChainAliasOptions _aelfChainAliasOption;
 
     public ILogger<TransmitTransactionProvider> Logger { get; set; }
 
@@ -38,7 +38,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     private const string TransmitFailedQueue = "TransmitFailedQueue";
 
     public TransmitTransactionProvider(IOptions<RedisCacheOptions> optionsAccessor,
-        IOptions<AElfClientConfigOptions> aelfClientConfigOptions,
+        IOptionsSnapshot<AElfChainAliasOptions> aelfChainAliasOption,
         IDistributedCacheSerializer serializer, IAElfClientService aelfClientService, IBridgeOutService bridgeOutService,
         INethereumService nethereumService, IOptions<BlockConfirmationOptions> blockConfirmationOptions)
         : base(optionsAccessor)
@@ -47,8 +47,8 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         _aelfClientService = aelfClientService;
         _bridgeOutService = bridgeOutService;
         _nethereumService = nethereumService;
-        _aelfClientConfigOptions = aelfClientConfigOptions.Value;
         _blockConfirmationOptions = blockConfirmationOptions.Value;
+        _aelfChainAliasOption = aelfChainAliasOption.Value;
     }
 
     public async Task EnqueueAsync(SendTransmitArgs args)
@@ -66,7 +66,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 break;
             }
 
-            var block = await _aelfClientService.GetBlockByHeightAsync(_aelfClientConfigOptions.ClientAlias, item.BlockHeight);
+            var block = await _aelfClientService.GetBlockByHeightAsync(_aelfChainAliasOption.Mapping[item.ChainId], item.BlockHeight);
             if (block.BlockHash == item.BlockHash)
             {
                 if (item.RetryTimes > 3)
