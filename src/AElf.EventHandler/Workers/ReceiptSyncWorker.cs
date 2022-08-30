@@ -1,20 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
 using System.Threading.Tasks;
-using AElf.Client.Bridge;
-using AElf.Client.Core.Options;
-using AElf.Client.MerkleTreeContract;
-using AElf.Client.Oracle;
-using AElf.Contracts.MerkleTreeContract;
-using AElf.Contracts.Oracle;
-using AElf.Nethereum.Bridge;
-using AElf.Nethereum.Core;
-using AElf.Types;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Nethereum.RPC.Eth.Blocks;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 

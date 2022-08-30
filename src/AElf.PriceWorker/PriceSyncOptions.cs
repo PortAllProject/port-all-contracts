@@ -11,5 +11,6 @@ public class PriceSyncOptions
 public class ChainItem
 {
     public string ChainId { get; set; }
+    public string ChainType { get; set; }
     public string NativeToken { get; set; }
 }

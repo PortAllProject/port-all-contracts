@@ -23,9 +23,9 @@ public class ApiClient
         {
             Proxy = proxy,
         };
-        HttpClient.DefaultProxy = proxy;
+        var client = new HttpClient(clientHandler);
         
-        var response = await _httpClient.GetAsync(uri)
+        var response = await client.GetAsync(uri)
             .ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
 

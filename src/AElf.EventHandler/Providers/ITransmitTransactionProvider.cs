@@ -31,7 +31,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     private readonly INethereumService _nethereumService;
     private readonly BlockConfirmationOptions _blockConfirmationOptions;
     private readonly AElfChainAliasOptions _aelfChainAliasOption;
-    public EthereumChainAliasOptions _ethereumAElfChainAliasOptions;
+    private readonly EthereumChainAliasOptions _ethereumAElfChainAliasOptions;
     public ILogger<TransmitTransactionProvider> Logger { get; set; }
 
     private const string TransmitSendingQueue = "TransmitSendingQueue";
@@ -88,9 +88,9 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                         break;
                     }
 
-                    Logger.LogError($"Send Transmit transaction. TxId: {sendResult}");
                     item.TransactionId = sendResult;
                     await EnqueueAsync(GetQueueName(TransmitCheckingQueue,item.ChainId), item);
+                    Logger.LogInformation($"Send Transmit transaction. TxId: {sendResult}");
                 }
             }
             
@@ -130,6 +130,8 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             
             await DequeueAsync(GetQueueName(TransmitCheckingQueue,chainId));
             item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
+            Logger.LogInformation($"Transmit transaction finished. TxId: {item.TransactionId}");
+
         }
     }
 
