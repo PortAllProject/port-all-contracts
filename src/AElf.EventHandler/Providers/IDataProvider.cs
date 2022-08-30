@@ -122,7 +122,7 @@ public class DataProvider : IDataProvider, ISingletonDependency
         var receiptHashes = new List<Hash>();
         for (var i = 0; i <= end - start; i++)
         {
-            var amountHash = HashHelper.ComputeFrom(((decimal)(receiptInfos.Receipts[i].Amount/10000000000)).ToString());
+            var amountHash = HashHelper.ComputeFrom((receiptInfos.Receipts[i].Amount).ToString());
             var targetAddressHash = HashHelper.ComputeFrom(receiptInfos.Receipts[i].TargetAddress);
             var receiptIdHash = HashHelper.ComputeFrom(receiptInfos.Receipts[i].ReceiptId);
             var hash = HashHelper.ConcatAndCompute(amountHash, targetAddressHash, receiptIdHash);
