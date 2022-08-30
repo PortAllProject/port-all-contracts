@@ -62,8 +62,6 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
         {
             if (_bridgeOptions.IsTransmitter)
             {
-                // var report =
-                //     _reportProvider.GetReport(ethereumContractAddress, roundId);
                 var report = await _reportService.GetRawReportAsync(chainId, new GetRawReportInput
                 {
                     ChainId = targetChainId,
@@ -131,12 +129,7 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
             v[index] = recoverableInfoBytes.Last();
             index++;
         }
-
-        var r1 = r[0].ToHex();
-        var s1 = s[0].ToHex();
-        var v1 = v.ToHex();
         
-
         return (ByteStringHelper.FromHexString(swapId).ToByteArray(),
             ByteStringHelper.FromHexString(report).ToByteArray(), r, s, v);
     }

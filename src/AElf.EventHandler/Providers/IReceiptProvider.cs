@@ -115,18 +115,23 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
             _logger.LogInformation($"Space of id {spaceId} is not created. ");
             return;
         }
-
+        var nextTokenIndex = lastRecordedLeafIndex == 0 ? 1 : lastRecordedLeafIndex + 2;
         if (_latestQueriedReceiptCountProvider.Get(swapId) == 0)
         {
-            _latestQueriedReceiptCountProvider.Set(swapId, lastRecordedLeafIndex + 1);
-            _logger.LogInformation($"Next round to query should begin with tokenIndex:{_latestQueriedReceiptCountProvider.Get(swapId)}");
+            _latestQueriedReceiptCountProvider.Set(swapId,nextTokenIndex);
         }
-
+        
         var nextRoundStartTokenIndex = _latestQueriedReceiptCountProvider.Get(swapId);
+        _logger.LogInformation($"Next round to query should begin with tokenIndex:{nextRoundStartTokenIndex}");
 
         _logger.LogInformation($"Last recorded leaf index : {lastRecordedLeafIndex}.");
+        var ifMatchIndex = nextRoundStartTokenIndex == 1 ? 1 : nextTokenIndex - 1;
+        if (ifMatchIndex != lastRecordedLeafIndex+1)
+        {
+            _logger.LogInformation($"Inccorect leaf index. Last recorded leaf index:{lastRecordedLeafIndex};Last recorded receipt index:{lastRecordedLeafIndex+1};Should begin token index:{nextRoundStartTokenIndex}.");
+            return;
+        }
         
-
         if (tokenIndex < nextRoundStartTokenIndex)
         {
             return;
@@ -147,7 +152,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
                 var blockConfirmationCount = _blockConfirmationOptions.ConfirmationCount[bridgeItem.ChainId];
                 if (blockNumber - blockHeight > blockConfirmationCount)
                 {
-                    lastTokenIndexConfirm += (i+1);
+                    lastTokenIndexConfirm = (i+nextRoundStartTokenIndex);
                     continue;
                 }
                 break;
@@ -182,10 +187,10 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
                 };
 
                 _logger.LogInformation($"About to send Query transaction for token swapping, QueryInput: {queryInput}");
-
+                _latestQueriedReceiptCountProvider.Set(swapId,  lastTokenIndexConfirm + 1);
                 var sendTxResult = await _oracleService.QueryAsync(chainId, queryInput);
                 _logger.LogInformation($"Query transaction id : {sendTxResult.TransactionResult.TransactionId}");
-                _latestQueriedReceiptCountProvider.Set(swapId,  lastTokenIndexConfirm + 1);
+                
                 _logger.LogInformation(
                     $"Next token index should start with tokenindex:{_latestQueriedReceiptCountProvider.Get(swapId)}");
             }

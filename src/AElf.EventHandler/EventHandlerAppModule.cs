@@ -87,7 +87,7 @@ public class EventHandlerAppModule : AbpModule
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
         context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
-        //context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
+        context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
         // var service = context.ServiceProvider.GetRequiredService<IReceiptProvider>();
         // AsyncHelper.RunSync(service.ExecuteAsync);
         // var service = context.ServiceProvider.GetRequiredService<IAElfClientService>();
