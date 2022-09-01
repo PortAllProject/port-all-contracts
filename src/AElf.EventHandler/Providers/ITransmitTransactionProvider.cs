@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AElf.Client.Core;
 using AElf.Client.Core.Options;
@@ -79,18 +80,28 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 }
                 else
                 {
-                    var sendResult = await _bridgeOutService.TransmitAsync(item.TargetChainId,
-                        item.TargetContractAddress,item.SwapHashId,
-                        item.Report, item.Rs, item.Ss, item.RawVs);
-                    if (string.IsNullOrWhiteSpace(sendResult))
+                    try
                     {
-                        Logger.LogError("Failed to transmit.");
-                        break;
-                    }
+                        var sendResult = await _bridgeOutService.TransmitAsync(item.TargetChainId,
+                            item.TargetContractAddress,item.SwapHashId,
+                            item.Report, item.Rs, item.Ss, item.RawVs);
+                        if (string.IsNullOrWhiteSpace(sendResult))
+                        {
+                            Logger.LogError("Failed to transmit.");
+                            break;
+                        }
 
-                    item.TransactionId = sendResult;
-                    await EnqueueAsync(GetQueueName(TransmitCheckingQueue,item.ChainId), item);
-                    Logger.LogInformation($"Send Transmit transaction. TxId: {sendResult}");
+                        item.TransactionId = sendResult;
+                        await EnqueueAsync(GetQueueName(TransmitCheckingQueue,item.ChainId), item);
+                        Logger.LogInformation($"Send Transmit transaction. TxId: {sendResult}");
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.LogError($"Send Transmit transaction Failed. Message: {e.Message}", e);
+                        item.RetryTimes += 1;
+                        await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
+                    }
+                    
                 }
             }
             
@@ -107,7 +118,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             var ethAlias = _ethereumAElfChainAliasOptions.Mapping[item.TargetChainId];
             var receipt = await _nethereumService.GetTransactionReceiptAsync(ethAlias, item.TransactionId);
 
-            if (receipt.Status.Value != 1)
+            if (receipt == null || receipt.Status == null || receipt.Status.Value != 1)
             {
                 Logger.LogError($"Transmit transaction failed. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");
                 item.RetryTimes += 1;
@@ -129,9 +140,9 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             }
             
             await DequeueAsync(GetQueueName(TransmitCheckingQueue,chainId));
-            item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
             Logger.LogInformation($"Transmit transaction finished. TxId: {item.TransactionId}");
 
+            item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
         }
     }
 

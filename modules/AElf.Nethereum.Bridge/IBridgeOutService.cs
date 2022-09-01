@@ -1,4 +1,5 @@
-﻿using AElf.Nethereum.Core;
+﻿using System.Numerics;
+using AElf.Nethereum.Core;
 using Nethereum.RPC.Eth.DTOs;
 using Volo.Abp.DependencyInjection;
 
@@ -19,6 +20,7 @@ public class BridgeOutService : ContractServiceBase, IBridgeOutService, ITransie
         var setValueFunction = GetFunction(chainId, contractAddress, "transmit");
         var sender = GetAccount().Address;
         var gas = await setValueFunction.EstimateGasAsync(sender, null, null, swapHashId, report, rs, ss, rawVs);
+        gas.Value += BigInteger.Divide(gas.Value, new BigInteger(20));
         var transactionResult =
             await setValueFunction.SendTransactionAsync(sender, gas, null, null, swapHashId, report,
                 rs, ss, rawVs);
