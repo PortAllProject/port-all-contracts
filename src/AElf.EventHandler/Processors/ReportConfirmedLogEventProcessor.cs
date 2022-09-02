@@ -56,6 +56,8 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
         var targetChainId = reportConfirmed.TargetChainId;
         var ethereumContractAddress = reportConfirmed.Token;
         var roundId = reportConfirmed.RoundId;
+        
+        //TODO:check permission
         await _signaturesRecoverableInfoProvider.SetSignatureAsync(chainId, ethereumContractAddress, roundId,
             reportConfirmed.Signature);
         if (reportConfirmed.IsAllNodeConfirmed)

@@ -68,7 +68,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
     {
         var bridgeItemsMap = new Dictionary<(string, string), List<BridgeItemIn>>();
         var sendQueryList = new Dictionary<string, BridgeItemIn>();
-        var tokenIndex = new Dictionary<string, BigInteger>();
+        var tokenIndex = new Dictionary<(string,string), BigInteger>();
         foreach (var bridgeItem in _bridgeOptions.BridgesIn)
         {
             var key = (bridgeItem.ChainId, bridgeItem.EthereumBridgeInContractAddress);
@@ -85,11 +85,12 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
         {
             var tokenList = item.Select(i => i.OriginToken).ToList();
             var targetChainIdList = item.Select(i => i.TargetChainId).ToList();
+            var tokenAndChainIdList = item.Select(i => (i.TargetChainId, i.OriginToken)).ToList();
             var sendReceiptIndexDto = await _bridgeInService.GetTransferReceiptIndexAsync(aliasAddress.Item1,
                 aliasAddress.Item2, tokenList, targetChainIdList);
             for (var i = 0; i < tokenList.Count; i++)
             {
-                tokenIndex[tokenList[i]] = sendReceiptIndexDto.Indexes[i];
+                tokenIndex[tokenAndChainIdList[i]] = sendReceiptIndexDto.Indexes[i];
                 sendQueryList[item[i].SwapId] = item[i];
             }
         }
@@ -97,7 +98,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
         foreach (var (swapId, item) in sendQueryList)
         {
             var targetChainId = _bridgeOptions.BridgesIn.Single(i => i.SwapId == swapId).TargetChainId;
-            await SendQueryAsync(targetChainId, item, tokenIndex[item.OriginToken]);
+            await SendQueryAsync(targetChainId, item, tokenIndex[(item.TargetChainId,item.OriginToken)]);
         }
     }
     private async Task SendQueryAsync(string chainId, BridgeItemIn bridgeItem, BigInteger tokenIndex)

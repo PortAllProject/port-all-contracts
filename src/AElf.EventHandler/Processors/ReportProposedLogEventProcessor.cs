@@ -43,6 +43,8 @@ internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportPro
         reportProposed.MergeFrom(logEvent);
 
         _logger.LogInformation($"New report: {reportProposed}");
+        
+        //TODO:Check permission
 
         var chainId = ChainIdProvider.GetChainId(context.ChainId);
         var privateKey = _accountProvider.GetPrivateKey(_aelfClientConfigOptions.AccountAlias);
