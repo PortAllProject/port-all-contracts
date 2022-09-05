@@ -113,7 +113,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
             {
                 SpaceId = spaceId
             })).Value;
-        if (lastRecordedLeafIndex == -2)
+        if (lastRecordedLeafIndex == -1)
         {
             _logger.LogInformation($"Space of id {spaceId} is not created. ");
             return;
