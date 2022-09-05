@@ -83,10 +83,11 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                     RoundId = roundId
                 })).Observations.Value.First().Key;
                 var receiptIdTokenHash = receiptId.Split(".").First();
-                var symbol = (await _bridgeService.GetReceiptIdInfoAsync(chainId,
-                    Hash.LoadFromHex(receiptIdTokenHash))).Symbol;
+                var receiptIdInfo = await _bridgeService.GetReceiptIdInfoAsync(chainId,
+                    Hash.LoadFromHex(receiptIdTokenHash));
+                
                 var ethereumSwapId =
-                    (_bridgeOptions.BridgesOut.Single(i => i.TargetChainId == targetChainId && i.OriginToken == symbol))
+                    (_bridgeOptions.BridgesOut.Single(i => i.TargetChainId == targetChainId && i.OriginToken == receiptIdInfo.Symbol && i.ChainId == ChainIdProvider.GetChainId(context.ChainId)))
                     .EthereumSwapId;
 
                 var (swapHashId, reportBytes, rs, ss, vs) =
