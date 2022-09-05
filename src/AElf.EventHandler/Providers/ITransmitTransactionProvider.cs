@@ -22,6 +22,7 @@ public interface ITransmitTransactionProvider
     Task EnqueueAsync(SendTransmitArgs args);
     Task SendByLibAsync(string chainId, string libHash, long libHeight);
     Task UpdateQueueAsync(string chainId);
+    Task ReSendFailedJobAsync(string chainId);
 }
 
 public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionProvider, ISingletonDependency
@@ -143,6 +144,18 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             Logger.LogInformation($"Transmit transaction finished. TxId: {item.TransactionId}");
 
             item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
+        }
+    }
+
+    public async Task ReSendFailedJobAsync(string chainId)
+    {
+        var item = await GetFirstItemAsync(GetQueueName(TransmitFailedQueue,chainId));
+        while (item != null)
+        {
+            await EnqueueAsync(item);
+            await DequeueAsync(GetQueueName(TransmitFailedQueue, chainId));
+            
+            item = await GetFirstItemAsync(GetQueueName(TransmitFailedQueue,chainId));
         }
     }
 
