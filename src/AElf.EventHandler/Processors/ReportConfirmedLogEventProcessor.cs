@@ -95,7 +95,23 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
 
                 _logger.LogInformation(
                     $"Try to transmit data, TargetChainId: {reportConfirmed.TargetChainId} Address: {ethereumContractAddress}  RoundId: {reportConfirmed.RoundId}");
-
+               
+                for (var i = 0; i< rs.Length;i++)
+                {
+                    _logger.LogInformation(
+                        $"From chainId:{chainId}" +
+                        $"TargetContractAddress:{ethereumContractAddress}" +
+                        $"TargetChainId:{reportConfirmed.TargetChainId}" +
+                        $"Report:{reportBytes.ToHex()}" +
+                        $"Rs[{i}]:{rs[i].ToHex()}" +
+                        $"Ss[{i}]:{ss[i].ToHex()}" +
+                        $"RawVs:{vs.ToHex()}" +
+                        $"SwapHashId:{swapHashId}" +
+                        $"BlockHash:{context.BlockHash}" +
+                        $"BlockHeight:{context.BlockNumber}"
+                    );
+                }
+                
                 await _transmitTransactionProvider.EnqueueAsync(new SendTransmitArgs
                 {
                     ChainId = chainId,
@@ -109,6 +125,7 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                     BlockHash = context.BlockHash,
                     BlockHeight = context.BlockNumber
                 });
+                
 
                 await _signaturesRecoverableInfoProvider.RemoveSignatureAsync(chainId,
                     ethereumContractAddress, roundId);
