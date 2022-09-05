@@ -58,8 +58,9 @@ internal class QueryCreatedLogEventProcessor : LogEventProcessorBase<QueryCreate
                 queryCreated.QueryInfo.Options.ToList());
             if (string.IsNullOrEmpty(data))
             {
+                var swapId = queryCreated.QueryInfo.Title.Split("_").Last();
                 _logger.LogError(queryCreated.QueryInfo.Title == "record_receipts"
-                    ? "Failed to record receipts from eth to aelf."
+                    ? $"Failed to record receipts. Swap Id :{swapId}"
                     : $"Failed to response to query {queryCreated.QueryId}.");
         
                 return;
