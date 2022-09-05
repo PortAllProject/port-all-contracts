@@ -119,25 +119,19 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
             return;
         }
 
-        var nextTokenIndex = lastRecordedLeafIndex == 0 ? 1 : lastRecordedLeafIndex + 2;
+        var nextTokenIndex = lastRecordedLeafIndex == -2 ? 1 : lastRecordedLeafIndex + 2;
         if (_latestQueriedReceiptCountProvider.Get(swapId) == 0)
         {
             _latestQueriedReceiptCountProvider.Set(swapId, nextTokenIndex);
         }
+        
+        _logger.LogInformation(
+            $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Last recorded leaf index : {lastRecordedLeafIndex}.");
 
         var nextRoundStartTokenIndex = _latestQueriedReceiptCountProvider.Get(swapId);
         _logger.LogInformation(
-            $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Next round to query should begin with tokenIndex:{nextRoundStartTokenIndex}");
-
-        _logger.LogInformation(
-            $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Last recorded leaf index : {lastRecordedLeafIndex}.");
-        var ifMatchIndex = nextRoundStartTokenIndex == 1 ? 1 : nextTokenIndex - 1;
-        if (ifMatchIndex != lastRecordedLeafIndex + 1)
-        {
-            _logger.LogInformation(
-                $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Inccorect leaf index. Last recorded leaf index:{lastRecordedLeafIndex};Last recorded receipt index:{lastRecordedLeafIndex + 1};Should begin token index:{nextRoundStartTokenIndex}.");
-            return;
-        }
+            $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Next round to query should begin with receipt Index:{nextRoundStartTokenIndex}");
+        
 
         if (tokenIndex < nextRoundStartTokenIndex)
         {
@@ -168,7 +162,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
             }
 
             _logger.LogInformation(
-                $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Last confirmed token index:{lastTokenIndexConfirm}");
+                $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Last confirmed receipt index:{lastTokenIndexConfirm}");
 
             _logger.LogInformation(
                 $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Token hash in receipt id:{receiptIdHash}");
@@ -211,7 +205,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
                     $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Query transaction id : {sendTxResult.TransactionResult.TransactionId}");
 
                 _logger.LogInformation(
-                    $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Next token index should start with tokenindex:{_latestQueriedReceiptCountProvider.Get(swapId)}");
+                    $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Next receipt index should start with: {_latestQueriedReceiptCountProvider.Get(swapId)}");
             }
         }
     }
