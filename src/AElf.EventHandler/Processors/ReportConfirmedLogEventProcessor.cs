@@ -106,7 +106,7 @@ internal class ReportConfirmedLogEventProcessor : LogEventProcessorBase<ReportCo
                         $"Rs[{i}]:{rs[i].ToHex()}" +
                         $"Ss[{i}]:{ss[i].ToHex()}" +
                         $"RawVs:{vs.ToHex()}" +
-                        $"SwapHashId:{swapHashId}" +
+                        $"SwapHashId:{swapHashId.ToHex()}" +
                         $"BlockHash:{context.BlockHash}" +
                         $"BlockHeight:{context.BlockNumber}"
                     );

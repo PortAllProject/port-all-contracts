@@ -122,9 +122,16 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
         var nextTokenIndex = lastRecordedLeafIndex == -2 ? 1 : lastRecordedLeafIndex + 2;
         if (_latestQueriedReceiptCountProvider.Get(swapId) == 0)
         {
-            _latestQueriedReceiptCountProvider.Set(swapId, nextTokenIndex);
+            _latestQueriedReceiptCountProvider.Set(DateTime.UtcNow, swapId, nextTokenIndex);
         }
-        
+        else if (_latestQueriedReceiptCountProvider.Get(swapId) != nextTokenIndex)
+        {
+            var receiptIndexNow = _latestQueriedReceiptCountProvider.Get(swapId);
+            _logger.LogInformation(
+                $"Latest queried receipt index : {receiptIndexNow}, Last recorded leaf index : {nextTokenIndex}, Wait.");
+            return;
+        }
+
         _logger.LogInformation(
             $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Last recorded leaf index : {lastRecordedLeafIndex}.");
 
@@ -184,7 +191,6 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
                     },
                     AggregatorContractAddress =
                         _contractOptions.ContractAddressList[chainId]["StringAggregatorContract"].ConvertAddress(),
-                    //AggregateThreshold = 1,
                     CallbackInfo = new CallbackInfo
                     {
                         ContractAddress =
@@ -199,7 +205,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
 
                 _logger.LogInformation(
                     $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} About to send Query transaction for token swapping, QueryInput: {queryInput}");
-                _latestQueriedReceiptCountProvider.Set(swapId, lastTokenIndexConfirm + 1);
+                _latestQueriedReceiptCountProvider.Set(DateTime.UtcNow, swapId, lastTokenIndexConfirm + 1);
                 var sendTxResult = await _oracleService.QueryAsync(chainId, queryInput);
                 _logger.LogInformation(
                     $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Query transaction id : {sendTxResult.TransactionResult.TransactionId}");
