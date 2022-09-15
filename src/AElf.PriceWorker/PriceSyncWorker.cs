@@ -2,7 +2,9 @@ using System;
 using System.Threading.Tasks;
 using AElf.BlockchainTransactionFee;
 using AElf.Client.Bridge;
+using AElf.Client.Core;
 using AElf.Contracts.Bridge;
+using AElf.Nethereum.Core;
 using AElf.TokenPrice;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,15 +21,18 @@ public class PriceSyncWorker : AsyncPeriodicBackgroundWorkerBase
     private readonly IBridgeService _bridgeService;
     private readonly IBlockchainTransactionFeeService _blockchainTransactionFeeService;
     private readonly ITokenPriceService _tokenPriceService;
+    private readonly IAElfClientService _aelfClientService;
 
     public PriceSyncWorker(AbpAsyncTimer timer, IServiceScopeFactory serviceScopeFactory,
         IOptionsSnapshot<PriceSyncOptions> priceSyncOptions, IBridgeService bridgeService,
-        IBlockchainTransactionFeeService blockchainTransactionFeeService, ITokenPriceService tokenPriceService) : base(
+        IBlockchainTransactionFeeService blockchainTransactionFeeService, ITokenPriceService tokenPriceService,
+        IAElfClientService aelfClientService) : base(
         timer, serviceScopeFactory)
     {
         _bridgeService = bridgeService;
         _blockchainTransactionFeeService = blockchainTransactionFeeService;
         _tokenPriceService = tokenPriceService;
+        _aelfClientService = aelfClientService;
         _priceSyncOptions = priceSyncOptions.Value;
 
         Timer.Period = 1000 * 1;
@@ -35,12 +40,10 @@ public class PriceSyncWorker : AsyncPeriodicBackgroundWorkerBase
 
     protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
     {
-        Logger.LogInformation($"================");
         var setGasPriceInput = new SetGasPriceInput();
         var setPriceRatioInput = new SetPriceRatioInput();
-        
         var elfPrice = await _tokenPriceService.GetPriceAsync("ELF");
-        
+
         foreach (var item in _priceSyncOptions.SourceChains)
         {
             var gasFee = await _blockchainTransactionFeeService.GetTransactionFeeAsync(item.ChainType);
@@ -59,7 +62,7 @@ public class PriceSyncWorker : AsyncPeriodicBackgroundWorkerBase
                 PriceRatio_ = ratio
             });
         }
-
+        
         foreach (var item in _priceSyncOptions.TargetChains)
         {
             await _bridgeService.SetGasPriceAsync(item, setGasPriceInput);

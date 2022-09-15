@@ -31,19 +31,9 @@ namespace AElf.TokenPrice.CoinGecko
         {
             try
             {
-                var proxy = new WebProxy
-                {
-                    Address = new Uri("http://127.0.0.1:1087"),
-                };
-                var clientHandler = new HttpClientHandler()
-                {
-                    Proxy = proxy,
-                };
-                var client = new CoinGeckoClient(clientHandler);
-                    
                 var coinData =
                     await RequestAsync(async () =>
-                        await client.SimpleClient.GetSimplePrice(new[] {coinId}, new[] { UsdSymbol }));
+                        await _coinGeckoClient.SimpleClient.GetSimplePrice(new[] {coinId}, new[] { UsdSymbol }));
 
                 if (!coinData.TryGetValue(coinId,out var value))
                 {

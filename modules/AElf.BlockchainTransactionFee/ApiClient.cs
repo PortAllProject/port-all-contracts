@@ -15,17 +15,7 @@ public class ApiClient
 
     public async Task<T> GetAsync<T>(string uri)
     {
-        var proxy = new WebProxy
-        {
-            Address = new Uri("http://127.0.0.1:1087"),
-        };
-        var clientHandler = new HttpClientHandler()
-        {
-            Proxy = proxy,
-        };
-        var client = new HttpClient(clientHandler);
-        
-        var response = await client.GetAsync(uri)
+        var response = await _httpClient.GetAsync(uri)
             .ConfigureAwait(false);
         response.EnsureSuccessStatusCode();
 

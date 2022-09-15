@@ -125,23 +125,28 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
                 item.RetryTimes += 1;
                 await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
             }
-
-            var currentHeight = await _nethereumService.GetBlockNumberAsync(ethAlias);
-            if (receipt.BlockNumber.ToLong() >= currentHeight - _blockConfirmationOptions.ConfirmationCount[item.TargetChainId])
+            else
             {
-                break;
-            }
+                var currentHeight = await _nethereumService.GetBlockNumberAsync(ethAlias);
+                if (receipt.BlockNumber.ToLong() >= currentHeight - _blockConfirmationOptions.ConfirmationCount[item.TargetChainId])
+                {
+                    break;
+                }
 
-            var block = await _nethereumService.GetBlockByNumberAsync(ethAlias, receipt.BlockNumber);
-            if (block.BlockHash != receipt.BlockHash)
-            {
-                Logger.LogError($"Transmit transaction forked. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");
-                item.RetryTimes += 1;
-                await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
+                var block = await _nethereumService.GetBlockByNumberAsync(ethAlias, receipt.BlockNumber);
+                if (block.BlockHash != receipt.BlockHash)
+                {
+                    Logger.LogError($"Transmit transaction forked. Chain: {item.TargetChainId},  TxId: {item.TransactionId}");
+                    item.RetryTimes += 1;
+                    await EnqueueAsync(GetQueueName(TransmitSendingQueue, item.ChainId), item);
+                }
+                else
+                {
+                    Logger.LogInformation($"Transmit transaction finished. TxId: {item.TransactionId}");
+                }
             }
             
             await DequeueAsync(GetQueueName(TransmitCheckingQueue,chainId));
-            Logger.LogInformation($"Transmit transaction finished. TxId: {item.TransactionId}");
 
             item = await GetFirstItemAsync(GetQueueName(TransmitCheckingQueue,chainId));
         }
@@ -152,6 +157,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
         var item = await GetFirstItemAsync(GetQueueName(TransmitFailedQueue,chainId));
         while (item != null)
         {
+            item.RetryTimes = 0;
             await EnqueueAsync(item);
             await DequeueAsync(GetQueueName(TransmitFailedQueue, chainId));
             

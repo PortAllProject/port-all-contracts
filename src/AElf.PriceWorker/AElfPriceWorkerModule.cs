@@ -1,3 +1,6 @@
+using System;
+using System.Net;
+using System.Net.Http;
 using AElf.BlockchainTransactionFee;
 using AElf.Client.Bridge;
 using AElf.Client.Core;

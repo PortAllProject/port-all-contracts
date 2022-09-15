@@ -26,6 +26,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\modules\AElf.BlockchainTransactionFee\AElf.BlockchainTransactionFee.csproj" />
       <ProjectReference Include="..\..\modules\AElf.Client.Bridge\AElf.Client.Bridge.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Nethereum.Core\AElf.Nethereum.Core.csproj" />
       <ProjectReference Include="..\..\modules\AElf.TokenPrice.Abstractions\AElf.TokenPrice.Abstractions.csproj" />
       <ProjectReference Include="..\..\modules\AElf.TokenPrice.CoinGecko\AElf.TokenPrice.CoinGecko.csproj" />
     </ItemGroup>

@@ -15,8 +15,8 @@ public interface IBridgeService
     Task<Hash> GetSpaceIdBySwapIdAsync(string chainId, Hash swapId);
     Task<SendTransactionResult> SetGasPriceAsync(string chainId, SetGasPriceInput input);
     Task<SendTransactionResult> SetPriceRatioAsync(string chainId, SetPriceRatioInput input);
-    Task<StringValue> GetGasPriceAsync(string chainId, StringValue input);
-    Task<StringValue> GetPriceRatioAsync(string chainId, StringValue input);
+    Task<Int64Value> GetGasPriceAsync(string chainId, StringValue input);
+    Task<Int64Value> GetPriceRatioAsync(string chainId, StringValue input);
     Task<ReceiptIdInfo> GetReceiptIdInfoAsync(string chainId, Hash receiptIdHash);
 }
 
@@ -62,20 +62,20 @@ public class BridgeService : ContractServiceBase, IBridgeService, ITransientDepe
         };
     }
 
-    public async Task<StringValue> GetGasPriceAsync(string chainId, StringValue input)
+    public async Task<Int64Value> GetGasPriceAsync(string chainId, StringValue input)
     {
         var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetGasPrice",
             input, AElfChainAliasOptions.Value.Mapping[chainId]);
-        var actualResult = new StringValue();
+        var actualResult = new Int64Value();
         actualResult.MergeFrom(result);
         return actualResult;
     }
 
-    public async Task<StringValue> GetPriceRatioAsync(string chainId, StringValue input)
+    public async Task<Int64Value> GetPriceRatioAsync(string chainId, StringValue input)
     {
         var result = await _clientService.ViewAsync(GetContractAddress(chainId), "GetPriceRatio",
             input, AElfChainAliasOptions.Value.Mapping[chainId]);
-        var actualResult = new StringValue();
+        var actualResult = new Int64Value();
         actualResult.MergeFrom(result);
         return actualResult;
     }
