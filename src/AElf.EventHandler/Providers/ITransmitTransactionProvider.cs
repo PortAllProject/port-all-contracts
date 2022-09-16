@@ -94,7 +94,7 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
 
                         item.TransactionId = sendResult;
                         await EnqueueAsync(GetQueueName(TransmitCheckingQueue,item.ChainId), item);
-                        Logger.LogInformation($"Send Transmit transaction. TxId: {sendResult}");
+                        Logger.LogInformation($"Send Transmit transaction. TxId: {sendResult}, Report: {item.Report.ToHex()}");
                     }
                     catch (Exception e)
                     {
