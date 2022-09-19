@@ -10,6 +10,7 @@ using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Serilog;
 using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.Threading;
 
@@ -66,7 +67,9 @@ public class PriceSyncWorker : AsyncPeriodicBackgroundWorkerBase
         foreach (var item in _priceSyncOptions.TargetChains)
         {
             await _bridgeService.SetGasPriceAsync(item, setGasPriceInput);
+            Logger.LogDebug($"SetGasPrice success, ChainId: {item}.");
             await _bridgeService.SetPriceRatioAsync(item, setPriceRatioInput);
+            Logger.LogDebug($"SetPriceRatio success, ChainId: {item}.");
         }
     }
 }
