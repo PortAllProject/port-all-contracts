@@ -36,7 +36,7 @@ public class PriceSyncWorker : AsyncPeriodicBackgroundWorkerBase
         _aelfClientService = aelfClientService;
         _priceSyncOptions = priceSyncOptions.Value;
 
-        Timer.Period = 1000 * 1;
+        Timer.Period = 1000 * 60;
     }
 
     protected override async Task DoWorkAsync(PeriodicBackgroundWorkerContext workerContext)
