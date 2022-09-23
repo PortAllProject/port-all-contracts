@@ -25,6 +25,7 @@ namespace AElf.TokenPrice.CoinGecko
 
         public async Task RecordRequestAsync()
         {
+            return;
             var requestTime = await _requestTimeCache.GetOrAddAsync(CoinGeckoApiConsts.RequestTimeCacheKey,
                 async () => new RequestTime(), () => new DistributedCacheEntryOptions
                 {
