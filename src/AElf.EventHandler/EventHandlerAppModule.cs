@@ -13,6 +13,7 @@ using AElf.Nethereum.Bridge;
 using AElf.Nethereum.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
 using Volo.Abp;
 using Volo.Abp.Autofac;
@@ -78,6 +79,7 @@ public class EventHandlerAppModule : AbpModule
         Configure<BridgeOptions>(configuration.GetSection("Bridge"));
         Configure<BlockConfirmationOptions>(configuration.GetSection("BlockConfirmation"));
         Configure<ChainIdMappingOptions>(configuration.GetSection("ChainIdMapping"));
+        Configure<FaultHandlingOptions>(configuration.GetSection("FaultHandling"));
         
         context.Services.AddHostedService<EventHandlerAppHostedService>();
         context.Services.AddTransient(typeof(ILogEventProcessor<>), typeof(LogEventProcessorBase<>));
@@ -88,9 +90,12 @@ public class EventHandlerAppModule : AbpModule
     {
         context.AddBackgroundWorkerAsync<TransmitTransactionWorker>();
         context.AddBackgroundWorkerAsync<ReceiptSyncWorker>();
-        // var service = context.ServiceProvider.GetRequiredService<IReceiptProvider>();
-        // AsyncHelper.RunSync(service.ExecuteAsync);
-        // var service = context.ServiceProvider.GetRequiredService<IAElfClientService>();
-        // var status = AsyncHelper.RunSync(async () => await service.GetChainStatusAsync("AELF-Test"));
+
+        var faultHandlingOptions = context.ServiceProvider.GetRequiredService<IOptionsSnapshot<FaultHandlingOptions>>();
+        if (faultHandlingOptions.Value.IsReSendFailedJob)
+        {
+            var service = context.ServiceProvider.GetRequiredService<ITransmitTransactionProvider>();
+            AsyncHelper.RunSync(async()=> await service.ReSendFailedJobAsync(faultHandlingOptions.Value.ReSendFailedJobChainId));
+        }
     }
 }

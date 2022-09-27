@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using AElf.Nethereum.Core;
+using Microsoft.Extensions.Logging;
 using Nethereum.RPC.Eth.DTOs;
 using Volo.Abp.DependencyInjection;
 
@@ -14,11 +15,16 @@ public class BridgeOutService : ContractServiceBase, IBridgeOutService, ITransie
 {
     protected override string SmartContractName { get; } = "BridgeOut";
     
+    public ILogger<BridgeOutService> Logger { get; set; } 
+    
     public async Task<string> TransmitAsync(string chainId, string contractAddress, byte[] swapHashId, byte[] report,
         byte[][] rs, byte[][] ss, byte[] rawVs)
     {
         var setValueFunction = GetFunction(chainId, contractAddress, "transmit");
         var sender = GetAccount().Address;
+
+        Logger.LogInformation($"Transmit sender: {sender}");
+        
         var gas = await setValueFunction.EstimateGasAsync(sender, null, null, swapHashId, report, rs, ss, rawVs);
         gas.Value = BigInteger.Multiply(gas.Value, 2);
         var transactionResult =
