@@ -67,9 +67,16 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
     public async Task SendByLibAsync(string chainId, string libHash, long libHeight)
     {
         var item = await GetFirstItemAsync(GetQueueName(TransmitSendingQueue, chainId));
+        string firstSwapHashId = null;
+        string firstReport = null;
         while (item != null)
         {
             if (item.BlockHeight > libHeight)
+            {
+                break;
+            }
+
+            if (firstSwapHashId == item.SwapHashId.ToHex() && firstReport == item.Report.ToHex())
             {
                 break;
             }
@@ -114,6 +121,11 @@ public class TransmitTransactionProvider : AbpRedisCache, ITransmitTransactionPr
             }
             
             await DequeueAsync(GetQueueName(TransmitSendingQueue, chainId));
+            if (firstSwapHashId == null && firstReport == null)
+            {
+                firstSwapHashId = item.SwapHashId.ToHex();
+                firstReport = item.Report.ToHex();
+            }
             item = await GetFirstItemAsync(GetQueueName(TransmitSendingQueue, chainId));
         }
     }

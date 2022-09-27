@@ -25,32 +25,47 @@ public class NethereumClientProvider : ConcurrentDictionary<NethereumClientInfo,
 
     public Web3 GetClient(string clientAlias, string accountAlias = null)
     {
-        var keys = Keys.Where(o => o.ClientAlias == clientAlias && o.AccountAlias == accountAlias).ToList();
-        if (keys.Count == 0)
+        var clientConfig = _ethereumClientOptions.ClientConfigList
+            .FirstOrDefault(o => o.Alias == clientAlias);
+        Web3 client;
+        if (string.IsNullOrWhiteSpace(accountAlias))
         {
-            var clientConfig = _ethereumClientOptions.ClientConfigList
-                .FirstOrDefault(o => o.Alias == clientAlias);
-            Web3 client;
-            if (string.IsNullOrWhiteSpace(accountAlias))
-            {
-                client = new Web3(clientConfig.Url);
-            }
-            else
-            {
-                var account = _nethereumAccountProvider.GetAccount(accountAlias);
-                client = new Web3(account, clientConfig.Url);
-            }
-            
-            TryAdd(new NethereumClientInfo
-            {
-                ClientAlias = clientAlias,
-                AccountAlias = accountAlias
-            }, client);
-
-            return client;
+            client = new Web3(clientConfig.Url);
+        }
+        else
+        {
+            var account = _nethereumAccountProvider.GetAccount(accountAlias);
+            client = new Web3(account, clientConfig.Url);
         }
 
-        return this[keys.Single()];
+        return client;
+        
+        // var keys = Keys.Where(o => o.ClientAlias == clientAlias && o.AccountAlias == accountAlias).ToList();
+        // if (keys.Count == 0)
+        // {
+        //     var clientConfig = _ethereumClientOptions.ClientConfigList
+        //         .FirstOrDefault(o => o.Alias == clientAlias);
+        //     Web3 client;
+        //     if (string.IsNullOrWhiteSpace(accountAlias))
+        //     {
+        //         client = new Web3(clientConfig.Url);
+        //     }
+        //     else
+        //     {
+        //         var account = _nethereumAccountProvider.GetAccount(accountAlias);
+        //         client = new Web3(account, clientConfig.Url);
+        //     }
+        //     
+        //     TryAdd(new NethereumClientInfo
+        //     {
+        //         ClientAlias = clientAlias,
+        //         AccountAlias = accountAlias
+        //     }, client);
+        //
+        //     return client;
+        // }
+        //
+        // return this[keys.Single()];
     }
 }
 
