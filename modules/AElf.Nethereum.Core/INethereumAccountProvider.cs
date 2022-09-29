@@ -11,7 +11,7 @@ public interface INethereumAccountProvider
     Account GetAccount(string alias);
 }
 
-public class NethereumAccountProvider : ConcurrentDictionary<string, Account>, INethereumAccountProvider, ISingletonDependency
+public class NethereumAccountProvider : ConcurrentDictionary<string, EthereumAccountConfig>, INethereumAccountProvider, ISingletonDependency
 {
     private readonly EthereumAccountOptions _ethereumAccountOptions;
 
@@ -21,12 +21,12 @@ public class NethereumAccountProvider : ConcurrentDictionary<string, Account>, I
 
         foreach (var item in _ethereumAccountOptions.AccountConfigList)
         {
-            TryAdd(item.Alias, new Account(item.PrivateKey));
+            TryAdd(item.Alias, item);
         }
     }
 
     public Account GetAccount(string alias)
     {
-        return this[alias];
+        return new Account(this[alias].PrivateKey);
     }
 }
