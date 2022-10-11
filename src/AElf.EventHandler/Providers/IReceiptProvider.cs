@@ -89,8 +89,13 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
             var tokenAndChainIdList = item.Select(i => (i.TargetChainId, i.OriginToken)).ToList();
             var sendReceiptIndexDto = await _bridgeInService.GetTransferReceiptIndexAsync(aliasAddress.Item1,
                 aliasAddress.Item2, tokenList, targetChainIdList);
+            for (var i = 0; i < tokenList.Count;i++)
+            {
+                _logger.LogInformation($"token:{tokenList[i]}-index:{sendReceiptIndexDto.Indexes[i]}");
+            }
             for (var i = 0; i < tokenList.Count; i++)
             {
+                _logger.LogInformation($"token and chain id:{tokenAndChainIdList[i].TargetChainId}{tokenAndChainIdList[i].OriginToken}-index:{sendReceiptIndexDto.Indexes[i]}");
                 tokenIndex[tokenAndChainIdList[i]] = sendReceiptIndexDto.Indexes[i];
                 sendQueryList[item[i].SwapId] = item[i];
             }
@@ -99,6 +104,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
         foreach (var (swapId, item) in sendQueryList)
         {
             var targetChainId = _bridgeOptions.BridgesIn.Single(i => i.SwapId == swapId).TargetChainId;
+            _logger.LogInformation($"targetChainId:{targetChainId},chain id:{item.ChainId},bridge item token:{item.OriginToken},tokenIndex:{tokenIndex[(item.TargetChainId, item.OriginToken)]}");
             await SendQueryAsync(targetChainId, item, tokenIndex[(item.TargetChainId, item.OriginToken)]);
         }
     }
