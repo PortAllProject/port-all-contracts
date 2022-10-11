@@ -10,9 +10,8 @@
         <PackageReference Include="AElf.Kernel.Types" Version="1.2.0" />
         <PackageReference Include="AElf.Types" Version="1.2.0" />
         <PackageReference Include="AElf.Core" Version="1.2.0" />
-        <PackageReference Include="AElf.Client" Version="1.1.0" />
         <PackageReference Include="AElf.CSharp.Core" Version="1.2.0" />
-        <PackageReference Include="Nethereum.KeyStore" Version="4.6.1" />
+        <PackageReference Include="Nethereum.KeyStore" Version="4.7.0" />
     </ItemGroup>
 
     <ItemGroup>
@@ -25,7 +24,8 @@
         <PackageReference Include="Volo.Abp.Autofac" Version="5.2.2" />
         <PackageReference Include="Volo.Abp.EventBus.RabbitMQ" Version="5.2.2" />
         <PackageReference Include="Volo.Abp.Threading" Version="5.2.2" />
-        <PackageReference Include="Nethereum.web3" Version="4.6.1" />
+        <PackageReference Include="Nethereum.web3" Version="4.7.0" />
+        <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="5.2.2" />
     </ItemGroup>
 
     <ItemGroup>
@@ -58,11 +58,26 @@
         <Content Include="ContractBuild\LockWithTakeTokenAbi.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
+        <None Remove="ContractBuild\BridgeInAbi.json" />
+        <Content Include="ContractBuild\BridgeInAbi.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <None Remove="ContractBuild\BridgeOutAbi.json" />
+        <Content Include="ContractBuild\BridgeOutAbi.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\contract\AElf.Contracts.IntegerAggregator\AElf.Contracts.IntegerAggregator.csproj" />
       <ProjectReference Include="..\..\contract\AElf.Contracts.OracleUser\AElf.Contracts.OracleUser.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.Bridge\AElf.Client.Bridge.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.MerkleTree\AElf.Client.MerkleTree.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.Oracle\AElf.Client.Oracle.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.Protobuf\AElf.Client.Protobuf.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.Report\AElf.Client.Report.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Nethereum.Bridge\AElf.Nethereum.Bridge.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Nethereum.Core\AElf.Nethereum.Core.csproj" />
     </ItemGroup>
 
 </Project>

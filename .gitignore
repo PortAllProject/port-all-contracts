@@ -296,4 +296,6 @@ aelf.js
 Contracts.manifest
 
 # Contract patcher dlls
-chain/scripts/patcher/*
+scripts/patcher/*
+src/AElf.Boilerplate.Launcher/contracts/*
+test/patched/*

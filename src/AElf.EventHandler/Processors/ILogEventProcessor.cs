@@ -6,7 +6,7 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    public interface ILogEventProcessor<T> : ITransientDependency, ILogEventProcessor where T : IEvent<T>
+    public interface ILogEventProcessor<T> : ITransientDependency, ILogEventProcessor
     {
 
     }
@@ -14,7 +14,7 @@ namespace AElf.EventHandler
     public interface ILogEventProcessor
     {
         string ContractName { get; }
-        Task ProcessAsync(LogEvent logEvent);
-        bool IsMatch(string contractAddress, string logEventName);
+        Task ProcessAsync(LogEvent logEvent, EventContext context);
+        bool IsMatch(int chainId, string contractAddress, string logEventName);
     }
 }

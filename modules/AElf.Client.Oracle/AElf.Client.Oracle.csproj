@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AElf.Core" Version="1.2.0" />
+        <PackageReference Include="Volo.Abp.Core" Version="5.2.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\AElf.Client.Core\AElf.Client.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="OracleService.tt">
+        <Generator>TextTemplatingFileGenerator</Generator>
+        <LastGenOutput>OracleService.g.cs</LastGenOutput>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="OracleService.g.cs">
+        <AutoGen>True</AutoGen>
+        <DesignTime>True</DesignTime>
+        <DependentUpon>OracleService.tt</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+</Project>

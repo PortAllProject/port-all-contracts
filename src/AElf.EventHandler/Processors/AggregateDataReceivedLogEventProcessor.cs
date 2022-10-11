@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AElf.Client.Core.Options;
 using AElf.Contracts.IntegerAggregator;
 using AElf.Types;
 using Common.Logging;
@@ -12,19 +13,19 @@ namespace AElf.EventHandler
     {
         private readonly ILogger<AggregateDataReceivedLogEventProcessor> _logger;
 
-        public AggregateDataReceivedLogEventProcessor(IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
+        public AggregateDataReceivedLogEventProcessor(IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
             ILogger<AggregateDataReceivedLogEventProcessor> logger) : base(contractAddressOptions)
         {
             _logger = logger;
         }
 
-        public override string ContractName => "IntegerAggregator";
+        public override string ContractName => "IntegerAggregatorContract";
 
-        public override Task ProcessAsync(LogEvent logEvent)
+        public override Task ProcessAsync(LogEvent logEvent, EventContext context)
         {
             var aggregateDataReceived = new AggregateDataReceived();
             aggregateDataReceived.MergeFrom(logEvent);
-            _logger.LogInformation($"AggregateDataReceived: {aggregateDataReceived}");
+            //_logger.LogInformation($"AggregateDataReceived: {aggregateDataReceived}");
 
             return Task.CompletedTask;
         }

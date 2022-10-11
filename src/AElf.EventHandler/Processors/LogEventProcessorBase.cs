@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using AElf.Client.Core.Options;
 using AElf.CSharp.Core;
 using AElf.Types;
 using Microsoft.Extensions.Options;
@@ -6,29 +8,38 @@ using Volo.Abp.DependencyInjection;
 
 namespace AElf.EventHandler
 {
-    public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T> where T : IEvent<T>
+    public abstract class LogEventProcessorBase<T> : ILogEventProcessor<T>
     {
-        private readonly ContractAddressOptions _contractAddressOptions;
+        private readonly AElfContractOptions _contractOptions;
+        public IChainIdProvider ChainIdProvider { get; set; }
 
-        public LogEventProcessorBase(IOptionsSnapshot<ContractAddressOptions> contractAddressOptions)
+        protected LogEventProcessorBase(IOptionsSnapshot<AElfContractOptions> contractAddressOptions)
         {
-            _contractAddressOptions = contractAddressOptions.Value;
+            _contractOptions = contractAddressOptions.Value;
         }
 
         public abstract string ContractName { get; }
 
-        public abstract Task ProcessAsync(LogEvent logEvent);
+        public abstract Task ProcessAsync(LogEvent logEvent, EventContext context);
 
-        public string GetContractAddress()
+        public string GetContractAddress(int chainId)
         {
-            return _contractAddressOptions.ContractAddressMap.TryGetValue(ContractName, out var contractAddress)
-                ? contractAddress
-                : string.Empty;
+            var id = ChainIdProvider.GetChainId(chainId);
+            if (_contractOptions.ContractAddressList.TryGetValue(id,
+                    out var contractAddresses))
+            {
+                if (contractAddresses.TryGetValue(ContractName, out var contractAddress))
+                {
+                    return contractAddress;
+                }
+            }
+
+            return string.Empty;
         }
 
-        public bool IsMatch(string contractAddress, string logEventName)
+        public bool IsMatch(int chainId, string contractAddress, string logEventName)
         {
-            var actualContractAddress = GetContractAddress();
+            var actualContractAddress = GetContractAddress(chainId);
             if (actualContractAddress == string.Empty)
             {
                 return false;
@@ -36,5 +47,14 @@ namespace AElf.EventHandler
 
             return actualContractAddress == contractAddress && logEventName == typeof(T).Name;
         }
+    }
+    
+    public class EventContext
+    {
+        public int ChainId { get; set; }
+        public long BlockNumber { get; set; }
+        public string BlockHash { get; set; }
+        public DateTime BlockTime { get; set; }
+        public string TransactionId { get; set; }
     }
 }

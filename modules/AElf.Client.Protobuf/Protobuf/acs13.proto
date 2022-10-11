@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package acs13;
+import "aelf/options.proto";
+import "aelf/core.proto";
+import "google/protobuf/wrappers.proto";
+
+option (aelf.identity) = "acs13";
+option csharp_namespace = "AElf.Standards.ACS13";
+
+service OracleAggregatorContract {
+    rpc Aggregate (AggregateInput) returns (google.protobuf.StringValue) {
+    }
+}
+
+
+message AggregateInput {
+    repeated string results = 1;
+    repeated int32 frequencies = 2;
+    int32 aggregate_option = 3;
+}
