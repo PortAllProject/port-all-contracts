@@ -87,6 +87,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
             var tokenList = item.Select(i => i.OriginToken).ToList();
             var targetChainIdList = item.Select(i => i.TargetChainId).ToList();
             var tokenAndChainIdList = item.Select(i => (i.TargetChainId, i.OriginToken)).ToList();
+            _logger.LogInformation($"chainId:{aliasAddress.Item1},ethereum bridgeIn address:{aliasAddress.Item2}");
             var sendReceiptIndexDto = await _bridgeInService.GetTransferReceiptIndexAsync(aliasAddress.Item1,
                 aliasAddress.Item2, tokenList, targetChainIdList);
             for (var i = 0; i < tokenList.Count;i++)
