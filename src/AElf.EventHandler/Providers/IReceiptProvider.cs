@@ -138,7 +138,7 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
         var nextRoundStartTokenIndex = _latestQueriedReceiptCountProvider.Get(swapId);
         _logger.LogInformation(
             $"{bridgeItem.ChainId}-{bridgeItem.TargetChainId}-{bridgeItem.OriginToken} Next round to query should begin with receipt Index:{nextRoundStartTokenIndex}");
-        
+
 
         if (tokenIndex < nextRoundStartTokenIndex)
         {
@@ -149,6 +149,8 @@ public class ReceiptProvider : IReceiptProvider, ITransientDependency
         if (notRecordTokenNumber > 0)
         {
             var blockNumber = await _nethereumService.GetBlockNumberAsync(bridgeItem.ChainId);
+            _logger.LogInformation(
+                $"Input:ChainId:{bridgeItem.ChainId};BridgeInAddress:{bridgeItem.EthereumBridgeInContractAddress};OriginToken:{bridgeItem.OriginToken};TargetChainId:{bridgeItem.TargetChainId};nextRoundStartTokenIndex:{nextRoundStartTokenIndex};tokenIndex:{(long)tokenIndex}");
             var getReceiptInfos = await _bridgeInService.GetSendReceiptInfosAsync(bridgeItem.ChainId,
                 bridgeItem.EthereumBridgeInContractAddress, bridgeItem.OriginToken, bridgeItem.TargetChainId,
                 nextRoundStartTokenIndex, (long) tokenIndex);
