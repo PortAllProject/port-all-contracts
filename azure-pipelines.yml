@@ -20,7 +20,7 @@ jobs:
     displayName: 'Download AElf build tools'
     inputs:
       filename: 'scripts/download_binary.bat'
-  - script: PowerShell.exe -file build.ps1 -target=Run-Unit-Tests
+  - script: PowerShell.exe -file build.ps1 -target=Build
     displayName: 'Build and Test'
   - task: PublishTestResults@2
     condition: always()
@@ -50,7 +50,7 @@ jobs:
       version: 6.0.x
   - script: bash scripts/install_protobuf.sh
   - script: bash scripts/download_binary.sh
-  - script: bash build.sh -target=Test-with-Codecov
+  - script: bash build.sh -target=Build
     displayName: 'Build and Test'
   - task: PublishTestResults@2
     condition: always()
@@ -58,15 +58,15 @@ jobs:
       testRunner: VSTest
       testResultsFiles: '**/*.trx'
   
-  - task: reportgenerator@5
-    displayName: ReportGenerator
-    inputs:
-      reports: '$(Build.SourcesDirectory)/test/*/TestResults/*/coverage.cobertura.xml'
-      targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
-      reporttypes: 'Cobertura'
-      assemblyfilters: '-xunit*'
-  - script: bash build.sh -target=Upload-Coverage-Azure
-    displayName: 'Upload data to Codecov'
+#  - task: reportgenerator@5
+#    displayName: ReportGenerator
+#    inputs:
+#      reports: '$(Build.SourcesDirectory)/test/*/TestResults/*/coverage.cobertura.xml'
+#      targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+#      reporttypes: 'Cobertura'
+#      assemblyfilters: '-xunit*'
+#  - script: bash build.sh -target=Upload-Coverage-Azure
+#    displayName: 'Upload data to Codecov'
 
 # All tasks on macOS
 - job: build_all_darwin
@@ -83,7 +83,7 @@ jobs:
       version: 6.0.x
   - script: bash scripts/install_protobuf.sh
   - script: bash scripts/download_binary.sh
-  - script: bash build.sh -target=Run-Unit-Tests
+  - script: bash build.sh -target=Build
     displayName: 'Build and Test'
   - task: PublishTestResults@2
     condition: always()
