@@ -222,3 +222,4 @@ Task("Default")
     .IsDependentOn("Run-Unit-Tests");
 
 RunTarget(target);
+
