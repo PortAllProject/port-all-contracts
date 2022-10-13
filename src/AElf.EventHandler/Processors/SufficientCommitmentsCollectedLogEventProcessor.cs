@@ -1,61 +1,58 @@
 using System.Threading.Tasks;
+using AElf.Client.Core.Extensions;
+using AElf.Client.Core.Options;
+using AElf.Client.Oracle;
 using AElf.Contracts.Oracle;
 using AElf.Types;
-using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Volo.Abp.DependencyInjection;
 
-namespace AElf.EventHandler
+namespace AElf.EventHandler;
+
+internal class SufficientCommitmentsCollectedLogEventProcessor :
+    LogEventProcessorBase<SufficientCommitmentsCollected>
 {
-    internal class SufficientCommitmentsCollectedLogEventProcessor :
-        LogEventProcessorBase<SufficientCommitmentsCollected>, ITransientDependency
+    private readonly ISaltProvider _saltProvider;
+    private readonly IDataProvider _dataProvider;
+    private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
+    private readonly IOracleService _oracleService;
+
+    public SufficientCommitmentsCollectedLogEventProcessor(
+        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
+        ISaltProvider saltProvider, IDataProvider dataProvider,
+        ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger,
+        IOracleService oracleService) : base(contractAddressOptions)
     {
-        private readonly ISaltProvider _saltProvider;
-        private readonly IDataProvider _dataProvider;
-        private readonly ContractAddressOptions _contractAddressOptions;
-        private readonly ConfigOptions _configOptions;
-        private readonly ILogger<SufficientCommitmentsCollectedLogEventProcessor> _logger;
+        _saltProvider = saltProvider;
+        _dataProvider = dataProvider;
+        _logger = logger;
+        _oracleService = oracleService;
+    }
 
-        public SufficientCommitmentsCollectedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
-            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            ISaltProvider saltProvider, IDataProvider dataProvider,
-            ILogger<SufficientCommitmentsCollectedLogEventProcessor> logger) : base(contractAddressOptions)
+    public override string ContractName => "OracleContract";
+
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
+    {
+        var collected = new SufficientCommitmentsCollected();
+        collected.MergeFrom(logEvent);
+
+        var chainId = ChainIdProvider.GetChainId(context.ChainId);
+        var data = await _dataProvider.GetDataAsync(collected.QueryId);
+        if (string.IsNullOrEmpty(data))
         {
-            _saltProvider = saltProvider;
-            _dataProvider = dataProvider;
-            _logger = logger;
-            _configOptions = configOptions.Value;
-            _contractAddressOptions = contractAddressOptions.Value;
+            _logger.LogError($"Failed to reveal data for query {collected.QueryId}.");
+            return;
         }
-
-        public override string ContractName => "Oracle";
-
-        public override async Task ProcessAsync(LogEvent logEvent)
+        
+        _logger.LogInformation($"Get data for revealing: {data}");
+        var revealInput = new RevealInput
         {
-            var collected = new SufficientCommitmentsCollected();
-            collected.MergeFrom(logEvent);
-            var data = await _dataProvider.GetDataAsync(collected.QueryId);
-            if (string.IsNullOrEmpty(data))
-            {
-                _logger.LogError($"Failed to reveal data for query {collected.QueryId}.");
-                return;
-            }
-
-            _logger.LogInformation($"Get data for revealing: {data}");
-            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
-                _configOptions.AccountPassword);
-            var revealInput = new RevealInput
-            {
-                QueryId = collected.QueryId,
-                Data = data,
-                Salt = _saltProvider.GetSalt(collected.QueryId)
-            };
-            _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");
-            var txId = node.SendTransaction(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap[ContractName], "Reveal", revealInput);
-            _logger.LogInformation($"[Reveal] Tx id {txId}");
-        }
+            QueryId = collected.QueryId,
+            Data = data,
+            Salt = _saltProvider.GetSalt(chainId,collected.QueryId)
+        };
+        _logger.LogInformation($"Sending Reveal tx with input: {revealInput}");
+        var transaction = await _oracleService.RevealAsync(chainId,revealInput);
+        _logger.LogInformation($"[Reveal] Transaction id  : {transaction.TransactionResult.TransactionId}");
     }
 }

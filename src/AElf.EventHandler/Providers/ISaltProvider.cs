@@ -9,31 +9,32 @@ namespace AElf.EventHandler
 {
     public interface ISaltProvider
     {
-        Hash GetSalt(Hash queryId);
+        Hash GetSalt(string chainId, Hash queryId);
     }
 
     public class SaltProvider : ISaltProvider, ISingletonDependency
     {
-        private readonly Dictionary<Hash, Hash> _dictionary;
+        private readonly Dictionary<string, Hash> _dictionary;
         private readonly ILogger<SaltProvider> _logger;
 
         public SaltProvider(ILogger<SaltProvider> logger)
         {
             _logger = logger;
-            _dictionary = new Dictionary<Hash, Hash>();
+            _dictionary = new Dictionary<string, Hash>();
         }
 
-        public Hash GetSalt(Hash queryId)
+        public Hash GetSalt(string chainId, Hash queryId)
         {
             // Look up dictionary.
-            if (_dictionary.TryGetValue(queryId, out var salt))
+            var key = chainId + queryId.ToHex();
+            if (_dictionary.TryGetValue(key, out var salt))
             {
                 return salt;
             }
 
             var randomStr = DateTime.UtcNow.Millisecond.ToString(CultureInfo.InvariantCulture) + Guid.NewGuid();
             salt = HashHelper.ConcatAndCompute(queryId, HashHelper.ComputeFrom(randomStr));
-            _dictionary[queryId] = salt;
+            _dictionary[key] = salt;
             _logger.LogInformation($"New salt for queryId {queryId}: {salt}. Using random string: {randomStr}");
             return salt;
         }

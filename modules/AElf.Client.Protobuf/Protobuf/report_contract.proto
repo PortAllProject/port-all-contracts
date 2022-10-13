@@ -1,0 +1,353 @@
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "callback_input.proto";
+
+option csharp_namespace = "AElf.Contracts.Report";
+
+// the contract definition: a gRPC service definition.
+service ReportContract {
+  option (aelf.csharp_state) = "AElf.Contracts.Report.ReportContractState";
+
+  rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
+
+  rpc QueryOracle (QueryOracleInput) returns (aelf.Hash) {}
+
+  rpc CancelQueryOracle (aelf.Hash) returns (google.protobuf.Empty) {}
+
+  rpc ConfirmReport (ConfirmReportInput) returns (google.protobuf.Empty) {}
+
+  rpc RejectReport (RejectReportInput) returns (google.protobuf.Empty) {}
+
+  rpc ProposeReport (CallbackInput) returns (Report) {}
+
+  rpc MortgageTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+
+  rpc WithdrawTokens (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+  
+  rpc SetSkipMemberList (SetSkipMemberListInput) returns (google.protobuf.Empty){}
+  
+
+  // Observer management.
+  rpc ApplyObserver (ApplyObserverInput) returns (google.protobuf.Empty) {}
+
+  rpc QuitObserver (QuitObserverInput) returns (google.protobuf.Empty) {}
+
+  rpc AdjustApplyObserverFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+  
+  rpc AdjustReportFee (google.protobuf.Int64Value) returns (google.protobuf.Empty) {}
+
+  // Offchain Aggregator Contract management.
+
+  rpc RegisterOffChainAggregation (RegisterOffChainAggregationInput) returns (OffChainAggregationInfo) {}
+
+  rpc BindOffChainAggregation (BindOffChainAggregationInput) returns (OffChainAggregationInfo) {}
+
+  rpc AddOffChainQueryInfo (AddOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
+
+  rpc RemoveOffChainQueryInfo (RemoveOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
+
+  rpc ChangeOffChainQueryInfo (ChangeOffChainQueryInfoInput) returns (google.protobuf.Empty) {}
+
+  rpc AddRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
+
+  rpc RemoveFromRegisterWhiteList (aelf.Address) returns (google.protobuf.Empty) {}
+
+  rpc ChangeOracleContractAddress (aelf.Address) returns (google.protobuf.Empty) {}
+
+  // Merkle tree style aggregator.
+
+  rpc GetMerklePath (GetMerklePathInput) returns (aelf.MerklePath) {
+    option (aelf.is_view) = true;
+  }
+
+  // View methods.
+
+  rpc GetReport (GetReportInput) returns (Report) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetSignature (GetSignatureInput) returns (google.protobuf.StringValue) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetOffChainAggregationInfo (GetOffChainAggregationInfoInput) returns (OffChainAggregationInfo) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetReportQueryRecord (aelf.Hash) returns (ReportQueryRecord) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetCurrentRoundId (GetCurrentRoundIdInput) returns (google.protobuf.Int64Value) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetRawReport (GetRawReportInput) returns (google.protobuf.StringValue) {
+    option (aelf.is_view) = true;
+  }
+  rpc GenerateRawReport (GenerateRawReportInput) returns (google.protobuf.StringValue) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetSignatureMap (GetSignatureMapInput) returns (SignatureMap) {
+    option (aelf.is_view) = true;
+  }
+  rpc IsInRegisterWhiteList (aelf.Address) returns (google.protobuf.BoolValue) {
+    option (aelf.is_view) = true;
+  }
+  rpc IsObserver (IsObserverInput) returns (google.protobuf.BoolValue) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetMortgagedTokenAmount (aelf.Address) returns (google.protobuf.Int64Value) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetObserverList (aelf.Address) returns (ObserverList) {
+    option (aelf.is_view) = true;
+  }
+  rpc GetSkipMemberList(GetSkipMemberListInput) returns (MemberList){
+    option (aelf.is_view) = true;
+  }
+  rpc GetTokenByChainId(google.protobuf.StringValue) returns (google.protobuf.StringValue){
+    option (aelf.is_view) = true;
+  }
+}
+
+message InitializeInput {
+  aelf.Address oracle_contract_address = 1;
+  int64 report_fee = 2;
+  int64 apply_observer_fee = 3;
+  repeated aelf.Address initial_register_white_list = 4;
+  aelf.Address regiment_contract_address = 5;
+}
+
+message QueryOracleInput {
+  int64 payment = 1;
+  string token = 2;
+  int32 aggregate_threshold = 3;
+  int32 node_index = 4;
+  OffChainQueryInfo query_info = 5;
+  string chain_id = 6;
+}
+
+message ConfirmReportInput {
+  string token = 1;
+  int64 round_id = 2;
+  string signature = 3;
+  string chain_id = 4;
+}
+
+message RejectReportInput {
+  string token = 1;
+  int64 round_id = 2;
+  repeated aelf.Address accusing_nodes = 3;
+  string chain_id = 4;
+}
+
+message Report {
+  aelf.Hash query_id = 1;
+  int64 round_id = 2;
+  Observations observations  = 3; 
+  bytes aggregated_data = 4;    
+}
+
+message ReportQueryRecord {
+  aelf.Address origin_query_sender = 1;
+  int64 paid_report_fee = 2;
+  bool is_rejected = 3;
+  bool is_all_node_confirmed = 4;
+  repeated aelf.Address confirmed_node_list = 5;
+  int64 payment = 6;
+}
+
+message ObserverList {
+  repeated aelf.Address value = 1;
+}
+
+message Observations {
+  repeated Observation value = 1;
+}
+
+message Observation {
+  string key = 1;
+  string data = 2;
+}
+
+message GetSignatureInput {
+  string token = 1;
+  int64 round_id = 2;
+  aelf.Address address = 3;
+  string chain_id = 4;
+}
+
+message GetSignatureMapInput {
+  string token = 1;
+  int64 round_id = 2;
+  string chain_id = 3;
+}
+
+message SignatureMap {
+  map<string,string> value = 1;
+}
+
+message MemberList{
+  repeated aelf.Address value = 1;
+}
+
+message GetOffChainAggregationInfoInput{
+  string chain_id = 1;
+  string token = 2;
+}
+
+message OffChainAggregationInfo {
+  string token = 1;
+  OffChainQueryInfoList off_chain_query_info_list = 2;
+  aelf.Hash regiment_id = 3;
+  bytes config_digest = 4;
+  int32 aggregate_threshold = 5;
+  aelf.Address aggregator_contract_address = 6;
+  repeated int64 round_ids = 7;
+  string chain_id = 8;
+  aelf.Address register = 9;
+  int32 aggregate_option = 10;
+}
+
+message RegisterOffChainAggregationInput {
+  aelf.Hash regiment_id = 1;
+  OffChainQueryInfoList off_chain_query_info_list = 2;
+  string token = 3;
+  bytes config_digest = 4;
+  int32 aggregate_threshold = 5;
+  aelf.Address aggregator_contract_address = 6;
+  string chain_id = 7;
+  int32 aggregate_option = 8;
+}
+
+message BindOffChainAggregationInput {
+  repeated aelf.Hash task_id_list = 1;
+  string chain_name = 2;
+  string token = 3;
+  bytes config_digest = 4;
+}
+
+message OffChainQueryInfo {
+  string title = 1;
+  repeated string options = 2;
+}
+
+message GetReportInput {
+  string token = 1;
+  int64 round_id = 2;
+  string chain_id = 3;
+}
+
+message GetMerklePathInput {
+  string token = 1;
+  int64 round_id = 2;
+  int32 node_index = 3;
+  string chain_id = 4;
+}
+
+message GetRawReportInput{
+  string token = 1;
+  int64 round_id = 2;
+  string chain_id = 3;
+}
+
+message GetCurrentRoundIdInput{
+  string chain_id = 1;
+  string token = 2;
+}
+
+message GenerateRawReportInput{
+  Report report = 1;
+  bytes config_digest = 2;
+  aelf.Address organization = 3;
+}
+
+message OffChainQueryInfoList {
+  repeated OffChainQueryInfo value = 1;
+}
+
+message AddOffChainQueryInfoInput {
+  string token = 1;
+  string chain_id = 2;
+  OffChainQueryInfo off_chain_query_info = 3;
+}
+
+message RemoveOffChainQueryInfoInput {
+  string token = 1;
+  string chain_id = 2;
+  int32 remove_node_index = 3;
+}
+
+message ChangeOffChainQueryInfoInput {
+  string token = 1;
+  string chain_id = 2;
+  OffChainQueryInfo new_off_chain_query_info = 3;
+}
+
+message ApplyObserverInput {
+  repeated aelf.Address regiment_address_list = 1;
+}
+
+message QuitObserverInput {
+  repeated aelf.Address regiment_address_list = 1;
+}
+
+message IsObserverInput {
+  aelf.Address regiment_address = 1;
+  aelf.Address oracle_node_address = 2;
+}
+
+message SetSkipMemberListInput{
+  string token = 1;
+  MemberList value = 2;
+  string chain_id = 3;
+}
+
+message GetSkipMemberListInput{
+  string token = 1;
+  string chain_id = 2;
+}
+
+// Events
+
+message ReportProposed {
+  option (aelf.is_event) = true;
+  string raw_report = 1;
+  aelf.Hash regiment_id = 2;
+  string token = 3;
+  int64 round_id = 4;
+  OffChainQueryInfo query_info = 5;
+  string target_chain_id = 6;
+}
+
+message ReportConfirmed {
+  option (aelf.is_event) = true;
+  int64 round_id = 1;
+  string signature = 2;
+  aelf.Hash regiment_id = 3;
+  string token = 4;
+  bool is_all_node_confirmed = 5;
+  string target_chain_id = 6;
+}
+
+message OffChainAggregationRegistered {
+  option (aelf.is_event) = true;
+  string token = 1;
+  OffChainQueryInfoList off_chain_query_info_list = 2;
+  aelf.Hash regiment_id = 3;
+  bytes config_digest = 4;
+  int32 aggregate_threshold = 5;
+  aelf.Address aggregator_contract_address = 6;
+  string chain_id = 7;
+  aelf.Address register = 8;
+  int32 aggregate_option = 9;
+}
+
+message MerkleReportNodeAdded {
+  option (aelf.is_event) = true;
+  string token = 1;
+  int32 node_index = 2;
+  int64 node_round_id = 3;
+  string aggregated_data = 4;
+}

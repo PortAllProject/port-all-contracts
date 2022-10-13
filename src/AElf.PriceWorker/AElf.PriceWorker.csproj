@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Serilog.AspNetCore" Version="4.0.0" />
+        <PackageReference Include="Serilog.Sinks.Async" Version="1.5.0" />
+        <PackageReference Include="Serilog.Sinks.RollingFile" Version="3.3.0" />
+        <PackageReference Include="Microsoft.AspNetCore.DataProtection.StackExchangeRedis" Version="6.0.4" />
+        <PackageReference Include="Volo.Abp.AspNetCore.Serilog" Version="5.2.2" />
+        <PackageReference Include="Volo.Abp.Autofac" Version="5.2.2" />
+        <PackageReference Include="Volo.Abp.BackgroundWorkers" Version="5.2.2" />
+        <PackageReference Include="Volo.Abp.Core" Version="5.2.2" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="appsettings.json">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\modules\AElf.BlockchainTransactionFee\AElf.BlockchainTransactionFee.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Client.Bridge\AElf.Client.Bridge.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.Nethereum.Core\AElf.Nethereum.Core.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.TokenPrice.Abstractions\AElf.TokenPrice.Abstractions.csproj" />
+      <ProjectReference Include="..\..\modules\AElf.TokenPrice.CoinGecko\AElf.TokenPrice.CoinGecko.csproj" />
+    </ItemGroup>
+</Project>

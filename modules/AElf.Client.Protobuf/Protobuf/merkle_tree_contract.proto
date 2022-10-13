@@ -1,0 +1,219 @@
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+import "acs1.proto";
+import "receipt_maker.proto";
+
+option csharp_namespace = "AElf.Contracts.MerkleTreeContract";
+
+service MerkleTreeContract {
+  option (aelf.csharp_state) = "AElf.Contracts.MerkleTreeContract.MerkleTreeContractState";
+  option (aelf.base) = "acs1.proto";
+
+  rpc Initialize(InitializeInput) returns(google.protobuf.Empty){
+  }
+  rpc CreateSpace(CreateSpaceInput) returns(google.protobuf.Empty){
+  }
+  rpc RecordMerkleTree(RecordMerkleTreeInput) returns(google.protobuf.Empty){
+  }
+
+  // regiment related
+
+  rpc CreateRegiment (CreateRegimentInput) returns (google.protobuf.Empty) {
+  }
+  rpc JoinRegiment (JoinRegimentInput) returns (google.protobuf.Empty) {
+  }
+  rpc LeaveRegiment (LeaveRegimentInput) returns (google.protobuf.Empty) {
+  }
+  rpc AddRegimentMember (AddRegimentMemberInput) returns (google.protobuf.Empty) {
+  }
+  rpc DeleteRegimentMember (DeleteRegimentMemberInput) returns (google.protobuf.Empty) {
+  }
+  rpc TransferRegimentOwnership (TransferRegimentOwnershipInput) returns (google.protobuf.Empty) {
+  }
+  rpc AddAdmins (AddAdminsInput) returns (google.protobuf.Empty) {
+  }
+  rpc DeleteAdmins (DeleteAdminsInput) returns (google.protobuf.Empty) {
+  }
+
+  rpc ConstructMerkleTree(ConstructMerkleTreeInput) returns(MerkleTreeList){
+    option (aelf.is_view) = true;
+  }
+  rpc GetMerklePath(GetMerklePathInput) returns(aelf.MerklePath){
+    option (aelf.is_view) = true;
+  }
+  rpc MerkleProof(MerkleProofInput) returns(google.protobuf.BoolValue){
+    option (aelf.is_view) = true;
+  }
+  rpc GetRegimentSpaceCount(aelf.Hash) returns(google.protobuf.Int64Value){
+    option (aelf.is_view) = true;
+  }
+  rpc GetRegimentSpaceIdList(aelf.Hash) returns(HashList){
+    option (aelf.is_view) = true;
+  }
+  rpc GetSpaceInfo(aelf.Hash) returns(SpaceInfo){
+    option(aelf.is_view) = true;
+  }
+  rpc GetMerkleTreeByIndex(GetMerkleTreeByIndexInput) returns (MerkleTree){
+    option (aelf.is_view) = true;
+  }
+  rpc GetMerkleTreeCountBySpace(aelf.Hash) returns(google.protobuf.Int64Value){
+    option (aelf.is_view) = true;
+  }
+  rpc GetLastMerkleTreeIndex(aelf.Hash) returns (google.protobuf.Int64Value){
+    option (aelf.is_view) = true;
+  }
+  rpc GetLastLeafIndex(GetLastLeafIndexInput) returns (google.protobuf.Int64Value){
+    option (aelf.is_view) = true;
+  }
+  rpc GetFullTreeCount(aelf.Hash) returns(google.protobuf.Int64Value){
+    option (aelf.is_view) = true;
+  }
+  rpc GetLeafLocatedMerkleTree(GetLeafLocatedMerkleTreeInput) returns(GetLeafLocatedMerkleTreeOutput){
+    option (aelf.is_view) = true;
+  }
+  rpc GetRemainLeafCount(aelf.Hash) returns(google.protobuf.Int64Value){
+    option (aelf.is_view) = true;
+  }
+}
+
+
+message SpaceInfo{
+  int64 max_leaf_count = 1;
+  aelf.Hash operators = 2;
+}
+
+message MerkleTree{
+  aelf.Hash space_id = 1;
+  int64 merkle_tree_index = 2;
+  int64 first_leaf_index = 3;
+  int64 last_leaf_index = 4;
+  aelf.Hash merkle_tree_root = 5;
+  bool is_full_tree = 6;
+}
+
+message MerkleTreeList{
+  repeated MerkleTree value = 1;
+}
+
+message HashList{
+  repeated aelf.Hash value = 1;
+}
+
+message InitializeInput{
+  aelf.Address owner = 1;
+  aelf.Address regiment_contract_address = 2;
+}
+
+message CreateSpaceInput{
+  SpaceInfo value = 1;
+}
+
+message ConstructMerkleTreeInput{
+  aelf.Hash space_id = 1;
+  repeated aelf.Hash leaf_node_hash = 2;
+}
+
+message RecordMerkleTreeInput{
+  aelf.Hash space_id = 1;
+  repeated aelf.Hash leaf_node_hash = 2;
+}
+
+
+message GetMerkleTreeByIndexInput{
+  aelf.Hash space_id = 1;
+  int64 merkle_tree_index = 2;
+}
+
+message GetMerklePathInput{
+  aelf.Hash space_id = 1;
+  int64 leaf_node_index = 2;
+  aelf.Address receipt_maker = 3;
+}
+
+message MerkleProofInput{
+  aelf.Hash space_id = 1;
+  aelf.Hash leaf_node = 2;
+  aelf.MerklePath merkle_path = 3;
+  int64 last_leaf_index = 4;
+}
+
+message GetLastLeafIndexInput{
+  aelf.Hash space_id = 1;
+}
+
+message GetLeafLocatedMerkleTreeInput {
+  aelf.Hash space_id = 1;
+  int64 leaf_index = 2;
+}
+
+
+message GetLeafLocatedMerkleTreeOutput {
+  aelf.Hash space_id = 1;
+  int64 merkle_tree_index = 2;
+  int64 first_leaf_index = 3;
+  int64 last_leaf_index = 4;
+}
+
+//Regiment
+message CreateRegimentInput {
+  aelf.Address manager = 1;
+  repeated aelf.Address initial_member_list = 2;
+  bool is_approve_to_join = 3;
+}
+
+message JoinRegimentInput {
+  aelf.Address regiment_address = 1;
+  aelf.Address new_member_address = 2;
+}
+
+message LeaveRegimentInput {
+  aelf.Address regiment_address = 1;
+  aelf.Address leave_member_address = 2;
+}
+
+message AddRegimentMemberInput {
+  aelf.Address regiment_address = 1;
+  aelf.Address new_member_address = 2;
+}
+
+message DeleteRegimentMemberInput {
+  aelf.Address regiment_address = 1;
+  aelf.Address delete_member_address = 2;
+}
+
+message TransferRegimentOwnershipInput {
+  aelf.Address regiment_address = 1;
+  aelf.Address new_manager_address = 2;
+  aelf.Address origin_sender_address = 3;
+}
+
+message AddAdminsInput {
+  aelf.Address regiment_address = 1;
+  repeated aelf.Address new_admins = 2;
+  aelf.Address origin_sender_address = 3;
+}
+
+message DeleteAdminsInput {
+  aelf.Address regiment_address = 1;
+  repeated aelf.Address delete_admins = 2;
+  aelf.Address origin_sender_address = 3;
+}
+
+message SpaceCreated{
+  option (aelf.is_event) = true;
+  aelf.Hash regiment_id = 1;
+  aelf.Hash space_id = 2;
+  SpaceInfo space_info = 3;
+}
+
+message MerkleTreeRecorded{
+  option (aelf.is_event) = true;
+  aelf.Address regiment_member_address = 1;
+  aelf.Hash space_id = 2;
+  int64 merkle_tree_index = 3;
+  int64 last_leaf_index = 4;
+}

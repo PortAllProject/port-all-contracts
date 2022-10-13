@@ -1,0 +1,84 @@
+<#@include file="ContractService.ttinclude" #><#@ import namespace="System.Diagnostics.Contracts" #>
+using AElf.Client.Core;
+using AElf.Client.Core.Options;
+using AElf.Contracts.<#=ContractName#>;
+using AElf.Types;
+using Microsoft.Extensions.Options;
+using Volo.Abp.DependencyInjection;
+using Google.Protobuf.WellKnownTypes;
+using Google.Protobuf;
+
+namespace AElf.Client.<#=ContractName#>;
+
+public interface I<#=ContractName#>Service
+{
+<#
+    GenerateTextForItems(ContractActionMethodInfoList, item =>
+    {
+#>
+    Task<SendTransactionResult> <#=item.MethodName#>Async(<#=item.ParameterTypeName#> <#=item.InputName#>);
+<#
+    });
+#>
+
+<#
+    GenerateTextForItems(ContractViewMethodInfoList, item =>
+    {
+#>
+    Task<<#=item.ReturnTypeName#>> <#=item.MethodName#>Async(<#=item.ParameterTypeName#> <#=item.InputName#>);
+<#
+    });
+#>
+}
+
+public class <#=ContractName#>Service : ContractServiceBase, I<#=ContractName#>Service, ITransientDependency
+{
+    private readonly IAElfClientService _clientService;
+    private readonly AElfClientConfigOptions _clientConfigOptions;
+    private readonly AElfContractOptions _contractOptions;
+
+    protected <#=ContractName#>Service(IAElfClientService clientService,
+        IOptionsSnapshot<AElfClientConfigOptions> clientConfigOptions,
+        IOptionsSnapshot<AElfContractOptions> contractOptions) : base(clientService,
+        Address.FromBase58(contractOptions.Value.ContractAddressList["<#=ContractName#>ContractAddress"]))
+    {
+        _clientService = clientService;
+        _clientConfigOptions = clientConfigOptions.Value;
+        _contractOptions = contractOptions.Value;
+    }
+
+<#
+    GenerateTextForItems(ContractActionMethodInfoList, item =>
+    {
+#>
+    public async Task<SendTransactionResult> <#=item.MethodName#>Async(<#=item.ParameterTypeName#> <#=item.InputName#>)
+    {
+        var useClientAlias = _clientConfigOptions.ClientAlias;
+        var tx = await PerformSendTransactionAsync("<#=item.MethodName#>", <#=item.InputName#>, useClientAlias);
+        return new SendTransactionResult
+        {
+            Transaction = tx,
+            TransactionResult = await PerformGetTransactionResultAsync(tx.GetHash().ToHex(), useClientAlias)
+        };
+    }
+<#
+    });
+#>
+
+<#
+    GenerateTextForItems(ContractViewMethodInfoList, item =>
+    {
+#>
+    public async Task<<#=item.ReturnTypeName#>> <#=item.MethodName#>Async(<#=item.ParameterTypeName#> <#=item.InputName#>)
+    {
+        var useClientAlias = _clientConfigOptions.ClientAlias;
+        var result = await _clientService.ViewAsync(_contractOptions.ContractAddressList["<#=ContractName#>Address"], "<#=item.MethodName#>",
+            <#=item.InputName#>, useClientAlias);
+        var actualResult = new <#=item.ReturnTypeName#>();
+        actualResult.MergeFrom(result);
+        return actualResult;
+    }
+<#
+    });
+#>
+}

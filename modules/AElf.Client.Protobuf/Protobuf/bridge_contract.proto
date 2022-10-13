@@ -1,0 +1,338 @@
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+import "callback_input.proto";
+import "acs13.proto";
+import "receipt_maker.proto";
+
+option csharp_namespace = "AElf.Contracts.Bridge";
+
+service BridgeContract {
+    option (aelf.csharp_state) = "AElf.Contracts.Bridge.BridgeContractState";
+    option (aelf.base) = "acs13.proto";
+    option (aelf.base) = "receipt_maker.proto";
+    
+    rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
+
+    //To AElf.
+    rpc CreateSwap (CreateSwapInput) returns (aelf.Hash) {
+    }
+    rpc SwapToken (SwapTokenInput) returns (google.protobuf.Empty) {
+    }
+    rpc ChangeSwapRatio (ChangeSwapRatioInput) returns (google.protobuf.Empty) {
+    }
+    rpc Deposit (DepositInput) returns (google.protobuf.Empty) {
+    }
+    rpc Withdraw (WithdrawInput) returns (google.protobuf.Empty) {
+    }
+    rpc RecordReceiptHash (CallbackInput) returns (google.protobuf.Empty) {
+    }
+    
+    //AElf to others.
+    rpc AddToken(AddTokenInput) returns(google.protobuf.Empty){
+    }
+    rpc RemoveToken(RemoveTokenInput) returns (google.protobuf.Empty){
+    }
+    rpc CreateReceipt(CreateReceiptInput) returns (google.protobuf.Empty){
+    }
+    
+    //Gas Fee
+    rpc SetGasFee(SetGasFeeInput) returns(google.protobuf.Empty){
+    }
+    rpc SetGasPrice(SetGasPriceInput) returns (google.protobuf.Empty){
+    }
+    rpc SetPriceRatio(SetPriceRatioInput) returns (google.protobuf.Empty){
+    }
+    rpc GetGasFee(google.protobuf.StringValue) returns (google.protobuf.Int64Value){
+        option (aelf.is_view) = true;
+    }
+    rpc GetGasPrice(google.protobuf.StringValue) returns(google.protobuf.StringValue){
+        option (aelf.is_view) = true;
+    }
+    rpc GetPriceRatio(google.protobuf.StringValue) returns (google.protobuf.StringValue){
+        option (aelf.is_view) = true;
+    }
+    
+    rpc SetController(aelf.Address) returns(google.protobuf.Empty){
+    }
+    
+    rpc GetReceiptIdInfo(aelf.Hash) returns (ReceiptIdInfo){
+        option (aelf.is_view) = true;
+    }
+    rpc GetOwnerLockReceipt(GetOwnerLockReceiptInput) returns (ReceiptIdList){
+        option (aelf.is_view) = true;
+    }
+    rpc GetLockTokens(GetLockTokensInput) returns(google.protobuf.Int64Value){
+        option (aelf.is_view) = true;
+    }
+    rpc GetReceiptInfo(GetReceiptInfoInput) returns (Receipt){
+        option (aelf.is_view) = true;
+    }
+
+    // view methods
+
+    rpc GetSwapInfo (aelf.Hash) returns (SwapInfo) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetSwapAmounts (GetSwapAmountsInput) returns (SwapAmounts) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetRegimentIdBySpaceId (aelf.Hash) returns (aelf.Hash) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetSwappedReceiptIdList (GetSwappedReceiptIdListInput) returns (ReceiptIdList) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetSwappedReceiptInfoList (GetSwappedReceiptInfoListInput) returns (ReceiptInfoList) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetSpaceIdBySwapId (aelf.Hash) returns (aelf.Hash){
+        option (aelf.is_view) = true;
+    }
+}
+
+message InitializeInput {
+    aelf.Address oracle_contract_address = 1;
+    aelf.Address merkle_tree_contract_address = 2;
+    aelf.Address regiment_contract_address = 3;
+    aelf.Address report_contract_address = 4;
+    aelf.Address admin = 5;
+}
+//To AElf message.
+message CreateSwapInput {
+    repeated SwapTargetToken swap_target_token_list = 1;
+    aelf.Hash regiment_id = 2;
+    int32 merkle_tree_leaf_limit = 3;
+}
+
+message SwapTargetToken {
+    string symbol = 1;
+    SwapRatio swap_ratio = 2;
+    string from_chain_id = 3;
+}
+
+message SwapInfo {
+    aelf.Hash swap_id = 1;
+    repeated SwapTargetToken swap_target_token_list = 2;
+    aelf.Hash regiment_id = 3;
+    aelf.Hash space_id = 4;
+}
+
+
+message SwapPairInfo {
+    int64 swapped_amount = 1;
+    int64 swapped_times = 2;
+    int64 deposit_amount = 3;
+}
+
+message SwapRatio {
+    int64 origin_share = 1;
+    int64 target_share = 2;
+}
+
+message SwapAmounts {
+    aelf.Address receiver = 1;
+    map<string, int64> received_amounts = 2;
+}
+
+message ReceiptInfo {
+    string receipt_id = 1;
+    aelf.Hash receiving_tx_id = 2;
+    google.protobuf.Timestamp receiving_time = 3;
+    map<string, int64> amount_map = 4;
+}
+
+message ReceiptInfoList {
+    repeated ReceiptInfo value = 1;
+}
+
+message ReceiptHashMap {
+    map<string, string> value = 1;
+    string swap_id = 2;
+}
+
+message ReceiptIdList {
+    repeated string value = 1;
+}
+
+
+message ReceiptIdInfo{
+    string chain_id = 1;
+    string symbol = 2;
+}
+
+message SendingInfo {
+    int64 receipt_id = 1;
+    string sending_tx_id = 2;
+    string sending_time = 3;
+}
+
+message ChangeSwapRatioInput {
+    aelf.Hash swap_id = 1;
+    SwapRatio swap_ratio = 2;
+    string target_token_symbol = 3;
+}
+
+message SwapTokenInput {
+    aelf.Hash swap_id = 1;
+    string receipt_id = 2;
+    string origin_amount = 3;
+    aelf.Address receiver_address = 4;
+}
+
+message DepositInput {
+    aelf.Hash swap_id = 1;
+    string target_token_symbol = 2;
+    int64 amount = 3;
+}
+
+message GetSwapPairInput {
+    aelf.Hash swap_id = 1;
+    string symbol = 2;
+}
+
+message GetSwapAmountsInput {
+    aelf.Hash swap_id = 1;
+    string receipt_id = 2;
+}
+
+message WithdrawInput {
+    aelf.Hash swap_id = 1;
+    string target_token_symbol = 2;
+    int64 amount = 3;
+}
+
+message GetSwappedReceiptIdListInput {
+    aelf.Hash swap_id = 1;
+    aelf.Address receiver_address = 2;
+}
+
+message GetSwappedReceiptInfoListInput {
+    aelf.Hash swap_id = 1;
+    aelf.Address receiver_address = 2;
+}
+
+//AElf to others message.
+message Receipt{
+    string symbol = 1;
+    aelf.Address owner = 2;
+    string targetAddress = 3;
+    int64 amount = 4;
+} 
+message ReceiptList{
+    repeated Receipt value = 1;
+}
+
+message AddTokenInput{
+    StringList symbol = 1;
+}
+
+message TokenSymbolList {
+    StringList symbol = 1;
+}
+
+message RemoveTokenInput{
+    StringList symbol = 1;
+}
+
+message CreateReceiptInput{
+    string symbol = 1;
+    aelf.Address owner = 2;
+    string targetAddress = 3;
+    int64 amount = 4;
+    string target_chain_id = 5;
+}
+
+message SetGasFeeInput{
+    repeated GasFee gas_fee_list = 1;
+}
+message SetGasPriceInput{
+    repeated GasPrice gas_price_list = 1;
+}
+
+message GasPrice{
+    string chain_id = 1;
+    int64 gas_price = 2;
+}
+
+message GasFee{
+    string chain_id = 1;
+    int64 gas_fee = 2;
+}
+
+message SetPriceRatioInput{
+    repeated PriceRatio value = 1;
+}
+message PriceRatio{
+    string target_chain_id = 1;
+    int64 price_ratio = 2;
+}
+
+ 
+message GetReceiptInfoInput{
+    string receipt_id = 1;
+}
+
+message GetOwnerLockReceiptInput{
+    aelf.Address owner = 1;
+}
+
+message GetLockTokensInput{
+    aelf.Address owner = 1;
+}
+
+message StringList{
+    repeated string value = 1;
+}
+
+
+
+
+// Events
+
+message SwapRatioChanged {
+    option (aelf.is_event) = true;
+    aelf.Hash swap_id = 1;
+    SwapRatio new_swap_ratio = 2;
+    string target_token_symbol = 3;
+}
+
+message TokenSwapped {
+    option (aelf.is_event) = true;
+    aelf.Address address = 1;
+    int64 amount = 2;
+    string symbol = 3;
+    string receipt_id = 4;
+    string from_chain_id = 5;
+}
+
+message SwapInfoAdded {
+    option (aelf.is_event) = true;
+    aelf.Hash swap_id = 1;
+    string from_chain_id = 2;
+    string symbol = 3;
+}
+
+message TokenWhitelistAdded{
+    option (aelf.is_event) = true;
+    StringList token_list = 1;
+}
+
+message TokenWhitelistRemoved{
+    option (aelf.is_event) = true;
+    StringList token_list = 1;
+}
+
+message ReceiptCreated{
+    option (aelf.is_event) = true;
+    string receipt_id = 1;
+    string symbol = 2;
+    aelf.Address owner = 3;
+    string targetAddress = 4;
+    int64 amount = 5;
+    string target_chain_id = 6;
+}

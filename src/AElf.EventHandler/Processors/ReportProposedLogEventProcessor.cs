@@ -1,56 +1,62 @@
 using System.Threading.Tasks;
+using AElf.Client.Core;
+using AElf.Client.Core.Extensions;
+using AElf.Client.Core.Options;
+using AElf.Client.Report;
 using AElf.Contracts.Report;
 using AElf.Types;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Volo.Abp.DependencyInjection;
 
-namespace AElf.EventHandler
+namespace AElf.EventHandler;
+
+internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>
 {
-    internal class ReportProposedLogEventProcessor : LogEventProcessorBase<ReportProposed>, ITransientDependency
+    private readonly IReportProvider _reportProvider;
+    private readonly IReportService _reportService;
+    private readonly IAElfAccountProvider _accountProvider;
+    private readonly AElfClientConfigOptions _aelfClientConfigOptions;
+
+    public override string ContractName => "ReportContract";
+    private readonly ILogger<ReportProposedLogEventProcessor> _logger;
+
+    public ReportProposedLogEventProcessor(
+        IReportProvider reportProvider,
+        IReportService reportService,
+        IAElfAccountProvider accountProvider,
+        ILogger<ReportProposedLogEventProcessor> logger,
+        IOptionsSnapshot<AElfContractOptions> contractAddressOptions,
+        IOptionsSnapshot<AElfClientConfigOptions> aelfConfigOptions, IChainIdProvider chainIdProvider) : base(
+        contractAddressOptions)
     {
-        private readonly ContractAddressOptions _contractAddressOptions;
-        private readonly ConfigOptions _configOptions;
-        private readonly IKeyStore _keyStore;
-        private readonly IReportProvider _reportProvider;
+        _logger = logger;
+        _reportProvider = reportProvider;
+        _reportService = reportService;
+        _accountProvider = accountProvider;
+        _aelfClientConfigOptions = aelfConfigOptions.Value;
+    }
 
-        public override string ContractName => "Report";
-        private readonly ILogger<ReportProposedLogEventProcessor> _logger;
+    public override async Task ProcessAsync(LogEvent logEvent, EventContext context)
+    {
+        var reportProposed = new ReportProposed();
+        reportProposed.MergeFrom(logEvent);
 
-        public ReportProposedLogEventProcessor(IOptionsSnapshot<ConfigOptions> configOptions,
-            IOptionsSnapshot<ContractAddressOptions> contractAddressOptions,
-            IReportProvider reportProvider,
-            ILogger<ReportProposedLogEventProcessor> logger) : base(contractAddressOptions)
+        _logger.LogInformation($"New report: {reportProposed}");
+        
+        //TODO:Check permission
+
+        var chainId = ChainIdProvider.GetChainId(context.ChainId);
+        var privateKey = _accountProvider.GetPrivateKey(_aelfClientConfigOptions.AccountAlias);
+        
+        var sendTxResult = await _reportService.ConfirmReportAsync(chainId,new ConfirmReportInput
         {
-            _logger = logger;
-            _configOptions = configOptions.Value;
-            _contractAddressOptions = contractAddressOptions.Value;
-            _keyStore = AElfKeyStore.GetKeyStore(configOptions.Value.AccountAddress,
-                configOptions.Value.AccountPassword);
-            _reportProvider = reportProvider;
-        }
-
-        public override Task ProcessAsync(LogEvent logEvent)
-        {
-            var reportProposed = new ReportProposed();
-            reportProposed.MergeFrom(logEvent);
-
-            _logger.LogInformation($"New report: {reportProposed}");
-
-            var node = new NodeManager(_configOptions.BlockChainEndpoint, _configOptions.AccountAddress,
-                _configOptions.AccountPassword);
-            var txId = node.SendTransaction(_configOptions.AccountAddress,
-                _contractAddressOptions.ContractAddressMap[ContractName], "ConfirmReport", new ConfirmReportInput
-                {
-                    Token = _configOptions.TransmitContractAddress,
-                    RoundId = reportProposed.RoundId,
-                    Signature = SignHelper
-                        .GetSignature(reportProposed.RawReport, _keyStore.GetAccountKeyPair().PrivateKey).RecoverInfo
-                });
-            _reportProvider.SetReport(_configOptions.TransmitContractAddress, reportProposed.RoundId, reportProposed.RawReport);
-            _logger.LogInformation($"[ConfirmReport] Tx id {txId}");
-
-            return Task.CompletedTask;
-        }
+            ChainId = reportProposed.TargetChainId,
+            Token = reportProposed.Token,
+            RoundId = reportProposed.RoundId,
+            Signature = SignHelper
+                .GetSignature(reportProposed.RawReport, privateKey).RecoverInfo
+        });
+        _logger.LogInformation($"[ConfirmReport] Transaction id ： {sendTxResult.TransactionResult.TransactionId}");
     }
 }

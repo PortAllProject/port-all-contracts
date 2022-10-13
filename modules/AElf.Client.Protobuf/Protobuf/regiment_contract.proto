@@ -1,0 +1,158 @@
+syntax = "proto3";
+
+import "aelf/core.proto";
+import "aelf/options.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
+
+option csharp_namespace = "AElf.Contracts.Regiment";
+
+service RegimentContract {
+    option (aelf.csharp_state) = "AElf.Contracts.Regiment.RegimentContractState";
+
+    // Actions (Can only performed by the Controller.)
+    rpc Initialize (InitializeInput) returns (google.protobuf.Empty) {}
+
+    rpc CreateRegiment (CreateRegimentInput) returns (google.protobuf.Empty) {}
+    rpc JoinRegiment (JoinRegimentInput) returns (google.protobuf.Empty) {}
+    rpc LeaveRegiment (LeaveRegimentInput) returns (google.protobuf.Empty) {}
+    rpc AddRegimentMember (AddRegimentMemberInput) returns (google.protobuf.Empty) {}
+    rpc DeleteRegimentMember (DeleteRegimentMemberInput) returns (google.protobuf.Empty) {}
+    rpc TransferRegimentOwnership (TransferRegimentOwnershipInput) returns (google.protobuf.Empty) {}
+    rpc AddAdmins (AddAdminsInput) returns (google.protobuf.Empty) {}
+    rpc DeleteAdmins (DeleteAdminsInput) returns (google.protobuf.Empty) {}
+
+    rpc ChangeController (aelf.Address) returns (google.protobuf.Empty) {}
+    rpc ResetConfig (RegimentContractConfig) returns (google.protobuf.Empty) {}
+
+    // Views
+    rpc GetController (google.protobuf.Empty) returns (aelf.Address) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetConfig (google.protobuf.Empty) returns (RegimentContractConfig) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetRegimentId(aelf.Address) returns(aelf.Hash){
+        option(aelf.is_view) = true;
+    }
+    rpc GetRegimentAddress(aelf.Hash) returns (aelf.Address){
+        option (aelf.is_view) = true;
+    }
+    rpc GetRegimentInfo (aelf.Address) returns (RegimentInfo) {
+        option (aelf.is_view) = true;
+    }
+    rpc IsRegimentMember (IsRegimentMemberInput) returns (google.protobuf.BoolValue) {
+        option (aelf.is_view) = true;
+    }
+    rpc GetRegimentMemberList (aelf.Address) returns (RegimentMemberList) {
+        option (aelf.is_view) = true;
+    }
+}
+
+message InitializeInput {
+    aelf.Address Controller = 1;// The only address can perform action in this contract.
+    int32 member_join_limit = 2;
+    int32 regiment_limit = 3;
+    int32 maximum_admins_count = 4;
+}
+
+message RegimentContractConfig {
+    int32 member_join_limit = 1;
+    int32 regiment_limit = 2;
+    int32 maximum_admins_count = 3;
+}
+
+message CreateRegimentInput {
+    aelf.Address manager = 1;
+    repeated aelf.Address initial_member_list = 2;
+    bool is_approve_to_join = 3;
+}
+
+message JoinRegimentInput {
+    aelf.Address regiment_address = 1;
+    aelf.Address new_member_address = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+message LeaveRegimentInput {
+    aelf.Address regiment_address = 1;
+    aelf.Address leave_member_address = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+message AddRegimentMemberInput {
+    aelf.Address regiment_address = 1;
+    aelf.Address new_member_address = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+message DeleteRegimentMemberInput {
+    aelf.Address regiment_address = 1;
+    aelf.Address delete_member_address = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+message RegimentInfo {
+    google.protobuf.Timestamp create_time = 1;
+    aelf.Address manager = 2;
+    repeated aelf.Address admins = 3;
+    bool is_approve_to_join = 4;
+}
+
+message IsRegimentMemberInput {
+    aelf.Address address = 1;
+    aelf.Address regiment_address = 2;
+}
+
+message RegimentMemberList {
+    repeated aelf.Address value = 1;
+}
+
+message TransferRegimentOwnershipInput {
+    aelf.Address regiment_address = 1;
+    aelf.Address new_manager_address = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+message AddAdminsInput {
+    aelf.Address regiment_address = 1;
+    repeated aelf.Address new_admins = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+message DeleteAdminsInput {
+    aelf.Address regiment_address = 1;
+    repeated aelf.Address delete_admins = 2;
+    aelf.Address origin_sender_address = 3;
+}
+
+// Events
+message RegimentCreated {
+    option (aelf.is_event) = true;
+    google.protobuf.Timestamp create_time = 1;
+    aelf.Address manager = 2;
+    RegimentMemberList initial_member_list = 3;
+    aelf.Address regiment_address = 4;
+    aelf.Hash regiment_id = 5;
+}
+
+message NewMemberApplied {
+    option (aelf.is_event) = true;
+    aelf.Address regiment_address = 1;
+    aelf.Address apply_member_address = 2;
+}
+
+message NewMemberAdded {
+    option (aelf.is_event) = true;
+    aelf.Address regiment_address = 1;
+    aelf.Address new_member_address = 2;
+    aelf.Address operator_address = 3;
+}
+
+message RegimentMemberLeft {
+    option (aelf.is_event) = true;
+    aelf.Address regiment_address = 1;
+    aelf.Address left_member_address = 2;
+    aelf.Address operator_address = 3;
+}

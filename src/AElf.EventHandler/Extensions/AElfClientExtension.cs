@@ -1,4 +1,4 @@
-using AElf.Client.Service;
+using AElf.Client;
 
 namespace AElf.EventHandler
 {
