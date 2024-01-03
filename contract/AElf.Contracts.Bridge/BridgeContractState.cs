@@ -41,5 +41,7 @@ namespace AElf.Contracts.Bridge
         /// Swap Id -> Receipt Id -> Receipt Hash
         /// </summary>
         public MappedState<Hash, long, ReceiptInfo> RecorderReceiptInfoMap { get; set; }
+
+        public SingletonState<bool> IsEnabled { get; set; }
     }
 }

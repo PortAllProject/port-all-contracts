@@ -9,6 +9,7 @@ namespace AElf.Contracts.Oracle
     {
         public override Empty CreateRegiment(CreateRegimentInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             // Need to pay.
 
             State.RegimentContract.CreateRegiment.Send(new Regiment.CreateRegimentInput
@@ -22,6 +23,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty JoinRegiment(JoinRegimentInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.RegimentContract.JoinRegiment.Send(new Regiment.JoinRegimentInput
             {
                 RegimentAddress = input.RegimentAddress,
@@ -33,6 +35,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty LeaveRegiment(LeaveRegimentInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(input.LeaveMemberAddress == Context.Sender, "No permission.");
             State.RegimentContract.LeaveRegiment.Send(new Regiment.LeaveRegimentInput
             {
@@ -45,6 +48,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty AddRegimentMember(AddRegimentMemberInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.RegimentContract.AddRegimentMember.Send(new Regiment.AddRegimentMemberInput
             {
                 RegimentAddress = input.RegimentAddress,
@@ -56,6 +60,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty DeleteRegimentMember(DeleteRegimentMemberInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.RegimentContract.DeleteRegimentMember.Send(new Regiment.DeleteRegimentMemberInput
             {
                 RegimentAddress = input.RegimentAddress,
@@ -67,6 +72,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty TransferRegimentOwnership(TransferRegimentOwnershipInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.RegimentContract.TransferRegimentOwnership.Send(new Regiment.TransferRegimentOwnershipInput
             {
                 RegimentAddress = input.RegimentAddress,
@@ -78,6 +84,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty AddAdmins(AddAdminsInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.RegimentContract.AddAdmins.Send(new Regiment.AddAdminsInput
             {
                 RegimentAddress = input.RegimentAddress,
@@ -89,6 +96,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty DeleteAdmins(DeleteAdminsInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.RegimentContract.DeleteAdmins.Send(new Regiment.DeleteAdminsInput
             {
                 RegimentAddress = input.RegimentAddress,
@@ -100,6 +108,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty LockTokens(LockTokensInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             State.TokenContract.TransferFrom.Send(new TransferFromInput
             {
                 From = Context.Sender,
@@ -123,6 +132,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty UnlockTokens(UnlockTokensInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var actualLockedAmount = State.LockedTokenFromAddressMap[Context.Sender][input.OracleNodeAddress];
             Assert(actualLockedAmount >= input.WithdrawAmount, "Invalid withdraw amount.");
             State.TokenContract.Transfer.Send(new TransferInput

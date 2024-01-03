@@ -18,6 +18,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override Empty RegisterReceiptMaker(RegisterReceiptMakerInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(State.Owner.Value == Context.Sender, "No permission.");
             Assert(State.ReceiptMakerMap[input.ReceiptMakerAddress] == null, "Already registered.");
             State.ReceiptMakerMap[input.ReceiptMakerAddress] = new ReceiptMaker
@@ -34,6 +35,7 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
 
         public override Empty UnRegisterReceiptMaker(Address input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(State.Owner.Value == Context.Sender, "No permission.");
             Assert(State.ReceiptMakerMap[input] != null, "Not registered.");
             State.ReceiptMakerMap.Remove(input);

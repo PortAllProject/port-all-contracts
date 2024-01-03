@@ -7,5 +7,8 @@ namespace AElf.Contracts.MerkleTreeGeneratorContract
     {
         public SingletonState<Address> Owner { get; set; }
         public MappedState<Address, ReceiptMaker> ReceiptMakerMap { get; set; }
+        
+        public SingletonState<bool> IsEnabled { get; set; }
+
     }
 }

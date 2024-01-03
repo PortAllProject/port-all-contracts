@@ -13,6 +13,7 @@ namespace AElf.Contracts.Bridge
     {
         public override Hash CreateSwap(CreateSwapInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(input.RegimentAddress != null, "Regiment address cannot be null.");
             Assert(State.MerkleTreeRecorderContract.Value != null, "Not initialized.");
             var swapId = HashHelper.ConcatAndCompute(Context.TransactionId, HashHelper.ComputeFrom(input));
@@ -65,6 +66,7 @@ namespace AElf.Contracts.Bridge
 
         public override Empty SwapToken(SwapTokenInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var receiverAddress = Context.Sender;
             var swapInfo = GetTokenSwapInfo(input.SwapId);
             ValidateSwapTokenInput(input);
@@ -153,6 +155,7 @@ namespace AElf.Contracts.Bridge
 
         public override Empty ChangeSwapRatio(ChangeSwapRatioInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var swapInfo = GetTokenSwapInfo(input.SwapId);
             var regimentManager = State.RegimentContract.GetRegimentInfo.Call(swapInfo.RegimentAddress).Manager;
             Assert(Context.Sender == regimentManager, "No permission.");
@@ -187,6 +190,7 @@ namespace AElf.Contracts.Bridge
 
         public override Empty Deposit(DepositInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var swapInfo = GetTokenSwapInfo(input.SwapId);
             var regimentManager = State.RegimentContract.GetRegimentInfo.Call(swapInfo.RegimentAddress).Manager;
             Assert(Context.Sender == regimentManager, "No permission.");
@@ -201,6 +205,7 @@ namespace AElf.Contracts.Bridge
 
         public override Empty Withdraw(WithdrawInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var swapInfo = GetTokenSwapInfo(input.SwapId);
             var regimentManager = State.RegimentContract.GetRegimentInfo.Call(swapInfo.RegimentAddress).Manager;
             Assert(Context.Sender == regimentManager, "No permission.");

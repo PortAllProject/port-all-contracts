@@ -14,6 +14,7 @@ namespace AElf.Contracts.Bridge
     {
         public override Empty RecordReceiptHash(CallbackInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.OracleContract.Value, "No permission.");
             var queryResult = new StringValue();
             queryResult.MergeFrom(input.Result);
@@ -36,6 +37,7 @@ namespace AElf.Contracts.Bridge
 
         public override Empty UpdateMerkleTree(UpdateMerkleTreeInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == Context.Self, "No permission.");
 
             var getMerkleTreeOutput = State.MerkleTreeGeneratorContract.GetMerkleTree.Call(
@@ -92,6 +94,7 @@ namespace AElf.Contracts.Bridge
 
         public override Empty ChangeMaximalLeafCount(Int32Value input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             if (State.ParliamentContract.Value == null)
             {
                 State.ParliamentContract.Value =

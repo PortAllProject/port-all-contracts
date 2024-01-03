@@ -17,6 +17,7 @@ namespace AElf.Contracts.MerkleTreeRecorder
 
         public override Empty ChangeOwner(Address input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             AssertSenderIsOwner(Context.Sender);
             State.Owner.Value = input;
             return new Empty();
@@ -24,6 +25,7 @@ namespace AElf.Contracts.MerkleTreeRecorder
 
         public override Empty CreateRecorder(Recorder input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             AssertSenderIsOwner(Context.Sender);
             State.Recorder[State.MerkleTreeRecorderCount.Value] = input;
             State.LastRecordedLeafIndex[State.MerkleTreeRecorderCount.Value] = -1;
@@ -40,6 +42,7 @@ namespace AElf.Contracts.MerkleTreeRecorder
 
         public override Empty RecordMerkleTree(RecordMerkleTreeInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var recorder = State.Recorder[input.RecorderId];
             if (recorder == null) throw new AssertionException("Recorder not found.");
             Assert(recorder.Admin == Context.Sender, "Not admin.");

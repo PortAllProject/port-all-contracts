@@ -67,6 +67,7 @@ namespace AElf.Contracts.Oracle
 
         public override Hash Query(QueryInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var queryId = Context.GenerateId(HashHelper.ComputeFrom(input));
             var expirationTimestamp = Context.CurrentBlockTime.AddSeconds(State.DefaultExpirationSeconds.Value);
 
@@ -150,6 +151,7 @@ namespace AElf.Contracts.Oracle
 
         public override Hash CreateQueryTask(CreateQueryTaskInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             // TODO: Pay tx fee to contract.
 
             var taskId = Context.TransactionId;
@@ -184,6 +186,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty CompleteQueryTask(CompleteQueryTaskInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var queryTask = State.QueryTaskMap[input.TaskId];
             if (queryTask == null)
             {
@@ -206,6 +209,7 @@ namespace AElf.Contracts.Oracle
 
         public override Hash TaskQuery(TaskQueryInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var queryTask = State.QueryTaskMap[input.TaskId];
             if (queryTask == null)
             {
@@ -252,6 +256,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty Commit(CommitInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var queryRecord = State.QueryRecords[input.QueryId];
 
             if (queryRecord == null)
@@ -307,6 +312,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty Reveal(RevealInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             if (input.Data == null || input.Salt == null)
             {
                 throw new AssertionException($"Invalid input: {input}");
@@ -515,6 +521,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty CancelQuery(Hash input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var queryRecord = State.QueryRecords[input];
             if (queryRecord == null)
             {
