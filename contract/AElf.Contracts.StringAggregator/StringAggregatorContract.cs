@@ -8,6 +8,7 @@ namespace AElf.Contracts.StringAggregator
     {
         public override StringValue Aggregate(AggregateInput input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             var indexOfMax = input.Frequencies.IndexOf(input.Frequencies.Max());
 
             return new StringValue

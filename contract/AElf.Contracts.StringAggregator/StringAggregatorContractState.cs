@@ -5,5 +5,6 @@ namespace AElf.Contracts.StringAggregator
 {
     public class StringAggregatorContractState : ContractState
     {
+        public SingletonState<bool> IsEnabled { get; set; }
     }
 }

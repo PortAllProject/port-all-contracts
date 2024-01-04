@@ -9,6 +9,7 @@ namespace AElf.Contracts.Oracle
     {
         public override Empty ChangeController(Address input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             State.Controller.Value = input;
             return new Empty();
@@ -16,6 +17,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty SetThreshold(OracleNodeThreshold input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             Assert(input.MinimumOracleNodesCount >= input.DefaultRevealThreshold,
                 "MinimumOracleNodesCount should be greater than or equal to DefaultRevealThreshold.");
@@ -30,6 +32,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty ChangeDefaultExpirationSeconds(Int32Value input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             State.DefaultExpirationSeconds.Value = input.Value;
             return new Empty();
@@ -52,6 +55,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty EnableChargeFee(Empty input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             State.IsChargeFee.Value = true;
             return new Empty();
@@ -59,6 +63,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty AddPostPayAddress(Address input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             Assert(!State.PostPayAddressMap[input], "Already added.");
             State.PostPayAddressMap[input] = true;
@@ -67,6 +72,7 @@ namespace AElf.Contracts.Oracle
 
         public override Empty RemovePostPayAddress(Address input)
         {
+            Assert(State.IsEnabled.Value,"The feature is currently disabled.");
             Assert(Context.Sender == State.Controller.Value, "Not authorized");
             Assert(State.PostPayAddressMap[input], "Not a post pay address.");
             State.PostPayAddressMap.Remove(input);

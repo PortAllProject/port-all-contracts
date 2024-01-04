@@ -33,5 +33,8 @@ namespace AElf.Contracts.MerkleTreeRecorder
 
         public MappedState<string, MethodFees> TransactionFees { get; set; }
         public SingletonState<AuthorityInfo> MethodFeeController { get; set; }
+        
+        public SingletonState<bool> IsEnabled { get; set; }
+
     }
 }
